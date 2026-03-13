@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KingThinkers — My Kingdom</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────────────── */
+:root {
+  --ink:    #0D0D1C;
+  --panel:  #161628;
+  --card:   #1E1E35;
+  --border: rgba(255,255,255,.07);
+  --gold:   #F5A800;
+  --amber:  #FF6B1A;
+  --green:  #00C48C;
+  --sky:    #38BDF8;
+  --lilac:  #A78BFA;
+  --rose:   #FB7185;
+  --white:  #FFFFFF;
+  --muted:  rgba(255,255,255,.45);
+  --f-d: 'Baloo 2', cursive;
+  --f-b: 'Nunito', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--f-b);background:var(--ink);color:var(--white);display:flex;flex-direction:column;}
+
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.sidebar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  display:flex;flex-direction:row;align-items:stretch;
+  padding:0;gap:0;
+  z-index:100;height:64px;
+}
+.sb-logo{ display:none; }
+@keyframes wobble{0%,100%{transform:rotate(-8deg);}50%{transform:rotate(8deg);}}
+.sb-btn{
+  flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  background:transparent;border:none;font-family:inherit;
+  padding:8px 4px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  min-height:64px;
+  position:relative;
+}
+.sb-btn.active{ background:rgba(245,168,0,.12); }
+.sb-btn.active .sb-icon{ color:var(--gold); }
+.sb-btn.active .sb-label{ color:var(--gold); }
+.sb-btn.active::after{
+  content:'';position:absolute;top:0;left:20%;right:20%;
+  height:2px;background:var(--gold);border-radius:0 0 4px 4px;
+}
+.sb-icon{font-size:22px;line-height:1;}
+.sb-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+.sb-spacer{display:none;}
+.sb-avatar{display:none;}
+
+/* ── MAIN ────────────────────────────────────────────────────── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+
+/* ── TOPBAR ──────────────────────────────────────────────────── */
+.topbar{
+  height:68px;flex-shrink:0;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;gap:20px;
+}
+.topbar-left{display:flex;flex-direction:column;}
+.topbar-greeting{
+  font-family:var(--f-d);font-size:20px;font-weight:900;
+  background:linear-gradient(90deg,var(--gold),var(--amber));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.topbar-date{font-size:12px;color:var(--muted);font-weight:600;margin-top:1px;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+
+.xp-bar-wrap{display:flex;align-items:center;gap:10px;}
+.xp-label{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+.xp-track{width:120px;height:8px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;}
+.xp-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--gold),var(--amber));width:68%;transition:width 1s ease;}
+.xp-num{font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap;}
+
+.streak-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,107,26,.12);
+  border:1px solid rgba(255,107,26,.25);
+  border-radius:100px;padding:6px 14px;
+}
+.streak-chip span{font-size:13px;font-weight:800;color:var(--amber);}
+
+.crown-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(245,168,0,.12);
+  border:1px solid rgba(245,168,0,.25);
+  border-radius:100px;padding:6px 14px;
+}
+.crown-chip span{font-size:13px;font-weight:800;color:var(--gold);}
+
+/* ── PAGES ───────────────────────────────────────────────────── */
+.page{display:none;flex:1;overflow-y:auto;padding:16px 16px 80px;height:100%;}
+.page.active{display:block;}
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+.page::-webkit-scrollbar{width:6px;}
+.page::-webkit-scrollbar-track{background:transparent;}
+.page::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+
+/* ── GRID HELPERS ────────────────────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+
+/* ── CARD BASE ───────────────────────────────────────────────── */
+.c{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;padding:22px;
+  transition:transform .25s,border-color .25s;
+}
+.c:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.14);}
+.c-title{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.c-big{font-family:var(--f-d);font-size:36px;font-weight:900;line-height:1;}
+.c-sub{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600;}
+
+/* ── SECTION HEADER ──────────────────────────────────────────── */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sh-title{font-family:var(--f-d);font-size:20px;font-weight:900;}
+.sh-action{font-size:13px;font-weight:700;color:var(--gold);cursor:pointer;opacity:.85;}
+.sh-action:hover{opacity:1;}
+
+/* ── HOME PAGE ───────────────────────────────────────────────── */
+
+/* Hero welcome banner */
+.welcome-banner{
+  background:linear-gradient(135deg,#1a1a32 0%,#24243e 100%);
+  border:1px solid rgba(245,168,0,.2);
+  border-radius:24px;padding:28px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;overflow:hidden;position:relative;
+}
+.welcome-banner::before{
+  content:'';position:absolute;right:-60px;top:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,168,0,.15) 0%,transparent 70%);
+}
+.wb-left{}
+.wb-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.wb-title{font-family:var(--f-d);font-size:28px;font-weight:900;line-height:1.1;margin-bottom:10px;}
+.wb-title em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--gold),var(--amber));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.wb-sub{font-size:14px;color:var(--muted);max-width:380px;line-height:1.6;}
+.wb-btn{
+  margin-top:18px;display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  color:var(--ink);font-family:var(--f-d);font-size:16px;font-weight:900;
+  padding:12px 28px;border-radius:100px;border:none;cursor:pointer;
+  box-shadow:0 4px 20px rgba(245,168,0,.35);
+  transition:transform .2s,box-shadow .2s;
+}
+.wb-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,168,0,.45);}
+.wb-right{font-size:100px;flex-shrink:0;filter:drop-shadow(0 8px 24px rgba(245,168,0,.3));animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+
+/* stat cards */
+.stat-card{text-align:center;padding:20px 16px;}
+.sc-icon{font-size:30px;margin-bottom:8px;}
+.sc-num{font-family:var(--f-d);font-size:32px;font-weight:900;}
+.sc-num.gold{color:var(--gold);}
+.sc-num.green{color:var(--green);}
+.sc-num.sky{color:var(--sky);}
+.sc-num.rose{color:var(--rose);}
+.sc-label{font-size:12px;color:var(--muted);font-weight:700;margin-top:4px;}
+
+/* today's quests */
+.quest-list{display:flex;flex-direction:column;gap:10px;}
+.quest-item{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:14px 16px;
+  cursor:pointer;transition:background .2s,border-color .2s,transform .15s;
+}
+.quest-item:hover{background:rgba(255,255,255,.08);border-color:rgba(245,168,0,.25);transform:translateX(4px);}
+.quest-item.done{opacity:.5;}
+.quest-item.done .qi-name{text-decoration:line-through;}
+.qi-icon{font-size:26px;flex-shrink:0;}
+.qi-info{flex:1;}
+.qi-name{font-weight:800;font-size:14px;margin-bottom:3px;}
+.qi-sub{font-size:12px;color:var(--muted);}
+.qi-reward{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:800;color:var(--gold);white-space:nowrap;}
+.qi-check{
+  width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;
+  flex-shrink:0;transition:all .2s;
+}
+.quest-item.done .qi-check{background:var(--green);border-color:var(--green);}
+
+/* progress rings */
+.rings-row{display:flex;gap:20px;align-items:center;justify-content:space-around;padding:8px 0;}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.ring-label{font-size:12px;font-weight:700;color:var(--muted);}
+.ring-svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:6;}
+.ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1.2s ease;}
+.ring-text{font-family:var(--f-d);font-size:13px;font-weight:900;fill:white;text-anchor:middle;dominant-baseline:central;}
+
+/* achievement badges */
+.badges-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.badge-item{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:14px 8px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  transition:transform .2s,background .2s;cursor:default;
+}
+.badge-item:hover{transform:translateY(-4px);background:rgba(255,255,255,.08);}
+.badge-item.locked{opacity:.3;filter:grayscale(1);}
+.badge-emoji{font-size:28px;}
+.badge-name{font-size:10px;font-weight:700;color:var(--muted);text-align:center;letter-spacing:.04em;text-transform:uppercase;}
+
+/* ── KINGDOM MAP PAGE ────────────────────────────────────────── */
+.map-container{
+  background:linear-gradient(160deg,#0f1a2e 0%,#1a2540 40%,#0e2918 100%);
+  border-radius:24px;border:1px solid rgba(255,255,255,.08);
+  padding:28px;min-height:420px;position:relative;overflow:hidden;
+}
+.map-stars{position:absolute;inset:0;pointer-events:none;}
+.map-title{font-family:var(--f-d);font-size:22px;font-weight:900;margin-bottom:4px;}
+.map-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+
+.worlds-path{
+  display:flex;align-items:center;gap:0;position:relative;flex-wrap:nowrap;
+  overflow-x:auto;padding-bottom:12px;
+}
+.worlds-path::-webkit-scrollbar{height:4px;}
+.worlds-path::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+
+.world-node{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  min-width:110px;position:relative;cursor:pointer;
+}
+.world-connector{
+  flex:1;min-width:30px;height:3px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.15) 0,rgba(255,255,255,.15) 6px,transparent 6px,transparent 12px);
+  margin-top:-40px;
+}
+.world-connector.done{background:var(--gold);border-radius:2px;}
+
+.world-bubble{
+  width:72px;height:72px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;border:3px solid rgba(255,255,255,.1);
+  position:relative;transition:transform .25s;
+}
+.world-node:hover .world-bubble{transform:scale(1.12);}
+.world-node.current .world-bubble{
+  border-color:var(--gold);
+  box-shadow:0 0 0 6px rgba(245,168,0,.2),0 0 30px rgba(245,168,0,.3);
+  animation:pulse-ring 2s ease-in-out infinite;
+}
+@keyframes pulse-ring{
+  0%,100%{box-shadow:0 0 0 6px rgba(245,168,0,.2),0 0 30px rgba(245,168,0,.3);}
+  50%{box-shadow:0 0 0 10px rgba(245,168,0,.1),0 0 40px rgba(245,168,0,.4);}
+}
+.world-node.locked .world-bubble{filter:grayscale(1);opacity:.4;}
+.world-node.done .world-bubble{border-color:var(--green);}
+.world-name{font-size:11px;font-weight:800;text-align:center;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;}
+.world-node.current .world-name{color:var(--gold);}
+.world-node.done .world-name{color:var(--green);}
+.world-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--green);border-radius:50%;
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;border:2px solid var(--ink);
+}
+.world-node.current .world-badge{background:var(--gold);}
+.world-node.locked .world-badge{display:none;}
+
+.world-detail{
+  background:rgba(255,255,255,.05);border:1px solid rgba(245,168,0,.2);
+  border-radius:18px;padding:22px;margin-top:20px;
+  display:flex;gap:20px;align-items:flex-start;
+}
+.wd-icon{font-size:52px;flex-shrink:0;}
+.wd-info{flex:1;}
+.wd-title{font-family:var(--f-d);font-size:20px;font-weight:900;margin-bottom:4px;}
+.wd-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px;}
+.wd-missions{display:flex;flex-direction:column;gap:6px;}
+.wd-mission{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;font-weight:700;
+  background:rgba(255,255,255,.05);border-radius:10px;padding:8px 12px;
+}
+.wd-mission.done{color:var(--green);}
+.wd-mission.active{color:var(--gold);}
+.wd-mission.locked{color:var(--muted);}
+.wd-btn{
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  color:var(--ink);font-family:var(--f-d);font-size:15px;font-weight:900;
+  padding:11px 26px;border-radius:100px;border:none;cursor:pointer;
+  box-shadow:0 4px 18px rgba(245,168,0,.35);transition:all .2s;align-self:center;flex-shrink:0;
+}
+.wd-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,168,0,.45);}
+
+/* ── LIBRARY PAGE ────────────────────────────────────────────── */
+.library-filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.filter-pill{
+  padding:7px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.12);
+  font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;
+  transition:all .2s;background:transparent;
+}
+.filter-pill:hover{border-color:var(--gold);color:var(--gold);}
+.filter-pill.active{background:rgba(245,168,0,.15);border-color:var(--gold);color:var(--gold);}
+
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+.book-card{
+  border-radius:16px;overflow:hidden;cursor:pointer;
+  transition:transform .25s,box-shadow .25s;position:relative;
+}
+.book-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.4);}
+.book-cover{
+  height:180px;display:flex;align-items:center;justify-content:center;
+  font-size:56px;flex-direction:column;gap:4px;position:relative;
+}
+.book-level{
+  position:absolute;top:8px;right:8px;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(4px);
+  border-radius:100px;padding:3px 9px;font-size:10px;font-weight:800;color:white;
+}
+.book-info{background:var(--card);padding:10px 12px;}
+.book-title{font-size:13px;font-weight:800;margin-bottom:2px;line-height:1.3;}
+.book-author{font-size:11px;color:var(--muted);}
+.book-stars{font-size:10px;color:var(--gold);margin-top:4px;}
+.book-card.reading .book-cover::after{
+  content:'READING';position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(0deg,rgba(245,168,0,.9),transparent);
+  padding:20px 10px 8px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink);
+}
+
+/* ── MATH PAGE ──────────────────────────────────────────────── */
+.math-challenge{
+  background:linear-gradient(135deg,#1a1a35 0%,#1e2840 100%);
+  border:1px solid rgba(56,189,248,.2);
+  border-radius:24px;padding:32px;text-align:center;margin-bottom:20px;
+}
+.mc-label{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--sky);font-weight:700;margin-bottom:12px;}
+.mc-problem{font-family:var(--f-d);font-size:52px;font-weight:900;margin-bottom:8px;line-height:1;}
+.mc-context{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;max-width:480px;margin-left:auto;margin-right:auto;}
+.mc-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:380px;margin:0 auto;}
+.mc-choice{
+  background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:16px;font-family:var(--f-d);font-size:26px;font-weight:900;
+  cursor:pointer;transition:all .2s;
+}
+.mc-choice:hover{background:rgba(56,189,248,.1);border-color:var(--sky);color:var(--sky);}
+.mc-choice.correct{background:rgba(0,196,140,.15);border-color:var(--green);color:var(--green);}
+.mc-choice.wrong{background:rgba(251,113,133,.1);border-color:var(--rose);color:var(--rose);}
+.mc-hint{font-size:13px;color:var(--muted);margin-top:16px;cursor:pointer;font-weight:700;}
+.mc-hint:hover{color:var(--gold);}
+
+.math-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+
+.skill-bars{display:flex;flex-direction:column;gap:12px;}
+.skill-bar-item{}
+.sbi-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.sbi-name{font-size:13px;font-weight:700;}
+.sbi-pct{font-size:12px;font-weight:800;color:var(--muted);}
+.sbi-track{height:8px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;}
+.sbi-fill{height:100%;border-radius:100px;transition:width 1.2s ease;}
+
+/* ── SAGE AI PAGE ───────────────────────────────────────────── */
+.sage-chat{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:24px;overflow:hidden;display:flex;flex-direction:column;
+  height: calc(100vh - 200px);
+}
+.sage-header{
+  padding:18px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,rgba(167,139,250,.1),rgba(56,189,248,.05));
+}
+.sage-avatar{
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,var(--lilac),var(--sky));
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;box-shadow:0 0 0 4px rgba(167,139,250,.2);
+}
+.sage-info{flex:1;}
+.sage-name{font-family:var(--f-d);font-size:17px;font-weight:900;}
+.sage-status{font-size:12px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:5px;}
+.sage-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
+
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.chat-messages::-webkit-scrollbar{width:4px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px;}
+
+.msg{display:flex;gap:10px;align-items:flex-end;max-width:80%;}
+.msg.sage{align-self:flex-start;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg-avatar{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.msg.sage .msg-avatar{background:linear-gradient(135deg,var(--lilac),var(--sky));}
+.msg.user .msg-avatar{background:linear-gradient(135deg,var(--gold),var(--amber));}
+.msg-bubble{
+  padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.65;font-weight:600;
+}
+.msg.sage .msg-bubble{background:rgba(255,255,255,.07);border-radius:4px 18px 18px 18px;}
+.msg.user .msg-bubble{background:linear-gradient(135deg,rgba(245,168,0,.25),rgba(255,107,26,.2));border-radius:18px 4px 18px 18px;color:white;}
+.msg-time{font-size:10px;color:rgba(255,255,255,.25);margin-top:4px;text-align:right;font-weight:600;}
+
+.chat-input-row{
+  padding:14px 18px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;
+}
+.chat-input{
+  flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:100px;padding:11px 18px;color:white;font-family:var(--f-b);font-size:14px;font-weight:600;
+  outline:none;transition:border-color .2s;
+}
+.chat-input::placeholder{color:rgba(255,255,255,.3);}
+.chat-input:focus{border-color:var(--lilac);}
+.chat-send{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--lilac),var(--sky));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:transform .2s,box-shadow .2s;flex-shrink:0;
+}
+.chat-send:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(167,139,250,.4);}
+
+.sage-prompts{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 14px;}
+.sage-prompt{
+  background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);
+  border-radius:100px;padding:6px 14px;font-size:12px;font-weight:700;
+  color:var(--lilac);cursor:pointer;transition:all .2s;
+}
+.sage-prompt:hover{background:rgba(167,139,248,.2);border-color:var(--lilac);}
+
+/* ── NOTIFICATION TOAST ─────────────────────────────────────── */
+.toast{
+  position:fixed;top:80px;right:24px;z-index:999;
+  background:var(--card);border:1px solid rgba(245,168,0,.3);
+  border-radius:16px;padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transform:translateX(120%);transition:transform .4s cubic-bezier(.175,.885,.32,1.275);
+  max-width:300px;
+}
+.toast.show{transform:translateX(0);}
+.toast-icon{font-size:26px;flex-shrink:0;}
+.toast-text{}
+.toast-title{font-weight:800;font-size:14px;margin-bottom:2px;}
+.toast-sub{font-size:12px;color:var(--muted);}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media(max-width:900px){
+  .grid-4{grid-template-columns:1fr 1fr;}
+  .math-stats-row{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .sidebar{height:56px;}
+  .sb-label{display:none;}
+  .topbar{padding:0 16px;}
+  .xp-bar-wrap,.streak-chip{display:none;}
+  .page{padding:16px;}
+}
+</style>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KingThinkers">
+  <meta name="theme-color" content="#F5A800">
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon">👑</div>
+  <div class="toast-text">
+    <div class="toast-title" id="toast-title">Crown Earned!</div>
+    <div class="toast-sub" id="toast-sub">You completed a quest</div>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<div class="sidebar" style="order:2;">
+  <span class="sb-logo">👑</span>
+
+  <button class="sb-btn" onclick="showPage('home',this)">
+    <span class="sb-icon">🏠</span>
+    <span class="sb-label">Home</span>
+  </button>
+  <button class="sb-btn active" onclick="showPage('kingdom',this)">
+    <span class="sb-icon">🗺️</span>
+    <span class="sb-label">Quest</span>
+  </button>
+  <button class="sb-btn" onclick="showPage('library',this)">
+    <span class="sb-icon">📚</span>
+    <span class="sb-label">Library</span>
+  </button>
+  <button class="sb-btn" onclick="showPage('math',this)">
+    <span class="sb-icon">🔢</span>
+    <span class="sb-label">Math</span>
+  </button>
+  <button class="sb-btn" onclick="showPage('sage',this)">
+    <span class="sb-icon">🤖</span>
+    <span class="sb-label">Sage</span>
+  </button>
+
+  <div class="sb-spacer"></div>
+  <div class="sb-avatar" onclick="showToast('⚙️','Settings coming soon!','Keep building your kingdom 👑')">🧒🏾</div>
+</div>
+
+<!-- MAIN -->
+<div class="main" style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;order:1;">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-greeting">Good morning, King Marcus! 👑</div>
+      <div class="topbar-date" id="topbar-date">Loading...</div>
+    </div>
+    <div class="topbar-right">
+      <div class="xp-bar-wrap">
+        <span class="xp-label">⚡ XP</span>
+        <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+        <span class="xp-num">680 / 1000</span>
+      </div>
+      <div class="streak-chip">🔥 <span>7-Day Streak</span></div>
+      <div class="crown-chip">👑 <span>142 Crowns</span></div>
+    </div>
+  </div>
+
+  <!-- ── HOME PAGE ── -->
+  <div class="page" id="page-home" style="display:none;">
+
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="wb-left">
+        <div class="wb-eyebrow">🌍 Currently in: Kingdom of Kush</div>
+        <div class="wb-title">Ready to conquer<br><em>today's quests?</em></div>
+        <div class="wb-sub">You're 3 missions away from unlocking the Kingdom of Mali. Your kingdom is growing, King Marcus!</div>
+        <button class="wb-btn" onclick="showPage('kingdom', document.querySelectorAll('.sb-btn')[1])">
+          🗺️ Continue Quest
+        </button>
+      </div>
+      <div class="wb-right">🏰</div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="grid-4" style="margin-bottom:20px;">
+      <div class="c stat-card">
+        <div class="sc-icon">📖</div>
+        <div class="sc-num gold">24</div>
+        <div class="sc-label">Books Read</div>
+      </div>
+      <div class="c stat-card">
+        <div class="sc-icon">✅</div>
+        <div class="sc-num green">312</div>
+        <div class="sc-label">Math Problems Solved</div>
+      </div>
+      <div class="c stat-card">
+        <div class="sc-icon">⭐</div>
+        <div class="sc-num sky">18</div>
+        <div class="sc-label">Badges Earned</div>
+      </div>
+      <div class="c stat-card">
+        <div class="sc-icon">📅</div>
+        <div class="sc-num rose">7</div>
+        <div class="sc-label">Day Streak</div>
+      </div>
+    </div>
+
+    <!-- Quests + Progress -->
+    <div class="grid-2" style="margin-bottom:20px;">
+
+      <!-- Today's Quests -->
+      <div class="c">
+        <div class="sh">
+          <div class="sh-title">⚔️ Today's Quests</div>
+          <div class="sh-action">View All</div>
+        </div>
+        <div class="quest-list">
+          <div class="quest-item done" id="q1" onclick="toggleQuest('q1')">
+            <div class="qi-icon">📖</div>
+            <div class="qi-info">
+              <div class="qi-name">Read: "Young Pharaoh"</div>
+              <div class="qi-sub">Chapter 3 · 8 min read</div>
+            </div>
+            <div class="qi-reward">+25 👑</div>
+            <div class="qi-check">✓</div>
+          </div>
+          <div class="quest-item" id="q2" onclick="toggleQuest('q2')">
+            <div class="qi-icon">🔢</div>
+            <div class="qi-info">
+              <div class="qi-name">Math Forge: Fractions</div>
+              <div class="qi-sub">10 problems · Level 3</div>
+            </div>
+            <div class="qi-reward">+30 👑</div>
+            <div class="qi-check"></div>
+          </div>
+          <div class="quest-item" id="q3" onclick="toggleQuest('q3')">
+            <div class="qi-icon">🗺️</div>
+            <div class="qi-info">
+              <div class="qi-name">Kingdom Quest: Nile Mission</div>
+              <div class="qi-sub">Reading + Vocab · 15 min</div>
+            </div>
+            <div class="qi-reward">+50 👑</div>
+            <div class="qi-check"></div>
+          </div>
+          <div class="quest-item" id="q4" onclick="toggleQuest('q4')">
+            <div class="qi-icon">🤖</div>
+            <div class="qi-info">
+              <div class="qi-name">Ask Sage 3 Questions</div>
+              <div class="qi-sub">AI Tutor daily goal</div>
+            </div>
+            <div class="qi-reward">+15 👑</div>
+            <div class="qi-check"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reading + Math Progress -->
+      <div class="c">
+        <div class="sh"><div class="sh-title">📊 My Progress</div></div>
+        <div class="rings-row">
+          <div class="ring-wrap">
+            <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-fill" cx="40" cy="40" r="34"
+                stroke="var(--gold)"
+                stroke-dasharray="213.6"
+                stroke-dashoffset="68" id="ring-reading"/>
+              <text class="ring-text" x="40" y="40" transform="rotate(90,40,40)" style="font-family:var(--f-d);font-size:14px;fill:var(--gold)">68%</text>
+            </svg>
+            <span class="ring-label">Reading</span>
+          </div>
+          <div class="ring-wrap">
+            <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-fill" cx="40" cy="40" r="34"
+                stroke="var(--sky)"
+                stroke-dasharray="213.6"
+                stroke-dashoffset="86" id="ring-math"/>
+              <text class="ring-text" x="40" y="40" transform="rotate(90,40,40)" style="font-family:var(--f-d);font-size:14px;fill:var(--sky)">60%</text>
+            </svg>
+            <span class="ring-label">Math</span>
+          </div>
+          <div class="ring-wrap">
+            <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-fill" cx="40" cy="40" r="34"
+                stroke="var(--green)"
+                stroke-dasharray="213.6"
+                stroke-dashoffset="42" id="ring-overall"/>
+              <text class="ring-text" x="40" y="40" transform="rotate(90,40,40)" style="font-family:var(--f-d);font-size:14px;fill:var(--green)">80%</text>
+            </svg>
+            <span class="ring-label">Overall</span>
+          </div>
+        </div>
+        <div style="margin-top:18px;">
+          <div class="skill-bars">
+            <div class="skill-bar-item">
+              <div class="sbi-top"><span class="sbi-name">Phonics</span><span class="sbi-pct" style="color:var(--gold)">88%</span></div>
+              <div class="sbi-track"><div class="sbi-fill" style="width:88%;background:linear-gradient(90deg,var(--gold),var(--amber));"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="sbi-top"><span class="sbi-name">Comprehension</span><span class="sbi-pct" style="color:var(--sky)">72%</span></div>
+              <div class="sbi-track"><div class="sbi-fill" style="width:72%;background:linear-gradient(90deg,var(--sky),#56CFFF);"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="sbi-top"><span class="sbi-name">Multiplication</span><span class="sbi-pct" style="color:var(--green)">65%</span></div>
+              <div class="sbi-track"><div class="sbi-fill" style="width:65%;background:linear-gradient(90deg,var(--green),#00E09A);"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="sbi-top"><span class="sbi-name">Word Problems</span><span class="sbi-pct" style="color:var(--rose)">48%</span></div>
+              <div class="sbi-track"><div class="sbi-fill" style="width:48%;background:linear-gradient(90deg,var(--rose),#FF8FAB);"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="c">
+      <div class="sh">
+        <div class="sh-title">🏅 My Badges</div>
+        <div class="sh-action">View All 42</div>
+      </div>
+      <div class="badges-grid">
+        <div class="badge-item" title="Read 10 books">
+          <span class="badge-emoji">📚</span><span class="badge-name">Bookworm</span>
+        </div>
+        <div class="badge-item" title="7 day streak">
+          <span class="badge-emoji">🔥</span><span class="badge-name">On Fire</span>
+        </div>
+        <div class="badge-item" title="100 math problems">
+          <span class="badge-emoji">🔢</span><span class="badge-name">Math King</span>
+        </div>
+        <div class="badge-item" title="Perfect quiz score">
+          <span class="badge-emoji">⭐</span><span class="badge-name">Perfect</span>
+        </div>
+        <div class="badge-item" title="Kingdom of Egypt unlocked">
+          <span class="badge-emoji">🏺</span><span class="badge-name">Explorer</span>
+        </div>
+        <div class="badge-item locked" title="Locked">
+          <span class="badge-emoji">🦁</span><span class="badge-name">Lion King</span>
+        </div>
+        <div class="badge-item locked" title="Locked">
+          <span class="badge-emoji">🌍</span><span class="badge-name">World Tour</span>
+        </div>
+        <div class="badge-item locked" title="Locked">
+          <span class="badge-emoji">💎</span><span class="badge-name">Diamond</span>
+        </div>
+        <div class="badge-item locked" title="Locked">
+          <span class="badge-emoji">🚀</span><span class="badge-name">Rocket</span>
+        </div>
+        <div class="badge-item locked" title="Locked">
+          <span class="badge-emoji">👑</span><span class="badge-name">Crowned</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /home -->
+
+  <!-- ── KINGDOM MAP PAGE ── -->
+  <div class="page active" id="page-kingdom" style="display:block;">
+    <div class="sh" style="margin-bottom:16px;">
+      <div class="sh-title">🗺️ Kingdom Quest Map</div>
+      <div class="sh-action" id="map-progress-label">My Progress: World 1 of 8</div>
+    </div>
+
+    <div class="map-container">
+      <div class="map-title">The African Kingdoms Journey</div>
+      <div class="map-sub">Travel through history. Earn your crown at every stop.</div>
+
+      <div class="worlds-path" id="worlds-path">
+        <!-- rendered by JS -->
+      </div>
+
+      <!-- World Detail Panel -->
+      <div class="world-detail" id="world-detail" style="display:none;">
+        <div class="wd-icon" id="wd-icon">🏺</div>
+        <div class="wd-info">
+          <div class="wd-title" id="wd-title">Kingdom of Egypt</div>
+          <div class="wd-desc" id="wd-desc"></div>
+          <div class="wd-missions" id="wd-missions"></div>
+        </div>
+        <button class="wd-btn" id="wd-btn" onclick="launchCurrentMission()" ontouchend="this.onclick()">▶ Start Mission</button>
+      </div>
+    </div>
+
+    <!-- Unlock Celebration Overlay -->
+    <div id="unlock-overlay" style="
+      display:none; position:fixed; inset:0; z-index:500;
+      background:rgba(11,11,30,0.92); backdrop-filter:blur(8px);
+      flex-direction:column; align-items:center; justify-content:center;
+      gap:20px; padding:32px; text-align:center;
+    ">
+      <div id="unlock-icon" style="font-size:72px; animation:unlockBounce 0.6s cubic-bezier(.34,1.56,.64,1);">🏺</div>
+      <div id="unlock-title" style="font-family:var(--f-d);font-size:32px;font-weight:900;color:var(--gold);"></div>
+      <div id="unlock-sub" style="font-size:15px;color:var(--muted);max-width:360px;line-height:1.6;"></div>
+      <div style="display:flex;gap:16px;align-items:center;background:rgba(245,168,0,0.1);border:1px solid rgba(245,168,0,0.25);border-radius:100px;padding:10px 24px;">
+        <span style="font-family:var(--f-d);font-size:22px;font-weight:900;color:var(--gold);" id="unlock-xp">+150 XP</span>
+        <span style="font-size:13px;color:var(--muted);">World Complete!</span>
+      </div>
+      <button onclick="closeUnlock()" style="
+        background:linear-gradient(135deg,var(--gold),var(--amber));
+        border:none; border-radius:14px; padding:14px 36px;
+        font-family:var(--f-d); font-size:17px; font-weight:900;
+        color:var(--navy); cursor:pointer; margin-top:8px;
+      ">Onward, King! →</button>
+    </div>
+  </div><!-- /kingdom -->
+
+  <!-- ── LIBRARY PAGE ── -->
+  <div class="page" id="page-library" style="display:none;">
+    <div class="sh" style="margin-bottom:8px;">
+      <div class="sh-title">📚 King's Library</div>
+      <div class="sh-action">24 / 100 Books Read</div>
+    </div>
+
+    <div class="library-filters">
+      <button class="filter-pill active" onclick="setFilter(this)">All Books</button>
+      <button class="filter-pill" onclick="setFilter(this)">Currently Reading</button>
+      <button class="filter-pill" onclick="setFilter(this)">Completed</button>
+      <button class="filter-pill" onclick="setFilter(this)">Phonics</button>
+      <button class="filter-pill" onclick="setFilter(this)">Adventure</button>
+      <button class="filter-pill" onclick="setFilter(this)">History</button>
+      <button class="filter-pill" onclick="setFilter(this)">Science</button>
+    </div>
+
+    <div class="books-grid">
+      <div class="book-card reading" onclick="showToast('📖','Opening book!','Young Pharaoh — Chapter 3')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#c9a227,#e8c44a);">🏺</div>
+        <div class="book-info">
+          <div class="book-title">Young Pharaoh</div>
+          <div class="book-author">K. Okafor</div>
+          <div class="book-stars">★★★★★</div>
+        </div>
+        <div class="book-level" style="background:var(--green);">Lvl 3</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','Miles & The Math Monster')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a4a8a,#2563ab);">🦸🏾</div>
+        <div class="book-info">
+          <div class="book-title">Miles & The Math Monster</div>
+          <div class="book-author">T. Williams</div>
+          <div class="book-stars">★★★★☆</div>
+        </div>
+        <div class="book-level" style="background:var(--sky);">Lvl 2</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','King of the Nile')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#2d6a1e,#3d8a28);">🌊</div>
+        <div class="book-info">
+          <div class="book-title">King of the Nile</div>
+          <div class="book-author">A. Mensah</div>
+          <div class="book-stars">★★★★★</div>
+        </div>
+        <div class="book-level" style="background:var(--amber);">Lvl 4</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','The Science Kings')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#4a1e6a,#6a2890);">🔭</div>
+        <div class="book-info">
+          <div class="book-title">The Science Kings</div>
+          <div class="book-author">D. Asante</div>
+          <div class="book-stars">★★★★☆</div>
+        </div>
+        <div class="book-level" style="background:var(--lilac);">Lvl 3</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','Warrior of Words')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#6a1e1e,#902828);">⚔️</div>
+        <div class="book-info">
+          <div class="book-title">Warrior of Words</div>
+          <div class="book-author">J. Diallo</div>
+          <div class="book-stars">★★★★★</div>
+        </div>
+        <div class="book-level" style="background:var(--rose);">Lvl 5</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','Rhythm & Rhyme Kingdom')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1e4a4a,#287a7a);">🎵</div>
+        <div class="book-info">
+          <div class="book-title">Rhythm & Rhyme Kingdom</div>
+          <div class="book-author">M. Eze</div>
+          <div class="book-stars">★★★☆☆</div>
+        </div>
+        <div class="book-level" style="background:var(--green);">Lvl 1</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','The Kente Code')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#4a3a1e,#6a5228);">🧶</div>
+        <div class="book-info">
+          <div class="book-title">The Kente Code</div>
+          <div class="book-author">B. Owusu</div>
+          <div class="book-stars">★★★★☆</div>
+        </div>
+        <div class="book-level" style="background:var(--gold);">Lvl 2</div>
+      </div>
+      <div class="book-card" onclick="showToast('📖','Opening book!','Galaxy Griot')">
+        <div class="book-cover" style="background:linear-gradient(135deg,#0d1a3a,#1a2d5a);">🚀</div>
+        <div class="book-info">
+          <div class="book-title">Galaxy Griot</div>
+          <div class="book-author">N. Kamara</div>
+          <div class="book-stars">★★★★★</div>
+        </div>
+        <div class="book-level" style="background:var(--sky);">Lvl 4</div>
+      </div>
+    </div>
+  </div><!-- /library -->
+
+  <!-- ── MATH FORGE PAGE ── -->
+  <div class="page" id="page-math" style="display:none;">
+    <div class="sh" style="margin-bottom:16px;">
+      <div class="sh-title">🔢 Math Forge</div>
+      <div class="sh-action">Level 3 · Fractions</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="math-stats-row">
+      <div class="c stat-card">
+        <div class="sc-icon">✅</div>
+        <div class="sc-num green">312</div>
+        <div class="sc-label">Problems Solved</div>
+      </div>
+      <div class="c stat-card">
+        <div class="sc-icon">🎯</div>
+        <div class="sc-num sky">87%</div>
+        <div class="sc-label">Accuracy</div>
+      </div>
+      <div class="c stat-card">
+        <div class="sc-icon">⚡</div>
+        <div class="sc-num gold">12</div>
+        <div class="sc-label">Today's Streak</div>
+      </div>
+      <div class="c stat-card">
+        <div class="sc-icon">🏆</div>
+        <div class="sc-num rose">Level 3</div>
+        <div class="sc-label">Current Level</div>
+      </div>
+    </div>
+
+    <!-- Challenge + Skills -->
+    <div class="grid-2">
+
+      <!-- Active Challenge -->
+      <div>
+        <div class="math-challenge">
+          <div class="mc-label">⚔️ Today's Forge Challenge</div>
+          <div class="mc-problem" id="mc-problem">¾ + ½ = ?</div>
+          <div class="mc-context">King Marcus needs to mix ¾ cup of sand with ½ cup of clay to build a wall for his kingdom. How much material does he have in total?</div>
+          <div class="mc-choices">
+            <div class="mc-choice" onclick="checkAnswer(this, false)">1</div>
+            <div class="mc-choice" onclick="checkAnswer(this, true)">1¼</div>
+            <div class="mc-choice" onclick="checkAnswer(this, false)">1½</div>
+            <div class="mc-choice" onclick="checkAnswer(this, false)">2</div>
+          </div>
+          <div class="mc-hint" onclick="showToast('🤖','Sage says:','Try converting ¾ and ½ to the same denominator first!')">🤖 Ask Sage for a hint</div>
+        </div>
+
+        <div class="c" style="margin-top:0;">
+          <div class="sh"><div class="sh-title">🗂️ Math Topics</div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <div class="filter-pill active" onclick="setFilter(this)">Fractions</div>
+            <div class="filter-pill" onclick="setFilter(this)">Multiplication</div>
+            <div class="filter-pill" onclick="setFilter(this)">Division</div>
+            <div class="filter-pill" onclick="setFilter(this)">Geometry</div>
+            <div class="filter-pill" onclick="setFilter(this)">Word Problems</div>
+            <div class="filter-pill" onclick="setFilter(this)">Decimals</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill Progress -->
+      <div class="c">
+        <div class="sh"><div class="sh-title">📈 Math Skills Progress</div></div>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="sbi-top"><span class="sbi-name">➕ Addition & Subtraction</span><span class="sbi-pct" style="color:var(--green)">95%</span></div>
+            <div class="sbi-track"><div class="sbi-fill" style="width:95%;background:linear-gradient(90deg,var(--green),#00E09A);"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sbi-top"><span class="sbi-name">✖️ Multiplication</span><span class="sbi-pct" style="color:var(--gold)">78%</span></div>
+            <div class="sbi-track"><div class="sbi-fill" style="width:78%;background:linear-gradient(90deg,var(--gold),var(--amber));"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sbi-top"><span class="sbi-name">➗ Division</span><span class="sbi-pct" style="color:var(--sky)">65%</span></div>
+            <div class="sbi-track"><div class="sbi-fill" style="width:65%;background:linear-gradient(90deg,var(--sky),#56CFFF);"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sbi-top"><span class="sbi-name">½ Fractions</span><span class="sbi-pct" style="color:var(--amber)">52%</span></div>
+            <div class="sbi-track"><div class="sbi-fill" style="width:52%;background:linear-gradient(90deg,var(--amber),#FF9A5C);"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sbi-top"><span class="sbi-name">📐 Geometry</span><span class="sbi-pct" style="color:var(--lilac)">40%</span></div>
+            <div class="sbi-track"><div class="sbi-fill" style="width:40%;background:linear-gradient(90deg,var(--lilac),#C084FC);"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sbi-top"><span class="sbi-name">🧩 Word Problems</span><span class="sbi-pct" style="color:var(--rose)">35%</span></div>
+            <div class="sbi-track"><div class="sbi-fill" style="width:35%;background:linear-gradient(90deg,var(--rose),#FF8FAB);"></div></div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;padding:16px;background:rgba(167,139,250,.08);border-radius:14px;border:1px solid rgba(167,139,250,.15);">
+          <div style="font-size:12px;font-weight:800;color:var(--lilac);margin-bottom:6px;">🤖 Sage recommends:</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.6;">You're crushing addition! Focus on <strong style="color:white;">word problems</strong> next — it'll help you on Kingdom Quest missions too.</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /math -->
+
+  <!-- ── SAGE AI PAGE ── -->
+  <div class="page" id="page-sage" style="display:none;">
+    <div class="sh" style="margin-bottom:16px;">
+      <div class="sh-title">🤖 Sage — Your Learning Companion</div>
+    </div>
+
+    <div class="sage-chat">
+      <div class="sage-header">
+        <div class="sage-avatar">🤖</div>
+        <div class="sage-info">
+          <div class="sage-name">Sage</div>
+          <div class="sage-status">Online and ready to help</div>
+        </div>
+        <div style="margin-left:auto;font-size:12px;font-weight:700;color:var(--muted);">AI Tutor · Never gives answers directly</div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg sage">
+          <div class="msg-avatar">🤖</div>
+          <div>
+            <div class="msg-bubble">Hey King Marcus! 👑 I'm Sage, your personal learning companion. I'm here to help you think through problems — but I won't just give you the answer. We'll figure it out together! What are you working on today?</div>
+            <div class="msg-time">Today, 9:02 AM</div>
+          </div>
+        </div>
+        <div class="msg user">
+          <div class="msg-avatar">🧒🏾</div>
+          <div>
+            <div class="msg-bubble">I don't understand fractions. How do I add ¾ + ½?</div>
+            <div class="msg-time">Today, 9:04 AM</div>
+          </div>
+        </div>
+        <div class="msg sage">
+          <div class="msg-avatar">🤖</div>
+          <div>
+            <div class="msg-bubble">Great question, King! 🔥 Let's think about it like pizza. If you cut a pizza into 4 slices and eat 3, you have ¾. If you cut another pizza into 2 slices and eat 1, you have ½. The trick to adding fractions is making the slices the same size first. What do 4 and 2 have in common? Can you find a number they both divide into?</div>
+            <div class="msg-time">Today, 9:04 AM</div>
+          </div>
+        </div>
+        <div class="msg user">
+          <div class="msg-avatar">🧒🏾</div>
+          <div>
+            <div class="msg-bubble">Is it 4? Because 2 goes into 4?</div>
+            <div class="msg-time">Today, 9:05 AM</div>
+          </div>
+        </div>
+        <div class="msg sage">
+          <div class="msg-avatar">🤖</div>
+          <div>
+            <div class="msg-bubble">YES! That's exactly right! 🎉 So we want both fractions to have 4 as the bottom number (the denominator). ¾ already has 4. Now, how do you turn ½ into a fraction with 4 on the bottom? Think: what did we multiply 2 by to get 4... and then what happens to the top number?</div>
+            <div class="msg-time">Today, 9:05 AM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sage-prompts">
+        <div class="sage-prompt" onclick="sendPrompt(this)">I'm stuck on a word problem 🧩</div>
+        <div class="sage-prompt" onclick="sendPrompt(this)">Help me with reading comprehension 📖</div>
+        <div class="sage-prompt" onclick="sendPrompt(this)">What should I study next? 🎯</div>
+        <div class="sage-prompt" onclick="sendPrompt(this)">Tell me about today's kingdom 🏰</div>
+      </div>
+
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" placeholder="Ask Sage anything about your lessons..." onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <button class="chat-send" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div><!-- /sage -->
+
+</div><!-- /main -->
+
+<script>
+// ── NAVIGATION ───────────────────────────────────────────────
+function showPage(name, btn) {
+  // Hide all pages
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].style.display = 'none';
+    pages[i].classList.remove('active');
+  }
+  // Deactivate all buttons
+  var btns = document.querySelectorAll('.sb-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.remove('active');
+  }
+  // Show target page
+  var target = document.getElementById('page-' + name);
+  if (target) {
+    target.style.display = 'block';
+    target.classList.add('active');
+  }
+  // Activate button
+  if (btn) btn.classList.add('active');
+  // If kingdom page, render map
+  if (name === 'kingdom') {
+    setTimeout(function(){ renderMap(); }, 50);
+  }
+}
+
+// Init — show kingdom page by default
+window.addEventListener('DOMContentLoaded', function() {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].style.display = 'none';
+    pages[i].classList.remove('active');
+  }
+  var kingdom = document.getElementById('page-kingdom');
+  if (kingdom) { kingdom.style.display = 'block'; kingdom.classList.add('active'); }
+  var btns = document.querySelectorAll('.sb-btn');
+  for (var i = 0; i < btns.length; i++) {
+    if (btns[i].textContent.indexOf('Quest') > -1 || btns[i].textContent.indexOf('🗺') > -1) {
+      btns[i].classList.add('active');
+    } else {
+      btns[i].classList.remove('active');
+    }
+  }
+});
+
+// ── DATE ─────────────────────────────────────────────────────
+const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const now = new Date();
+document.getElementById('topbar-date').textContent =
+  days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(icon, title, sub) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-sub').textContent = sub;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── QUEST TOGGLE ──────────────────────────────────────────────
+let crowns = 142;
+function toggleQuest(id) {
+  const el = document.getElementById(id);
+  const wasDone = el.classList.contains('done');
+  el.classList.toggle('done');
+  if (!wasDone) {
+    const reward = parseInt(el.querySelector('.qi-reward').textContent) || 25;
+    crowns += reward;
+    document.querySelector('.crown-chip span').textContent = crowns + ' Crowns';
+    showToast('👑', 'Quest Complete!', '+' + reward + ' crowns earned, King!');
+    // bump XP
+    const fill = document.getElementById('xp-fill');
+    const cur = parseInt(fill.style.width) || 68;
+    fill.style.width = Math.min(100, cur + 5) + '%';
+  }
+}
+
+// ── FILTER PILLS ──────────────────────────────────────────────
+function setFilter(el) {
+  el.parentElement.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── MATH ANSWER CHECK ─────────────────────────────────────────
+let answered = false;
+function checkAnswer(el, correct) {
+  if (answered) return;
+  answered = true;
+  if (correct) {
+    el.classList.add('correct');
+    showToast('🎉', 'Correct, King!', '+30 crowns · Math Forge streak: 13!');
+    crowns += 30;
+    document.querySelector('.crown-chip span').textContent = crowns + ' Crowns';
+    setTimeout(() => { el.classList.remove('correct'); answered = false; }, 2000);
+  } else {
+    el.classList.add('wrong');
+    showToast('🤖', 'Not quite — Sage says:', 'Try converting to the same denominator first!');
+    setTimeout(() => { el.classList.remove('wrong'); answered = false; }, 1500);
+  }
+}
+
+// ── SAGE CHAT ─────────────────────────────────────────────────
+const sageResponses = [
+  "Great question, King! Let me help you think through that. What do you already know about this topic? Sometimes the answer is closer than you think! 💡",
+  "I love your curiosity! 👑 Here's a hint: try breaking the problem into smaller pieces. What's the first thing you need to figure out?",
+  "You're on the right track! Remember — every great king had to learn before he could lead. What part is confusing you most?",
+  "That's a smart question! Let's look at it this way — can you draw a picture or diagram to help you visualize it? Sometimes that unlocks everything! 🎨",
+  "King Marcus, you're thinking like a scholar! Here's what I want you to try first — read the question one more time and tell me: what is it actually asking for? 🧐"
+];
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, 'user');
+  input.value = '';
+  setTimeout(() => {
+    const r = sageResponses[Math.floor(Math.random() * sageResponses.length)];
+    addMessage(r, 'sage');
+  }, 900);
+}
+
+function sendPrompt(el) {
+  const text = el.textContent.trim();
+  addMessage(text, 'user');
+  setTimeout(() => {
+    const r = sageResponses[Math.floor(Math.random() * sageResponses.length)];
+    addMessage(r, 'sage');
+  }, 900);
+}
+
+function addMessage(text, who) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + who;
+  const now = new Date();
+  const t = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0') + ' ' + (now.getHours() >= 12 ? 'PM' : 'AM');
+  div.innerHTML = `
+    <div class="msg-avatar">${who === 'sage' ? '🤖' : '🧒🏾'}</div>
+    <div>
+      <div class="msg-bubble">${text}</div>
+      <div class="msg-time">Today, ${t}</div>
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ── MAP STAR BACKGROUND ───────────────────────────────────────
+const mapStars = document.querySelector('.map-stars');
+if (mapStars) {
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.style.cssText = `
+      position:absolute;
+      width:${Math.random()*2+1}px;height:${Math.random()*2+1}px;
+      background:rgba(255,255,255,${Math.random()*.5+.1});
+      border-radius:50%;
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      animation:twinkle ${Math.random()*3+2}s ease-in-out infinite;
+      animation-delay:${Math.random()*3}s;`;
+    mapStars.appendChild(s);
+  }
+}
+
+// inject twinkle keyframe
+const style = document.createElement('style');
+style.textContent = '@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+@keyframes unlockBounce{0%{transform:scale(0) rotate(-15deg);}60%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1) rotate(0);}}';
+document.head.appendChild(style);
+
+// ── XP FILL ANIMATE ON LOAD ───────────────────────────────────
+setTimeout(() => { document.getElementById('xp-fill').style.width = '68%'; }, 300);
+
+// ══════════════════════════════════════════════════════════════
+// KINGDOM QUEST ENGINE
+// ══════════════════════════════════════════════════════════════
+
+const WORLDS = [
+  {
+    id: 'egypt',
+    name: 'Egypt',
+    fullName: 'Kingdom of Egypt',
+    icon: '🏺',
+    gradient: 'linear-gradient(135deg,#2d4a1e,#3d6a28)',
+    xpReward: 150,
+    unlockMsg: 'You have mastered the secrets of ancient Egypt! The Kingdom of Nubia awaits, King!',
+    desc: 'Ancient Egypt was one of the greatest civilizations in human history, stretching along the Nile River for over 3,000 years. Complete all missions to earn your Pharaoh\'s Crown!',
+    missions: [
+      { id: 'e1', name: 'The Pharaoh\'s Secret',    type: 'Reading',  xp: 40, lessonFile: 'kingthinkers-mini-lesson.html' },
+      { id: 'e2', name: 'Hieroglyph Numbers',        type: 'Math',     xp: 35, lessonFile: 'lesson-e2-hieroglyph-numbers.html' },
+      { id: 'e3', name: 'The Nile\'s Gift',          type: 'Reading',  xp: 40, lessonFile: 'lesson-e3-the-niles-gift.html' },
+      { id: 'e4', name: 'Pyramid Fractions',         type: 'Math',     xp: 35, lessonFile: 'lesson-e4-pyramid-fractions.html' },
+    ]
+  },
+  {
+    id: 'nubia',
+    name: 'Nubia',
+    fullName: 'Kingdom of Nubia',
+    icon: '🦁',
+    gradient: 'linear-gradient(135deg,#4a2d1e,#6a3d28)',
+    xpReward: 160,
+    unlockMsg: 'The warriors of Nubia are proud of you! March onward to the Kingdom of Kush!',
+    desc: 'The Kingdom of Nubia, also known as Kush, sat south of Egypt and ruled its own empire for centuries. Nubian warriors were among the most feared in the ancient world.',
+    missions: [
+      { id: 'n1', name: 'Warriors of the South',    type: 'Reading',  xp: 40, lessonFile: 'lesson-n1-warriors-of-the-south.html' },
+      { id: 'n2', name: 'Trade Route Math',          type: 'Math',     xp: 35, lessonFile: 'lesson-n2-trade-route-math.html' },
+      { id: 'n3', name: 'The Black Pharaohs',        type: 'Reading',  xp: 40, lessonFile: 'lesson-n3-the-black-pharaohs.html' },
+      { id: 'n4', name: 'Archery Angles',            type: 'Math',     xp: 35, lessonFile: 'lesson-n4-archery-angles.html' },
+    ]
+  },
+  {
+    id: 'kush',
+    name: 'Kush',
+    fullName: 'Kingdom of Kush',
+    icon: '🏰',
+    gradient: 'linear-gradient(135deg,#1e2d4a,#283d6a)',
+    xpReward: 175,
+    unlockMsg: 'You\'ve conquered Kush! The golden kingdom of Mali awaits your wisdom!',
+    desc: 'The Kingdom of Kush controlled important trade routes and even conquered Egypt, ruling it for nearly a century. Their iron-working technology was legendary.',
+    missions: [
+      { id: 'k1', name: 'Iron Masters',              type: 'Reading',  xp: 45, lessonFile: null },
+      { id: 'k2', name: 'The Royal Market',          type: 'Math',     xp: 40, lessonFile: null },
+      { id: 'k3', name: 'Kush Conquers Egypt',       type: 'Reading',  xp: 45, lessonFile: null },
+      { id: 'k4', name: 'Fortress Geometry',         type: 'Math',     xp: 40, lessonFile: null },
+      { id: 'k5', name: 'Crown the King',            type: 'Reading',  xp: 50, lessonFile: null },
+    ]
+  },
+  {
+    id: 'mali',
+    name: 'Mali',
+    fullName: 'Empire of Mali',
+    icon: '🌙',
+    gradient: 'linear-gradient(135deg,#2d1e4a,#3d286a)',
+    xpReward: 190,
+    unlockMsg: 'Mansa Musa would be proud! The Songhai Empire calls to you!',
+    desc: 'The Mali Empire was one of the largest and wealthiest in African history. Its ruler Mansa Musa was the richest person who ever lived — and he was Black.',
+    missions: [
+      { id: 'm1', name: 'Mansa Musa\'s Gold',       type: 'Reading',  xp: 48, lessonFile: null },
+      { id: 'm2', name: 'The Golden Trade',          type: 'Math',     xp: 44, lessonFile: null },
+      { id: 'm3', name: 'Sundiata Rises',            type: 'Reading',  xp: 48, lessonFile: null },
+      { id: 'm4', name: 'Camel Caravan Math',        type: 'Math',     xp: 44, lessonFile: null },
+    ]
+  },
+  {
+    id: 'songhai',
+    name: 'Songhai',
+    fullName: 'Songhai Empire',
+    icon: '⛵',
+    gradient: 'linear-gradient(135deg,#1e4a2d,#286a3d)',
+    xpReward: 200,
+    unlockMsg: 'The scholars of Songhai honor your learning! Journey to Timbuktu!',
+    desc: 'The Songhai Empire was the largest empire in African history. It stretched across West Africa and was home to some of the most important scholars and universities in the world.',
+    missions: [
+      { id: 's1', name: 'River Kings',               type: 'Reading',  xp: 50, lessonFile: null },
+      { id: 's2', name: 'Empire Division',           type: 'Math',     xp: 46, lessonFile: null },
+      { id: 's3', name: 'Askia the Great',           type: 'Reading',  xp: 50, lessonFile: null },
+      { id: 's4', name: 'West African Trade Routes', type: 'Math',     xp: 46, lessonFile: null },
+    ]
+  },
+  {
+    id: 'timbuktu',
+    name: 'Timbuktu',
+    fullName: 'City of Timbuktu',
+    icon: '📚',
+    gradient: 'linear-gradient(135deg,#4a3d1e,#6a5528)',
+    xpReward: 220,
+    unlockMsg: 'A true scholar of Timbuktu! The ancient Kingdom of Axum awaits!',
+    desc: 'Timbuktu was the intellectual capital of medieval Africa — home to the Sankore University, where over 25,000 students studied mathematics, astronomy, and law.',
+    missions: [
+      { id: 't1', name: 'The Great Library',         type: 'Reading',  xp: 55, lessonFile: null },
+      { id: 't2', name: 'Scholar\'s Math',           type: 'Math',     xp: 50, lessonFile: null },
+      { id: 't3', name: 'Manuscripts of the Ages',   type: 'Reading',  xp: 55, lessonFile: null },
+      { id: 't4', name: 'Astronomy Numbers',         type: 'Math',     xp: 50, lessonFile: null },
+    ]
+  },
+  {
+    id: 'axum',
+    name: 'Axum',
+    fullName: 'Kingdom of Axum',
+    icon: '🏛️',
+    gradient: 'linear-gradient(135deg,#4a1e2d,#6a283d)',
+    xpReward: 240,
+    unlockMsg: 'Axum\'s power lives in you! One final kingdom remains — the Diaspora!',
+    desc: 'The Kingdom of Axum was a major trading empire in East Africa, controlling the Red Sea trade routes. It was one of the world\'s first Christian kingdoms.',
+    missions: [
+      { id: 'ax1', name: 'The Obelisk Builders',    type: 'Reading',  xp: 58, lessonFile: null },
+      { id: 'ax2', name: 'Red Sea Trade Math',       type: 'Math',     xp: 54, lessonFile: null },
+      { id: 'ax3', name: 'Kingdom of Faith',         type: 'Reading',  xp: 58, lessonFile: null },
+      { id: 'ax4', name: 'Stone Tower Geometry',     type: 'Math',     xp: 54, lessonFile: null },
+    ]
+  },
+  {
+    id: 'diaspora',
+    name: 'Diaspora',
+    fullName: 'The African Diaspora',
+    icon: '🌟',
+    gradient: 'linear-gradient(135deg,#1a1a40,#2d2d60)',
+    xpReward: 300,
+    unlockMsg: 'You have completed the full journey, King! You are a true Kingdom Scholar!',
+    desc: 'From the Harlem Renaissance to the Civil Rights Movement to today — Black excellence never stopped. This is your story, your legacy, and your future.',
+    missions: [
+      { id: 'd1', name: 'The Harlem Renaissance',   type: 'Reading',  xp: 65, lessonFile: null },
+      { id: 'd2', name: 'Civil Rights Math',         type: 'Math',     xp: 60, lessonFile: null },
+      { id: 'd3', name: 'Black Scientists Rise',     type: 'Reading',  xp: 65, lessonFile: null },
+      { id: 'd4', name: 'Your Kingdom Today',        type: 'Reading',  xp: 70, lessonFile: null },
+    ]
+  }
+];
+
+// ── STUDENT SCOPING ───────────────────────────────────────────
+// All progress is stored per-student using their King Code.
+// Falls back to a shared key if no student is logged in (demo mode).
+function getActiveCode() {
+  return localStorage.getItem('kt_active_code') || 'demo';
+}
+
+function getScopedKey(base) {
+  return base + '_' + getActiveCode();
+}
+
+function getActiveStudent() {
+  const code = getActiveCode();
+  if (code === 'demo') return null;
+  try { return JSON.parse(localStorage.getItem('kt_student_' + code) || 'null'); } catch(e){ return null; }
+}
+
+function updateStudentStats(xpDelta, crownDelta) {
+  const code = getActiveCode();
+  if (code === 'demo') return;
+  try {
+    const s = JSON.parse(localStorage.getItem('kt_student_' + code) || 'null');
+    if (!s) return;
+    s.xp     = (s.xp     || 0) + xpDelta;
+    s.crowns = (s.crowns || 0) + crownDelta;
+    s.quests = (s.quests || 0) + 1;
+    s.lastActive = Date.now();
+    localStorage.setItem('kt_student_' + code, JSON.stringify(s));
+  } catch(e) {}
+}
+
+// ── PROGRESS STORAGE ──────────────────────────────────────────
+function getProgress() {
+  try {
+    const raw = localStorage.getItem(getScopedKey('kt_quest_progress'));
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+
+function saveProgress(progress) {
+  localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(progress));
+}
+
+function isMissionDone(missionId) {
+  return !!getProgress()[missionId];
+}
+
+function completeMission(missionId) {
+  const p = getProgress();
+  p[missionId] = { completedAt: Date.now() };
+  saveProgress(p);
+}
+
+function worldStatus(world) {
+  const done = world.missions.filter(m => isMissionDone(m.id)).length;
+  const total = world.missions.length;
+  if (done === total) return 'done';
+
+  // World is unlocked if all missions of the previous world are complete
+  const idx = WORLDS.findIndex(w => w.id === world.id);
+  if (idx === 0 || idx === 1) return 'current'; // Egypt + Nubia unlocked for pilot
+  const prev = WORLDS[idx - 1];
+  const prevDone = prev.missions.every(m => isMissionDone(m.id));
+  if (prevDone) return 'current';
+  return 'locked';
+}
+
+function firstIncompleteWorld() {
+  for (const w of WORLDS) {
+    const status = worldStatus(w);
+    if (status === 'current') return w;
+  }
+  return WORLDS[WORLDS.length - 1];
+}
+
+// ── MAP RENDERER ──────────────────────────────────────────────
+let selectedWorldId = null;
+
+function renderMap() {
+  const path = document.getElementById('worlds-path');
+  path.innerHTML = '';
+
+  // Progress label
+  const doneWorlds = WORLDS.filter(w => worldStatus(w) === 'done').length;
+  document.getElementById('map-progress-label').textContent =
+    `My Progress: World ${doneWorlds} of ${WORLDS.length}`;
+
+  WORLDS.forEach((world, i) => {
+    const status = worldStatus(world);
+    const doneMissions = world.missions.filter(m => isMissionDone(m.id)).length;
+
+    // Connector before node (except first)
+    if (i > 0) {
+      const prev = WORLDS[i - 1];
+      const prevStatus = worldStatus(prev);
+      const conn = document.createElement('div');
+      conn.className = 'world-connector' + (prevStatus === 'done' ? ' done' : '');
+      path.appendChild(conn);
+    }
+
+    // Node
+    const node = document.createElement('div');
+    node.className = `world-node ${status}`;
+    node.dataset.worldId = world.id;
+
+    let badge = '';
+    if (status === 'done')    badge = `<div class="world-badge">✓</div>`;
+    if (status === 'current') badge = `<div class="world-badge">⚔️</div>`;
+
+    let progressRing = '';
+    if (status === 'current' && doneMissions > 0) {
+      const pct = Math.round((doneMissions / world.missions.length) * 100);
+      progressRing = `<div style="
+        position:absolute;inset:-4px;border-radius:50%;
+        background:conic-gradient(var(--gold) ${pct}%, transparent ${pct}%);
+        opacity:0.4;z-index:0;
+      "></div>`;
+    }
+
+    node.innerHTML = `
+      <div class="world-bubble" style="background:${world.gradient};position:relative;">
+        ${progressRing}
+        <span style="position:relative;z-index:1;">${status === 'locked' ? '🔒' : world.icon}</span>
+        ${badge}
+      </div>
+      <span class="world-name">${world.name}</span>
+      ${status === 'current' ? `<span style="font-size:9px;color:var(--gold);font-weight:800;margin-top:2px;">${doneMissions}/${world.missions.length}</span>` : ''}
+    `;
+
+    if (status !== 'locked') {
+      node.style.cursor = 'pointer';
+      node.addEventListener('click', () => selectWorld(world.id));
+      node.addEventListener('touchend', (e) => { e.preventDefault(); selectWorld(world.id); });
+    }
+
+    path.appendChild(node);
+  });
+
+  // Auto-select current world
+  const current = firstIncompleteWorld();
+  if (current) selectWorld(current.id);
+}
+
+// ── WORLD DETAIL ──────────────────────────────────────────────
+function selectWorld(worldId) {
+  selectedWorldId = worldId;
+  const world = WORLDS.find(w => w.id === worldId);
+  const status = worldStatus(world);
+
+  // Highlight selected node
+  document.querySelectorAll('.world-node').forEach(n => n.style.outline = 'none');
+  const node = document.querySelector(`[data-world-id="${worldId}"]`);
+  if (node) node.style.outline = '2px solid rgba(245,168,0,0.5)';
+
+  // Populate detail panel
+  document.getElementById('wd-icon').textContent = world.icon;
+  const doneMissions = world.missions.filter(m => isMissionDone(m.id)).length;
+  const remaining = world.missions.length - doneMissions;
+
+  document.getElementById('wd-title').textContent =
+    status === 'done'
+      ? `${world.fullName} — Complete! ✓`
+      : `${world.fullName} — ${remaining} Mission${remaining !== 1 ? 's' : ''} Left`;
+
+  document.getElementById('wd-desc').textContent = world.desc;
+
+  // Mission list
+  const missionsEl = document.getElementById('wd-missions');
+  missionsEl.innerHTML = world.missions.map(m => {
+    const done = isMissionDone(m.id);
+    // Pilot mode: all missions with lessonFiles are playable regardless of order
+    const isPlayable = !done && !!m.lessonFile;
+    const isNext = !done && world.missions.slice(0, world.missions.indexOf(m)).every(prev => isMissionDone(prev.id));
+    const locked = !done && !isPlayable && !isNext;
+    const cls = done ? 'done' : (isPlayable || isNext) ? 'active' : 'locked';
+    const icon = done ? '✓' : (isPlayable || isNext) ? '⚔️' : '🔒';
+    const tag = `<span style="font-size:9px;font-weight:800;padding:2px 6px;border-radius:100px;margin-left:6px;background:${m.type==='Reading'?'rgba(56,189,248,0.15)':'rgba(0,196,140,0.15)'};color:${m.type==='Reading'?'var(--sky)':'var(--green)'};">${m.type}</span>`;
+    const playBtn = (isPlayable || isNext) 
+      ? `<button onclick="launchMission('${m.id}')" style="margin-left:auto;background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:8px;padding:5px 12px;font-family:var(--f-b);font-size:11px;font-weight:900;color:#000;cursor:pointer;white-space:nowrap;">▶ Play</button>`
+      : `<span style="margin-left:auto;font-size:10px;color:var(--gold);font-weight:800;">+${m.xp}XP</span>`;
+    return `<div class="wd-mission ${cls}" data-mission-id="${m.id}" style="${(isPlayable||isNext)?'cursor:pointer;':''}">${icon} &nbsp;${m.name}${tag} ${playBtn}</div>`;
+  }).join('');
+
+  // CTA button
+  const btn = document.getElementById('wd-btn');
+  const nextMission = world.missions.find(m => !isMissionDone(m.id));
+  if (status === 'done') {
+    btn.textContent = '✓ World Complete';
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'default';
+    btn.onclick = null;
+  } else if (nextMission) {
+    btn.textContent = `▶ ${doneMissions > 0 ? 'Continue' : 'Start'}: ${nextMission.name}`;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.onclick = () => launchMission(nextMission.id);
+  }
+
+  document.getElementById('world-detail').style.display = 'flex';
+}
+
+// ── MISSION LAUNCHER ──────────────────────────────────────────
+function launchCurrentMission() {
+  if (!selectedWorldId) return;
+  const world = WORLDS.find(w => w.id === selectedWorldId);
+  const next = world.missions.find(m => !isMissionDone(m.id));
+  if (next) launchMission(next.id);
+}
+
+function launchMission(missionId) {
+  // Find the mission
+  let mission = null, world = null;
+  for (const w of WORLDS) {
+    const m = w.missions.find(m => m.id === missionId);
+    if (m) { mission = m; world = w; break; }
+  }
+  if (!mission) return;
+
+  if (mission.lessonFile) {
+    // Navigate to lesson in same tab (window.open blocked on iPad Safari)
+    localStorage.setItem('kt_active_mission', JSON.stringify({ missionId, worldId: world.id, xp: mission.xp }));
+    window.location.href = '/kingthinkers/' + mission.lessonFile;
+  } else {
+    // No lesson built yet — simulate completion for demo/pilot purposes
+    showToast('⚔️', 'Quest Started!', mission.name + ' — ' + mission.xp + ' XP available!');
+    setTimeout(() => simulateComplete(missionId, world, mission), 1200);
+  }
+}
+
+// Poll localStorage for lesson completion signal
+let pollInterval = null;
+function pollForCompletion() {
+  clearInterval(pollInterval);
+  pollInterval = setInterval(() => {
+    const signal = localStorage.getItem('kt_mission_completed');
+    if (signal) {
+      localStorage.removeItem('kt_mission_completed');
+      clearInterval(pollInterval);
+      const data = JSON.parse(signal);
+      const w = WORLDS.find(w => w.id === data.worldId);
+      const m = w && w.missions.find(m => m.id === data.missionId);
+      if (m && w) handleMissionComplete(data.missionId, w, m);
+    }
+  }, 800);
+}
+
+function simulateComplete(missionId, world, mission) {
+  handleMissionComplete(missionId, world, mission);
+}
+
+function handleMissionComplete(missionId, world, mission) {
+  completeMission(missionId);
+
+  // Award XP + update student record
+  const xpFill = document.getElementById('xp-fill');
+  const cur = parseFloat(xpFill.style.width) || 68;
+  xpFill.style.width = Math.min(100, cur + 4) + '%';
+
+  crowns += mission.xp;
+  document.querySelector('.crown-chip span').textContent = crowns + ' Crowns';
+  updateStudentStats(mission.xp * 10, mission.xp);
+
+  // Check if world is now complete
+  const allDone = world.missions.every(m => isMissionDone(m.id));
+  if (allDone) {
+    setTimeout(() => showUnlockCelebration(world), 600);
+  } else {
+    showToast('👑', 'Mission Complete!', `+${mission.xp} XP earned! Keep going, King!`);
+    setTimeout(() => renderMap(), 400);
+  }
+}
+
+// ── UNLOCK CELEBRATION ────────────────────────────────────────
+function showUnlockCelebration(world) {
+  const overlay = document.getElementById('unlock-overlay');
+  document.getElementById('unlock-icon').textContent = world.icon;
+  document.getElementById('unlock-title').textContent = `${world.fullName} — Conquered! 👑`;
+  document.getElementById('unlock-sub').textContent = world.unlockMsg;
+  document.getElementById('unlock-xp').textContent = `+${world.xpReward} XP`;
+  overlay.style.display = 'flex';
+  launchUnlockFireworks();
+}
+
+function closeUnlock() {
+  document.getElementById('unlock-overlay').style.display = 'none';
+  renderMap();
+}
+
+function launchUnlockFireworks() {
+  const emojis = ['👑','⭐','✨','💫','🌟','🎉','🏆','🌍'];
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const fw = document.createElement('div');
+      fw.style.cssText = `
+        position:fixed; font-size:${16+Math.random()*14}px;
+        pointer-events:none; z-index:600;
+        left:${10+Math.random()*80}%;
+        top:${10+Math.random()*80}%;
+        animation: fw ${0.7+Math.random()*0.8}s ease-out forwards;
+        --tx:${(Math.random()-0.5)*220}px;
+        --ty:${-90-Math.random()*130}px;
+      `;
+      fw.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      document.body.appendChild(fw);
+      setTimeout(() => fw.remove(), 1600);
+    }, i * 80);
+  }
+}
+
+// ── BOOT MAP ──────────────────────────────────────────────────
+// Check for incoming mission completion from lesson page
+(function checkIncomingCompletion() {
+  const signal = localStorage.getItem('kt_mission_completed');
+  if (signal) {
+    localStorage.removeItem('kt_mission_completed');
+    const data = JSON.parse(signal);
+    const w = WORLDS.find(w => w.id === data.worldId);
+    const m = w && w.missions.find(m => m.id === data.missionId);
+    if (m && w) {
+      completeMission(data.missionId);
+      crowns += m.xp;
+    }
+  }
+})();
+
+// renderMap is called inside showPage already — no override needed
+
+// ── STUDENT PERSONALISATION ───────────────────────────────────
+(function personalise() {
+  const student = getActiveStudent();
+  if (!student) return;
+
+  // Swap "King Marcus" wherever it appears in static text
+  document.querySelectorAll('.wb-title, .wb-sub, #chat-messages .msg-bubble').forEach(el => {
+    el.innerHTML = el.innerHTML.replace(/King Marcus/g, `King ${student.name}`).replace(/Marcus/g, student.name);
+  });
+
+  // Update topbar greeting if present
+  const greetEl = document.querySelector('.wb-title');
+  if (greetEl) greetEl.innerHTML = `Ready to conquer<br><em>today's quests, King ${student.name}?</em>`;
+
+  // Update avatar sidebar
+  const avatarEl = document.querySelector('.sb-avatar');
+  if (avatarEl) avatarEl.setAttribute('title', `King ${student.name}`);
+})();
+
+// Initial render
+renderMap();
+
+</body>
+</html>
