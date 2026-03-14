@@ -144,12 +144,12 @@ html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--
 
   <!-- TAB BAR -->
   <div id="tab-bar">
-    <button class="tab-btn active" onclick="showPage('roster',this)">📋 Roster</button>
-    <button class="tab-btn" onclick="showPage('progress',this)">📊 Progress</button>
-    <button class="tab-btn" onclick="showPage('codes',this)">🔑 King Codes</button>
-    <button class="tab-btn" onclick="showPage('add',this)">➕ Add Student</button>
-    <button class="tab-btn" onclick="showPage('bulk',this)">📥 Bulk Add</button>
-    <button class="tab-btn" onclick="showPage('settings',this)">⚙️ Settings</button>
+    <button class="tab-btn active" onclick="showPage('roster',this)" ontouchend="showPage('roster',this);event.preventDefault();">📋 Roster</button>
+    <button class="tab-btn" onclick="showPage('progress',this)" ontouchend="showPage('progress',this);event.preventDefault();">📊 Progress</button>
+    <button class="tab-btn" onclick="showPage('codes',this)" ontouchend="showPage('codes',this);event.preventDefault();">🔑 King Codes</button>
+    <button class="tab-btn" onclick="showPage('add',this)" ontouchend="showPage('add',this);event.preventDefault();">➕ Add Student</button>
+    <button class="tab-btn" onclick="showPage('bulk',this)" ontouchend="showPage('bulk',this);event.preventDefault();">📥 Bulk Add</button>
+    <button class="tab-btn" onclick="showPage('settings',this)" ontouchend="showPage('settings',this);event.preventDefault();">⚙️ Settings</button>
   </div>
 
   <!-- CONTENT -->
