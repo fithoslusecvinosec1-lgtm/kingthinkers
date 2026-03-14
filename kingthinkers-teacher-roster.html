@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KingThinkers — Teacher Roster</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0B0B1E; --navy2:#13132A; --card:#1C1C3A;
+    --gold:#F5A800; --amber:#FF6B1A; --green:#00C48C;
+    --sky:#38BDF8; --lilac:#A78BFA; --rose:#FB7185;
+    --white:#FFFFFF; --muted:#8080A8; --border:rgba(255,255,255,0.08);
+    --f-d:'Baloo 2',cursive; --f-b:'Nunito',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--navy);font-family:var(--f-b);min-height:100vh;color:var(--white);}
+
+  /* ── TOPBAR ── */
+  .topbar{
+    background:var(--navy2); border-bottom:1px solid var(--border);
+    padding:14px 28px; display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+  }
+  .topbar-left{display:flex;align-items:center;gap:12px;}
+  .logo{font-family:var(--f-d);font-size:20px;font-weight:900;color:var(--gold);}
+  .teacher-badge{
+    background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);
+    border-radius:100px;padding:4px 12px;
+    font-size:11px;font-weight:900;color:var(--sky);letter-spacing:.06em;
+  }
+  .topbar-right{display:flex;gap:10px;align-items:center;}
+  .btn-sm{
+    padding:8px 16px;border-radius:10px;border:1px solid var(--border);
+    font-family:var(--f-b);font-size:13px;font-weight:700;
+    cursor:pointer;transition:all .2s;color:var(--muted);background:transparent;
+  }
+  .btn-sm:hover{border-color:rgba(255,255,255,.2);color:var(--white);}
+  .btn-sm.gold{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+  .btn-sm.gold:hover{background:var(--amber);border-color:var(--amber);}
+
+  /* ── MAIN LAYOUT ── */
+  .main{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 57px);}
+  @media(max-width:720px){.main{grid-template-columns:1fr;}}
+
+  /* ── SIDEBAR ── */
+  .sidebar{
+    background:var(--navy2);border-right:1px solid var(--border);
+    padding:24px 16px;display:flex;flex-direction:column;gap:8px;
+  }
+  .sidebar-label{
+    font-size:10px;font-weight:900;color:var(--muted);
+    letter-spacing:.12em;text-transform:uppercase;
+    padding:0 8px;margin-bottom:4px;margin-top:8px;
+  }
+  .nav-item{
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  cursor:pointer;
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;border-radius:12px;
+    font-size:14px;font-weight:700;color:var(--muted);
+    cursor:pointer;transition:all .2s;border:none;background:transparent;
+    text-align:left;width:100%;
+  }
+  .nav-item:hover{background:rgba(255,255,255,.04);color:var(--white);}
+  .nav-item.active{background:rgba(245,168,0,.1);color:var(--gold);}
+  .nav-count{
+    margin-left:auto;background:rgba(245,168,0,.15);
+    border-radius:100px;padding:2px 8px;
+    font-size:11px;font-weight:900;color:var(--gold);
+  }
+
+  /* ── CONTENT ── */
+  .content{padding:28px;overflow-y:auto;}
+  .page{display:none !important;}
+  .page.active{display:block !important;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ── PAGE HEADER ── */
+  .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+  .page-title{font-family:var(--f-d);font-size:24px;font-weight:900;color:var(--white);}
+  .page-sub{font-size:13px;color:var(--muted);margin-top:2px;}
+  .header-actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+  /* ── STAT CARDS ── */
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px;}
+  .stat-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:16px;display:flex;flex-direction:column;gap:4px;
+  }
+  .stat-icon{font-size:20px;margin-bottom:4px;}
+  .stat-val{font-family:var(--f-d);font-size:26px;font-weight:900;color:var(--gold);}
+  .stat-lbl{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+
+  /* ── ADD STUDENT FORM ── */
+  .add-form{
+    background:var(--card);border:1px solid rgba(245,168,0,.15);
+    border-radius:20px;padding:20px;margin-bottom:24px;
+    display:none;
+  }
+  .add-form.show{display:block;animation:fadeIn .3s ease;}
+  .form-title{font-family:var(--f-d);font-size:17px;font-weight:900;margin-bottom:16px;color:var(--gold);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;}
+  @media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-label{font-size:11px;font-weight:900;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+  .form-input{
+    background:var(--navy2);border:2px solid var(--border);border-radius:10px;
+    padding:10px 14px;font-family:var(--f-b);font-size:15px;font-weight:600;
+    color:var(--white);outline:none;transition:border-color .2s;
+  }
+  .form-input:focus{border-color:var(--gold);}
+  .form-select{
+    background:var(--navy2);border:2px solid var(--border);border-radius:10px;
+    padding:10px 14px;font-family:var(--f-b);font-size:15px;font-weight:600;
+    color:var(--white);outline:none;cursor:pointer;
+    -webkit-appearance:none;
+  }
+  .form-select:focus{border-color:var(--gold);}
+  .btn-add{
+    padding:11px 20px;background:var(--gold);border:none;border-radius:10px;
+    font-family:var(--f-d);font-size:15px;font-weight:900;color:var(--navy);
+    cursor:pointer;transition:all .2s;white-space:nowrap;
+  }
+  .btn-add:hover{background:var(--amber);}
+
+  /* ── BULK ADD ── */
+  .bulk-area{
+    background:var(--navy2);border:2px dashed rgba(245,168,0,.2);border-radius:12px;
+    padding:14px;font-family:var(--f-b);font-size:14px;color:var(--white);
+    outline:none;width:100%;resize:vertical;min-height:100px;margin:12px 0 8px;
+  }
+  .bulk-hint{font-size:11px;color:var(--muted);}
+
+  /* ── ROSTER TABLE ── */
+  .roster-header{
+    display:grid;grid-template-columns:48px 1fr 60px 120px 80px 80px 80px 100px;
+    gap:8px;padding:8px 12px;
+    font-size:10px;font-weight:900;color:var(--muted);
+    letter-spacing:.08em;text-transform:uppercase;
+    border-bottom:1px solid var(--border);margin-bottom:4px;
+  }
+  .student-row{
+    display:grid;grid-template-columns:48px 1fr 60px 120px 80px 80px 80px 100px;
+    gap:8px;padding:10px 12px;
+    background:var(--card);border:1px solid var(--border);
+    border-radius:12px;margin-bottom:6px;
+    align-items:center;transition:border-color .2s;
+    animation:fadeIn .3s ease;
+  }
+  .student-row:hover{border-color:rgba(245,168,0,.2);}
+  @media(max-width:900px){
+    .roster-header,.student-row{grid-template-columns:1fr 60px 80px 100px;}
+    .hide-mobile{display:none;}
+  }
+
+  .code-badge{
+    background:rgba(245,168,0,.12);border:1px solid rgba(245,168,0,.25);
+    border-radius:8px;padding:4px 8px;
+    font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);
+    text-align:center;letter-spacing:.06em;cursor:pointer;
+    transition:all .2s;position:relative;
+  }
+  .code-badge:hover{background:rgba(245,168,0,.2);}
+  .code-badge .copy-tip{
+    position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+    background:var(--gold);color:var(--navy);border-radius:6px;padding:2px 8px;
+    font-size:10px;font-weight:900;white-space:nowrap;
+    opacity:0;pointer-events:none;transition:opacity .2s;
+  }
+  .code-badge:hover .copy-tip{opacity:1;}
+
+  .student-name{font-weight:800;font-size:14px;color:var(--white);}
+  .student-grade{
+    background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);
+    border-radius:8px;padding:3px 8px;
+    font-size:12px;font-weight:900;color:var(--sky);text-align:center;
+  }
+  .student-class{font-size:12px;color:var(--muted);font-weight:600;}
+  .xp-val{font-family:var(--f-d);font-size:14px;font-weight:900;color:var(--gold);}
+  .world-tag{
+    font-size:11px;font-weight:800;color:var(--muted);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  /* Status dot */
+  .status-dot{
+    width:8px;height:8px;border-radius:50%;
+    display:inline-block;margin-right:5px;
+  }
+  .status-active .status-dot{background:var(--green);}
+  .status-new .status-dot{background:var(--gold);}
+  .status-inactive .status-dot{background:var(--muted);}
+
+  .last-active{font-size:11px;color:var(--muted);}
+
+  /* Row actions */
+  .row-actions{display:flex;gap:6px;justify-content:flex-end;}
+  .row-btn{
+    width:28px;height:28px;border-radius:8px;border:1px solid var(--border);
+    background:transparent;font-size:13px;cursor:pointer;
+    transition:all .2s;display:flex;align-items:center;justify-content:center;
+  }
+  .row-btn:hover{border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.08);}
+  .row-btn.print:hover{border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.08);}
+
+  /* ── EMPTY STATE ── */
+  .empty-state{
+    text-align:center;padding:60px 20px;
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+  }
+  .empty-icon{font-size:48px;opacity:.4;}
+  .empty-title{font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--muted);}
+  .empty-sub{font-size:13px;color:var(--muted);max-width:300px;}
+
+  /* ── PRINT CARD MODAL ── */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:300;
+    background:rgba(11,11,30,.85);backdrop-filter:blur(6px);
+    display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-overlay.show{display:flex;animation:fadeIn .25s ease;}
+  .modal{
+    background:var(--navy2);border:1px solid var(--border);
+    border-radius:24px;padding:32px;width:min(500px,100%);
+    display:flex;flex-direction:column;gap:20px;
+  }
+  .modal-title{font-family:var(--f-d);font-size:20px;font-weight:900;color:var(--gold);}
+
+  /* King Card (printable) */
+  .king-card{
+    background:linear-gradient(135deg,#0D0D1C,#1C1C3A);
+    border:2px solid rgba(245,168,0,.4);border-radius:20px;
+    padding:24px;display:flex;flex-direction:column;align-items:center;gap:10px;
+    font-family:var(--f-d);
+  }
+  .kc-crown{font-size:36px;}
+  .kc-brand{font-size:13px;font-weight:900;color:var(--gold);letter-spacing:.1em;}
+  .kc-name{font-size:22px;font-weight:900;color:var(--white);}
+  .kc-code-label{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+  .kc-code{
+    font-size:44px;font-weight:900;color:var(--gold);
+    letter-spacing:.2em;line-height:1;
+    text-shadow:0 0 20px rgba(245,168,0,.5);
+  }
+  .kc-grade{
+    background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);
+    border-radius:100px;padding:4px 14px;
+    font-size:12px;font-weight:900;color:var(--sky);
+  }
+  .kc-tagline{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px;}
+  .kc-divider{width:60%;height:1px;background:var(--border);}
+
+  .modal-actions{display:flex;gap:10px;}
+  .btn-modal{
+    flex:1;padding:12px;border-radius:12px;border:1px solid var(--border);
+    font-family:var(--f-b);font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;
+    background:transparent;color:var(--muted);
+  }
+  .btn-modal:hover{border-color:rgba(255,255,255,.2);color:var(--white);}
+  .btn-modal.primary{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+  .btn-modal.primary:hover{background:var(--amber);border-color:var(--amber);}
+
+  /* ── PRINT ALL CARDS ── */
+  @media print {
+    body{background:white;color:black;}
+    .topbar,.sidebar,.header-actions,.row-actions,.modal-overlay{display:none!important;}
+    .main{display:block;}
+    .content{padding:0;}
+    .print-cards-grid{
+      display:grid!important;
+      grid-template-columns:repeat(2,1fr);gap:16px;padding:16px;
+    }
+    .king-card{
+      background:white!important;border:2px solid #F5A800!important;
+      break-inside:avoid;
+    }
+    .kc-name,.kc-code{color:black!important;}
+    .kc-brand,.kc-grade{color:#F5A800!important;}
+    .kc-code-label,.kc-tagline{color:#888!important;}
+  }
+  .print-cards-grid{display:none;}
+
+  /* ── TOAST ── */
+  .toast{
+    position:fixed;bottom:24px;right:24px;z-index:400;
+    background:var(--card);border:1px solid rgba(245,168,0,.2);
+    border-radius:14px;padding:12px 18px;
+    display:flex;align-items:center;gap:10px;
+    transform:translateY(80px);opacity:0;
+    transition:all .35s cubic-bezier(.34,1.56,.64,1);
+    box-shadow:0 8px 32px rgba(0,0,0,.4);
+    pointer-events:none;max-width:320px;
+  }
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast-icon{font-size:20px;}
+  .toast-text{font-size:13px;font-weight:700;color:var(--white);}
+</style>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KingThinkers">
+  <meta name="theme-color" content="#F5A800">
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">👑 KingThinkers</div>
+    <div class="teacher-badge">Teacher Roster</div>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-sm print" onclick="printAllCards()">🖨️ Print All Cards</button>
+    <button class="btn-sm" onclick="window.location.href='/kingthinkers/kingthinkers-dashboard.html'">← Dashboard</button>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-label">Views</div>
+    <button class="nav-item active" onclick="showPage('roster',this)">📋 Class Roster <span class="nav-count" id="count-roster">0</span></button>
+    <button class="nav-item" onclick="showPage('progress',this)">📊 Progress Overview</button>
+    <button class="nav-item" onclick="showPage('codes',this)">🔑 All King Codes</button>
+
+    <div class="sidebar-label">Tools</div>
+    <button class="nav-item" onclick="toggleAddForm()">➕ Add Student</button>
+    <button class="nav-item" onclick="toggleBulkForm()">📥 Bulk Add</button>
+    <button class="nav-item" onclick="showPage('settings',this)">⚙️ Settings</button>
+
+    <div class="sidebar-label">Pilot</div>
+    <button class="nav-item" onclick="loadSampleData()">🧪 Load Sample Class</button>
+    <button class="nav-item" onclick="clearAllData()">🗑️ Reset All Data</button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- Add Form -->
+    <div class="add-form" id="add-form">
+      <div class="form-title">➕ Add a Student</div>
+      <div class="form-row">
+        <div class="form-group">
+          <div class="form-label">Student Name</div>
+          <input class="form-input" id="f-name" type="text" placeholder="First name" maxlength="20">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Grade</div>
+          <select class="form-select" id="f-grade">
+            <option value="K">Kindergarten</option>
+            <option value="1">1st Grade</option>
+            <option value="2">2nd Grade</option>
+            <option value="3" selected>3rd Grade</option>
+            <option value="4">4th Grade</option>
+            <option value="5">5th Grade</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addStudent()">Add King</button>
+      </div>
+    </div>
+
+    <!-- Bulk Add Form -->
+    <div class="add-form" id="bulk-form">
+      <div class="form-title">📥 Bulk Add Students</div>
+      <div class="form-label">Paste one name per line. Optionally add grade: Marcus, 3</div>
+      <textarea class="bulk-area" id="bulk-names" placeholder="Marcus&#10;Jaylen, 4&#10;Kofi, 2&#10;Amari&#10;Zion, 5"></textarea>
+      <div class="bulk-hint">No grade = defaults to 3rd. All students will be assigned to your class.</div>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <button class="btn-add" onclick="bulkAdd()">Add All Students</button>
+        <button class="btn-sm" onclick="toggleBulkForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- ── ROSTER PAGE ── -->
+    <div class="page active" id="page-roster">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Class Roster</div>
+          <div class="page-sub">Manage students and distribute King Codes</div>
+        </div>
+        <div class="header-actions">
+          <input class="form-input" id="search" type="text" placeholder="🔍 Search students…" style="width:200px;padding:8px 12px;font-size:13px;" oninput="renderRoster()">
+        </div>
+      </div>
+
+      <div class="stat-row" id="roster-stats"></div>
+
+      <div class="roster-header">
+        <div>Code</div>
+        <div>Name</div>
+        <div>Grade</div>
+        <div class="hide-mobile">Class</div>
+        <div class="hide-mobile">XP</div>
+        <div class="hide-mobile">World</div>
+        <div class="hide-mobile">Status</div>
+        <div></div>
+      </div>
+      <div id="roster-list"></div>
+    </div>
+
+    <!-- ── PROGRESS PAGE ── -->
+    <div class="page" id="page-progress" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Progress Overview</div>
+          <div class="page-sub">See how your class is performing across the Kingdom Quest</div>
+        </div>
+      </div>
+      <div id="progress-content"></div>
+    </div>
+
+    <!-- ── CODES PAGE ── -->
+    <div class="page" id="page-codes" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">All King Codes</div>
+          <div class="page-sub">Print or share these codes with your students</div>
+        </div>
+        <button class="btn-sm gold" onclick="printAllCards()">🖨️ Print All Cards</button>
+      </div>
+      <div id="codes-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;"></div>
+    </div>
+
+    <!-- ── SETTINGS PAGE ── -->
+    <div class="page" id="page-settings" style="display:none;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Settings</div>
+          <div class="page-sub">Configure your class for the pilot</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:480px;">
+        <div class="add-form show">
+          <div class="form-title">Class Information</div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">Teacher Name</div>
+            <input class="form-input" id="s-teacher" type="text" placeholder="e.g. Mr. Johnson" oninput="saveSetting('teacherName',this.value)">
+          </div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <div class="form-label">Class Code</div>
+            <input class="form-input" id="s-class" type="text" placeholder="e.g. MR-JOHNSON-3B" oninput="saveSetting('classCode',this.value)">
+          </div>
+          <div class="form-group">
+            <div class="form-label">School Name</div>
+            <input class="form-input" id="s-school" type="text" placeholder="e.g. MLK Elementary" oninput="saveSetting('schoolName',this.value)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div>
+
+<!-- Print Cards Grid (hidden, used for print) -->
+<div class="print-cards-grid" id="print-cards-grid"></div>
+
+<!-- Print Card Modal -->
+<div class="modal-overlay" id="card-modal">
+  <div class="modal">
+    <div class="modal-title">👑 King Card</div>
+    <div class="king-card" id="modal-card"></div>
+    <div class="modal-actions">
+      <button class="btn-modal" onclick="closeModal()">Close</button>
+      <button class="btn-modal primary" onclick="printCard()">🖨️ Print Card</button>
+    </div>
+  </div>
+</div>
+
+<!-- Progress Modal -->
+<div class="modal-overlay" id="progress-modal">
+  <div class="modal" style="max-width:480px;width:90%;max-height:80vh;overflow-y:auto;">
+    <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Check off missions this student has completed. Changes save instantly.</div>
+    <div id="pm-missions" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+    <div style="background:rgba(245,168,0,.08);border:1px solid rgba(245,168,0,.15);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;">
+      💡 <strong style="color:var(--gold);">Tip:</strong> Open this roster on each student's iPad to see their device progress automatically, or mark missions manually here.
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal primary" onclick="closeProgressModal()">Done ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toast-icon">✓</div>
+  <div class="toast-text" id="toast-text">Done!</div>
+</div>
+
+<script>
+// ── STORAGE ───────────────────────────────────────────────────
+function getRoster()  { try{return JSON.parse(localStorage.getItem('kt_roster')||'{}')}catch(e){return{}} }
+function saveRoster(r){ localStorage.setItem('kt_roster',JSON.stringify(r)); }
+function getStudentKey(code){ return 'kt_student_'+code; }
+function getStudent(code){ try{return JSON.parse(localStorage.getItem(getStudentKey(code))||'null')}catch(e){return null} }
+function saveStudent(code,data){ localStorage.setItem(getStudentKey(code),JSON.stringify(data)); }
+function getSettings(){ try{return JSON.parse(localStorage.getItem('kt_settings')||'{}')}catch(e){return{}} }
+function saveSettings(s){ localStorage.setItem('kt_settings',JSON.stringify(s)); }
+function saveSetting(key,val){ const s=getSettings(); s[key]=val; saveSettings(s); }
+
+function getQuestProgress(code){
+  try{return JSON.parse(localStorage.getItem('kt_quest_progress_'+code)||'{}')}catch(e){return{}}
+}
+
+// World names in order
+const WORLD_NAMES = ['Egypt','Nubia','Kush','Mali','Songhai','Timbuktu','Axum','Diaspora'];
+const WORLD_MISSIONS = [4,4,5,4,4,4,4,4]; // missions per world
+
+function getStudentWorld(code){
+  const progress = getQuestProgress(code);
+  const done = Object.keys(progress).length;
+  let total = 0;
+  for(let i=0;i<WORLD_NAMES.length;i++){
+    total += WORLD_MISSIONS[i];
+    if(done < total) return WORLD_NAMES[i];
+  }
+  return 'Complete! 🏆';
+}
+
+// ── CODE GENERATION ───────────────────────────────────────────
+function generateCode(){
+  const used = new Set(Object.keys(getRoster()));
+  let code;
+  do { code = String(Math.floor(1000+Math.random()*9000)); } while(used.has(code));
+  return code;
+}
+
+// ── ADD STUDENT ───────────────────────────────────────────────
+function addStudent(){
+  const name  = document.getElementById('f-name').value.trim();
+  const grade = document.getElementById('f-grade').value;
+  if(name.length < 2){ toast('⚠️','Enter a student name first!'); return; }
+
+  const settings = getSettings();
+  const classCode = settings.classCode || 'MY-CLASS';
+  const code = generateCode();
+  const student = { code, name, grade, classCode, xp:0, crowns:0, quests:0, profileComplete:false, createdAt:Date.now() };
+
+  saveStudent(code, student);
+  const roster = getRoster();
+  roster[code] = { name, grade, classCode };
+  saveRoster(roster);
+
+  document.getElementById('f-name').value = '';
+  document.getElementById('count-roster').textContent = Object.keys(getRoster()).length;
+  toast('👑', `King ${name} added! Code: ${code}`);
+  renderAll();
+}
+
+// ── BULK ADD ──────────────────────────────────────────────────
+function bulkAdd(){
+  const raw = document.getElementById('bulk-names').value.trim();
+  if(!raw){ toast('⚠️','Paste some names first!'); return; }
+
+  const settings = getSettings();
+  const classCode = settings.classCode || 'MY-CLASS';
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added = 0;
+
+  lines.forEach(line => {
+    const parts = line.split(',').map(p=>p.trim());
+    const name  = parts[0];
+    const grade = parts[1] || '3';
+    if(name.length < 1) return;
+
+    const code = generateCode();
+    const student = { code, name, grade, classCode, xp:0, crowns:0, quests:0, profileComplete:false, createdAt:Date.now() };
+    saveStudent(code, student);
+    const roster = getRoster();
+    roster[code] = { name, grade, classCode };
+    saveRoster(roster);
+    added++;
+  });
+
+  document.getElementById('bulk-names').value = '';
+  document.getElementById('bulk-form').classList.remove('show');
+  document.getElementById('count-roster').textContent = Object.keys(getRoster()).length;
+  toast('👑', `${added} kings added to your roster!`);
+  renderAll();
+}
+
+// ── REMOVE STUDENT ────────────────────────────────────────────
+function removeStudent(code){
+  if(!confirm('Remove this student? Their progress will be deleted.')) return;
+  const roster = getRoster();
+  delete roster[code];
+  saveRoster(roster);
+  localStorage.removeItem(getStudentKey(code));
+  localStorage.removeItem('kt_quest_progress_'+code);
+  toast('🗑️','Student removed.');
+  renderAll();
+}
+
+// ── RESET STUDENT PROGRESS ────────────────────────────────────
+function resetProgress(code){
+  const student = getStudent(code);
+  if(!student) return;
+  if(!confirm(`Reset all progress for ${student.name}? This cannot be undone.`)) return;
+  student.xp = 0; student.crowns = 0; student.quests = 0; student.profileComplete = false;
+  saveStudent(code, student);
+  localStorage.removeItem('kt_quest_progress_'+code);
+  toast('🔄', `${student.name}'s progress has been reset.`);
+  renderAll();
+}
+
+// ── RENDER ROSTER ─────────────────────────────────────────────
+function renderRoster(){
+  const roster   = getRoster();
+  const codes    = Object.keys(roster);
+  const search   = (document.getElementById('search')||{value:''}).value.toLowerCase();
+  const list     = document.getElementById('roster-list');
+
+  // Stats
+  const statsEl = document.getElementById('roster-stats');
+  const totalXP  = codes.reduce((sum,c)=>{ const s=getStudent(c); return sum+(s?s.xp:0); },0);
+  const active   = codes.filter(c=>{ const s=getStudent(c); return s && s.xp > 0; }).length;
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val">${codes.length}</div><div class="stat-lbl">Students</div></div>
+    <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-val">${active}</div><div class="stat-lbl">Active</div></div>
+    <div class="stat-card"><div class="stat-icon">✨</div><div class="stat-val">${totalXP.toLocaleString()}</div><div class="stat-lbl">Total XP Earned</div></div>
+    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val">${codes.filter(c=>{const s=getStudent(c);return s&&s.profileComplete;}).length}</div><div class="stat-lbl">Kings Created</div></div>
+  `;
+  document.getElementById('count-roster').textContent = codes.length;
+
+  if(codes.length === 0){
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">No students yet</div><div class="empty-sub">Add students one by one or use Bulk Add to import your whole class.</div></div>`;
+    return;
+  }
+
+  const filtered = codes.filter(code => {
+    const s = getStudent(code);
+    if(!s) return false;
+    return !search || s.name.toLowerCase().includes(search) || code.includes(search);
+  });
+
+  if(filtered.length === 0){
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No results</div><div class="empty-sub">Try a different name or code.</div></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(code => {
+    const s = getStudent(code);
+    if(!s) return '';
+    const world     = getStudentWorld(code);
+    const lastActive = s.lastActive ? timeAgo(s.lastActive) : 'Never';
+    const statusCls  = s.xp > 0 ? (Date.now()-s.createdAt < 86400000*3 ? 'status-new' : 'status-active') : 'status-inactive';
+    const statusLbl  = s.xp > 0 ? (Date.now()-s.createdAt < 86400000*3 ? 'New' : 'Active') : 'Not started';
+
+    return `<div class="student-row">
+      <div class="code-badge" onclick="showCardModal('${code}')" title="Click to view King Card">
+        <div class="copy-tip">View Card</div>
+        ${code}
+      </div>
+      <div class="student-name">${s.name}</div>
+      <div class="student-grade">Gr ${s.grade}</div>
+      <div class="student-class hide-mobile">${s.classCode||'—'}</div>
+      <div class="xp-val hide-mobile">${(s.xp||0).toLocaleString()}</div>
+      <div class="world-tag hide-mobile">${world}</div>
+      <div class="hide-mobile ${statusCls}"><span class="status-dot"></span><span class="last-active">${statusLbl}</span></div>
+      <div class="row-actions">
+        <button class="row-btn print" onclick="showCardModal('${code}')" title="Print card">🃏</button>
+        <button class="row-btn" onclick="showProgressModal('${code}')" title="Update progress" style="background:rgba(0,196,140,.1);border-color:rgba(0,196,140,.25);color:var(--green);">📊</button>
+        <button class="row-btn" onclick="resetProgress('${code}')" title="Reset progress">🔄</button>
+        <button class="row-btn" onclick="removeStudent('${code}')" title="Remove student">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER PROGRESS ───────────────────────────────────────────
+function getMergedProgress(code) {
+  const device  = getQuestProgress(code);
+  let manual = {};
+  try { manual = JSON.parse(localStorage.getItem('kt_manual_progress_' + code) || '{}'); } catch(e) {}
+  return Object.assign({}, manual, device);
+}
+
+function renderProgress(){
+  const roster = getRoster();
+  const codes  = Object.keys(roster);
+  const el = document.getElementById('progress-content');
+
+  if(codes.length === 0){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-title">No student data yet</div><div class="empty-sub">Add students to your roster, then tap 📊 on each student to mark their progress.</div></div>`;
+    return;
+  }
+
+  const sorted = codes.map(code => {
+    const student = getStudent(code);
+    const progress = getMergedProgress(code);
+    const completedCount = ALL_MISSIONS.filter(m => !!progress[m.id]).length;
+    const totalXP = ALL_MISSIONS.filter(m => !!progress[m.id]).reduce((sum, m) => sum + m.xp, 0);
+    return { code, student, completedCount, totalXP, progress };
+  })
+  .filter(e => e.student)
+  .sort((a,b) => b.completedCount - a.completedCount);
+
+  const totalMissions = ALL_MISSIONS.length;
+
+  el.innerHTML = '<div style="margin-bottom:12px;font-size:12px;color:var(--muted);">Tap 📊 on any student in the Roster tab to update their progress manually.</div>' +
+    '<div style="display:flex;flex-direction:column;gap:10px;">' +
+    sorted.map(({code, student, completedCount, totalXP, progress}, i) => {
+      const pct = Math.round((completedCount / totalMissions) * 100);
+      const medal = i===0&&completedCount>0?'🥇':i===1&&completedCount>0?'🥈':i===2&&completedCount>0?'🥉':'👑';
+      const completedNames = ALL_MISSIONS.filter(m => !!progress[m.id]).map(m => m.name);
+      return '<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;" onclick="showProgressModal('' + code + '')">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+        '<span style="font-size:18px;">' + medal + '</span>' +
+        '<div>' +
+        '<div style="font-weight:800;font-size:14px;">' + student.name + '</div>' +
+        '<div style="font-size:11px;color:var(--muted);">Grade ' + student.grade + ' · ' + completedCount + '/' + totalMissions + ' missions</div>' +
+        '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+        '<div style="font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);">' + totalXP + ' XP</div>' +
+        '<div style="font-size:10px;color:var(--muted);">' + pct + '% complete</div>' +
+        '</div>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;margin-bottom:' + (completedNames.length > 0 ? '8' : '0') + 'px;">' +
+        '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;transition:width .5s;"></div>' +
+        '</div>' +
+        (completedNames.length > 0 ? '<div style="font-size:10px;color:var(--green);line-height:1.6;">✅ ' + completedNames.join(' · ') + '</div>' : '') +
+        '</div>';
+    }).join('') +
+    '</div>';
+}
+
+// ── RENDER CODES PAGE ─────────────────────────────────────────
+function renderCodes(){
+  const roster = getRoster();
+  const codes  = Object.keys(roster);
+  const el = document.getElementById('codes-grid');
+
+  if(codes.length === 0){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔑</div><div class="empty-title">No codes yet</div><div class="empty-sub">Add students to generate their King Codes.</div></div>`;
+    return;
+  }
+
+  el.innerHTML = codes.map(code => {
+    const s = getStudent(code);
+    if(!s) return '';
+    return `<div class="king-card" style="cursor:pointer;" onclick="showCardModal('${code}')">
+      <div class="kc-crown">👑</div>
+      <div class="kc-brand">KINGTHINKERS</div>
+      <div class="kc-name">King ${s.name}</div>
+      <div class="kc-divider"></div>
+      <div class="kc-code-label">Your King Code</div>
+      <div class="kc-code">${code}</div>
+      <div class="kc-grade">Grade ${s.grade}</div>
+      <div class="kc-tagline">Every Young King Deserves to Shine ✨</div>
+    </div>`;
+  }).join('');
+}
+
+// ── CARD MODAL ────────────────────────────────────────────────
+let modalCode = null;
+function showCardModal(code){
+  const s = getStudent(code);
+  if(!s) return;
+  modalCode = code;
+  document.getElementById('modal-card').innerHTML = `
+    <div class="kc-crown">👑</div>
+    <div class="kc-brand">KINGTHINKERS</div>
+    <div class="kc-name">King ${s.name}</div>
+    <div class="kc-divider"></div>
+    <div class="kc-code-label">Your King Code</div>
+    <div class="kc-code">${code}</div>
+    <div class="kc-grade">Grade ${s.grade}</div>
+    <div class="kc-tagline">Every Young King Deserves to Shine ✨</div>
+  `;
+  document.getElementById('card-modal').classList.add('show');
+}
+function closeModal(){ document.getElementById('card-modal').classList.remove('show'); }
+function printCard(){ window.print(); }
+
+// ── PRINT ALL CARDS ───────────────────────────────────────────
+function printAllCards(){
+  const roster = getRoster();
+  const grid = document.getElementById('print-cards-grid');
+  grid.innerHTML = Object.keys(roster).map(code => {
+    const s = getStudent(code);
+    if(!s) return '';
+    return `<div class="king-card">
+      <div class="kc-crown">👑</div>
+      <div class="kc-brand">KINGTHINKERS</div>
+      <div class="kc-name">King ${s.name}</div>
+      <div class="kc-divider"></div>
+      <div class="kc-code-label">Your King Code</div>
+      <div class="kc-code">${code}</div>
+      <div class="kc-grade">Grade ${s.grade}</div>
+      <div class="kc-tagline">Every Young King Deserves to Shine ✨</div>
+    </div>`;
+  }).join('');
+  window.print();
+}
+
+// ── PAGE NAV ──────────────────────────────────────────────────
+function showPage(name, btn){
+  // Explicitly hide all pages
+  document.querySelectorAll('.page').forEach(function(p){
+    p.style.display = 'none';
+    p.classList.remove('active');
+  });
+  // Deactivate all nav buttons
+  document.querySelectorAll('.nav-item').forEach(function(b){
+    b.classList.remove('active');
+  });
+  // Show target page
+  var target = document.getElementById('page-'+name);
+  if(target){
+    target.style.display = 'block';
+    target.classList.add('active');
+  }
+  if(btn) btn.classList.add('active');
+  if(name==='progress') renderProgress();
+  if(name==='codes')    renderCodes();
+  if(name==='settings') loadSettings();
+}
+
+function toggleAddForm(){
+  const f = document.getElementById('add-form');
+  document.getElementById('bulk-form').classList.remove('show');
+  f.classList.toggle('show');
+  if(f.classList.contains('show')) document.getElementById('f-name').focus();
+}
+
+function toggleBulkForm(){
+  const f = document.getElementById('bulk-form');
+  document.getElementById('add-form').classList.remove('show');
+  f.classList.toggle('show');
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────
+function loadSettings(){
+  const s = getSettings();
+  ['teacherName','classCode','schoolName'].forEach(k => {
+    const el = document.getElementById('s-'+k.replace('Name','').replace('Code',''));
+    const map = { teacherName:'s-teacher', classCode:'s-class', schoolName:'s-school' };
+    const el2 = document.getElementById(map[k]);
+    if(el2 && s[k]) el2.value = s[k];
+  });
+}
+
+// ── SAMPLE DATA ───────────────────────────────────────────────
+function loadSampleData(){
+  if(!confirm('Load a sample class of 12 students? This will add to your existing roster.')) return;
+
+  const settings = getSettings();
+  const classCode = settings.classCode || 'MR-SAMPLE-3A';
+  const names = [
+    ['Marcus',3],['Jaylen',3],['Kofi',4],['Amari',3],
+    ['Zion',2],['Elijah',3],['Isaiah',4],['Malik',3],
+    ['Kai',5],['Darius',3],['Andre',2],['Jordan',4]
+  ];
+
+  names.forEach(([name,grade],i) => {
+    const code = generateCode();
+    const xp   = Math.floor(Math.random()*800);
+    const student = { code, name, grade:String(grade), classCode, xp, crowns:Math.floor(xp*.3), quests:Math.floor(xp/60), profileComplete:xp>100, createdAt:Date.now()-i*86400000*2, lastActive:Date.now()-Math.random()*86400000*5 };
+    saveStudent(code, student);
+    const roster=getRoster(); roster[code]={name,grade:String(grade),classCode}; saveRoster(roster);
+  });
+
+  toast('🧪','Sample class loaded! 12 kings added.');
+  renderAll();
+}
+
+function clearAllData(){
+  if(!confirm('Delete ALL student data and the entire roster? This cannot be undone.')) return;
+  const roster = getRoster();
+  Object.keys(roster).forEach(code => {
+    localStorage.removeItem(getStudentKey(code));
+    localStorage.removeItem('kt_quest_progress_'+code);
+  });
+  localStorage.removeItem('kt_roster');
+  toast('🗑️','All data cleared.');
+  renderAll();
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+function timeAgo(ts){
+  const diff = (Date.now()-ts)/1000;
+  if(diff < 60)   return 'Just now';
+  if(diff < 3600) return Math.floor(diff/60)+'m ago';
+  if(diff < 86400) return Math.floor(diff/3600)+'h ago';
+  return Math.floor(diff/86400)+'d ago';
+}
+
+function toast(icon, text){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-text').textContent = text;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ── ALL MISSIONS LIST ─────────────────────────────────────────
+const ALL_MISSIONS = [
+  { id:'e1', name:"The Pharaoh's Secret",  world:'Egypt',  type:'Reading', xp:40 },
+  { id:'e2', name:'Hieroglyph Numbers',     world:'Egypt',  type:'Math',    xp:35 },
+  { id:'e3', name:"The Nile's Gift",        world:'Egypt',  type:'Reading', xp:40 },
+  { id:'e4', name:'Pyramid Fractions',      world:'Egypt',  type:'Math',    xp:35 },
+  { id:'n1', name:'Warriors of the South', world:'Nubia',  type:'Reading', xp:40 },
+  { id:'n2', name:'Trade Route Math',       world:'Nubia',  type:'Math',    xp:35 },
+  { id:'n3', name:'The Black Pharaohs',     world:'Nubia',  type:'Reading', xp:40 },
+  { id:'n4', name:'Archery Angles',         world:'Nubia',  type:'Math',    xp:35 },
+];
+
+// ── PROGRESS MODAL ────────────────────────────────────────────
+var currentProgressCode = null;
+
+function showProgressModal(code) {
+  currentProgressCode = code;
+  const student = getStudent(code);
+  if (!student) return;
+
+  document.getElementById('pm-name').textContent = student.name;
+
+  // Get current manual progress for this student
+  const manualKey = 'kt_manual_progress_' + code;
+  let manual = {};
+  try { manual = JSON.parse(localStorage.getItem(manualKey) || '{}'); } catch(e) {}
+
+  // Also check device progress (if teacher is on student's device)
+  const deviceProgress = getQuestProgress(code);
+
+  // Merge both
+  const combined = Object.assign({}, manual, deviceProgress);
+
+  // Group missions by world
+  const worlds = {};
+  ALL_MISSIONS.forEach(m => {
+    if (!worlds[m.world]) worlds[m.world] = [];
+    worlds[m.world].push(m);
+  });
+
+  let html = '';
+  Object.keys(worlds).forEach(world => {
+    html += '<div style="font-size:10px;font-weight:900;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin:10px 0 6px;">⚔️ ' + world + '</div>';
+    worlds[world].forEach(m => {
+      const done = !!combined[m.id];
+      html += '<label style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--card);border:1px solid ' + (done ? 'rgba(0,196,140,.3)' : 'var(--border)') + ';border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;">' +
+        '<input type="checkbox" ' + (done ? 'checked' : '') + ' data-id="' + m.id + '" data-xp="' + m.xp + '" onchange="toggleMission(this,'' + code + '')" style="width:18px;height:18px;accent-color:var(--green);flex-shrink:0;">' +
+        '<div style="flex:1;">' +
+        '<div style="font-size:13px;font-weight:700;color:' + (done ? 'var(--green)' : 'var(--white)') + ';">' + m.name + '</div>' +
+        '<div style="font-size:10px;color:var(--muted);">' + m.type + ' · +' + m.xp + ' XP</div>' +
+        '</div>' +
+        (done ? '<span style="color:var(--green);font-size:16px;">✅</span>' : '') +
+        '</label>';
+    });
+  });
+
+  document.getElementById('pm-missions').innerHTML = html;
+  document.getElementById('progress-modal').classList.add('show');
+}
+
+function toggleMission(checkbox, code) {
+  const missionId = checkbox.getAttribute('data-id');
+  const xp = parseInt(checkbox.getAttribute('data-xp'));
+  const manualKey = 'kt_manual_progress_' + code;
+
+  let manual = {};
+  try { manual = JSON.parse(localStorage.getItem(manualKey) || '{}'); } catch(e) {}
+
+  if (checkbox.checked) {
+    manual[missionId] = { completedAt: Date.now(), manual: true };
+    // Update student XP
+    const student = getStudent(code);
+    if (student) {
+      student.xp = (student.xp || 0) + xp;
+      student.crowns = (student.crowns || 0) + 1;
+      saveStudent(code, student);
+    }
+    checkbox.closest('label').style.borderColor = 'rgba(0,196,140,.3)';
+    checkbox.closest('label').style.color = 'var(--green)';
+  } else {
+    delete manual[missionId];
+    // Subtract XP
+    const student = getStudent(code);
+    if (student) {
+      student.xp = Math.max(0, (student.xp || 0) - xp);
+      student.crowns = Math.max(0, (student.crowns || 0) - 1);
+      saveStudent(code, student);
+    }
+    checkbox.closest('label').style.borderColor = 'var(--border)';
+  }
+
+  localStorage.setItem(manualKey, JSON.stringify(manual));
+  showToast('✓', 'Progress saved!');
+  renderProgress();
+}
+
+function closeProgressModal() {
+  document.getElementById('progress-modal').classList.remove('show');
+  currentProgressCode = null;
+  renderRoster();
+  renderProgress();
+}
+
+function renderAll(){ renderRoster(); }
+
+// ── BOOT ──────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
