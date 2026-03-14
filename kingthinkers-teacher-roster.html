@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>KingThinkers — Teacher Roster v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#F5A800">
+<style>
+:root{
+  --navy:#0B0B1E;--navy2:#13132A;--card:#1C1C3A;--card2:#22223A;
+  --gold:#F5A800;--amber:#FF6B1A;--green:#00C48C;
+  --sky:#38BDF8;--lilac:#A78BFA;--rose:#FB7185;
+  --white:#FFFFFF;--muted:#8080A8;--border:rgba(255,255,255,0.08);
+  --f-d:'Baloo 2',cursive;--f-b:'Nunito',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--white);overflow:hidden;}
+
+/* ── SHELL ── */
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;}
+
+/* ── TOPBAR ── */
+#topbar{
+  flex-shrink:0;background:var(--navy2);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+}
+.t-logo{font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);}
+.t-badge{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:900;color:var(--sky);}
+.btn-sm{padding:7px 14px;border-radius:9px;border:1px solid var(--border);font-family:var(--f-b);font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);background:transparent;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.btn-sm.gold{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+
+/* ── TAB BAR ── */
+#tab-bar{
+  flex-shrink:0;background:var(--navy2);
+  border-bottom:2px solid var(--border);
+  display:flex;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+#tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{
+  flex-shrink:0;
+  padding:12px 16px;
+  background:none;border:none;
+  font-family:var(--f-b);font-size:12px;font-weight:700;
+  color:var(--muted);cursor:pointer;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  margin-bottom:-2px;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  transition:color .15s;
+}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* ── CONTENT ── */
+#content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.page{display:none;padding:16px;}
+.page.active{display:block;}
+
+/* ── FORMS ── */
+.section-title{font-family:var(--f-d);font-size:16px;font-weight:800;margin-bottom:12px;color:var(--white);}
+.form-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;}
+.form-label{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.form-input{width:100%;background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--f-b);font-size:14px;color:var(--white);outline:none;}
+.form-input:focus{border-color:rgba(245,168,0,.4);}
+.form-select{width:100%;background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--f-b);font-size:14px;color:var(--white);outline:none;}
+.bulk-area{width:100%;height:120px;background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:var(--f-b);font-size:13px;color:var(--white);outline:none;resize:vertical;}
+.btn-add{background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:10px;padding:10px 20px;font-family:var(--f-d);font-size:14px;font-weight:800;color:var(--navy);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+
+/* ── ROSTER ── */
+.stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;}
+.stat-chip span{font-family:var(--f-d);color:var(--gold);font-size:16px;font-weight:900;margin-right:5px;}
+.student-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.student-name{font-weight:800;font-size:14px;flex:1;}
+.student-meta{font-size:11px;color:var(--muted);}
+.code-badge{background:rgba(245,168,0,.1);border:1px solid rgba(245,168,0,.2);border-radius:8px;padding:4px 10px;font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);}
+.row-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer;color:var(--muted);touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.row-btn:active{background:rgba(255,255,255,.06);}
+
+/* ── KING CARDS ── */
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.king-card{background:linear-gradient(135deg,#0D0B1E,#1A1535);border:2px solid var(--gold);border-radius:14px;padding:14px;text-align:center;}
+.kc-crown{font-size:28px;margin-bottom:4px;}
+.kc-brand{font-size:8px;font-weight:900;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;}
+.kc-name{font-family:var(--f-d);font-size:15px;font-weight:900;color:var(--white);margin-bottom:6px;}
+.kc-divider{height:1px;background:rgba(245,168,0,.3);margin:6px 0;}
+.kc-code-label{font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.kc-code{font-family:var(--f-d);font-size:32px;font-weight:900;color:var(--gold);letter-spacing:.1em;}
+.kc-grade{font-size:10px;color:var(--muted);margin-top:4px;}
+
+/* ── PROGRESS ── */
+.progress-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.progress-card:active{background:var(--card2);}
+.prog-bar-bg{background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;margin:8px 0;}
+.prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;transition:width .5s;}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:20px;width:100%;max-width:460px;max-height:80vh;overflow-y:auto;}
+.modal-title{font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--gold);margin-bottom:12px;}
+.btn-modal{padding:10px 20px;border-radius:10px;border:1px solid var(--border);font-family:var(--f-b);font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);background:transparent;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.btn-modal.primary{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+
+/* ── SETTINGS ── */
+.settings-row{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px 18px;display:flex;align-items:center;gap:8px;opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:10px;}
+.empty-title{font-family:var(--f-d);font-size:16px;font-weight:800;margin-bottom:6px;}
+.empty-sub{font-size:13px;line-height:1.6;}
+
+@media print{
+  #topbar,#tab-bar,#toast,.modal-overlay,.row-btn,.btn-sm,.btn-add{display:none!important;}
+  .page{display:block!important;}
+  .king-card{break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="t-logo">👑 KingThinkers</div>
+      <div class="t-badge">Teacher</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-sm gold" onclick="printAllCards()">🖨️ Print Cards</button>
+      <button class="btn-sm" onclick="window.location.href='/kingthinkers/kingthinkers-dashboard.html'">← Map</button>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div id="tab-bar">
+    <button class="tab-btn active" onclick="showPage('roster',this)">📋 Roster</button>
+    <button class="tab-btn" onclick="showPage('progress',this)">📊 Progress</button>
+    <button class="tab-btn" onclick="showPage('codes',this)">🔑 King Codes</button>
+    <button class="tab-btn" onclick="showPage('add',this)">➕ Add Student</button>
+    <button class="tab-btn" onclick="showPage('bulk',this)">📥 Bulk Add</button>
+    <button class="tab-btn" onclick="showPage('settings',this)">⚙️ Settings</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- ROSTER -->
+    <div class="page active" id="page-roster">
+      <div class="stat-row" id="roster-stats"></div>
+      <input class="form-input" id="search" type="text" placeholder="🔍 Search students…" oninput="renderRoster()" style="margin-bottom:12px;">
+      <div id="roster-list"></div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="page" id="page-progress" style="display:none;">
+      <div id="progress-content"></div>
+    </div>
+
+    <!-- KING CODES -->
+    <div class="page" id="page-codes" style="display:none;">
+      <div style="margin-bottom:12px;font-size:12px;color:var(--muted);">Tap any card to view and print.</div>
+      <div class="cards-grid" id="codes-grid"></div>
+    </div>
+
+    <!-- ADD STUDENT -->
+    <div class="page" id="page-add" style="display:none;">
+      <div class="form-box">
+        <div class="section-title">➕ Add a Student</div>
+        <div style="margin-bottom:10px;">
+          <div class="form-label">Student Name</div>
+          <input class="form-input" id="f-name" type="text" placeholder="First name" maxlength="20">
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="form-label">Grade</div>
+          <select class="form-select" id="f-grade">
+            <option value="K">Kindergarten</option>
+            <option value="1">1st Grade</option>
+            <option value="2">2nd Grade</option>
+            <option value="3" selected>3rd Grade</option>
+            <option value="4">4th Grade</option>
+            <option value="5">5th Grade</option>
+          </select>
+        </div>
+        <button class="btn-add" onclick="addStudent()">Add King 👑</button>
+      </div>
+    </div>
+
+    <!-- BULK ADD -->
+    <div class="page" id="page-bulk" style="display:none;">
+      <div class="form-box">
+        <div class="section-title">📥 Bulk Add Students</div>
+        <div class="form-label" style="margin-bottom:8px;">Paste one name per line. Optionally add grade: Marcus, 3</div>
+        <textarea class="bulk-area" id="bulk-names" placeholder="Marcus&#10;Jaylen, 4&#10;Kofi, 2&#10;Amari&#10;Zion, 5"></textarea>
+        <div style="font-size:11px;color:var(--muted);margin:6px 0 12px;">No grade = defaults to 3rd grade.</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-add" onclick="bulkAdd()">Add All Students</button>
+          <button class="btn-sm" onclick="showPage('roster', document.querySelector('.tab-btn'))">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings" style="display:none;">
+      <div class="form-box">
+        <div class="section-title">⚙️ Settings</div>
+        <div class="settings-row">
+          <div class="form-label">Teacher Name</div>
+          <input class="form-input" id="s-teacher" type="text" placeholder="Ms. Johnson" oninput="saveSetting('teacher',this.value)">
+        </div>
+        <div class="settings-row">
+          <div class="form-label">Class Code</div>
+          <input class="form-input" id="s-class" type="text" placeholder="CLASS01" oninput="saveSetting('classCode',this.value)">
+        </div>
+        <div class="settings-row">
+          <div class="form-label">School Name</div>
+          <input class="form-input" id="s-school" type="text" placeholder="Lincoln Elementary" oninput="saveSetting('school',this.value)">
+        </div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+          <div class="form-label" style="margin-bottom:8px;">Danger Zone</div>
+          <button class="btn-sm" onclick="loadSampleData()" style="margin-right:8px;">🧪 Load Sample Class</button>
+          <button class="btn-sm" style="color:var(--rose);border-color:rgba(251,113,133,.3);" onclick="clearAllData()">🗑️ Reset All Data</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<!-- KING CARD MODAL -->
+<div class="modal-overlay" id="card-modal">
+  <div class="modal">
+    <div class="modal-title">👑 King Card</div>
+    <div id="modal-card"></div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button class="btn-modal" onclick="closeModal()">Close</button>
+      <button class="btn-modal primary" onclick="printCard()">🖨️ Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS MODAL -->
+<div class="modal-overlay" id="progress-modal">
+  <div class="modal">
+    <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Check off missions this student has completed.</div>
+    <div id="pm-missions"></div>
+    <div style="background:rgba(245,168,0,.07);border:1px solid rgba(245,168,0,.15);border-radius:10px;padding:10px 12px;margin:12px 0;font-size:11px;color:rgba(255,255,255,.65);line-height:1.5;">
+      💡 Open this roster on the student's iPad to sync device progress automatically.
+    </div>
+    <button class="btn-modal primary" onclick="closeProgressModal()" style="width:100%;">Done ✓</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast">
+  <span id="toast-icon">✓</span>
+  <span id="toast-text">Done!</span>
+</div>
+
+<script>
+
+// ── STORAGE ───────────────────────────────────────────────────
+function getRoster()  { try{return JSON.parse(localStorage.getItem('kt_roster')||'{}')}catch(e){return{}} }
+function saveRoster(r){ localStorage.setItem('kt_roster',JSON.stringify(r)); }
+function getStudentKey(code){ return 'kt_student_'+code; }
+function getStudent(code){ try{return JSON.parse(localStorage.getItem(getStudentKey(code))||'null')}catch(e){return null} }
+function saveStudent(code,data){ localStorage.setItem(getStudentKey(code),JSON.stringify(data)); }
+function getSettings(){ try{return JSON.parse(localStorage.getItem('kt_settings')||'{}')}catch(e){return{}} }
+function saveSettings(s){ localStorage.setItem('kt_settings',JSON.stringify(s)); }
+function saveSetting(key,val){ const s=getSettings(); s[key]=val; saveSettings(s); }
+
+function getQuestProgress(code){
+  try{return JSON.parse(localStorage.getItem('kt_quest_progress_'+code)||'{}')}catch(e){return{}}
+}
+
+// World names in order
+const WORLD_NAMES = ['Egypt','Nubia','Kush','Mali','Songhai','Timbuktu','Axum','Diaspora'];
+const WORLD_MISSIONS = [4,4,5,4,4,4,4,4]; // missions per world
+
+function getStudentWorld(code){
+  const progress = getQuestProgress(code);
+  const done = Object.keys(progress).length;
+  let total = 0;
+  for(let i=0;i<WORLD_NAMES.length;i++){
+    total += WORLD_MISSIONS[i];
+    if(done < total) return WORLD_NAMES[i];
+  }
+  return 'Complete! 🏆';
+}
+
+// ── CODE GENERATION ───────────────────────────────────────────
+function generateCode(){
+  const used = new Set(Object.keys(getRoster()));
+  let code;
+  do { code = String(Math.floor(1000+Math.random()*9000)); } while(used.has(code));
+  return code;
+}
+
+// ── ADD STUDENT ───────────────────────────────────────────────
+function addStudent(){
+  const name  = document.getElementById('f-name').value.trim();
+  const grade = document.getElementById('f-grade').value;
+  if(name.length < 2){ toast('⚠️','Enter a student name first!'); return; }
+
+  const settings = getSettings();
+  const classCode = settings.classCode || 'MY-CLASS';
+  const code = generateCode();
+  const student = { code, name, grade, classCode, xp:0, crowns:0, quests:0, profileComplete:false, createdAt:Date.now() };
+
+  saveStudent(code, student);
+  const roster = getRoster();
+  roster[code] = { name, grade, classCode };
+  saveRoster(roster);
+
+  document.getElementById('f-name').value = '';
+  document.getElementById('count-roster').textContent = Object.keys(getRoster()).length;
+  toast('👑', `King ${name} added! Code: ${code}`);
+  renderAll();
+}
+
+// ── BULK ADD ──────────────────────────────────────────────────
+function bulkAdd(){
+  const raw = document.getElementById('bulk-names').value.trim();
+  if(!raw){ toast('⚠️','Paste some names first!'); return; }
+
+  const settings = getSettings();
+  const classCode = settings.classCode || 'MY-CLASS';
+  const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+  let added = 0;
+
+  lines.forEach(line => {
+    const parts = line.split(',').map(p=>p.trim());
+    const name  = parts[0];
+    const grade = parts[1] || '3';
+    if(name.length < 1) return;
+
+    const code = generateCode();
+    const student = { code, name, grade, classCode, xp:0, crowns:0, quests:0, profileComplete:false, createdAt:Date.now() };
+    saveStudent(code, student);
+    const roster = getRoster();
+    roster[code] = { name, grade, classCode };
+    saveRoster(roster);
+    added++;
+  });
+
+  document.getElementById('bulk-names').value = '';
+  document.getElementById('bulk-form').classList.remove('show');
+  document.getElementById('count-roster').textContent = Object.keys(getRoster()).length;
+  toast('👑', `${added} kings added to your roster!`);
+  renderAll();
+}
+
+// ── REMOVE STUDENT ────────────────────────────────────────────
+function removeStudent(code){
+  if(!confirm('Remove this student? Their progress will be deleted.')) return;
+  const roster = getRoster();
+  delete roster[code];
+  saveRoster(roster);
+  localStorage.removeItem(getStudentKey(code));
+  localStorage.removeItem('kt_quest_progress_'+code);
+  toast('🗑️','Student removed.');
+  renderAll();
+}
+
+// ── RESET STUDENT PROGRESS ────────────────────────────────────
+function resetProgress(code){
+  const student = getStudent(code);
+  if(!student) return;
+  if(!confirm(`Reset all progress for ${student.name}? This cannot be undone.`)) return;
+  student.xp = 0; student.crowns = 0; student.quests = 0; student.profileComplete = false;
+  saveStudent(code, student);
+  localStorage.removeItem('kt_quest_progress_'+code);
+  toast('🔄', `${student.name}'s progress has been reset.`);
+  renderAll();
+}
+
+// ── RENDER ROSTER ─────────────────────────────────────────────
+function renderRoster(){
+  const roster   = getRoster();
+  const codes    = Object.keys(roster);
+  const search   = (document.getElementById('search')||{value:''}).value.toLowerCase();
+  const list     = document.getElementById('roster-list');
+
+  // Stats
+  const statsEl = document.getElementById('roster-stats');
+  const totalXP  = codes.reduce((sum,c)=>{ const s=getStudent(c); return sum+(s?s.xp:0); },0);
+  const active   = codes.filter(c=>{ const s=getStudent(c); return s && s.xp > 0; }).length;
+  statsEl.innerHTML = `
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val">${codes.length}</div><div class="stat-lbl">Students</div></div>
+    <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-val">${active}</div><div class="stat-lbl">Active</div></div>
+    <div class="stat-card"><div class="stat-icon">✨</div><div class="stat-val">${totalXP.toLocaleString()}</div><div class="stat-lbl">Total XP Earned</div></div>
+    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val">${codes.filter(c=>{const s=getStudent(c);return s&&s.profileComplete;}).length}</div><div class="stat-lbl">Kings Created</div></div>
+  `;
+  document.getElementById('count-roster').textContent = codes.length;
+
+  if(codes.length === 0){
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">No students yet</div><div class="empty-sub">Add students one by one or use Bulk Add to import your whole class.</div></div>`;
+    return;
+  }
+
+  const filtered = codes.filter(code => {
+    const s = getStudent(code);
+    if(!s) return false;
+    return !search || s.name.toLowerCase().includes(search) || code.includes(search);
+  });
+
+  if(filtered.length === 0){
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No results</div><div class="empty-sub">Try a different name or code.</div></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(code => {
+    const s = getStudent(code);
+    if(!s) return '';
+    const world     = getStudentWorld(code);
+    const lastActive = s.lastActive ? timeAgo(s.lastActive) : 'Never';
+    const statusCls  = s.xp > 0 ? (Date.now()-s.createdAt < 86400000*3 ? 'status-new' : 'status-active') : 'status-inactive';
+    const statusLbl  = s.xp > 0 ? (Date.now()-s.createdAt < 86400000*3 ? 'New' : 'Active') : 'Not started';
+
+    return `<div class="student-row">
+      <div class="code-badge" onclick="showCardModal('${code}')" title="Click to view King Card">
+        <div class="copy-tip">View Card</div>
+        ${code}
+      </div>
+      <div class="student-name">${s.name}</div>
+      <div class="student-grade">Gr ${s.grade}</div>
+      <div class="student-class hide-mobile">${s.classCode||'—'}</div>
+      <div class="xp-val hide-mobile">${(s.xp||0).toLocaleString()}</div>
+      <div class="world-tag hide-mobile">${world}</div>
+      <div class="hide-mobile ${statusCls}"><span class="status-dot"></span><span class="last-active">${statusLbl}</span></div>
+      <div class="row-actions">
+        <button class="row-btn print" onclick="showCardModal('${code}')" title="Print card">🃏</button>
+        <button class="row-btn" onclick="showProgressModal('${code}')" title="Update progress" style="background:rgba(0,196,140,.1);border-color:rgba(0,196,140,.25);color:var(--green);">📊</button>
+        <button class="row-btn" onclick="resetProgress('${code}')" title="Reset progress">🔄</button>
+        <button class="row-btn" onclick="removeStudent('${code}')" title="Remove student">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER PROGRESS ───────────────────────────────────────────
+function getMergedProgress(code) {
+  const device  = getQuestProgress(code);
+  let manual = {};
+  try { manual = JSON.parse(localStorage.getItem('kt_manual_progress_' + code) || '{}'); } catch(e) {}
+  return Object.assign({}, manual, device);
+}
+
+function renderProgress(){
+  const roster = getRoster();
+  const codes  = Object.keys(roster);
+  const el = document.getElementById('progress-content');
+
+  if(codes.length === 0){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-title">No student data yet</div><div class="empty-sub">Add students to your roster, then tap 📊 on each student to mark their progress.</div></div>`;
+    return;
+  }
+
+  const sorted = codes.map(code => {
+    const student = getStudent(code);
+    const progress = getMergedProgress(code);
+    const completedCount = ALL_MISSIONS.filter(m => !!progress[m.id]).length;
+    const totalXP = ALL_MISSIONS.filter(m => !!progress[m.id]).reduce((sum, m) => sum + m.xp, 0);
+    return { code, student, completedCount, totalXP, progress };
+  })
+  .filter(e => e.student)
+  .sort((a,b) => b.completedCount - a.completedCount);
+
+  const totalMissions = ALL_MISSIONS.length;
+
+  el.innerHTML = '<div style="margin-bottom:12px;font-size:12px;color:var(--muted);">Tap 📊 on any student in the Roster tab to update their progress manually.</div>' +
+    '<div style="display:flex;flex-direction:column;gap:10px;">' +
+    sorted.map(({code, student, completedCount, totalXP, progress}, i) => {
+      const pct = Math.round((completedCount / totalMissions) * 100);
+      const medal = i===0&&completedCount>0?'🥇':i===1&&completedCount>0?'🥈':i===2&&completedCount>0?'🥉':'👑';
+      const completedNames = ALL_MISSIONS.filter(m => !!progress[m.id]).map(m => m.name);
+      return '<div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;" onclick="showProgressModal('' + code + '')">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+        '<span style="font-size:18px;">' + medal + '</span>' +
+        '<div>' +
+        '<div style="font-weight:800;font-size:14px;">' + student.name + '</div>' +
+        '<div style="font-size:11px;color:var(--muted);">Grade ' + student.grade + ' · ' + completedCount + '/' + totalMissions + ' missions</div>' +
+        '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+        '<div style="font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);">' + totalXP + ' XP</div>' +
+        '<div style="font-size:10px;color:var(--muted);">' + pct + '% complete</div>' +
+        '</div>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;margin-bottom:' + (completedNames.length > 0 ? '8' : '0') + 'px;">' +
+        '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;transition:width .5s;"></div>' +
+        '</div>' +
+        (completedNames.length > 0 ? '<div style="font-size:10px;color:var(--green);line-height:1.6;">✅ ' + completedNames.join(' · ') + '</div>' : '') +
+        '</div>';
+    }).join('') +
+    '</div>';
+}
+
+// ── RENDER CODES PAGE ─────────────────────────────────────────
+function renderCodes(){
+  const roster = getRoster();
+  const codes  = Object.keys(roster);
+  const el = document.getElementById('codes-grid');
+
+  if(codes.length === 0){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔑</div><div class="empty-title">No codes yet</div><div class="empty-sub">Add students to generate their King Codes.</div></div>`;
+    return;
+  }
+
+  el.innerHTML = codes.map(code => {
+    const s = getStudent(code);
+    if(!s) return '';
+    return `<div class="king-card" style="cursor:pointer;" onclick="showCardModal('${code}')">
+      <div class="kc-crown">👑</div>
+      <div class="kc-brand">KINGTHINKERS</div>
+      <div class="kc-name">King ${s.name}</div>
+      <div class="kc-divider"></div>
+      <div class="kc-code-label">Your King Code</div>
+      <div class="kc-code">${code}</div>
+      <div class="kc-grade">Grade ${s.grade}</div>
+      <div class="kc-tagline">Every Young King Deserves to Shine ✨</div>
+    </div>`;
+  }).join('');
+}
+
+// ── CARD MODAL ────────────────────────────────────────────────
+let modalCode = null;
+function showCardModal(code){
+  const s = getStudent(code);
+  if(!s) return;
+  modalCode = code;
+  document.getElementById('modal-card').innerHTML = `
+    <div class="kc-crown">👑</div>
+    <div class="kc-brand">KINGTHINKERS</div>
+    <div class="kc-name">King ${s.name}</div>
+    <div class="kc-divider"></div>
+    <div class="kc-code-label">Your King Code</div>
+    <div class="kc-code">${code}</div>
+    <div class="kc-grade">Grade ${s.grade}</div>
+    <div class="kc-tagline">Every Young King Deserves to Shine ✨</div>
+  `;
+  document.getElementById('card-modal').classList.add('show');
+}
+function closeModal(){ document.getElementById('card-modal').classList.remove('show'); }
+function printCard(){ window.print(); }
+
+// ── PRINT ALL CARDS ───────────────────────────────────────────
+function printAllCards(){
+  const roster = getRoster();
+  const grid = document.getElementById('print-cards-grid');
+  grid.innerHTML = Object.keys(roster).map(code => {
+    const s = getStudent(code);
+    if(!s) return '';
+    return `<div class="king-card">
+      <div class="kc-crown">👑</div>
+      <div class="kc-brand">KINGTHINKERS</div>
+      <div class="kc-name">King ${s.name}</div>
+      <div class="kc-divider"></div>
+      <div class="kc-code-label">Your King Code</div>
+      <div class="kc-code">${code}</div>
+      <div class="kc-grade">Grade ${s.grade}</div>
+      <div class="kc-tagline">Every Young King Deserves to Shine ✨</div>
+    </div>`;
+  }).join('');
+  window.print();
+}
+
+// ── PAGE NAV ──────────────────────────────────────────────────
+function showPage(name, btn){
+  var pages = document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++){
+    pages[i].style.display='none';
+    pages[i].classList.remove('active');
+  }
+  var tabs = document.querySelectorAll('.tab-btn');
+  for(var i=0;i<tabs.length;i++){
+    tabs[i].classList.remove('active');
+  }
+  var target = document.getElementById('page-'+name);
+  if(target){ target.style.display='block'; target.classList.add('active'); }
+  if(btn) btn.classList.add('active');
+  if(name==='progress') renderProgress();
+  if(name==='codes')    renderCodes();
+  if(name==='settings') loadSettings();
+}
+
+function toggleAddForm(){
+  const f = document.getElementById('add-form');
+  document.getElementById('bulk-form').classList.remove('show');
+  f.classList.toggle('show');
+  if(f.classList.contains('show')) document.getElementById('f-name').focus();
+}
+
+function toggleBulkForm(){
+  const f = document.getElementById('bulk-form');
+  document.getElementById('add-form').classList.remove('show');
+  f.classList.toggle('show');
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────
+function loadSettings(){
+  const s = getSettings();
+  ['teacherName','classCode','schoolName'].forEach(k => {
+    const el = document.getElementById('s-'+k.replace('Name','').replace('Code',''));
+    const map = { teacherName:'s-teacher', classCode:'s-class', schoolName:'s-school' };
+    const el2 = document.getElementById(map[k]);
+    if(el2 && s[k]) el2.value = s[k];
+  });
+}
+
+// ── SAMPLE DATA ───────────────────────────────────────────────
+function loadSampleData(){
+  if(!confirm('Load a sample class of 12 students? This will add to your existing roster.')) return;
+
+  const settings = getSettings();
+  const classCode = settings.classCode || 'MR-SAMPLE-3A';
+  const names = [
+    ['Marcus',3],['Jaylen',3],['Kofi',4],['Amari',3],
+    ['Zion',2],['Elijah',3],['Isaiah',4],['Malik',3],
+    ['Kai',5],['Darius',3],['Andre',2],['Jordan',4]
+  ];
+
+  names.forEach(([name,grade],i) => {
+    const code = generateCode();
+    const xp   = Math.floor(Math.random()*800);
+    const student = { code, name, grade:String(grade), classCode, xp, crowns:Math.floor(xp*.3), quests:Math.floor(xp/60), profileComplete:xp>100, createdAt:Date.now()-i*86400000*2, lastActive:Date.now()-Math.random()*86400000*5 };
+    saveStudent(code, student);
+    const roster=getRoster(); roster[code]={name,grade:String(grade),classCode}; saveRoster(roster);
+  });
+
+  toast('🧪','Sample class loaded! 12 kings added.');
+  renderAll();
+}
+
+function clearAllData(){
+  if(!confirm('Delete ALL student data and the entire roster? This cannot be undone.')) return;
+  const roster = getRoster();
+  Object.keys(roster).forEach(code => {
+    localStorage.removeItem(getStudentKey(code));
+    localStorage.removeItem('kt_quest_progress_'+code);
+  });
+  localStorage.removeItem('kt_roster');
+  toast('🗑️','All data cleared.');
+  renderAll();
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+function timeAgo(ts){
+  const diff = (Date.now()-ts)/1000;
+  if(diff < 60)   return 'Just now';
+  if(diff < 3600) return Math.floor(diff/60)+'m ago';
+  if(diff < 86400) return Math.floor(diff/3600)+'h ago';
+  return Math.floor(diff/86400)+'d ago';
+}
+
+function toast(icon, text){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-text').textContent = text;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ── ALL MISSIONS LIST ─────────────────────────────────────────
+const ALL_MISSIONS = [
+  { id:'e1', name:"The Pharaoh's Secret",  world:'Egypt',  type:'Reading', xp:40 },
+  { id:'e2', name:'Hieroglyph Numbers',     world:'Egypt',  type:'Math',    xp:35 },
+  { id:'e3', name:"The Nile's Gift",        world:'Egypt',  type:'Reading', xp:40 },
+  { id:'e4', name:'Pyramid Fractions',      world:'Egypt',  type:'Math',    xp:35 },
+  { id:'n1', name:'Warriors of the South', world:'Nubia',  type:'Reading', xp:40 },
+  { id:'n2', name:'Trade Route Math',       world:'Nubia',  type:'Math',    xp:35 },
+  { id:'n3', name:'The Black Pharaohs',     world:'Nubia',  type:'Reading', xp:40 },
+  { id:'n4', name:'Archery Angles',         world:'Nubia',  type:'Math',    xp:35 },
+];
+
+// ── PROGRESS MODAL ────────────────────────────────────────────
+var currentProgressCode = null;
+
+function showProgressModal(code) {
+  currentProgressCode = code;
+  const student = getStudent(code);
+  if (!student) return;
+
+  document.getElementById('pm-name').textContent = student.name;
+
+  // Get current manual progress for this student
+  const manualKey = 'kt_manual_progress_' + code;
+  let manual = {};
+  try { manual = JSON.parse(localStorage.getItem(manualKey) || '{}'); } catch(e) {}
+
+  // Also check device progress (if teacher is on student's device)
+  const deviceProgress = getQuestProgress(code);
+
+  // Merge both
+  const combined = Object.assign({}, manual, deviceProgress);
+
+  // Group missions by world
+  const worlds = {};
+  ALL_MISSIONS.forEach(m => {
+    if (!worlds[m.world]) worlds[m.world] = [];
+    worlds[m.world].push(m);
+  });
+
+  let html = '';
+  Object.keys(worlds).forEach(world => {
+    html += '<div style="font-size:10px;font-weight:900;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin:10px 0 6px;">⚔️ ' + world + '</div>';
+    worlds[world].forEach(m => {
+      const done = !!combined[m.id];
+      html += '<label style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--card);border:1px solid ' + (done ? 'rgba(0,196,140,.3)' : 'var(--border)') + ';border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;">' +
+        '<input type="checkbox" ' + (done ? 'checked' : '') + ' data-id="' + m.id + '" data-xp="' + m.xp + '" onchange="toggleMission(this,'' + code + '')" style="width:18px;height:18px;accent-color:var(--green);flex-shrink:0;">' +
+        '<div style="flex:1;">' +
+        '<div style="font-size:13px;font-weight:700;color:' + (done ? 'var(--green)' : 'var(--white)') + ';">' + m.name + '</div>' +
+        '<div style="font-size:10px;color:var(--muted);">' + m.type + ' · +' + m.xp + ' XP</div>' +
+        '</div>' +
+        (done ? '<span style="color:var(--green);font-size:16px;">✅</span>' : '') +
+        '</label>';
+    });
+  });
+
+  document.getElementById('pm-missions').innerHTML = html;
+  document.getElementById('progress-modal').classList.add('show');
+}
+
+function toggleMission(checkbox, code) {
+  const missionId = checkbox.getAttribute('data-id');
+  const xp = parseInt(checkbox.getAttribute('data-xp'));
+  const manualKey = 'kt_manual_progress_' + code;
+
+  let manual = {};
+  try { manual = JSON.parse(localStorage.getItem(manualKey) || '{}'); } catch(e) {}
+
+  if (checkbox.checked) {
+    manual[missionId] = { completedAt: Date.now(), manual: true };
+    // Update student XP
+    const student = getStudent(code);
+    if (student) {
+      student.xp = (student.xp || 0) + xp;
+      student.crowns = (student.crowns || 0) + 1;
+      saveStudent(code, student);
+    }
+    checkbox.closest('label').style.borderColor = 'rgba(0,196,140,.3)';
+    checkbox.closest('label').style.color = 'var(--green)';
+  } else {
+    delete manual[missionId];
+    // Subtract XP
+    const student = getStudent(code);
+    if (student) {
+      student.xp = Math.max(0, (student.xp || 0) - xp);
+      student.crowns = Math.max(0, (student.crowns || 0) - 1);
+      saveStudent(code, student);
+    }
+    checkbox.closest('label').style.borderColor = 'var(--border)';
+  }
+
+  localStorage.setItem(manualKey, JSON.stringify(manual));
+  showToast('✓', 'Progress saved!');
+  renderProgress();
+}
+
+function closeProgressModal() {
+  document.getElementById('progress-modal').classList.remove('show');
+  currentProgressCode = null;
+  renderRoster();
+  renderProgress();
+}
+
+function renderAll(){ renderRoster(); }
+
+// ── BOOT ──────────────────────────────────────────────────────
+renderAll();
+
+</script>
+</body>
+</html>
