@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KingThinkers — Create Your King</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0B0B1E;
+    --navy2:  #13132A;
+    --card:   #1C1C3A;
+    --gold:   #F5A800;
+    --amber:  #FF6B1A;
+    --green:  #00C48C;
+    --sky:    #38BDF8;
+    --lilac:  #A78BFA;
+    --rose:   #FB7185;
+    --white:  #FFFFFF;
+    --muted:  #8080A8;
+    --border: rgba(255,255,255,0.08);
+    --f-d: 'Baloo 2', cursive;
+    --f-b: 'Nunito', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    font-family: var(--f-b);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--white);
+  }
+
+  /* ── STARFIELD ─────────────────────────────── */
+  #stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(167,139,250,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,168,0,0.06) 0%, transparent 50%);
+  }
+
+  .star {
+    position: absolute; border-radius: 50%; background: white;
+    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.1; transform: scale(1); }
+    50%      { opacity: 0.7; transform: scale(1.3); }
+  }
+
+  /* ── LAYOUT ────────────────────────────────── */
+  .app {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 40px;
+  }
+
+  /* ── TOP BAR ───────────────────────────────── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 900px; margin-bottom: 32px;
+  }
+  .logo {
+    font-family: var(--f-d); font-size: 18px; font-weight: 900;
+    color: var(--gold); display: flex; align-items: center; gap: 8px;
+  }
+  .step-badge {
+    background: rgba(245,168,0,0.12); border: 1px solid rgba(245,168,0,0.25);
+    border-radius: 100px; padding: 5px 14px;
+    font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 0.06em;
+  }
+
+  /* ── HERO TITLE ────────────────────────────── */
+  .hero { text-align: center; margin-bottom: 36px; }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 900; color: var(--amber);
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .hero-title {
+    font-family: var(--f-d); font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900; color: var(--white); line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-sub { font-size: 15px; color: var(--muted); max-width: 460px; margin: 0 auto; }
+
+  /* ── MAIN CREATOR CARD ─────────────────────── */
+  .creator {
+    width: 100%; max-width: 900px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 680px) {
+    .creator { grid-template-columns: 1fr; }
+  }
+
+  /* ── LEFT: LIVE PREVIEW ────────────────────── */
+  .preview-panel {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px 20px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 16px;
+    position: sticky; top: 24px;
+  }
+
+  .preview-label {
+    font-size: 10px; font-weight: 900; color: var(--muted);
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+
+  .king-stage {
+    width: 160px; height: 160px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .king-glow {
+    position: absolute; inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,168,0,0.2) 0%, transparent 70%);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%,100% { opacity: 0.6; transform: scale(0.95); }
+    50%      { opacity: 1;   transform: scale(1.05); }
+  }
+
+  .king-body {
+    position: relative; z-index: 1;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 72px;
+    border: 3px solid rgba(245,168,0,0.3);
+    background: var(--card);
+    overflow: hidden;
+  }
+
+  .king-body svg {
+    width: 100%; height: 100%;
+  }
+
+  .king-crown {
+    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    font-size: 28px; z-index: 2;
+    filter: drop-shadow(0 0 8px rgba(245,168,0,0.8));
+    animation: float-crown 3s ease-in-out infinite;
+  }
+  @keyframes float-crown {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(-4px); }
+  }
+
+  .preview-name {
+    font-family: var(--f-d); font-size: 20px; font-weight: 900;
+    color: var(--gold); text-align: center;
+    min-height: 28px;
+    transition: all 0.3s ease;
+  }
+
+  .preview-kingdom {
+    font-size: 12px; color: var(--muted); text-align: center;
+    font-style: italic;
+  }
+
+  .preview-stats {
+    display: flex; gap: 16px; margin-top: 4px;
+  }
+  .stat-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .stat-val {
+    font-family: var(--f-d); font-size: 16px; font-weight: 900; color: var(--gold);
+  }
+  .stat-lbl {
+    font-size: 9px; font-weight: 800; color: var(--muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  .preview-divider {
+    width: 80%; height: 1px; background: var(--border);
+  }
+
+  .preview-grade {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .grade-pill {
+    background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25);
+    border-radius: 100px; padding: 3px 10px;
+    font-size: 10px; font-weight: 800; color: var(--sky);
+  }
+
+  /* ── RIGHT: CUSTOMIZATION PANELS ──────────── */
+  .options-panel {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  .option-section {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    transition: border-color 0.3s;
+  }
+  .option-section:focus-within {
+    border-color: rgba(245,168,0,0.3);
+  }
+
+  .section-label {
+    font-size: 10px; font-weight: 900; color: var(--amber);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* Name input */
+  .name-input-wrap { position: relative; }
+  .name-input {
+    width: 100%;
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 14px; padding: 14px 48px 14px 18px;
+    font-family: var(--f-d); font-size: 20px; font-weight: 800;
+    color: var(--white); outline: none;
+    transition: border-color 0.3s;
+  }
+  .name-input::placeholder { color: var(--muted); font-size: 16px; }
+  .name-input:focus { border-color: var(--gold); }
+  .name-crown-icon {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 22px; pointer-events: none;
+  }
+
+  .name-suggestions {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .name-pill {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 100px; padding: 5px 14px;
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .name-pill:hover {
+    border-color: rgba(245,168,0,0.4); color: var(--gold);
+    background: rgba(245,168,0,0.08);
+  }
+
+  /* Skin tone grid */
+  .skin-grid {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .skin-option {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 3px solid transparent; cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    position: relative;
+  }
+  .skin-option:hover { transform: scale(1.15); }
+  .skin-option.selected {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(245,168,0,0.2);
+    transform: scale(1.2);
+  }
+
+  /* Hair grid */
+  .hair-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 10px;
+  }
+  .hair-option {
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 14px; padding: 10px 6px;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .hair-option:hover { border-color: rgba(245,168,0,0.3); transform: translateY(-2px); }
+  .hair-option.selected {
+    border-color: var(--gold);
+    background: rgba(245,168,0,0.08);
+    transform: translateY(-2px);
+  }
+  .hair-emoji { font-size: 28px; line-height: 1; }
+  .hair-name { font-size: 9px; font-weight: 800; color: var(--muted); text-align: center; letter-spacing: 0.04em; text-transform: uppercase; }
+  .hair-option.selected .hair-name { color: var(--gold); }
+
+  /* Outfit grid */
+  .outfit-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px;
+  }
+  .outfit-option {
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 16px; padding: 12px 6px 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+  }
+  .outfit-option:hover { border-color: rgba(167,139,250,0.4); transform: translateY(-2px); }
+  .outfit-option.selected {
+    border-color: var(--lilac);
+    background: rgba(167,139,250,0.08);
+    transform: translateY(-2px);
+  }
+  .outfit-emoji { font-size: 32px; line-height: 1; }
+  .outfit-name { font-size: 9px; font-weight: 800; color: var(--muted); text-align: center; letter-spacing: 0.04em; text-transform: uppercase; }
+  .outfit-option.selected .outfit-name { color: var(--lilac); }
+  .outfit-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--gold); color: var(--navy);
+    border-radius: 100px; padding: 2px 6px;
+    font-size: 8px; font-weight: 900; letter-spacing: 0.04em;
+  }
+
+  /* Grade selector */
+  .grade-grid {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .grade-option {
+    flex: 1; min-width: 60px;
+    background: var(--card); border: 2px solid var(--border);
+    border-radius: 14px; padding: 12px 6px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    cursor: pointer; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .grade-option:hover { border-color: rgba(56,189,248,0.4); transform: translateY(-2px); }
+  .grade-option.selected {
+    border-color: var(--sky);
+    background: rgba(56,189,248,0.1);
+    transform: translateY(-2px);
+  }
+  .grade-num {
+    font-family: var(--f-d); font-size: 22px; font-weight: 900; color: var(--white);
+  }
+  .grade-option.selected .grade-num { color: var(--sky); }
+  .grade-lbl { font-size: 9px; font-weight: 800; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .grade-option.selected .grade-lbl { color: var(--sky); }
+
+  /* ── CTA ───────────────────────────────────── */
+  .cta-row {
+    width: 100%; max-width: 900px;
+    margin-top: 28px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+  }
+
+  .btn-start {
+    width: 100%; max-width: 420px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border: none; border-radius: 18px;
+    padding: 18px 32px;
+    font-family: var(--f-d); font-size: 20px; font-weight: 900;
+    color: var(--navy); cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 32px rgba(245,168,0,0.3);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    position: relative; overflow: hidden;
+  }
+  .btn-start::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .btn-start:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 14px 40px rgba(245,168,0,0.45);
+  }
+  .btn-start:hover::before { opacity: 1; }
+  .btn-start:active { transform: translateY(0) scale(0.98); }
+  .btn-start:disabled {
+    opacity: 0.4; cursor: not-allowed; transform: none;
+    box-shadow: none;
+  }
+
+  .btn-sub { font-size: 12px; color: var(--muted); }
+
+  /* ── SUCCESS SCREEN ────────────────────────── */
+  #success-screen {
+    display: none;
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--navy);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 24px; padding: 32px;
+    animation: fadeIn 0.5s ease;
+  }
+  #success-screen.show { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .success-glow {
+    width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,168,0,0.3), transparent 70%);
+    display: flex; align-items: center; justify-content: center;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  .success-avatar { font-size: 90px; }
+  .success-title {
+    font-family: var(--f-d); font-size: clamp(28px, 6vw, 42px); font-weight: 900;
+    color: var(--gold); text-align: center; line-height: 1.1;
+  }
+  .success-sub { font-size: 16px; color: var(--muted); text-align: center; max-width: 380px; }
+
+  .xp-burst {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(245,168,0,0.1); border: 1px solid rgba(245,168,0,0.25);
+    border-radius: 100px; padding: 10px 24px;
+  }
+  .xp-burst-val {
+    font-family: var(--f-d); font-size: 24px; font-weight: 900; color: var(--gold);
+  }
+  .xp-burst-lbl { font-size: 13px; font-weight: 700; color: var(--muted); }
+
+  .btn-enter {
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border: none; border-radius: 16px; padding: 16px 40px;
+    font-family: var(--f-d); font-size: 18px; font-weight: 900;
+    color: var(--navy); cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 32px rgba(245,168,0,0.3);
+  }
+  .btn-enter:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 14px 40px rgba(245,168,0,0.45); }
+
+  /* ── FIREWORKS ─────────────────────────────── */
+  .fw {
+    position: fixed; font-size: 20px; pointer-events: none; z-index: 200;
+    animation: fw var(--dur, 0.8s) ease-out forwards var(--delay, 0s);
+  }
+  @keyframes fw {
+    0%   { opacity: 1; transform: translate(0,0) scale(0.5); }
+    100% { opacity: 0; transform: translate(var(--tx,0), var(--ty,-120px)) scale(1.2); }
+  }
+
+  /* ── SHIMMER on select ─────────────────────── */
+  @keyframes shimmer {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.25); }
+    60%  { transform: scale(0.95); }
+    100% { transform: scale(1.2); }
+  }
+  .pop { animation: shimmer 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+</style>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KingThinkers">
+  <meta name="theme-color" content="#F5A800">
+</head>
+<body>
+
+<!-- Starfield -->
+<div id="stars"></div>
+
+<!-- Success screen -->
+<div id="success-screen">
+  <div class="success-glow">
+    <div class="success-avatar" id="success-avatar">🧒🏾</div>
+  </div>
+  <div class="success-title" id="success-title">Rise up, King Marcus!</div>
+  <div class="success-sub">Your kingdom awaits. Every quest you complete makes you stronger. Let's go!</div>
+  <div class="xp-burst">
+    <div class="xp-burst-val">+100 XP</div>
+    <div class="xp-burst-lbl">Character Created!</div>
+  </div>
+  <button class="btn-enter" onclick="enterKingdom()">Enter the Kingdom →</button>
+</div>
+
+<div class="app">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="logo">👑 KingThinkers</div>
+    <div class="step-badge">Step 1 of 4 — Create Your King</div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">✨ Character Creation</div>
+    <h1 class="hero-title">Build Your <span>King</span></h1>
+    <p class="hero-sub">Make him look just like you — or whoever you want to be. This is YOUR adventure.</p>
+  </div>
+
+  <!-- Creator -->
+  <div class="creator">
+
+    <!-- LEFT: Preview -->
+    <div class="preview-panel">
+      <div class="preview-label">Your King</div>
+
+      <div class="king-stage">
+        <div class="king-glow"></div>
+        <div class="king-body" id="king-body">
+          <!-- SVG character rendered here -->
+          <svg viewBox="0 0 100 100" id="king-svg"></svg>
+        </div>
+        <div class="king-crown">👑</div>
+      </div>
+
+      <div class="preview-name" id="preview-name">Young King</div>
+      <div class="preview-kingdom" id="preview-kingdom">Kingdom of Kente</div>
+
+      <div class="preview-divider"></div>
+
+      <div class="preview-stats">
+        <div class="stat-chip">
+          <div class="stat-val">0</div>
+          <div class="stat-lbl">XP</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-val" style="color:var(--green)">0</div>
+          <div class="stat-lbl">Quests</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-val" style="color:var(--sky)">👑 0</div>
+          <div class="stat-lbl">Crowns</div>
+        </div>
+      </div>
+
+      <div class="preview-divider"></div>
+
+      <div class="preview-grade">
+        <div class="grade-pill" id="preview-grade-pill">Grade K</div>
+        <div class="grade-pill" style="background:rgba(0,196,140,0.1);border-color:rgba(0,196,140,0.3);color:var(--green)">New King</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Options -->
+    <div class="options-panel">
+
+      <!-- Name -->
+      <div class="option-section">
+        <div class="section-label">👤 Your King's Name</div>
+        <div class="name-input-wrap">
+          <input
+            class="name-input"
+            id="king-name"
+            type="text"
+            placeholder="Enter your name…"
+            maxlength="20"
+            oninput="updateName(this.value)"
+          >
+          <span class="name-crown-icon">✏️</span>
+        </div>
+        <div class="name-suggestions">
+          <span class="name-pill" onclick="setName('Marcus')">Marcus</span>
+          <span class="name-pill" onclick="setName('Jaylen')">Jaylen</span>
+          <span class="name-pill" onclick="setName('Amari')">Amari</span>
+          <span class="name-pill" onclick="setName('Kofi')">Kofi</span>
+          <span class="name-pill" onclick="setName('Zion')">Zion</span>
+          <span class="name-pill" onclick="setName('Elijah')">Elijah</span>
+          <span class="name-pill" onclick="setName('Isaiah')">Isaiah</span>
+          <span class="name-pill" onclick="setName('Malik')">Malik</span>
+          <span class="name-pill" onclick="setName('Kai')">Kai</span>
+          <span class="name-pill" onclick="setName('Darius')">Darius</span>
+        </div>
+      </div>
+
+      <!-- Skin tone -->
+      <div class="option-section">
+        <div class="section-label">🎨 Skin Tone</div>
+        <div class="skin-grid" id="skin-grid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Hairstyle -->
+      <div class="option-section">
+        <div class="section-label">✂️ Hairstyle</div>
+        <div class="hair-grid" id="hair-grid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Outfit -->
+      <div class="option-section">
+        <div class="section-label">👘 Outfit</div>
+        <div class="outfit-grid" id="outfit-grid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Grade -->
+      <div class="option-section">
+        <div class="section-label">📚 Grade Level</div>
+        <div class="grade-grid" id="grade-grid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-row">
+    <button class="btn-start" id="btn-start" onclick="createKing()" disabled>
+      👑 Start My Kingdom
+    </button>
+    <div class="btn-sub">Enter your name to begin your quest</div>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const SKINS = [
+  { id:'s1', tone:'#FDBCB4', label:'Light',   fill:'#FDBCB4', shadow:'#E8957A' },
+  { id:'s2', tone:'#E8A87C', label:'Medium',  fill:'#E8A87C', shadow:'#C97B42' },
+  { id:'s3', tone:'#C68642', label:'Tan',     fill:'#C68642', shadow:'#A0642A' },
+  { id:'s4', tone:'#8D5524', label:'Brown',   fill:'#8D5524', shadow:'#6B3E1A' },
+  { id:'s5', tone:'#5C3317', label:'Deep',    fill:'#5C3317', shadow:'#3D1F08' },
+  { id:'s6', tone:'#3B1F0C', label:'Rich',    fill:'#3B1F0C', shadow:'#1E0D04' },
+];
+
+const HAIR_STYLES = [
+  { id:'h1', emoji:'🌀', name:'Coils',    path: 'coils'    },
+  { id:'h2', emoji:'〰️', name:'Waves',    path: 'waves'    },
+  { id:'h3', emoji:'⬛', name:'Fade',     path: 'fade'     },
+  { id:'h4', emoji:'🌿', name:'Locs',     path: 'locs'     },
+  { id:'h5', emoji:'💫', name:'Afro',     path: 'afro'     },
+  { id:'h6', emoji:'🔲', name:'Box Cut',  path: 'boxcut'   },
+  { id:'h7', emoji:'➰', name:'Twists',   path: 'twists'   },
+  { id:'h8', emoji:'⚡', name:'Clean',    path: 'clean'    },
+];
+
+const OUTFITS = [
+  { id:'o1', emoji:'🦁', name:'Lion King',    badge: null      },
+  { id:'o2', emoji:'⚔️',  name:'Warrior',     badge: null      },
+  { id:'o3', emoji:'🌍', name:'Scholar',      badge: null      },
+  { id:'o4', emoji:'🏺', name:'Pharaoh',      badge: null      },
+  { id:'o5', emoji:'🎓', name:'Graduate',     badge: null      },
+  { id:'o6', emoji:'🚀', name:'Astronaut',    badge: 'NEW'     },
+  { id:'o7', emoji:'🎮', name:'Gamer King',   badge: null      },
+  { id:'o8', emoji:'🎨', name:'Artist',       badge: null      },
+];
+
+const GRADES = [
+  { id:'gK', num:'K',  lbl:'Kinder'  },
+  { id:'g1', num:'1',  lbl:'1st'     },
+  { id:'g2', num:'2',  lbl:'2nd'     },
+  { id:'g3', num:'3',  lbl:'3rd'     },
+  { id:'g4', num:'4',  lbl:'4th'     },
+  { id:'g5', num:'5',  lbl:'5th'     },
+];
+
+// ── STATE ─────────────────────────────────────────────────────
+let state = {
+  name:    '',
+  skinId:  's4',
+  hairId:  'h5',
+  outfitId:'o1',
+  gradeId: 'g3',
+};
+
+// ── INIT ──────────────────────────────────────────────────────
+function init() {
+  buildStars();
+  renderSkins();
+  renderHair();
+  renderOutfits();
+  renderGrades();
+  renderCharacter();
+}
+
+// ── STARS ─────────────────────────────────────────────────────
+function buildStars() {
+  const cont = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --delay:${Math.random()*4}s;
+    `;
+    cont.appendChild(s);
+  }
+}
+
+// ── RENDERERS ─────────────────────────────────────────────────
+function renderSkins() {
+  const g = document.getElementById('skin-grid');
+  g.innerHTML = SKINS.map(s => `
+    <div class="skin-option${s.id===state.skinId?' selected':''}"
+         style="background:${s.tone}"
+         onclick="selectSkin('${s.id}')"
+         title="${s.label}">
+    </div>
+  `).join('');
+}
+
+function renderHair() {
+  const g = document.getElementById('hair-grid');
+  g.innerHTML = HAIR_STYLES.map(h => `
+    <div class="hair-option${h.id===state.hairId?' selected':''}"
+         onclick="selectHair('${h.id}')">
+      <div class="hair-emoji">${h.emoji}</div>
+      <div class="hair-name">${h.name}</div>
+    </div>
+  `).join('');
+}
+
+function renderOutfits() {
+  const g = document.getElementById('outfit-grid');
+  g.innerHTML = OUTFITS.map(o => `
+    <div class="outfit-option${o.id===state.outfitId?' selected':''}"
+         onclick="selectOutfit('${o.id}')">
+      ${o.badge ? `<div class="outfit-badge">${o.badge}</div>` : ''}
+      <div class="outfit-emoji">${o.emoji}</div>
+      <div class="outfit-name">${o.name}</div>
+    </div>
+  `).join('');
+}
+
+function renderGrades() {
+  const g = document.getElementById('grade-grid');
+  g.innerHTML = GRADES.map(gr => `
+    <div class="grade-option${gr.id===state.gradeId?' selected':''}"
+         onclick="selectGrade('${gr.id}')">
+      <div class="grade-num">${gr.num}</div>
+      <div class="grade-lbl">${gr.lbl}</div>
+    </div>
+  `).join('');
+}
+
+// ── CHARACTER SVG ─────────────────────────────────────────────
+function renderCharacter() {
+  const skin   = SKINS.find(s => s.id === state.skinId);
+  const hair   = HAIR_STYLES.find(h => h.id === state.hairId);
+  const outfit = OUTFITS.find(o => o.id === state.outfitId);
+
+  const fill   = skin.fill;
+  const shadow = skin.shadow;
+
+  // Hair color based on style
+  const hairColors = {
+    coils:'#1A0A00', waves:'#2A1500', fade:'#1A0A00',
+    locs:'#3A1E00',  afro:'#0D0600',  boxcut:'#1A0A00',
+    twists:'#2A1500', clean:'#1A0A00'
+  };
+  const hc = hairColors[hair.path] || '#1A0A00';
+
+  // Outfit accent color
+  const outfitColors = {
+    o1:'#F5A800', o2:'#FF6B1A', o3:'#38BDF8', o4:'#F5A800',
+    o5:'#A78BFA', o6:'#00C48C', o7:'#38BDF8',  o8:'#FB7185'
+  };
+  const oc = outfitColors[state.outfitId] || '#F5A800';
+
+  // Hair shapes per style
+  const hairShapes = {
+    afro:   `<ellipse cx="50" cy="26" rx="26" ry="22" fill="${hc}"/>`,
+    coils:  `<ellipse cx="50" cy="26" rx="23" ry="18" fill="${hc}"/>
+              <circle cx="34" cy="22" r="5" fill="${hc}"/>
+              <circle cx="42" cy="16" r="6" fill="${hc}"/>
+              <circle cx="52" cy="14" r="7" fill="${hc}"/>
+              <circle cx="62" cy="18" r="5" fill="${hc}"/>
+              <circle cx="67" cy="26" r="5" fill="${hc}"/>`,
+    waves:  `<path d="M24 30 Q28 18 36 22 Q44 26 52 20 Q60 14 68 20 Q74 26 76 32" fill="none" stroke="${hc}" stroke-width="6" stroke-linecap="round"/>
+              <ellipse cx="50" cy="24" rx="24" ry="14" fill="${hc}" opacity="0.7"/>`,
+    fade:   `<path d="M26 38 Q26 20 50 18 Q74 20 74 38" fill="${hc}"/>`,
+    locs:   `<ellipse cx="50" cy="24" rx="23" ry="16" fill="${hc}"/>
+              <rect x="29" y="28" width="5" height="14" rx="2" fill="${hc}"/>
+              <rect x="37" y="26" width="5" height="16" rx="2" fill="${hc}"/>
+              <rect x="45" y="25" width="5" height="18" rx="2" fill="${hc}"/>
+              <rect x="53" y="25" width="5" height="16" rx="2" fill="${hc}"/>
+              <rect x="61" y="26" width="5" height="14" rx="2" fill="${hc}"/>`,
+    boxcut: `<rect x="27" y="15" width="46" height="22" rx="4" fill="${hc}"/>`,
+    twists: `<ellipse cx="50" cy="22" rx="22" ry="14" fill="${hc}"/>
+              <path d="M32 26 Q28 18 32 10 Q36 18 32 26" fill="${hc}"/>
+              <path d="M44 24 Q40 16 44 8 Q48 16 44 24" fill="${hc}"/>
+              <path d="M56 24 Q52 16 56 8 Q60 16 56 24" fill="${hc}"/>
+              <path d="M68 26 Q64 18 68 10 Q72 18 68 26" fill="${hc}"/>`,
+    clean:  `<path d="M28 32 Q28 16 50 14 Q72 16 72 32" fill="${hc}"/>`,
+  };
+
+  const hairSVG = hairShapes[hair.path] || hairShapes.afro;
+
+  // Outfit shirt designs
+  const shirtShapes = {
+    o1: `<path d="M20 75 L30 62 Q50 68 70 62 L80 75 Q65 80 50 82 Q35 80 20 75Z" fill="${oc}"/>
+         <text x="50" y="78" text-anchor="middle" font-size="10" fill="white">🦁</text>`,
+    o2: `<path d="M18 75 L28 58 Q50 66 72 58 L82 75 Q65 82 50 84 Q35 82 18 75Z" fill="${oc}"/>
+         <path d="M35 65 L50 60 L65 65" stroke="white" stroke-width="2" fill="none"/>`,
+    o3: `<path d="M22 75 L32 62 Q50 68 68 62 L78 75 Q63 80 50 82 Q37 80 22 75Z" fill="${oc}"/>
+         <circle cx="50" cy="70" r="6" fill="white" opacity="0.3"/>`,
+    o4: `<path d="M20 75 L30 58 Q50 66 70 58 L80 75 Q65 82 50 84 Q35 82 20 75Z" fill="${oc}"/>
+         <path d="M40 66 L50 62 L60 66 L58 72 L50 74 L42 72Z" fill="white" opacity="0.4"/>`,
+    o5: `<path d="M22 74 L30 60 Q50 66 70 60 L78 74 Q63 80 50 82 Q37 80 22 74Z" fill="${oc}"/>
+         <rect x="44" y="62" width="12" height="8" rx="2" fill="white" opacity="0.35"/>`,
+    o6: `<path d="M20 75 L28 56 Q50 64 72 56 L80 75 Q65 82 50 84 Q35 82 20 75Z" fill="${oc}"/>
+         <text x="50" y="72" text-anchor="middle" font-size="10" fill="white">🚀</text>`,
+    o7: `<path d="M22 75 L32 60 Q50 66 68 60 L78 75 Q63 80 50 82 Q37 80 22 75Z" fill="${oc}"/>
+         <text x="50" y="72" text-anchor="middle" font-size="10" fill="white">🎮</text>`,
+    o8: `<path d="M22 75 L32 62 Q50 68 68 62 L78 75 Q63 80 50 82 Q37 80 22 75Z" fill="${oc}"/>
+         <text x="50" y="72" text-anchor="middle" font-size="10" fill="white">🎨</text>`,
+  };
+
+  const shirtSVG = shirtShapes[state.outfitId] || shirtShapes.o1;
+
+  const svg = `
+    <!-- Neck / body -->
+    <ellipse cx="50" cy="88" rx="26" ry="18" fill="${shadow}" opacity="0.4"/>
+    ${shirtSVG}
+    <!-- Neck -->
+    <rect x="44" y="54" width="12" height="10" rx="3" fill="${shadow}"/>
+    <!-- Ears (behind head) -->
+    <ellipse cx="28" cy="42" rx="4" ry="5" fill="${fill}"/>
+    <ellipse cx="72" cy="42" rx="4" ry="5" fill="${fill}"/>
+    <!-- Hair BEHIND face (renders first so face draws on top) -->
+    ${hairSVG}
+    <!-- Head drawn after hair so face stays visible -->
+    <ellipse cx="50" cy="44" rx="21" ry="22" fill="${fill}"/>
+    <!-- Cheek shadows -->
+    <circle cx="31" cy="47" r="5" fill="${shadow}" opacity="0.25"/>
+    <circle cx="69" cy="47" r="5" fill="${shadow}" opacity="0.25"/>
+    <!-- Eyes -->
+    <ellipse cx="42" cy="41" rx="4" ry="4.5" fill="#1A0A00"/>
+    <ellipse cx="58" cy="41" rx="4" ry="4.5" fill="#1A0A00"/>
+    <circle cx="43.5" cy="39.5" r="1.5" fill="white"/>
+    <circle cx="59.5" cy="39.5" r="1.5" fill="white"/>
+    <!-- Nose -->
+    <ellipse cx="50" cy="48" rx="3" ry="2" fill="${shadow}" opacity="0.5"/>
+    <!-- Smile -->
+    <path d="M43 55 Q50 61 57 55" stroke="${shadow}" stroke-width="2" fill="none" stroke-linecap="round"/>
+  `;
+
+  document.getElementById('king-svg').innerHTML = svg;
+}
+
+// ── SELECTORS ─────────────────────────────────────────────────
+function selectSkin(id) {
+  state.skinId = id;
+  renderSkins();
+  renderCharacter();
+  popKing();
+}
+
+function selectHair(id) {
+  state.hairId = id;
+  renderHair();
+  renderCharacter();
+  popKing();
+}
+
+function selectOutfit(id) {
+  state.outfitId = id;
+  renderOutfits();
+  renderCharacter();
+  popKing();
+}
+
+function selectGrade(id) {
+  state.gradeId = id;
+  renderGrades();
+  const g = GRADES.find(gr => gr.id === id);
+  document.getElementById('preview-grade-pill').textContent = `Grade ${g.num}`;
+}
+
+function updateName(val) {
+  state.name = val.trim();
+  const display = state.name || 'Young King';
+  document.getElementById('preview-name').textContent = display;
+  document.getElementById('btn-start').disabled = state.name.length < 2;
+  document.querySelector('.btn-sub').textContent = state.name.length < 2
+    ? 'Enter your name to begin your quest'
+    : `Ready, King ${state.name}! Let's go! 👑`;
+}
+
+function setName(name) {
+  document.getElementById('king-name').value = name;
+  updateName(name);
+}
+
+function popKing() {
+  const el = document.getElementById('king-body');
+  el.classList.remove('pop');
+  void el.offsetWidth;
+  el.classList.add('pop');
+}
+
+// ── CREATE KING ───────────────────────────────────────────────
+function createKing() {
+  if (state.name.length < 2) return;
+
+  const skin   = SKINS.find(s => s.id === state.skinId);
+  const hair   = HAIR_STYLES.find(h => h.id === state.hairId);
+  const outfit = OUTFITS.find(o => o.id === state.outfitId);
+  const grade  = GRADES.find(g => g.id === state.gradeId);
+
+  // Save to localStorage
+  const profile = {
+    name:    state.name,
+    skinId:  state.skinId,
+    hairId:  state.hairId,
+    outfitId:state.outfitId,
+    gradeId: state.gradeId,
+    grade:   grade.num,
+    xp:      100,
+    crowns:  0,
+    quests:  0,
+    createdAt: Date.now(),
+    kingdom: 'Kingdom of Kente',
+  };
+  localStorage.setItem('kt_profile', JSON.stringify(profile));
+
+  // Show success
+  launchFireworks();
+  setTimeout(() => {
+    const ss = document.getElementById('success-screen');
+    document.getElementById('success-title').textContent = `Rise up, King ${state.name}!`;
+    // Rebuild SVG in success screen
+    document.getElementById('success-avatar').innerHTML =
+      `<svg viewBox="0 0 100 100" style="width:100%;height:100%;">${document.getElementById('king-svg').innerHTML}</svg>`;
+    ss.classList.add('show');
+  }, 600);
+}
+
+function launchFireworks() {
+  const emojis = ['👑','⭐','✨','💫','🌟','🎉','🏆'];
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const fw = document.createElement('div');
+      fw.className = 'fw';
+      fw.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      fw.style.cssText = `
+        left:${20+Math.random()*60}%;
+        top:${20+Math.random()*60}%;
+        --tx:${(Math.random()-0.5)*200}px;
+        --ty:${-80-Math.random()*120}px;
+        --dur:${0.6+Math.random()*0.6}s;
+        --delay:0s;
+      `;
+      document.body.appendChild(fw);
+      setTimeout(() => fw.remove(), 1400);
+    }, i * 60);
+  }
+}
+
+function enterKingdom() {
+  // Mark profile as complete on the student record so login skips character creation
+  try {
+    var code = localStorage.getItem('kt_active_code');
+    if (code) {
+      var key = 'kt_student_' + code;
+      var student = JSON.parse(localStorage.getItem(key) || '{}');
+      student.profileComplete = true;
+      student.skinId   = state.skinId;
+      student.hairId   = state.hairId;
+      student.outfitId = state.outfitId;
+      student.name     = student.name || state.name;
+      localStorage.setItem(key, JSON.stringify(student));
+    }
+  } catch(e) {}
+  window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
+}
+
+// ── BOOT ──────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
