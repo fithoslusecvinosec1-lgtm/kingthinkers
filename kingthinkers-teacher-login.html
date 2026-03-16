@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>KingThinkers — Teacher Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;900&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#F5A800">
+<style>
+:root{
+  --navy:#0B0B1E;--navy2:#13132A;--card:#1C1C3A;
+  --gold:#F5A800;--amber:#FF6B1A;--green:#00C48C;
+  --sky:#38BDF8;--red:#FF4757;
+  --white:#FFFFFF;--muted:#8080A8;--border:rgba(255,255,255,0.08);
+  --f-d:"Baloo 2",cursive;--f-b:"Nunito",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--white);display:flex;align-items:center;justify-content:center;}
+
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.s{position:absolute;border-radius:50%;background:white;animation:tw var(--d,3s) ease-in-out infinite var(--delay,0s);}
+@keyframes tw{0%,100%{opacity:.1;}50%{opacity:.6;}}
+
+.container{
+  position:relative;z-index:10;
+  width:100%;max-width:400px;padding:24px 20px;
+}
+
+.logo{
+  text-align:center;margin-bottom:32px;
+}
+.logo-crown{font-size:48px;margin-bottom:8px;}
+.logo-title{font-family:var(--f-d);font-size:24px;font-weight:900;color:var(--gold);}
+.logo-sub{font-size:13px;color:var(--muted);margin-top:4px;}
+
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:28px 24px;
+}
+.card-title{font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--white);margin-bottom:6px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+
+.lbl{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;}
+.inp{
+  background:var(--navy2);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;font-family:var(--f-b);font-size:15px;color:var(--white);
+  width:100%;display:block;outline:none;margin-bottom:14px;
+  -webkit-appearance:none;
+}
+.inp:focus{border-color:rgba(245,168,0,.5);}
+
+.login-btn{
+  display:block;width:100%;
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  border:none;border-radius:12px;padding:15px;
+  font-family:var(--f-d);font-size:16px;font-weight:900;color:#000;
+  cursor:pointer;margin-top:8px;
+  -webkit-tap-highlight-color:transparent;
+}
+.login-btn:disabled{opacity:.5;}
+
+.error-msg{
+  background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);
+  border-radius:10px;padding:10px 14px;font-size:13px;color:var(--red);
+  margin-top:12px;display:none;text-align:center;
+}
+.error-msg.show{display:block;}
+
+.divider{
+  text-align:center;color:var(--muted);font-size:12px;
+  margin:24px 0 20px;position:relative;
+}
+.divider::before,.divider::after{
+  content:'';position:absolute;top:50%;width:40%;height:1px;
+  background:var(--border);
+}
+.divider::before{left:0;}
+.divider::after{right:0;}
+
+.register-section{margin-top:4px;}
+.register-title{font-family:var(--f-d);font-size:15px;font-weight:800;color:var(--sky);margin-bottom:14px;}
+
+.toggle-link{
+  text-align:center;margin-top:16px;font-size:13px;color:var(--muted);
+}
+.toggle-link a{color:var(--sky);font-weight:800;cursor:pointer;text-decoration:none;}
+
+.student-link{
+  text-align:center;margin-top:20px;
+}
+.student-link a{
+  font-size:12px;color:var(--muted);text-decoration:none;
+  border:1px solid var(--border);border-radius:100px;
+  padding:6px 16px;display:inline-block;
+}
+
+.loading{display:none;text-align:center;padding:20px;color:var(--muted);font-size:14px;}
+.loading.show{display:block;}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+
+<div class="container">
+  <div class="logo">
+    <div class="logo-crown">👑</div>
+    <div class="logo-title">KingThinkers</div>
+    <div class="logo-sub">Teacher Portal</div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="card" id="login-card">
+    <div class="card-title">Welcome back, Teacher</div>
+    <div class="card-sub">Sign in to view your class roster and track progress.</div>
+
+    <label class="lbl">Username</label>
+    <input type="text" id="t-username" class="inp" placeholder="Your username" autocomplete="username" autocorrect="off" autocapitalize="none">
+
+    <label class="lbl">Password</label>
+    <input type="password" id="t-password" class="inp" placeholder="Your password" autocomplete="current-password">
+
+    <button class="login-btn" id="login-btn">Sign In →</button>
+    <div class="error-msg" id="login-error">Username or password incorrect. Please try again.</div>
+
+    <div class="toggle-link">
+      New teacher? <a id="show-register">Create an account →</a>
+    </div>
+  </div>
+
+  <!-- REGISTER FORM -->
+  <div class="card" id="register-card" style="display:none;">
+    <div class="card-title">Create Teacher Account</div>
+    <div class="card-sub">Set up your account to manage your class on KingThinkers.</div>
+
+    <label class="lbl">Your Name</label>
+    <input type="text" id="r-name" class="inp" placeholder="e.g. Ms. Johnson" autocomplete="name">
+
+    <label class="lbl">Username</label>
+    <input type="text" id="r-username" class="inp" placeholder="Choose a username" autocomplete="off" autocorrect="off" autocapitalize="none">
+
+    <label class="lbl">Password</label>
+    <input type="password" id="r-password" class="inp" placeholder="Choose a password" autocomplete="new-password">
+
+    <label class="lbl">Class Code</label>
+    <input type="text" id="r-class" class="inp" placeholder="e.g. JOHNSON-3B" autocomplete="off" autocorrect="off" autocapitalize="characters">
+    <div style="font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:14px;">Students will enter this when registering. Keep it simple.</div>
+
+    <label class="lbl">School Name</label>
+    <input type="text" id="r-school" class="inp" placeholder="e.g. MLK Elementary">
+
+    <button class="login-btn" id="register-btn">Create Account →</button>
+    <div class="error-msg" id="register-error">Something went wrong. Please try again.</div>
+
+    <div class="toggle-link">
+      Already have an account? <a id="show-login">Sign in →</a>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">Loading your classroom…</div>
+
+  <div class="student-link">
+    <a href="/kingthinkers/kingthinkers-login.html">👦 Go to Student Login</a>
+  </div>
+</div>
+
+<script src="/kingthinkers/kt-db.js"></script>
+<script>
+const SUPABASE_URL = 'https://bfyogmoqasqoefxxykdv.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmeW9nbW9xYXNxb2VmeHh5a2R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MTc2MTEsImV4cCI6MjA4OTE5MzYxMX0.4a69dRJxfcEysDpfRkG4Evgf-kJC64qZ2uwXfmfldI0';
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY,
+};
+
+// ── SIMPLE HASH (not cryptographic, just obfuscation for pilot) ──
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password + 'kt_salt_2026');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── CHECK SESSION ─────────────────────────────────────────────
+function checkSession() {
+  const session = getTeacherSession();
+  if (session) {
+    window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
+  }
+}
+
+function getTeacherSession() {
+  try { return JSON.parse(sessionStorage.getItem('kt_teacher') || 'null'); }
+  catch(e) { return null; }
+}
+
+function setTeacherSession(teacher) {
+  sessionStorage.setItem('kt_teacher', JSON.stringify(teacher));
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────
+async function doLogin() {
+  const username = document.getElementById('t-username').value.trim().toLowerCase();
+  const password = document.getElementById('t-password').value;
+  const errorEl  = document.getElementById('login-error');
+  const btn      = document.getElementById('login-btn');
+
+  if (!username || !password) {
+    errorEl.textContent = 'Please enter your username and password.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  errorEl.classList.remove('show');
+
+  try {
+    const hash = await hashPassword(password);
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/teachers?username=eq.${encodeURIComponent(username)}&password_hash=eq.${hash}&limit=1`,
+      { headers: HEADERS }
+    );
+    const data = await res.json();
+
+    if (data && data.length > 0) {
+      const teacher = data[0];
+      setTeacherSession({
+        id:        teacher.id,
+        username:  teacher.username,
+        name:      teacher.name,
+        classCode: teacher.class_code,
+        school:    teacher.school,
+      });
+      document.getElementById('login-card').style.display = 'none';
+      document.getElementById('loading').classList.add('show');
+      setTimeout(() => {
+        window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
+      }, 800);
+    } else {
+      errorEl.textContent = 'Username or password incorrect. Please try again.';
+      errorEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Sign In →';
+    }
+  } catch(e) {
+    errorEl.textContent = 'Connection error. Please check your internet and try again.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Sign In →';
+  }
+}
+
+// ── REGISTER ──────────────────────────────────────────────────
+async function doRegister() {
+  const name      = document.getElementById('r-name').value.trim();
+  const username  = document.getElementById('r-username').value.trim().toLowerCase();
+  const password  = document.getElementById('r-password').value;
+  const classCode = document.getElementById('r-class').value.trim().toUpperCase();
+  const school    = document.getElementById('r-school').value.trim();
+  const errorEl   = document.getElementById('register-error');
+  const btn       = document.getElementById('register-btn');
+
+  if (!name || !username || !password || !classCode) {
+    errorEl.textContent = 'Please fill in all required fields.';
+    errorEl.classList.add('show');
+    return;
+  }
+  if (password.length < 6) {
+    errorEl.textContent = 'Password must be at least 6 characters.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating account…';
+  errorEl.classList.remove('show');
+
+  try {
+    const hash = await hashPassword(password);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/teachers`, {
+      method: 'POST',
+      headers: { ...HEADERS, 'Prefer': 'return=representation' },
+      body: JSON.stringify({
+        username:      username,
+        password_hash: hash,
+        name:          name,
+        class_code:    classCode,
+        school:        school || null,
+      })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      const teacher = Array.isArray(data) ? data[0] : data;
+      setTeacherSession({
+        id:        teacher.id,
+        username:  teacher.username,
+        name:      teacher.name,
+        classCode: teacher.class_code,
+        school:    teacher.school,
+      });
+      document.getElementById('register-card').style.display = 'none';
+      document.getElementById('loading').classList.add('show');
+      setTimeout(() => {
+        window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
+      }, 800);
+    } else {
+      const err = await res.json();
+      if (err.message && err.message.includes('unique')) {
+        errorEl.textContent = 'That username or class code is already taken. Please choose another.';
+      } else {
+        errorEl.textContent = 'Could not create account. Please try again.';
+      }
+      errorEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Create Account →';
+    }
+  } catch(e) {
+    errorEl.textContent = 'Connection error. Please check your internet and try again.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Create Account →';
+  }
+}
+
+// ── STARS ─────────────────────────────────────────────────────
+function buildStars() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 50; i++) {
+    const s = document.createElement('div'); s.className = 's';
+    const sz = Math.random() * 2 + 0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;`;
+    c.appendChild(s);
+  }
+}
+
+// ── BOOT ──────────────────────────────────────────────────────
+buildStars();
+checkSession();
+
+window.addEventListener('load', function() {
+  document.getElementById('login-btn').addEventListener('click', doLogin);
+  document.getElementById('register-btn').addEventListener('click', doRegister);
+
+  document.getElementById('show-register').addEventListener('click', function() {
+    document.getElementById('login-card').style.display = 'none';
+    document.getElementById('register-card').style.display = 'block';
+  });
+  document.getElementById('show-login').addEventListener('click', function() {
+    document.getElementById('register-card').style.display = 'none';
+    document.getElementById('login-card').style.display = 'block';
+  });
+
+  // Allow Enter key to submit
+  document.getElementById('t-password').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+  document.getElementById('r-school').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doRegister();
+  });
+});
+</script>
+</body>
+</html>
