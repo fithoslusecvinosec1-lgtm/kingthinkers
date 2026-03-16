@@ -680,7 +680,7 @@ function selVocab(type,id){
 }
 
 // ── COMPLETE ──────────────────────────────────────────────────────────────────
-function showComplete() { KTAudio.questComplete();{
+function showComplete() { KTAudio.questComplete();
   const elapsed=Math.round((Date.now()-startTime)/1000);
   const acc=totalQs>0?Math.round((correct/totalQs)*100):100;
   gainXP(acc===100?50:acc>=75?25:0);
