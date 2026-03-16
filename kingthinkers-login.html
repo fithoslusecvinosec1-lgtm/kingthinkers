@@ -575,7 +575,8 @@ function getEnteredCode() {
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────
-function doLogin() {
+async function doLogin() {
+  KTAudio.init(); KTAudio.tap();
   const code = getEnteredCode();
   if (code.length < 4) return;
 
@@ -626,7 +627,8 @@ function generateCode() {
   return code;
 }
 
-function doRegister() {
+async function doRegister() {
+  KTAudio.init(); KTAudio.tap();
   const name  = document.getElementById('new-name').value.trim();
   const cls   = document.getElementById('new-class').value.trim().toUpperCase();
   if (name.length < 2 || cls.length < 2) return;
