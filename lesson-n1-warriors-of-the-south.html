@@ -157,6 +157,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
     <div class="hud-crowns" id="hud-crowns">👑 0</div>
     <div class="hud-grade" id="hud-grade">3rd Grade · Reading</div>
     <button class="hud-btn" onclick="window.location.href='/kingthinkers/kingthinkers-dashboard.html'">← Map</button>
+    <button class="hud-btn" id="mute-btn" onclick="toggleSoundBtn()">🔊</button>
     <button class="hud-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
   </div>
 
@@ -549,12 +550,12 @@ function answerMCQ(btn){
     btn.classList.add('correct');
     gainXP(xpR);gainCrowns(crR);
     fb.innerHTML=`<div class="fb correct-fb">✅ ${cfb}</div>`;
-    playCorrect(); KTAudio.correct(); showToast('👑','Correct!',`+${xpR} XP · +${crR} Crown${crR>1?'s':''}`);
+    KTAudio.correct(); showToast('👑','Correct!',`+${xpR} XP · +${crR} Crown${crR>1?'s':''}`);
     setTimeout(nextPhase,1800);
   } else {
     btn.classList.add('wrong');
     fb.innerHTML=`<div class="fb wrong-fb">💭 ${wfb}</div>`;
-    playWrong(); KTAudio.wrong(); showToast('🤖','Not quite!','Think it through, King!');
+    KTAudio.wrong(); showToast('🤖','Not quite!','Think it through, King!');
     setTimeout(()=>{
       document.querySelectorAll('.choice').forEach(c=>{c.disabled=false;c.classList.remove('wrong','correct');});
       fb.style.display='none';
@@ -616,7 +617,7 @@ function submitInput(){
   } else {
     input.style.borderColor='var(--red)';
     fb.innerHTML=`<div class="fb wrong-fb">💭 ${m.wfb}</div>`;
-    playWrong(); showToast('🤖','Not quite!','Check your work!');
+    showToast('🤖','Not quite!','Check your work!');
     setTimeout(()=>{input.disabled=false;input.style.borderColor='';input.value='';fb.style.display='none';input.focus();},2400);
   }
 }
@@ -662,7 +663,7 @@ function selVocab(type,id){
     if(vocabSel.word===vocabSel.def){
       const color=LD.vocabPairs.find(p=>p.id===vocabSel.word)?.color||LD.accentColor;
       [wEl,dEl].forEach(e=>{e.classList.add('matched');e.style.borderColor=color;e.style.color=color;e.style.background=color+'18';});
-      gainXP(10);gainCrowns(1);playCorrect(); KTAudio.coin(); showToast('✅','Matched!','+10 XP');
+      gainXP(10);gainCrowns(1);KTAudio.coin(); showToast('✅','Matched!','+10 XP');
       vocabSel={word:null,def:null};
       vocabDone++;
       if(vocabDone>=LD.vocabPairs.length){
@@ -723,6 +724,12 @@ function retry(){document.getElementById('complete-screen').classList.remove('sh
 
 document.addEventListener("touchstart", function onFirst(){ KTAudio.init(); KTAudio.startMusic(); document.removeEventListener("touchstart", onFirst); }, { once: true });
 document.addEventListener("click", function onFirstClick(){ KTAudio.init(); KTAudio.startMusic(); document.removeEventListener("click", onFirstClick); }, { once: true });
+function toggleSoundBtn(){
+  KTAudio.init();
+  var unmuted=KTAudio.toggleMute();
+  var btn=document.getElementById('mute-btn');
+  if(btn) btn.textContent=unmuted?'🔊':'🔇';
+}
 bootLesson();
 
 </script>
