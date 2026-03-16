@@ -291,11 +291,58 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 
     <!-- SAGE -->
     <div class="page" id="page-sage">
-      <div class="section-title">🤖 Sage AI Tutor</div>
-      <div class="coming-soon">
-        <div class="cs-icon">🤖</div>
-        <div>Sage is getting ready!</div>
-        <div style="margin-top:8px;font-size:12px;">Your AI tutor will be here soon.</div>
+
+      <!-- Sage header -->
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1E3A2A,#2A5A3A);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 0 16px rgba(0,196,140,.3);">🤖</div>
+        <div>
+          <div style="font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--green);">Sage</div>
+          <div style="font-size:11px;color:var(--muted);">Your Kingdom Guide · Always ready to help, King!</div>
+        </div>
+        <div style="margin-left:auto;width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse-dot 1.5s ease-in-out infinite;"></div>
+      </div>
+      <style>
+        @keyframes pulse-dot{0%,100%{opacity:.6;transform:scale(.9);}50%{opacity:1;transform:scale(1.2);}}
+        .sage-msg{display:flex;gap:10px;margin-bottom:14px;animation:msgIn .3s ease;}
+        @keyframes msgIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+        .sage-bubble-ai{background:var(--card);border:1px solid rgba(0,196,140,.2);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:14px;color:rgba(255,255,255,.9);line-height:1.6;max-width:85%;}
+        .sage-bubble-user{background:rgba(245,168,0,.15);border:1px solid rgba(245,168,0,.25);border-radius:16px 16px 4px 16px;padding:12px 14px;font-size:14px;color:var(--white);line-height:1.6;max-width:85%;margin-left:auto;}
+        .sage-typing{display:flex;gap:5px;align-items:center;padding:14px;}
+        .sage-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:bounce-dot .8s ease-in-out infinite;}
+        .sage-dot:nth-child(2){animation-delay:.15s;}
+        .sage-dot:nth-child(3){animation-delay:.3s;}
+        @keyframes bounce-dot{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+        .sage-quick-btn{background:var(--card);border:1px solid rgba(0,196,140,.25);border-radius:100px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--green);cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;touch-action:manipulation;}
+        .sage-quick-btn:active{background:rgba(0,196,140,.1);}
+      </style>
+
+      <!-- Chat messages -->
+      <div id="sage-messages" style="min-height:200px;max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-bottom:12px;padding-bottom:4px;">
+        <!-- Messages rendered here -->
+      </div>
+
+      <!-- Quick prompts -->
+      <div id="sage-quick-prompts" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;-webkit-overflow-scrolling:touch;margin-bottom:10px;">
+        <button class="sage-quick-btn" onclick="sageSend('Give me a hint for my current quest!')">💡 Give me a hint</button>
+        <button class="sage-quick-btn" onclick="sageSend('Tell me something cool about ancient Africa!')">🌍 Ancient Africa facts</button>
+        <button class="sage-quick-btn" onclick="sageSend('I got a question wrong. Help me understand it.')">🤔 Help me understand</button>
+        <button class="sage-quick-btn" onclick="sageSend('What kingdom should I explore next?')">🗺️ What's next?</button>
+      </div>
+
+      <!-- Input -->
+      <div style="display:flex;gap:10px;align-items:flex-end;">
+        <textarea id="sage-input"
+          placeholder="Ask Sage anything, King…"
+          rows="1"
+          style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-family:var(--f-b);font-size:14px;color:var(--white);outline:none;resize:none;-webkit-appearance:none;max-height:100px;overflow-y:auto;line-height:1.5;"
+          oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sageSendInput();}"
+        ></textarea>
+        <button id="sage-send-btn"
+          onclick="sageSendInput()"
+          style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sky));border:none;font-size:20px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;align-items:center;justify-content:center;">
+          ➤
+        </button>
       </div>
     </div>
 
@@ -785,6 +832,160 @@ function logOut() {
     localStorage.removeItem('kt_active_code');
     window.location.href = '/kingthinkers/kingthinkers-login.html';
   }
+}
+
+
+// ── SAGE AI TUTOR ─────────────────────────────────────────────
+var sageHistory = [];
+var sageTyping = false;
+
+var SAGE_SYSTEM = `You are Sage, the AI tutor inside KingThinkers — a game-based learning app for Black male students in grades K-5. Your entire personality is:
+- Fun, playful, and encouraging like a cool older sibling
+- You call the student "King" and make them feel powerful and capable
+- You reference African civilizations naturally (Egypt, Nubia, Mali, Kush, etc.)
+- You use age-appropriate language for elementary school students
+- You NEVER just give away answers — you give hints, ask guiding questions, and celebrate effort
+- You keep responses SHORT — 2-4 sentences max. Kids have short attention spans.
+- You use emojis naturally but not excessively
+- When a student gets something wrong, you're encouraging, never discouraging
+- You celebrate EVERY win, big or small
+- You connect learning to the student's kingdom journey
+
+If asked for a hint, give a clue that guides without spoiling.
+If asked about African history, share one cool fact enthusiastically.
+If a student seems frustrated, encourage them first before helping.
+Always end with something that motivates them to keep going.`;
+
+function getSageContext() {
+  var student = getActiveStudent ? getActiveStudent() : null;
+  var progress = typeof getProgress === 'function' ? getProgress() : {};
+  var completedCount = Object.keys(progress).length;
+  var currentWorld = 'Egypt';
+  if (completedCount >= 8) currentWorld = 'Nubia';
+  if (completedCount >= 4 && completedCount < 8) currentWorld = 'Nubia';
+
+  var context = 'The student';
+  if (student && student.name) context = 'King ' + student.name;
+  context += ' is currently in the Kingdom of ' + currentWorld + '.';
+  context += ' They have completed ' + completedCount + ' missions so far.';
+  if (student && student.grade) context += ' They are in grade ' + student.grade + '.';
+  return context;
+}
+
+function sageAddMessage(role, text) {
+  var container = document.getElementById('sage-messages');
+  if (!container) return;
+
+  var div = document.createElement('div');
+  div.className = 'sage-msg';
+  div.style.justifyContent = role === 'user' ? 'flex-end' : 'flex-start';
+
+  if (role === 'assistant') {
+    div.innerHTML =
+      '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1E3A2A,#2A5A3A);border:1px solid rgba(0,196,140,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🤖</div>' +
+      '<div class="sage-bubble-ai">' + text + '</div>';
+  } else {
+    div.innerHTML = '<div class="sage-bubble-user">' + text + '</div>';
+  }
+
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function sageShowTyping() {
+  var container = document.getElementById('sage-messages');
+  if (!container) return;
+  var div = document.createElement('div');
+  div.className = 'sage-msg';
+  div.id = 'sage-typing';
+  div.innerHTML =
+    '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1E3A2A,#2A5A3A);border:1px solid rgba(0,196,140,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🤖</div>' +
+    '<div class="sage-bubble-ai"><div class="sage-typing"><div class="sage-dot"></div><div class="sage-dot"></div><div class="sage-dot"></div></div></div>';
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function sageRemoveTyping() {
+  var el = document.getElementById('sage-typing');
+  if (el) el.remove();
+}
+
+async function sageSend(message) {
+  if (sageTyping) return;
+  if (!message || !message.trim()) return;
+
+  KTAudio.tap();
+  sageTyping = true;
+
+  // Hide quick prompts after first message
+  var quickPrompts = document.getElementById('sage-quick-prompts');
+  if (quickPrompts) quickPrompts.style.display = 'none';
+
+  // Show user message
+  sageAddMessage('user', message);
+  sageHistory.push({ role: 'user', content: message });
+
+  // Show typing indicator
+  sageShowTyping();
+
+  try {
+    var systemWithContext = SAGE_SYSTEM + '\n\nCurrent context: ' + getSageContext();
+
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 200,
+        system: systemWithContext,
+        messages: sageHistory,
+      })
+    });
+
+    var data = await response.json();
+    var reply = data.content && data.content[0] ? data.content[0].text : "Hmm, Sage is thinking... try again in a moment, King! 👑";
+
+    sageRemoveTyping();
+    sageAddMessage('assistant', reply);
+    sageHistory.push({ role: 'assistant', content: reply });
+    KTAudio.coin();
+
+    // Keep history manageable
+    if (sageHistory.length > 20) sageHistory = sageHistory.slice(-16);
+
+  } catch(e) {
+    sageRemoveTyping();
+    sageAddMessage('assistant', "Sage is having trouble connecting right now, King. Try again in a moment! 🔧");
+  }
+
+  sageTyping = false;
+}
+
+function sageSendInput() {
+  var input = document.getElementById('sage-input');
+  if (!input) return;
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = 'auto';
+  sageSend(text);
+}
+
+// Boot Sage with a greeting when the page loads
+function initSage() {
+  var student = getActiveStudent ? getActiveStudent() : null;
+  var name = (student && student.name) ? student.name : 'King';
+  var greetings = [
+    "Yo, " + name + "! 👋 Sage here — your guide through the ancient kingdoms! Ask me anything, from history hints to quest help. What\'s on your mind? 👑",
+    "What\'s good, King " + name + "! ⚡ I\'m Sage — ready to help you conquer any challenge. Got a tough question? Need a hint? Just ask! 🗺️",
+    "King " + name + " is in the building! 🏆 I\'m Sage, your AI guide through ancient Africa. What do you want to learn today? 🌍",
+  ];
+  var greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  sageHistory = [];
+  var container = document.getElementById('sage-messages');
+  if (container) container.innerHTML = '';
+  sageAddMessage('assistant', greeting);
+  sageHistory.push({ role: 'assistant', content: greeting });
 }
 
 // ── BOOT ─────────────────────────────────────────────────────
