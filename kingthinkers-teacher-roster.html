@@ -117,9 +117,22 @@ textarea.inp{min-height:110px;resize:vertical;}
 .danger-btn{display:block;width:100%;background:transparent;border:1px solid rgba(255,71,87,.3);border-radius:10px;padding:12px;font-family:var(--f-b);font-size:13px;font-weight:700;color:var(--red);margin-top:8px;}
 
 @media print{
-  #topbar,#tab-nav,#toast,#card-modal,#prog-modal,.s-btns,.add-btn,.ghost-btn,.danger-btn{display:none!important;}
-  .kg{display:grid!important;}
-  .kc{break-inside:avoid;}
+  body.print-cards-only #topbar,
+  body.print-cards-only #tab-nav,
+  body.print-cards-only #toast,
+  body.print-cards-only #card-modal,
+  body.print-cards-only #prog-modal,
+  body.print-cards-only .section:not(#codes),
+  body.print-cards-only .sort-bar,
+  body.print-cards-only .add-btn,
+  body.print-cards-only .ghost-btn,
+  body.print-cards-only .danger-btn,
+  body.print-cards-only input,
+  body.print-cards-only select,
+  body.print-cards-only textarea {display:none!important;}
+  body.print-cards-only #codes {display:block!important;}
+  body.print-cards-only .kg{display:grid!important;}
+  body.print-cards-only .kc{break-inside:avoid;}
 }
 </style>
 <link rel="manifest" href="manifest.json">
@@ -179,7 +192,7 @@ textarea.inp{min-height:110px;resize:vertical;}
 <!-- KING CODES -->
 <div class="section" id="codes">
   <div class="sh">🔑 King Codes</div>
-  <button class="add-btn" onclick="window.print()" style="margin-bottom:14px;">🖨️ Print All King Cards</button>
+  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;">🖨️ Print All King Cards</button>
   <div class="kg" id="codes-grid"></div>
 </div>
 
@@ -662,52 +675,113 @@ function loadSettingsForm(){
 }
 
 // ── WIRE BUTTONS ─────────────────────────────────────────────
-window.addEventListener('load',function(){
-  document.getElementById('add-btn').addEventListener('click',doAdd);
-  document.getElementById('bulk-btn').addEventListener('click',doBulk);
-  document.getElementById('card-close-btn').addEventListener('click',function(){document.getElementById('card-modal').classList.remove('open')});
-  document.getElementById('prog-close-btn').addEventListener('click',function(){document.getElementById('prog-modal').classList.remove('open');renderAll()});
-  document.getElementById('sync-btn').addEventListener('click', function(){ syncFromSupabase(); });
-  document.getElementById('save-settings-btn').addEventListener('click',function(){
-    putSetting('teacherName',document.getElementById('s-teacher').value);
-    putSetting('classCode',document.getElementById('s-class').value);
-    putSetting('schoolName',document.getElementById('s-school').value);
-    toast('Settings saved!');
-  });
-  document.getElementById('sample-btn').addEventListener('click',function(){
-    if(!confirm('Load 5 sample students?'))return;
-    [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']].forEach(function(n){
-      var code=genCode();
-      var s={code:code,name:n[0],grade:n[1],classCode:'DEMO',xp:0,crowns:0,createdAt:Date.now()};
-      saveStudent(code,s);var r=getRoster();r[code]={name:n[0],grade:n[1]};saveRoster(r);
-    });
-    toast('Sample class loaded!');renderAll();
-  });
-  document.getElementById('clear-btn').addEventListener('click',function(){
-    if(!confirm('Delete ALL data?'))return;
-    var r=getRoster();Object.keys(r).forEach(function(c){localStorage.removeItem('kt_student_'+c)});
-    localStorage.removeItem('kt_roster');toast('All data cleared');renderAll();
-  });
-  renderAll();
-  loadSettingsForm();
+var _wired = false;
+function wireButtons() {
+  if (_wired) return;
+  _wired = true;
+  function on(id, fn) {
+    var el = document.getElementById(id);
+    if (el) { el.addEventListener('click', fn); }
+    else { console.warn('Button not found: ' + id); }
+  }
 
-  // Display teacher info
+  // ── SORT BUTTONS ─────────────────────────────────────────────
+  on('sort-name',     function(){ setSort('name'); });
+  on('sort-progress', function(){ setSort('progress'); });
+  on('sort-xp',       function(){ setSort('xp'); });
+  on('sort-risk',     function(){ setSort('risk'); });
+
+  // ── ADD STUDENT ───────────────────────────────────────────────
+  on('add-btn',  doAdd);
+  on('bulk-btn', doBulk);
+
+  // ── PRINT KING CARDS ──────────────────────────────────────────
+  on('print-cards-btn', function(){
+    // Show only codes section, print, then restore
+    document.body.classList.add('print-cards-only');
+    // Scroll to codes section to make it visible
+    var codesEl = document.getElementById('codes');
+    if (codesEl) codesEl.style.display = 'block';
+    window.print();
+    document.body.classList.remove('print-cards-only');
+  });
+  // Also wire the topbar print button (prints everything)
+  var topPrint = document.querySelector('.t-link[onclick*="print"]');
+  if (topPrint) topPrint.onclick = function(){ window.print(); };
+
+  // ── MODALS ────────────────────────────────────────────────────
+  on('card-close-btn', function(){ document.getElementById('card-modal').classList.remove('open'); });
+  on('prog-close-btn', function(){ document.getElementById('prog-modal').classList.remove('open'); renderAll(); });
+
+  // ── SETTINGS ─────────────────────────────────────────────────
+  on('save-settings-btn', function(){
+    var t = document.getElementById('s-teacher');
+    var c = document.getElementById('s-class');
+    var sc = document.getElementById('s-school');
+    if (t)  putSetting('teacherName', t.value);
+    if (c)  putSetting('classCode',   c.value);
+    if (sc) putSetting('schoolName',  sc.value);
+    toast('✅ Settings saved!');
+  });
+
+  on('sync-btn', function(){ syncFromSupabase(); });
+
+  on('sample-btn', function(){
+    if (!confirm('Load 5 sample students? This adds to your existing roster.')) return;
+    var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
+    names.forEach(function(n){
+      var code = genCode();
+      var s = { code:code, name:n[0], grade:n[1],
+        classCode: _teacherSession ? _teacherSession.classCode : 'DEMO',
+        xp:0, crowns:0, createdAt:Date.now() };
+      saveStudent(code, s);
+      var r = getRoster(); r[code] = { name:n[0], grade:n[1] }; saveRoster(r);
+    });
+    toast('✅ Sample class loaded!');
+    renderAll();
+  });
+
+  on('clear-btn', function(){
+    if (!confirm('Delete ALL student data? This cannot be undone.')) return;
+    var r = getRoster();
+    Object.keys(r).forEach(function(c){ localStorage.removeItem('kt_student_' + c); });
+    localStorage.removeItem('kt_roster');
+    toast('🗑️ All data cleared');
+    renderAll();
+  });
+
+  // ── TEACHER INFO + LOGOUT ─────────────────────────────────────
   if (_teacherSession) {
     var nameEl = document.getElementById('teacher-name-display');
     if (nameEl) nameEl.textContent = (_teacherSession.name || _teacherSession.username) + ' · ' + (_teacherSession.classCode || '');
   }
 
-  // Logout
-  document.getElementById('logout-btn').addEventListener('click', function() {
+  on('logout-btn', function(){
     if (confirm('Log out of Teacher Roster?')) {
       sessionStorage.removeItem('kt_teacher');
       window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
     }
   });
+}
 
+// Use DOMContentLoaded — fires earlier and more reliably than 'load' on iOS Safari
+document.addEventListener('DOMContentLoaded', function(){
+  renderAll();
+  loadSettingsForm();
+  wireButtons();
   // Auto-sync from Supabase on load
   syncFromSupabase();
 });
+
+// Fallback: if DOMContentLoaded already fired (script at bottom of body), wire immediately
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(function(){
+    renderAll();
+    loadSettingsForm();
+    wireButtons();
+    syncFromSupabase();
+  }, 0);
+}
 
 async function syncFromSupabase() {
   toast('🔄 Syncing from cloud…');
