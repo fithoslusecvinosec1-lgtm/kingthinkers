@@ -886,7 +886,17 @@ function nextQuest() {
 
 function reviewLesson() {
   document.getElementById('complete-screen').classList.remove('show');
+  // Reset all state so replaying doesn't inflate XP/accuracy
   phase = 0;
+  xp = 60;
+  crowns = 0;
+  correct = 0;
+  totalQs = 0;
+  startTime = Date.now();
+  vocabSel = { word: null, def: null };
+  document.getElementById('xp-num').textContent = xp;
+  document.getElementById('xp-bar').style.width = '12%';
+  document.getElementById('crown-count').textContent = '0';
   renderPhase();
 }
 
