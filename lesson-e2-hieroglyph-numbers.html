@@ -141,6 +141,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
 <script src="/kingthinkers/kt-db.js"></script>
 <script src="/kingthinkers/kt-music.js"></script>
 <script src="/kingthinkers/kt-audio.js"></script>
+<script src="/kingthinkers/kt-math-engine.js"></script>
 </head>
 <body>
 <div id="stars"></div>
@@ -293,8 +294,8 @@ const LD = {
       "correctFeedback": "Exactly! 6 × 8 = 48. Six groups of 8 — the pyramid chambers will look magnificent! 🏺",
       "wrongFeedback": "Skip-count by 8: 8, 16, 24, 32, 40, 48. Count those six jumps — which answer do you land on?",
       "xpReward": 30,
-      "crownReward": 1
-    },
+      "crownReward": 1,
+      "steps": ["Step 1: What hieroglyph symbols do you see?", "Step 2: Look up the value of each symbol.", "Step 3: Add the values together.", "Step 4: Check your answer."]},
     {
       "type": "mcq",
       "standard": "3.OA.A.3",
@@ -322,8 +323,8 @@ const LD = {
       "correctFeedback": "Perfect! 63 ÷ 7 = 9. Check it: 7 × 9 = 63 ✓ The farmer's baskets are perfectly packed! 🌾",
       "wrongFeedback": "Use your multiplication facts: 7×7=49, 7×8=56, 7×9=63. Which one equals 63?",
       "xpReward": 30,
-      "crownReward": 1
-    },
+      "crownReward": 1,
+      "steps": ["Step 1: Read the context \u2014 what are you counting?", "Step 2: Identify the numbers given.", "Step 3: Decide the operation and calculate."]},
     {
       "type": "input",
       "standard": "3.NBT.A.2",
@@ -334,8 +335,8 @@ const LD = {
       "correctFeedback": "Outstanding! 347 + 256 = 603. You regrouped like a true royal scribe! The treasury is growing! 💰",
       "wrongFeedback": "Try column by column — ones: 7+6=13, write 3 carry 1. Tens: 4+5+1=10, write 0 carry 1. Hundreds: 3+2+1=6. What's the full number?",
       "xpReward": 35,
-      "crownReward": 1
-    },
+      "crownReward": 1,
+      "steps": ["Step 1: What two things are being compared?", "Step 2: Write an equation.", "Step 3: Solve step by step."]},
     {
       "type": "mcq",
       "standard": "3.OA.C.7",
@@ -363,8 +364,8 @@ const LD = {
       "correctFeedback": "KING! 56 ÷ 8 = 7 trays. Verify: 8 × 7 = 56 ✓ The royal feast is perfectly arranged! 🎂",
       "wrongFeedback": "Count up by 8s until you reach 56: 8, 16, 24, 32, 40, 48, 56 — count those jumps!",
       "xpReward": 35,
-      "crownReward": 2
-    }
+      "crownReward": 2,
+      "steps": ["Step 1: What does the problem ask you to find?", "Step 2: Identify the key numbers.", "Step 3: Calculate and verify."]}
   ],
   "vocabPairs": [
     {
@@ -398,6 +399,7 @@ let phase=0,xp=60,crowns=0,correct=0,totalQs=0,startTime=Date.now(),
     vocabSel={word:null,def:null},vocabDone=0;
 
 function bootLesson(){
+  KTStreak.reset();
   // Stars
   const c=document.getElementById('stars');
   for(let i=0;i<55;i++){
@@ -533,54 +535,84 @@ function renderQuestion(area,q){
 }
 
 function answerMCQ(btn){
+  totalQs++;
   const isCorrect=btn.dataset.correct==='true';
   const cfb=btn.dataset.cfb, wfb=btn.dataset.wfb;
   const xpR=parseInt(btn.dataset.xp), crR=parseInt(btn.dataset.cr);
   document.querySelectorAll('.choice').forEach(c=>c.disabled=true);
   const fb=document.getElementById('q-feedback');
-  fb.style.display='block';
+  if(fb) fb.style.display='block';
   if(isCorrect){
     btn.classList.add('correct');
-    gainXP(xpR);gainCrowns(crR);
-    fb.innerHTML=`<div class="fb correct-fb">✅ ${cfb}</div>`;
-    KTAudio.correct(); showToast('👑','Correct!',`+${xpR} XP · +${crR} Crown${crR>1?'s':''}`);
-    setTimeout(nextPhase,1800);
+    const streak = KTStreak.onCorrect();
+    gainXP(xpR); gainCrowns(crR);
+    const msg = KTFeedback.getCorrect(streak);
+    const streakLabel = KTFeedback.getStreakLabel(streak);
+    let html = '';
+    if(streakLabel) html += '<div class="streak-banner">' + streakLabel + '</div>';
+    html += '<div class="correct-mega">' + msg + '</div>';
+    html += '<div class="fb correct-fb">✅ ' + cfb + '</div>';
+    if(fb) fb.innerHTML = html;
+    KTAudio.correct();
+    const xpBonus = streak >= 3 ? Math.round(xpR * 0.2) : 0;
+    if(xpBonus) gainXP(xpBonus);
+    showToast('👑', streak >= 3 ? '🔥 ' + streak + ' streak!' : 'Correct!', '+' + (xpR + xpBonus) + ' XP');
+    setTimeout(nextPhase, 2000);
   } else {
     btn.classList.add('wrong');
-    fb.innerHTML=`<div class="fb wrong-fb">💭 ${wfb}</div>`;
-    KTAudio.wrong(); showToast('🤖','Not quite!','Think it through, King!');
+    // Highlight correct answer
+    document.querySelectorAll('.choice').forEach(c=>{
+      if(c.dataset.correct==='true') c.classList.add('correct');
+    });
+    KTStreak.onWrong();
+    const errorMsg = KTFeedback.getWrong(null);
+    const tryAgain = KTFeedback.getTryAgain();
+    if(fb) fb.innerHTML = '<div class="fb wrong-fb">💭 ' + errorMsg + '</div>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;">💪 ' + tryAgain + '</div>';
+    KTAudio.wrong();
+    showToast('🤖', 'Not quite!', tryAgain.substring(0, 40));
     setTimeout(()=>{
       document.querySelectorAll('.choice').forEach(c=>{c.disabled=false;c.classList.remove('wrong','correct');});
-      fb.style.display='none';
-    },2200);
+      if(fb) fb.style.display='none';
+    }, 2500);
   }
 }
 
 // ── MATH PROBLEM ──────────────────────────────────────────────────────────────
 function renderMathProblem(area,p){
-  totalQs++;
   const div=document.createElement('div');div.className='q-card';
   if(p.type==='input'){
+    const visual = KTVisuals.buildVisual(p, LD.accentColor);
+    KTSteps.init(p.steps || []);
+    window._mathAttempts = 0;
+    window._mathAnswer={answer:p.answer,cfb:p.correctFeedback,wfb:p.wrongFeedback,xp:p.xpReward,cr:p.crownReward};
     div.innerHTML=`
       <div class="q-standard" style="color:${LD.accentColor};">${p.standard}</div>
-      <div class="math-context" style="border-left-color:${LD.accentColor};">${p.context}</div>
+      <div class="math-visual">${visual}</div>
+      <div class="math-context" style="border-left-color:${LD.accentColor};" id="tts-target">${p.context}</div>
       <div class="math-display">${p.display}</div>
-      <div class="q-hint">${p.hint}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;">
+        <button class="tts-btn" id="tts-btn" onclick="KTTS.speak(document.getElementById('tts-target').textContent,'tts-target')">🔊 Read Aloud</button>
+        ${KTSteps.hasSteps() ? '<button class="hint-btn" id="step-btn" onclick="KTSteps.showNext('step-hint-container')">Show Step 1 →</button>' : ''}
+      </div>
+      <div class="step-hint-container" id="step-hint-container"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:14px;">
         <input id="math-input" class="math-input" type="text" inputmode="decimal" placeholder="Your answer…"
           onkeydown="if(event.key==='Enter')submitInput()">
         <button class="btn-next" style="background:${LD.btnGradient};color:#000;width:auto;padding:11px 28px;" onclick="submitInput()">Submit Answer →</button>
       </div>
+      <div class="attempt-count" id="attempt-count"></div>
       <div class="q-feedback" id="q-feedback" style="display:none;"></div>`;
     area.appendChild(div);
-    // Store answer on window for submitInput
-    window._mathAnswer={answer:p.answer,cfb:p.correctFeedback,wfb:p.wrongFeedback,xp:p.xpReward,cr:p.crownReward};
   } else {
     div.innerHTML=`
       <div class="q-standard" style="color:${LD.accentColor};">${p.standard}</div>
-      <div class="math-context" style="border-left-color:${LD.accentColor};">${p.context}</div>
+      <div class="math-visual">${KTVisuals.buildVisual(p, LD.accentColor)}</div>
+      <div class="math-context" style="border-left-color:${LD.accentColor};" id="tts-target">${p.context}</div>
       <div class="math-display">${p.display}</div>
-      <div class="q-hint">${p.hint}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0;">
+        <button class="tts-btn" id="tts-btn" onclick="KTTS.speak(document.getElementById('tts-target').textContent,'tts-target')">🔊 Read Aloud</button>
+      </div>
       <div class="choices" id="choices">
         ${p.choices.map((c,i)=>`
           <button class="choice" data-correct="${c.correct}" data-cfb="${escQ(p.correctFeedback)}" data-wfb="${escQ(p.wrongFeedback)}" data-xp="${p.xpReward}" data-cr="${p.crownReward}" onclick="answerMCQ(this)">
@@ -594,24 +626,52 @@ function renderMathProblem(area,p){
 }
 
 function submitInput(){
+  totalQs++;
   const m=window._mathAnswer;
   const input=document.getElementById('math-input');
-  const val=input.value.trim().replace(/,/g,'');
-  const ok=val===String(m.answer)||parseFloat(val)===parseFloat(m.answer);
-  input.disabled=true;
   const fb=document.getElementById('q-feedback');
-  fb.style.display='block';
-  if(ok){
+  const attemptEl=document.getElementById('attempt-count');
+
+  window._mathAttempts = (window._mathAttempts || 0) + 1;
+  if(attemptEl) attemptEl.textContent = window._mathAttempts > 1 ? 'Attempt ' + window._mathAttempts : '';
+
+  const result = KTTolerance.check(input.value, m.answer);
+  input.disabled=true;
+  if(fb) fb.style.display='block';
+
+  if(result.correct){
     input.style.borderColor='var(--green)';
-    gainXP(m.xp);gainCrowns(m.cr);
-    fb.innerHTML=`<div class="fb correct-fb">✅ ${m.cfb}</div>`;
-    showToast('👑','Correct!',`+${m.xp} XP`);
-    setTimeout(nextPhase,1800);
+    const streak = KTStreak.onCorrect();
+    gainXP(m.xp); gainCrowns(m.cr);
+    const msg = KTFeedback.getCorrect(streak);
+    const streakLabel = KTFeedback.getStreakLabel(streak);
+    const isImproved = window._mathAttempts > 1;
+    let html = '';
+    if(streakLabel) html += '<div class="streak-banner">' + streakLabel + '</div>';
+    html += '<div class="correct-mega">' + (isImproved ? KTFeedback.getImprovement() : msg) + '</div>';
+    html += '<div class="fb correct-fb">✅ ' + m.cfb + '</div>';
+    if(fb) fb.innerHTML = html;
+    KTAudio.correct();
+    const xpBonus = streak >= 3 ? Math.round(m.xp * 0.2) : 0;
+    if(xpBonus) gainXP(xpBonus);
+    showToast('👑', streak >= 3 ? '🔥 ' + streak + ' in a row!' : 'Correct!', '+' + (m.xp + xpBonus) + ' XP');
+    setTimeout(nextPhase, 2000);
   } else {
     input.style.borderColor='var(--red)';
-    fb.innerHTML=`<div class="fb wrong-fb">💭 ${m.wfb}</div>`;
-    showToast('🤖','Not quite!','Check your work!');
-    setTimeout(()=>{input.disabled=false;input.style.borderColor='';input.value='';fb.style.display='none';input.focus();},2400);
+    KTStreak.onWrong();
+    const errorMsg = KTFeedback.getWrong(result.errorType);
+    const tryAgain = KTFeedback.getTryAgain();
+    if(fb) fb.innerHTML = '<div class="fb wrong-fb">💭 ' + errorMsg + '</div>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;">💪 ' + tryAgain + '</div>';
+    KTAudio.wrong();
+    showToast('🤖', 'Not quite!', errorMsg.substring(0, 40) + '…');
+    setTimeout(()=>{
+      input.disabled=false;
+      input.style.borderColor='';
+      input.value='';
+      if(fb) fb.style.display='none';
+      input.focus();
+    }, 2800);
   }
 }
 
