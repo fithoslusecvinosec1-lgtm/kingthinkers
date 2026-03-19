@@ -381,9 +381,10 @@ async function kt_sage(messages, systemPrompt) {
       messages: messages,
       systemPrompt: systemPrompt || ''
     });
+    console.log('kt_sage success:', data);
     return (data && data.reply) ? data.reply : null;
-  } catch (e) {
-    console.warn('kt_sage failed:', e.message);
+  } catch(e) {
+    console.error('kt_sage failed:', e);
     return null;
   }
 }
