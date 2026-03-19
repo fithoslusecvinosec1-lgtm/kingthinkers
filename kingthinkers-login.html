@@ -283,10 +283,10 @@
     <div class="field-group">
       <div class="field-label">Your Grade</div>
       <div class="grade-row" id="new-grade-row">
-        <div class="grade-chip selected" data-grade="K" onclick="selectNewGrade(this,'K')"><div class="grade-num">K</div><div class="grade-lbl">Kinder</div></div>
+        <div class="grade-chip" data-grade="K" onclick="selectNewGrade(this,'K')"><div class="grade-num">K</div><div class="grade-lbl">Kinder</div></div>
         <div class="grade-chip" data-grade="1" onclick="selectNewGrade(this,'1')"><div class="grade-num">1</div><div class="grade-lbl">1st</div></div>
         <div class="grade-chip" data-grade="2" onclick="selectNewGrade(this,'2')"><div class="grade-num">2</div><div class="grade-lbl">2nd</div></div>
-        <div class="grade-chip" data-grade="3" onclick="selectNewGrade(this,'3')"><div class="grade-num">3</div><div class="grade-lbl">3rd</div></div>
+        <div class="grade-chip selected" data-grade="3" onclick="selectNewGrade(this,'3')"><div class="grade-num">3</div><div class="grade-lbl">3rd</div></div>
         <div class="grade-chip" data-grade="4" onclick="selectNewGrade(this,'4')"><div class="grade-num">4</div><div class="grade-lbl">4th</div></div>
         <div class="grade-chip" data-grade="5" onclick="selectNewGrade(this,'5')"><div class="grade-num">5</div><div class="grade-lbl">5th</div></div>
       </div>
@@ -297,6 +297,7 @@
       <input class="field-input" id="new-class" type="text" placeholder="e.g. MR-JOHNSON-3B" maxlength="20" oninput="validateNew()">
     </div>
 
+    <div class="error-msg" id="register-error" style="margin-bottom:8px;"></div>
     <button class="btn-primary" id="btn-new" onclick="doRegister()" disabled>
       Create My Kingdom →
     </button>
@@ -339,7 +340,7 @@ function getStudent(code) {
 function saveStudent(code, data) { localStorage.setItem(getStudentKey(code), JSON.stringify(data)); }
 
 // ── STATE ─────────────────────────────────────────────────────
-let newGrade = 'K';
+let newGrade = '3'; // pilot default
 let lastCode = localStorage.getItem('kt_last_code') || '';
 
 // ── TABS ──────────────────────────────────────────────────────
@@ -358,10 +359,17 @@ function switchTab(tab) {
   slot.innerHTML = `
     <div class="welcome-back">
       <div class="wb-avatar">👑</div>
-      <div>
+      <div style="flex:1;">
         <div class="wb-name">Welcome back, King ${student.name}!</div>
         <div class="wb-sub">Code: ${lastCode} &nbsp;·&nbsp; Grade ${student.grade} &nbsp;·&nbsp; ${student.xp || 0} XP</div>
       </div>
+      <button onclick="clearWelcomeBack()" style="
+        background:none;border:none;color:rgba(255,255,255,.35);
+        font-size:11px;font-weight:800;cursor:pointer;
+        padding:4px 8px;border-radius:8px;
+        border:1px solid rgba(255,255,255,.1);
+        -webkit-tap-highlight-color:transparent;flex-shrink:0;
+      ">Not you?</button>
     </div>`;
   // Pre-fill code boxes
   lastCode.split('').forEach((d,i) => {
@@ -399,34 +407,88 @@ function getEnteredCode() {
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────
+function clearWelcomeBack() {
+  // Clear stored session so a different student can log in
+  localStorage.removeItem('kt_last_code');
+  localStorage.removeItem('kt_active_code');
+  lastCode = '';
+  // Clear the code boxes
+  [0,1,2,3].forEach(function(i) {
+    var box = document.getElementById('c'+i);
+    if (box) { box.value = ''; box.classList.remove('filled'); }
+  });
+  document.getElementById('btn-login').disabled = true;
+  document.getElementById('welcome-back-slot').innerHTML = '';
+}
+
 async function doLogin() {
-  KTAudio.init(); KTAudio.tap();
+  if (typeof KTAudio !== 'undefined') { KTAudio.init(); KTAudio.tap(); }
   const code = getEnteredCode();
   if (code.length < 4) return;
 
-  // Try Supabase first, fall back to localStorage
-  let student = await db_getStudent(code);
-  if (!student) student = getStudent(code); // localStorage fallback
+  const btn = document.getElementById('btn-login');
+  if (btn) btn.disabled = true;
 
-  if (!student) {
-    [0,1,2,3].forEach(i => document.getElementById('c'+i).classList.add('error'));
-    document.getElementById('login-error').classList.add('show');
-    setTimeout(() => [0,1,2,3].forEach(i => document.getElementById('c'+i).classList.remove('error')), 500);
-    return;
-  }
-
-  // Sync to localStorage as backup
-  localStorage.setItem('kt_student_' + code, JSON.stringify(student));
-  kt_setActiveCode(code);
-
-  showLoading(`Opening your kingdom, King ${student.name}…`, 'Get ready to conquer!');
-  setTimeout(() => {
-    if (student.profileComplete) {
-      window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
-    } else {
-      window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
+  try {
+    // Try Supabase first, fall back to localStorage
+    let student = null;
+    if (typeof db_getStudent === 'function') {
+      student = await db_getStudent(code);
     }
-  }, 1600);
+    if (!student) student = getStudent(code); // localStorage fallback
+
+    if (!student) {
+      [0,1,2,3].forEach(i => {
+        var b = document.getElementById('c'+i);
+        if (b) b.classList.add('error');
+      });
+      var errEl = document.getElementById('login-error');
+      if (errEl) errEl.classList.add('show');
+      setTimeout(() => [0,1,2,3].forEach(i => {
+        var b = document.getElementById('c'+i);
+        if (b) b.classList.remove('error');
+      }), 500);
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    // ── Clear previous student session data ──────────────────
+    // Wipe any stale progress/state from a different student on this device
+    var prevCode = localStorage.getItem('kt_active_code');
+    if (prevCode && prevCode !== code) {
+      localStorage.removeItem('kt_quest_progress_' + prevCode);
+      localStorage.removeItem('kt_manual_' + prevCode);
+      // Keep the student record itself for welcome-back detection
+    }
+
+    // Sync to localStorage as backup
+    localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+
+    if (typeof kt_setActiveCode === 'function') {
+      kt_setActiveCode(code);
+    } else {
+      localStorage.setItem('kt_active_code', code);
+      localStorage.setItem('kt_last_code', code);
+    }
+
+    showLoading('Opening your kingdom, King ' + student.name + '…', 'Get ready to conquer!');
+    setTimeout(function() {
+      if (student.profileComplete) {
+        window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
+      } else {
+        window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
+      }
+    }, 1600);
+
+  } catch(e) {
+    console.warn('doLogin failed:', e);
+    var errEl = document.getElementById('login-error');
+    if (errEl) {
+      errEl.textContent = 'Connection error. Check your internet and try again.';
+      errEl.classList.add('show');
+    }
+    if (btn) btn.disabled = false;
+  }
 }
 
 // ── REGISTER ──────────────────────────────────────────────────
@@ -452,32 +514,65 @@ function generateCode() {
 }
 
 async function doRegister() {
-  KTAudio.init(); KTAudio.tap();
+  if (typeof KTAudio !== 'undefined') { KTAudio.init(); KTAudio.tap(); }
   const name  = document.getElementById('new-name').value.trim();
   const cls   = document.getElementById('new-class').value.trim().toUpperCase();
-  if (name.length < 2 || cls.length < 2) return;
 
-  const code = generateCode();
-  const student = {
-    code, name, grade: newGrade, classCode: cls,
-    xp: 0, crowns: 0, quests: 0,
-    profileComplete: false,
-    createdAt: Date.now(),
-    kingdom: 'Kingdom of Kente',
-  };
+  // Basic validation
+  if (name.length < 2) return;
 
-  // Save to Supabase + localStorage backup
-  await db_saveStudent(code, student);
-  const roster = getRoster();
-  roster[code] = { name, grade: newGrade, classCode: cls };
-  saveRoster(roster);
+  // Class code validation — must be 2+ chars, alphanumeric + hyphens only
+  if (cls.length < 2) {
+    var errEl = document.getElementById('register-error');
+    if (errEl) { errEl.textContent = 'Please enter your class code from your teacher.'; errEl.classList.add('show'); }
+    return;
+  }
+  if (!/^[A-Z0-9][A-Z0-9\-]{1,19}$/.test(cls)) {
+    var errEl = document.getElementById('register-error');
+    if (errEl) { errEl.textContent = 'Class code can only contain letters, numbers, and hyphens (e.g. MR-JOHNSON-3B).'; errEl.classList.add('show'); }
+    return;
+  }
 
-  kt_setActiveCode(code);
+  const btn = document.getElementById('btn-new');
+  if (btn) btn.disabled = true;
 
-  showLoading(`Welcome, King ${name}! Your code is ${code}`, 'Write it down — you\'ll need it next time!');
-  setTimeout(() => {
-    window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
-  }, 2400);
+  try {
+    const code = generateCode();
+    const student = {
+      code, name, grade: newGrade, classCode: cls,
+      xp: 0, crowns: 0, quests: 0,
+      profileComplete: false,
+      createdAt: Date.now(),
+      kingdom: 'Kingdom of Kente',
+    };
+
+    // Save to Supabase + localStorage backup
+    if (typeof db_saveStudent === 'function') {
+      await db_saveStudent(code, student);
+    }
+    localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+    const roster = getRoster();
+    roster[code] = { name, grade: newGrade, classCode: cls };
+    saveRoster(roster);
+
+    if (typeof kt_setActiveCode === 'function') {
+      kt_setActiveCode(code);
+    } else {
+      localStorage.setItem('kt_active_code', code);
+      localStorage.setItem('kt_last_code', code);
+    }
+
+    showLoading('Welcome, King ' + name + '! Your code is ' + code, "Write it down — you'll need it next time!");
+    setTimeout(function() {
+      window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
+    }, 2400);
+
+  } catch(e) {
+    console.warn('doRegister failed:', e);
+    var errEl = document.getElementById('register-error');
+    if (errEl) { errEl.textContent = 'Could not create account. Check your connection and try again.'; errEl.classList.add('show'); }
+    if (btn) btn.disabled = false;
+  }
 }
 
 // ── LOADING ───────────────────────────────────────────────────
@@ -488,11 +583,11 @@ function showLoading(text, sub) {
 }
 // Start music on first interaction
 document.addEventListener("touchstart", function onFirst(){
-  KTAudio.init(); KTAudio.startMusic();
+  if (typeof KTAudio !== "undefined") { KTAudio.init(); KTAudio.startMusic(); }
   document.removeEventListener("touchstart", onFirst);
 }, { once: true });
 document.addEventListener("click", function onFirstClick(){
-  KTAudio.init(); KTAudio.startMusic();
+  if (typeof KTAudio !== "undefined") { KTAudio.init(); KTAudio.startMusic(); }
   document.removeEventListener("click", onFirstClick);
 }, { once: true });
 </script>

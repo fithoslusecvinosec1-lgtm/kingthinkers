@@ -474,7 +474,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 
 <script>
 // ── NAVIGATION ────────────────────────────────────────────────
-function switchPage(name) { KTAudio.tap();
+function switchPage(name) { if (typeof KTAudio !== 'undefined') KTAudio.tap();
   // Hide all pages
   document.querySelectorAll('.page').forEach(function(p) {
     p.style.display = 'none';
@@ -496,7 +496,11 @@ function switchPage(name) { KTAudio.tap();
   // Render map if kingdom
   if (name === 'kingdom') renderMap();
   if (name === 'home')    updateHomeScreen();
-  if (name === 'sage')    initSage();
+  if (name === 'sage') {
+    // Only initialise Sage once — preserve conversation on tab switch
+    var msgs = document.getElementById('sage-messages');
+    if (!msgs || msgs.children.length === 0) initSage();
+  }
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -577,7 +581,7 @@ function scheduleSyncStats() {
   if (_syncStatsTimer) clearTimeout(_syncStatsTimer);
   _syncStatsTimer = setTimeout(function() {
     var code = getActiveCode();
-    if (code && code !== 'demo' && typeof db_syncStudentStats === 'function') {
+    if (code && typeof db_syncStudentStats === 'function') {
       db_syncStudentStats(code, xp, crowns).catch(function(e) {
         console.warn('Stats sync failed:', e);
       });
@@ -614,7 +618,8 @@ function updateHomeStats() {
 
 // ── STUDENT ───────────────────────────────────────────────────
 function getActiveCode() {
-  return localStorage.getItem('kt_active_code') || 'demo';
+  // Returns null for unauthenticated — callers must guard against null/'demo'
+  return localStorage.getItem('kt_active_code') || null;
 }
 function getScopedKey(base) {
   return base + '_' + getActiveCode();
@@ -642,8 +647,8 @@ function saveProgress(p) {
   localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(p));
   // Save to Supabase async (non-blocking)
   var code = getActiveCode();
-  if (code && code !== 'demo') {
-    db_saveProgress(code, p).catch(function(e){ console.warn('saveProgress to Supabase failed', e); });
+  if (code) {
+    if (typeof db_saveProgress === 'function') db_saveProgress(code, p).catch(function(e){ console.warn('saveProgress failed', e); });
   }
 }
 function isMissionDone(id) {
@@ -658,15 +663,36 @@ function completeMission(id) {
 // Load progress from Supabase on boot
 async function loadProgressFromDB() {
   var code = getActiveCode();
-  if (!code || code === 'demo') return;
+  if (!code) return;
   try {
     var p = await db_getProgress(code);
     if (p && Object.keys(p).length > 0) {
       _progressCache = p;
-      // Sync to localStorage
       localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(p));
     }
   } catch(e) { console.warn('loadProgressFromDB failed', e); }
+
+  // Also refresh XP and crowns from Supabase — single source of truth
+  try {
+    if (typeof db_getStudent === 'function') {
+      var student = await db_getStudent(code);
+      if (student) {
+        // Update localStorage cache
+        localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+        // Apply to live state — overrides any local seed
+        if (typeof student.xp === 'number') {
+          xp = student.xp;
+          var xpEl = document.getElementById('topbar-xp');
+          if (xpEl) xpEl.textContent = xp + ' XP';
+        }
+        if (typeof student.crowns === 'number') {
+          crowns = student.crowns;
+          var crEl = document.getElementById('topbar-crowns');
+          if (crEl) crEl.textContent = '👑 ' + crowns;
+        }
+      }
+    }
+  } catch(e) { console.warn('loadProgressFromDB: student stats fetch failed', e); }
 }
 
 // ── WORLDS DATA ───────────────────────────────────────────────
@@ -832,7 +858,7 @@ function renderMap() {
 }
 
 // ── SELECT WORLD ──────────────────────────────────────────────
-function selectWorld(worldId) { KTAudio.whoosh();
+function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoosh();
   selectedWorldId = worldId;
   var world = WORLDS.find(function(w){ return w.id === worldId; });
   if (!world) return;
@@ -906,7 +932,7 @@ function selectWorld(worldId) { KTAudio.whoosh();
 }
 
 // ── LAUNCH MISSION ────────────────────────────────────────────
-function launchMission(missionId, worldId, lessonFile, xpReward) { KTAudio.unlock();
+function launchMission(missionId, worldId, lessonFile, xpReward) { if (typeof KTAudio !== 'undefined') KTAudio.unlock();
   localStorage.setItem('kt_active_mission', JSON.stringify({
     missionId: missionId,
     worldId: worldId,
@@ -963,12 +989,23 @@ window.addEventListener('storage', function(e) {
 (function personalise() {
   var student = getActiveStudent();
   if (!student) return;
+  // Set name/greeting only — XP and crowns are loaded from Supabase in loadProgressFromDB
   var greeting = document.getElementById('home-greeting');
   if (greeting) greeting.textContent = 'Good morning, King ' + student.name + '! 👑';
   var topbar = document.getElementById('topbar-title');
   if (topbar) topbar.textContent = '👑 ' + student.name + "'s Kingdom";
-  if (student.xp) { xp = student.xp; document.getElementById('topbar-xp').textContent = xp + ' XP'; }
-  if (student.crowns) { crowns = student.crowns; document.getElementById('topbar-crowns').textContent = '👑 ' + crowns; }
+  // Seed XP/crowns from local cache as a fast initial display
+  // (will be overwritten by Supabase data when loadProgressFromDB completes)
+  if (typeof student.xp === 'number' && student.xp > 0) {
+    xp = student.xp;
+    var xpEl = document.getElementById('topbar-xp');
+    if (xpEl) xpEl.textContent = xp + ' XP';
+  }
+  if (typeof student.crowns === 'number' && student.crowns > 0) {
+    crowns = student.crowns;
+    var crEl = document.getElementById('topbar-crowns');
+    if (crEl) crEl.textContent = '👑 ' + crowns;
+  }
 })();
 
 // ── HOME PROGRESS ────────────────────────────────────────────
@@ -1120,7 +1157,7 @@ async function sageSend(message) {
   if (sageTyping) return;
   if (!message || !message.trim()) return;
 
-  KTAudio.tap();
+  if (typeof KTAudio !== 'undefined') KTAudio.tap();
   sageTyping = true;
 
   // Hide quick prompts after first message
@@ -1144,7 +1181,7 @@ async function sageSend(message) {
     sageRemoveTyping();
     sageAddMessage('assistant', reply);
     sageHistory.push({ role: 'assistant', content: reply });
-    KTAudio.coin();
+    if (typeof KTAudio !== 'undefined') KTAudio.coin();
 
     // Keep history manageable
     if (sageHistory.length > 20) sageHistory = sageHistory.slice(-16);
@@ -1217,7 +1254,7 @@ function showCelebration(missionName, xpEarned) {
   }
 
   screen.classList.add('show');
-  KTAudio.questComplete();
+  if (typeof KTAudio !== 'undefined') KTAudio.questComplete();
 }
 
 function closeCelebration() {
@@ -1234,7 +1271,7 @@ function triggerLevelUp(rank) {
   flash.classList.remove('show');
   void flash.offsetWidth;
   flash.classList.add('show');
-  KTAudio.levelUp();
+  if (typeof KTAudio !== 'undefined') KTAudio.levelUp();
   setTimeout(function(){ flash.classList.remove('show'); }, 2200);
 }
 
@@ -1243,22 +1280,26 @@ var MISSION_MAP = {};
 
 function getNextMission() {
   var p = getProgress();
-  // Find first uncompleted mission across all worlds
-  var allMissions = [];
-  WORLDS.forEach(function(w) {
-    w.missions.forEach(function(m) { allMissions.push({ world: w, mission: m }); });
-  });
-  // Return first incomplete
-  for (var i = 0; i < allMissions.length; i++) {
-    if (!p[allMissions[i].mission.id]) return allMissions[i];
+  // Only consider unlocked worlds with available lesson files
+  for (var wi = 0; wi < WORLDS.length; wi++) {
+    var w = WORLDS[wi];
+    var status = worldStatus(w);
+    if (status === 'locked') continue; // skip locked worlds
+    for (var mi = 0; mi < w.missions.length; mi++) {
+      var m = w.missions[mi];
+      if (!p[m.id] && m.lessonFile) {
+        // Found: not done AND has a real lesson file
+        return { world: w, mission: m };
+      }
+    }
   }
-  return null; // all done
+  return null; // all available missions done
 }
 
 function launchNextMission() {
   var next = getNextMission();
   if (!next) { switchPage('kingdom'); return; }
-  KTAudio.unlock();
+  if (typeof KTAudio !== 'undefined') KTAudio.unlock();
   launchMission(next.mission.id, next.world.id, next.mission.lessonFile, next.mission.xp);
 }
 
