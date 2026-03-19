@@ -616,7 +616,16 @@ function renderCodes(){
   }).join('');
 }
 
-function renderAll(){renderRoster();renderProgress();renderCodes();}
+var _renderTimer = null;
+function renderAll() {
+  // Debounce — collapse rapid successive calls into one paint
+  if (_renderTimer) clearTimeout(_renderTimer);
+  _renderTimer = setTimeout(function() {
+    renderRoster();
+    renderProgress();
+    renderCodes();
+  }, 16); // one animation frame
+}
 
 // ── MODALS ────────────────────────────────────────────────────
 function showCard(code){
@@ -805,7 +814,7 @@ function wireButtons() {
   renderAll();
   loadSettingsForm();
   wireButtons();
-  syncFromSupabase();
+  syncFromSupabase(true); // silent=true — no toast, no flicker on load
 })();
 
 function saveSettingsNow() {
@@ -857,10 +866,10 @@ function logOut() {
   }
 }
 
-async function syncFromSupabase() {
-  toast('🔄 Syncing from cloud…');
+async function syncFromSupabase(silent) {
+  // silent=true on boot — no toast, no flicker
+  if (!silent) toast('🔄 Syncing from cloud…');
 
-  // Fix #7: Back up current roster BEFORE overwriting
   var rosterBackup = null;
   try { rosterBackup = JSON.parse(JSON.stringify(getRoster())); } catch(e) {}
 
@@ -868,7 +877,7 @@ async function syncFromSupabase() {
     var students = await db_getRosterWithProgress();
 
     if (!students || !students.length) {
-      toast('☁️ No students found in cloud yet');
+      if (!silent) toast('☁️ No students found in cloud yet');
       return;
     }
 
@@ -891,18 +900,17 @@ async function syncFromSupabase() {
       newRoster[s.code] = { name: s.name, grade: s.grade };
     });
 
-    // Only replace roster after all students saved successfully
     saveRoster(newRoster);
-    toast('✅ Synced ' + Object.keys(newRoster).length + ' students from cloud!');
+    if (!silent) toast('✅ Synced ' + Object.keys(newRoster).length + ' students from cloud!');
+    // Always re-render after sync so data is fresh
     renderAll();
 
   } catch(e) {
-    // Restore backup if sync failed mid-way
     if (rosterBackup) {
       saveRoster(rosterBackup);
       console.warn('Sync failed, restored backup roster');
     }
-    toast('⚠️ Sync failed — your data is safe, check your connection');
+    if (!silent) toast('⚠️ Sync failed — your data is safe, check your connection');
     console.warn('syncFromSupabase failed:', e);
   }
 }
