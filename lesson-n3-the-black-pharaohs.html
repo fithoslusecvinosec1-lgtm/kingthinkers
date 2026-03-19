@@ -157,7 +157,6 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
     <div class="hud-grade" id="hud-grade">3rd Grade · Reading</div>
     <button class="hud-btn" onclick="window.location.href='/kingthinkers/kingthinkers-dashboard.html'">← Map</button>
     <button class="hud-btn" id="mute-btn" onclick="toggleSoundBtn()">🔊</button>
-    <button class="hud-btn" id="music-toggle" onclick="toggleMusic()">🔇</button>
   </div>
 
   <!-- Phase bar -->
@@ -521,7 +520,6 @@ function renderMathIntro(area){
 function escQ(s){return String(s).replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');}
 
 function renderQuestion(area,q){
-  totalQs++;
   const div=document.createElement('div');div.className='q-card';
   div.innerHTML=`
     <div class="q-standard" style="color:${LD.accentColor};">${q.standard}</div>
@@ -706,7 +704,7 @@ function showComplete() { KTAudio.questComplete();
   setTimeout(()=>showToast('👑','Progress Saved!','Your kingdom map has been updated!'),1800);
 }
 
-function launch(){ playFanfare();
+function launch(){ KTAudio.questComplete();
   const em=LD.fireworks||['🌟','✨','🎉','👑','⭐','🏆','💛','🎊','⚡'];
   for(let i=0;i<22;i++){
     setTimeout(()=>{

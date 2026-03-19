@@ -353,7 +353,7 @@ function toggleMusic() {
 }
 
 // Play a success fanfare
-function playFanfare() {
+function KTAudio.questComplete() {
   try {
     var ctx = getAudioCtx();
     if (ctx.state === 'suspended') ctx.resume();
@@ -412,12 +412,7 @@ document.addEventListener('click', function startOnClick() {
 
   <div class="crown-wrap"><div class="crown-icon">👑</div></div>
   <div style="position:fixed;top:14px;right:16px;z-index:100;">
-    <button id="music-toggle" onclick="toggleMusic()" style="
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
-      color:rgba(255,255,255,.6);border-radius:50%;width:36px;height:36px;
-      font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-      -webkit-tap-highlight-color:transparent;
-    ">🔇</button>
+    
   </div>
   <div class="logo">KingThinkers</div>
   <div class="tagline">Every Young King Deserves to Shine</div>

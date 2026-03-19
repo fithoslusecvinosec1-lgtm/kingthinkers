@@ -952,7 +952,7 @@ function createKing() {
 
 function launchFireworks() {
   // Play fanfare
-  try { playFanfare && playFanfare(); } catch(e) {}
+  try { playFanfare && KTAudio.questComplete(); } catch(e) {}
   const emojis = ['👑','⭐','✨','💫','🌟','🎉','🏆'];
   for (let i = 0; i < 20; i++) {
     setTimeout(() => {
