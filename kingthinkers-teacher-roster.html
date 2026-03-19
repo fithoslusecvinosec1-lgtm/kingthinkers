@@ -770,6 +770,8 @@ function wireButtons() {
   on('logout-btn', function(){
     if (confirm('Log out of Teacher Roster?')) {
       sessionStorage.removeItem('kt_teacher');
+      localStorage.removeItem('kt_teacher_token');
+      localStorage.removeItem('kt_teacher_session');
       window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
     }
   });
@@ -849,6 +851,8 @@ function printKingCards() {
 function logOut() {
   if (confirm('Log out of Teacher Roster?')) {
     sessionStorage.removeItem('kt_teacher');
+    localStorage.removeItem('kt_teacher_token');
+    localStorage.removeItem('kt_teacher_session');
     window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
   }
 }
