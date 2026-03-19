@@ -41,7 +41,6 @@ function kt_getTeacherToken() {
     }
     return null;
   } catch(e) { return null; }
-} catch(e) { return null; }
 }
 
 // ── API CALL HELPER ───────────────────────────────────────────
