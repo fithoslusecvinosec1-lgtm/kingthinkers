@@ -182,9 +182,10 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
   position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
   background:var(--card2);border:1px solid var(--border);
   padding:10px 14px;border-radius:12px;font-size:12px;color:rgba(255,255,255,.8);
-  white-space:nowrap;font-weight:600;font-style:normal;
+  font-weight:600;font-style:normal;
   pointer-events:none;opacity:0;transition:opacity .2s;z-index:50;
   box-shadow:0 8px 24px rgba(0,0,0,.4);
+  white-space:normal;text-align:center;max-width:240px;
 }
 .vocab-tip:hover::after{opacity:1;}
 
@@ -349,12 +350,12 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
 .particle{position:fixed;pointer-events:none;z-index:50;border-radius:50%;animation:particle-anim var(--dur,.6s) ease-out forwards;}
 @keyframes particle-anim{0%{opacity:1;transform:translate(-50%,-50%) scale(1);}100%{opacity:0;transform:translate(var(--px),var(--py)) scale(0);}}
 </style>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="KingThinkers">
-  <meta name="theme-color" content="#F5A800">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KingThinkers">
+<meta name="theme-color" content="#F5A800">
 <script src="/kingthinkers/kt-db.js"></script>
 <script src="/kingthinkers/kt-audio.js"></script>
 </head>
@@ -401,7 +402,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
     <div class="hud-spacer"></div>
     <div class="hud-xp">
       <div class="xp-label">XP</div>
-      <div class="xp-track"><div class="xp-fill" id="xp-bar" style="width:12%;"></div></div>
+      <div class="xp-track"><div class="xp-fill" id="xp-bar" style="width:0%;"></div></div>
       <div class="xp-num" id="xp-num">60</div>
     </div>
     <div class="hud-crowns">👑 <span id="crown-count">0</span></div>
@@ -465,6 +466,24 @@ const sageMessages = [
   "<strong>Final question, King — make it count! 👑</strong> This one asks you to think beyond the story. What do YOU think the pharaoh's secret teaches us?",
   "Quest complete!"
 ];
+
+function audioSafe(method) {
+  try {
+    if (window.KTAudio && typeof KTAudio[method] === 'function') {
+      KTAudio[method]();
+    }
+  } catch(e) {}
+}
+
+function syncHud() {
+  const xpNum = document.getElementById('xp-num');
+  const xpBar = document.getElementById('xp-bar');
+  const crownCount = document.getElementById('crown-count');
+
+  if (xpNum) xpNum.textContent = xp;
+  if (xpBar) xpBar.style.width = Math.min(xp / 10, 100) + '%';
+  if (crownCount) crownCount.textContent = crowns;
+}
 
 // ─── STARS ────────────────────────────────────────────────
 const starsEl = document.getElementById('stars');
@@ -596,7 +615,6 @@ function setSage(html) {
 
 // ─── PHASE 0: READING ─────────────────────────────────────
 function renderReading(area) {
-  // Scene header
   const scene = document.createElement('div');
   scene.className = 'scene-header';
   scene.innerHTML = `
@@ -618,13 +636,11 @@ function renderReading(area) {
     </div>`;
   area.appendChild(scene);
 
-  // Passage
   const p = document.createElement('div');
   p.className = 'passage';
   p.innerHTML = passage;
   area.appendChild(p);
 
-  // Continue button
   const btn = document.createElement('button');
   btn.className = 'next-btn show';
   btn.textContent = "I've Read the Story — Let's Answer Questions! ⚔️";
@@ -636,7 +652,6 @@ function renderReading(area) {
 function renderQuestion(area, q) {
   totalQs++;
 
-  // Q card
   const card = document.createElement('div');
   card.className = 'q-card';
 
@@ -652,7 +667,6 @@ function renderQuestion(area, q) {
     </button>`;
   area.appendChild(card);
 
-  // Render choices
   const choicesEl = document.getElementById(`choices-${q.id}`);
   q.choices.forEach(c => {
     const el = document.createElement('div');
@@ -664,7 +678,6 @@ function renderQuestion(area, q) {
 }
 
 function answerQuestion(q, choice, el) {
-  // Lock all choices
   document.querySelectorAll(`#choices-${q.id} .choice`).forEach(c => c.classList.add('locked'));
 
   const fb = document.getElementById(`fb-${q.id}`);
@@ -673,16 +686,15 @@ function answerQuestion(q, choice, el) {
   if (choice.correct) {
     correct++;
     el.classList.add('correct');
-    KTAudio.correct();
-    gainXP(q.xpReward, el);
+    audioSafe('correct');
+    gainXP(q.xpReward);
     gainCrowns(q.crownReward);
     fb.className = 'feedback correct-fb show';
     fb.innerHTML = `<div class="fb-icon">✅</div><div><div class="fb-title ok">Correct!</div><div class="fb-body">${q.correctFeedback}</div><div class="xp-pop">+${q.xpReward} XP &nbsp;·&nbsp; +${q.crownReward} 👑</div></div>`;
     burstParticles(el, '#00C48C');
   } else {
     el.classList.add('wrong');
-    KTAudio.wrong();
-    // Highlight correct answer
+    audioSafe('wrong');
     document.querySelectorAll(`#choices-${q.id} .choice`).forEach(c => {
       if (c.querySelector('.choice-text').textContent === q.choices.find(ch => ch.correct).text) {
         c.classList.add('correct');
@@ -716,7 +728,6 @@ function renderVocab(area) {
   const defsCol = document.createElement('div');
   defsCol.style.cssText = 'flex:1;display:flex;flex-direction:column;gap:8px;';
 
-  // Shuffle defs
   const shuffledDefs = [...vocabPairs].sort(() => Math.random() - .5);
 
   let matched = 0;
@@ -730,10 +741,10 @@ function renderVocab(area) {
     wi.dataset.word = vp.word;
     wi.onclick = () => {
       if (wi.classList.contains('matched')) return;
-      document.querySelectorAll('[data-word]').forEach(w => w.classList.remove('selected'));
+      document.querySelectorAll('#vocab-wrap [data-word]').forEach(w => w.classList.remove('selected'));
       wi.classList.add('selected');
       vocabSel.word = vp.word;
-      tryVocabMatch(matched, () => { matched++; checkVocabDone(matched); });
+      tryVocabMatch(() => { matched++; checkVocabDone(matched); });
     };
     wordsCol.appendChild(wi);
   });
@@ -742,13 +753,13 @@ function renderVocab(area) {
     const di = document.createElement('div');
     di.className = 'vocab-item';
     di.textContent = vp.def;
-    di.dataset.def = vp.word; // which word this def belongs to
+    di.dataset.def = vp.word;
     di.onclick = () => {
       if (di.classList.contains('matched')) return;
-      document.querySelectorAll('[data-def]').forEach(d => d.classList.remove('selected'));
+      document.querySelectorAll('#vocab-wrap [data-def]').forEach(d => d.classList.remove('selected'));
       di.classList.add('selected');
       vocabSel.def = vp.word;
-      tryVocabMatch(matched, () => { matched++; checkVocabDone(matched); });
+      tryVocabMatch(() => { matched++; checkVocabDone(matched); });
     };
     defsCol.appendChild(di);
   });
@@ -757,25 +768,32 @@ function renderVocab(area) {
   wrap.appendChild(defsCol);
 }
 
-function tryVocabMatch(matchedCount, onMatch) {
+function tryVocabMatch(onMatch) {
   if (!vocabSel.word || !vocabSel.def) return;
-  const w = vocabSel.word; const d = vocabSel.def;
+  const w = vocabSel.word;
+  const d = vocabSel.def;
   vocabSel = { word: null, def: null };
 
-  const wordEl = document.querySelector(`[data-word="${w}"]`);
-  const defEl  = document.querySelector(`[data-def="${d}"]`);
+  const wordEl = document.querySelector(`#vocab-wrap [data-word="${w}"]`);
+  const defEl  = document.querySelector(`#vocab-wrap [data-def="${d}"]`);
+
+  if (!wordEl || !defEl) return;
 
   if (w === d) {
-    // correct match
-    wordEl.classList.remove('selected'); wordEl.classList.add('matched');
-    defEl.classList.remove('selected'); defEl.classList.add('matched');
-    KTAudio.coin();
+    wordEl.classList.remove('selected');
+    wordEl.classList.add('matched');
+    defEl.classList.remove('selected');
+    defEl.classList.add('matched');
+    audioSafe('coin');
     gainXP(15);
     onMatch();
   } else {
-    // wrong
-    wordEl.classList.add('wrong-flash'); defEl.classList.add('wrong-flash');
-    setTimeout(() => { wordEl.classList.remove('selected','wrong-flash'); defEl.classList.remove('selected','wrong-flash'); }, 400);
+    wordEl.classList.add('wrong-flash');
+    defEl.classList.add('wrong-flash');
+    setTimeout(() => {
+      wordEl.classList.remove('selected', 'wrong-flash');
+      defEl.classList.remove('selected', 'wrong-flash');
+    }, 400);
   }
 }
 
@@ -791,16 +809,17 @@ function checkVocabDone(matched) {
 }
 
 // ─── XP + CROWNS ──────────────────────────────────────────
-function gainXP(amount, el) {
+function gainXP(amount) {
   xp = Math.min(xp + amount, 1000);
-  document.getElementById('xp-num').textContent = xp;
-  document.getElementById('xp-bar').style.width = Math.min(xp / 10, 100) + '%';
+  syncHud();
 }
 
 function gainCrowns(n) {
   crowns += n;
+  syncHud();
+
   const el = document.getElementById('crown-count');
-  el.textContent = crowns;
+  if (!el) return;
   el.style.transform = 'scale(1.4)';
   el.style.color = 'var(--amber)';
   setTimeout(() => { el.style.transform = ''; el.style.color = ''; }, 350);
@@ -826,14 +845,16 @@ function burstParticles(el, color) {
 function advancePhase() {
   phase++;
   renderPhase();
-  window.scrollTo(0, 0);
 }
 
 // ─── COMPLETE ─────────────────────────────────────────────
-function showComplete() { KTAudio.questComplete();
+function showComplete() {
+  audioSafe('questComplete');
+
   const elapsed = Math.round((Date.now() - startTime) / 1000);
   const acc = totalQs > 0 ? Math.round((correct / totalQs) * 100) : 0;
   const bonusXP = acc === 100 ? 50 : acc >= 75 ? 25 : 0;
+
   gainXP(bonusXP);
 
   document.getElementById('final-crowns').textContent = crowns;
@@ -845,20 +866,29 @@ function showComplete() { KTAudio.questComplete();
   screen.classList.add('show');
   launchFireworks();
 
-  // Signal the dashboard and save to Supabase
-  try {
-    const active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
-    if (active) {
-      const signal = { missionId: active.missionId, worldId: active.worldId, xp: active.xp, accuracy: acc, completedAt: Date.now() };
-      localStorage.setItem('kt_mission_completed', JSON.stringify(signal));
-      localStorage.removeItem('kt_active_mission');
-      // Save to Supabase
-      const code = localStorage.getItem('kt_active_code');
-      if (code && code !== 'demo') {
-        db_completeLesson(code, active.missionId, active.xp).catch(e => console.warn('db_completeLesson failed', e));
+  if (!missionSubmitted) {
+    missionSubmitted = true;
+
+    try {
+      const active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+      if (active) {
+        const signal = {
+          missionId: active.missionId,
+          worldId: active.worldId,
+          xp: active.xp,
+          accuracy: acc,
+          completedAt: Date.now()
+        };
+        localStorage.setItem('kt_mission_completed', JSON.stringify(signal));
+        localStorage.removeItem('kt_active_mission');
+
+        const code = localStorage.getItem('kt_active_code');
+        if (code && code !== 'demo' && typeof db_completeLesson === 'function') {
+          db_completeLesson(code, active.missionId, active.xp).catch(e => console.warn('db_completeLesson failed', e));
+        }
       }
-    }
-  } catch(e) {}
+    } catch(e) {}
+  }
 
   setTimeout(() => showToast('👑', 'Progress Saved!', 'Your kingdom map has been updated!'), 1800);
 }
@@ -887,7 +917,7 @@ function nextQuest() {
 
 function reviewLesson() {
   document.getElementById('complete-screen').classList.remove('show');
-  // Reset all state so replaying doesn't inflate XP/accuracy
+
   phase = 0;
   xp = 60;
   crowns = 0;
@@ -895,9 +925,8 @@ function reviewLesson() {
   totalQs = 0;
   startTime = Date.now();
   vocabSel = { word: null, def: null };
-  document.getElementById('xp-num').textContent = xp;
-  document.getElementById('xp-bar').style.width = '12%';
-  document.getElementById('crown-count').textContent = '0';
+
+  syncHud();
   renderPhase();
 }
 
@@ -907,29 +936,42 @@ function showToast(ico, title, sub) {
   document.getElementById('t-ico').textContent = ico;
   document.getElementById('t-title').textContent = title;
   document.getElementById('t-sub').textContent = sub;
-  t.style.transform = 'translateY(0)'; t.style.opacity = '1';
-  setTimeout(() => { t.style.transform = 'translateY(80px)'; t.style.opacity = '0'; }, 3000);
+  t.style.transform = 'translateY(0)';
+  t.style.opacity = '1';
+  setTimeout(() => {
+    t.style.transform = 'translateY(80px)';
+    t.style.opacity = '0';
+  }, 3000);
 }
 
 // ─── MUTE TOGGLE ──────────────────────────────────────────
 function toggleMute() {
-  KTAudio.init();
-  var unmuted = KTAudio.toggleMute();
+  if (!window.KTAudio) return;
+  if (KTAudio.init) KTAudio.init();
+  var unmuted = KTAudio.toggleMute ? KTAudio.toggleMute() : true;
   var btn = document.getElementById('mute-btn');
   if (btn) btn.textContent = unmuted ? '🔊 Sound' : '🔇 Muted';
 }
 
 // ─── AUDIO BOOT ───────────────────────────────────────────
 document.addEventListener('touchstart', function onFirst(){
-  KTAudio.init(); KTAudio.startMusic();
+  try {
+    if (window.KTAudio && KTAudio.init) KTAudio.init();
+    if (window.KTAudio && KTAudio.startMusic) KTAudio.startMusic();
+  } catch(e) {}
   document.removeEventListener('touchstart', onFirst);
 }, { once: true });
+
 document.addEventListener('click', function onFirstClick(){
-  KTAudio.init(); KTAudio.startMusic();
+  try {
+    if (window.KTAudio && KTAudio.init) KTAudio.init();
+    if (window.KTAudio && KTAudio.startMusic) KTAudio.startMusic();
+  } catch(e) {}
   document.removeEventListener('click', onFirstClick);
 }, { once: true });
 
 // ─── INIT ─────────────────────────────────────────────────
+syncHud();
 renderPhase();
 </script>
 
@@ -1009,7 +1051,6 @@ function toggleSagePanel() {
   if (panel) {
     panel.style.display = sagePanelOpen ? 'block' : 'none';
     if (sagePanelOpen && sagePanelHistory.length === 0) {
-      // Greeting
       var msgs = document.getElementById('sage-panel-messages');
       if (msgs) msgs.innerHTML = '<div class="sp-msg-ai">Hey King! 👋 I\'m Sage — need a hint or some encouragement? I got you! Just ask! 👑</div>';
       sagePanelHistory.push({ role: 'assistant', content: 'Hey King! Need a hint or encouragement? I got you!' });
@@ -1019,12 +1060,13 @@ function toggleSagePanel() {
 
 async function sendSagePanel(prefill) {
   if (sagePanelBusy) return;
+
   var input = document.getElementById('sage-panel-input');
   var text = prefill || (input ? input.value.trim() : '');
   if (!text) return;
   if (input) input.value = '';
 
-  KTAudio.tap();
+  audioSafe('tap');
   sagePanelBusy = true;
 
   var msgs = document.getElementById('sage-panel-messages');
@@ -1037,20 +1079,14 @@ async function sendSagePanel(prefill) {
   sagePanelHistory.push({ role: 'user', content: text });
 
   try {
-    // Get lesson context
     var lessonTitle = document.title.replace('KingThinkers — ', '');
     var systemWithCtx = SAGE_LESSON_SYSTEM + '\nThe student is currently working on the lesson: "' + lessonTitle + '".';
 
     var reply = null;
-    try {
-      var _sr = await fetch('https://bfyogmoqasqoefxxykdv.supabase.co/functions/v1/kt-api?action=sage-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: sagePanelHistory, systemPrompt: systemWithCtx })
-      });
-      var _sd = await _sr.json();
-      reply = _sd.reply || null;
-    } catch(e) { console.warn('Sage failed:', e); }
+    if (typeof kt_sage === 'function') {
+      reply = await kt_sage(sagePanelHistory, systemWithCtx);
+    }
+
     if (!reply) reply = "Sage is having a moment — try again, King! 🔧";
 
     var typing = document.getElementById('sage-panel-typing');
@@ -1058,7 +1094,8 @@ async function sendSagePanel(prefill) {
 
     sagePanelHistory.push({ role: 'assistant', content: reply });
     if (sagePanelHistory.length > 12) sagePanelHistory = sagePanelHistory.slice(-10);
-    KTAudio.coin();
+
+    audioSafe('coin');
 
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
   } catch(e) {
