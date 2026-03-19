@@ -41,7 +41,40 @@ textarea.inp{min-height:110px;resize:vertical;}
 .stat-n{font-family:var(--f-d);font-size:22px;font-weight:900;color:var(--gold);}
 .stat-l{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;}
 
-.s-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+.s-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px;}
+.s-card-top{display:flex;align-items:center;gap:10px;}
+.s-card-bottom{display:flex;flex-direction:column;gap:6px;}
+
+/* At-risk signal */
+.risk-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor;}
+.risk-green{background:#00C48C;color:#00C48C;}
+.risk-yellow{background:#F5A800;color:#F5A800;}
+.risk-red{background:#FF4757;color:#FF4757;}
+
+/* Mini progress bar */
+.mini-bar-bg{background:rgba(255,255,255,.07);border-radius:100px;height:6px;overflow:hidden;flex:1;}
+.mini-bar-fg{height:100%;border-radius:100px;transition:width .6s ease;}
+
+/* Skill bars */
+.skill-row{display:flex;align-items:center;gap:8px;}
+.skill-lbl{font-size:10px;font-weight:800;color:var(--muted);width:52px;flex-shrink:0;}
+.skill-bar-bg{flex:1;background:rgba(255,255,255,.07);border-radius:100px;height:5px;overflow:hidden;}
+.skill-bar-fg{height:100%;border-radius:100px;}
+
+/* Standards pills */
+.std-pill{background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);border-radius:100px;padding:2px 8px;font-size:9px;font-weight:800;color:#A78BFA;white-space:nowrap;}
+
+/* Last active */
+.last-active{font-size:10px;font-weight:700;}
+.la-recent{color:var(--green);}
+.la-week{color:var(--gold);}
+.la-old{color:var(--red);}
+.la-never{color:var(--muted);}
+
+/* Sort controls */
+.sort-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.sort-btn{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.sort-btn.active{background:rgba(245,168,0,.15);border-color:rgba(245,168,0,.5);color:var(--gold);}
 .s-code{font-family:var(--f-d);font-size:20px;font-weight:900;color:var(--gold);background:rgba(245,168,0,.1);border:1px solid rgba(245,168,0,.2);border-radius:8px;padding:6px 10px;flex-shrink:0;min-width:58px;text-align:center;}
 .s-info{flex:1;min-width:0;}
 .s-name{font-weight:800;font-size:15px;}
@@ -95,6 +128,7 @@ textarea.inp{min-height:110px;resize:vertical;}
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#F5A800">
 <script src="/kingthinkers/kt-db.js"></script>
+<script src="/kingthinkers/kt-music.js"></script>
 </head>
 <body>
 
@@ -127,7 +161,13 @@ textarea.inp{min-height:110px;resize:vertical;}
     <div class="stat-box"><div class="stat-n" id="st-xp">0</div><div class="stat-l">Total XP</div></div>
   </div>
   <input type="text" id="search" class="inp" placeholder="Search students…" oninput="renderRoster()">
-  <div id="roster-list"></div>
+  <div class="sort-bar">
+  <button class="sort-btn active" id="sort-name" onclick="setSort('name')">A–Z Name</button>
+  <button class="sort-btn" id="sort-progress" onclick="setSort('progress')">Progress</button>
+  <button class="sort-btn" id="sort-xp" onclick="setSort('xp')">XP</button>
+  <button class="sort-btn" id="sort-risk" onclick="setSort('risk')">At Risk First</button>
+</div>
+<div id="roster-list"></div>
 </div>
 
 <!-- PROGRESS -->
@@ -261,45 +301,67 @@ function getWorld(c){
 
 // ── ADD ───────────────────────────────────────────────────────
 async function doAdd(){
-  var name=document.getElementById('f-name').value.trim();
-  var grade=document.getElementById('f-grade').value;
-  if(!name){toast('Enter a name first');return}
-  var classCode = _teacherSession ? _teacherSession.classCode : 'MY-CLASS';
+  var nameEl=document.getElementById('f-name');
+  var gradeEl=document.getElementById('f-grade');
+  if(!nameEl||!gradeEl){toast('Form error');return;}
+  var name=nameEl.value.trim();
+  var grade=gradeEl.value||'3';
+  if(!name){toast('Enter a name first');return;}
+  var classCode=_teacherSession?_teacherSession.classCode:'MY-CLASS';
   var code=genCode();
-  var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
-  // Save to Supabase AND localStorage
-  await db_saveStudent(code, s);
-  saveStudent(code,s);
-  var r=getRoster();r[code]={name:name,grade:grade};saveRoster(r);
-  document.getElementById('f-name').value='';
-  toast('King '+name+' added! Code: '+code);
-  renderAll();
+  try {
+    // Server add first — if it fails, don't update local state
+    if(typeof db_addStudent==='function'){
+      await db_addStudent(code,name,grade);
+    }
+    var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
+    saveStudent(code,s);
+    var r=getRoster();r[code]={name:name,grade:grade};saveRoster(r);
+    nameEl.value='';
+    toast('King '+name+' added! Code: '+code);
+    renderAll();
+  } catch(e) {
+    toast('⚠️ Failed to add student: '+e.message);
+    console.warn('doAdd failed:',e);
+  }
 }
 
 async function doBulk(){
   var raw=document.getElementById('bulk-names').value.trim();
   if(!raw){toast('Paste names first');return}
-  var lines=raw.split('\n');var added=0;
-  var saves=[];
+  var lines=raw.split('\n');
+  var students=[];
+  var tempRoster={};
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim();if(!line)continue;
     var parts=line.split(',');
     var name=parts[0].trim();var grade=parts[1]?parts[1].trim():'3';
     if(!name)continue;
-    var classCode = _teacherSession ? _teacherSession.classCode : 'MY-CLASS';
     var code=genCode();
-    var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
-    // Save to localStorage immediately
-    saveStudent(code,s);
-    var r=getRoster();r[code]={name:name,grade:grade};saveRoster(r);
-    // Queue Supabase save
-    saves.push(db_saveStudent(code, s));
-    added++;
+    students.push({code:code,name:name,grade:grade});
+    tempRoster[code]={name:name,grade:grade};
   }
-  // Save all to Supabase in parallel
-  await Promise.all(saves).catch(function(e){ console.warn('Supabase bulk save failed',e); });
-  document.getElementById('bulk-names').value='';
-  toast(added+' students added!');renderAll();
+  if(!students.length){toast('No valid names found');return;}
+
+  // Atomic API call — all succeed or all fail (no partial state)
+  try {
+    await db_bulkAddStudents(students);
+    // Only update local state after server confirms success
+    students.forEach(function(s){
+      saveStudent(s.code,{code:s.code,name:s.name,grade:s.grade,
+        classCode:_teacherSession?_teacherSession.classCode:'MY-CLASS',
+        xp:0,crowns:0,createdAt:Date.now()});
+    });
+    var r=getRoster();
+    Object.assign(r,tempRoster);
+    saveRoster(r);
+    document.getElementById('bulk-names').value='';
+    toast(students.length+' students added!');
+    renderAll();
+  } catch(e) {
+    toast('⚠️ Bulk add failed: '+e.message);
+    console.warn('Bulk add failed:', e);
+  }
 }
 
 async function removeStudent(code){
@@ -308,39 +370,181 @@ async function removeStudent(code){
   localStorage.removeItem('kt_student_'+code);
   // Delete from Supabase
   try {
-    await fetch('https://bfyogmoqasqoefxxykdv.supabase.co/rest/v1/students?code=eq.'+code, {
-      method:'DELETE',
-      headers:{
-        'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmeW9nbW9xYXNxb2VmeHh5a2R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MTc2MTEsImV4cCI6MjA4OTE5MzYxMX0.4a69dRJxfcEysDpfRkG4Evgf-kJC64qZ2uwXfmfldI0',
-        'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmeW9nbW9xYXNxb2VmeHh5a2R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MTc2MTEsImV4cCI6MjA4OTE5MzYxMX0.4a69dRJxfcEysDpfRkG4Evgf-kJC64qZ2uwXfmfldI0'
-      }
-    });
+    // Use secure Edge Function — no exposed keys
+    await db_removeStudent(code);
   } catch(e){ console.warn('Supabase delete failed',e); }
   toast('Removed');renderAll();
 }
 
 // ── RENDER ────────────────────────────────────────────────────
+// ── SORT STATE ────────────────────────────────────────────────
+var _sortBy = 'name';
+
+function setSort(by) {
+  _sortBy = by;
+  document.querySelectorAll('.sort-btn').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.getElementById('sort-'+by);
+  if (btn) btn.classList.add('active');
+  renderRoster();
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+
+function getRiskLevel(done, lastActive) {
+  var daysSince = lastActive ? Math.floor((Date.now() - new Date(lastActive).getTime()) / 86400000) : 999;
+  if (done >= 4 || (done >= 2 && daysSince <= 7)) return 'green';
+  if (done === 0 || daysSince >= 14) return 'red';
+  return 'yellow';
+}
+
+function getRiskScore(done, lastActive) {
+  var risk = getRiskLevel(done, lastActive);
+  return risk === 'red' ? 0 : risk === 'yellow' ? 1 : 2;
+}
+
+function getLastActiveLabel(lastActive) {
+  if (!lastActive) return { text: 'Never logged in', cls: 'la-never' };
+  var days = Math.floor((Date.now() - new Date(lastActive).getTime()) / 86400000);
+  if (days === 0) return { text: 'Active today', cls: 'la-recent' };
+  if (days === 1) return { text: 'Active yesterday', cls: 'la-recent' };
+  if (days <= 7)  return { text: 'Active ' + days + 'd ago', cls: 'la-week' };
+  if (days <= 14) return { text: days + ' days ago', cls: 'la-old' };
+  return { text: days + 'd ago — check in!', cls: 'la-old' };
+}
+
+function getStandards(p) {
+  var stds = [];
+  MISSIONS.forEach(function(m) {
+    if (p[m.id]) {
+      if (m.type === 'Reading') { if (stds.indexOf('RI.3') < 0) stds.push('RI.3'); }
+      if (m.id === 'e2') { if (stds.indexOf('3.NBT') < 0) stds.push('3.NBT'); }
+      if (m.id === 'e4') { if (stds.indexOf('3.NF') < 0) stds.push('3.NF'); }
+      if (m.id === 'n2') { if (stds.indexOf('3.OA') < 0) stds.push('3.OA'); if (stds.indexOf('3.MD') < 0) stds.push('3.MD'); }
+      if (m.id === 'n4') { if (stds.indexOf('3.G') < 0) stds.push('3.G'); }
+    }
+  });
+  return stds;
+}
+
+function getSkillLevels(p) {
+  var readingMissions  = MISSIONS.filter(function(m){ return m.type === 'Reading'; });
+  var mathMissions     = MISSIONS.filter(function(m){ return m.type === 'Math'; });
+  var readingDone = readingMissions.filter(function(m){ return !!p[m.id]; }).length;
+  var mathDone    = mathMissions.filter(function(m){ return !!p[m.id]; }).length;
+  return {
+    reading: Math.round(readingDone / readingMissions.length * 100),
+    math:    Math.round(mathDone    / mathMissions.length    * 100),
+  };
+}
+
+function skillColor(pct) {
+  if (pct >= 60) return 'var(--green)';
+  if (pct >= 30) return 'var(--gold)';
+  return 'var(--red)';
+}
+
+// ── RENDER ROSTER ─────────────────────────────────────────────
 function renderRoster(){
   var r=getRoster();var codes=Object.keys(r);
-  var search=(document.getElementById('search').value||'').toLowerCase();
+  var search=(document.getElementById('search')||{value:''}).value.toLowerCase();
   var totalXP=0,active=0;
   codes.forEach(function(c){var s=getStudent(c);if(s){totalXP+=(s.xp||0);if(s.xp>0)active++}});
-  document.getElementById('st-count').textContent=codes.length;
-  document.getElementById('st-active').textContent=active;
-  document.getElementById('st-xp').textContent=totalXP;
+  var stCount=document.getElementById('st-count');
+  var stActive=document.getElementById('st-active');
+  var stXP=document.getElementById('st-xp');
+  if(stCount) stCount.textContent=codes.length;
+  if(stActive) stActive.textContent=active;
+  if(stXP) stXP.textContent=totalXP;
+
   var list=document.getElementById('roster-list');
-  if(!codes.length){list.innerHTML='<div class="empty"><div class="empty-i">👥</div><div>No students — use Add Student below</div></div>';return}
-  var filtered=codes.filter(function(c){var s=getStudent(c);if(!s)return false;return!search||s.name.toLowerCase().indexOf(search)>-1||c.indexOf(search)>-1});
-  list.innerHTML=filtered.map(function(c){
-    var s=getStudent(c);if(!s)return'';
-    var p=getMerged(c);var done=MISSIONS.filter(function(m){return!!p[m.id]}).length;
-    return'<div class="s-card">'+
-      '<div class="s-code">'+c+'</div>'+
-      '<div class="s-info"><div class="s-name">'+s.name+'</div><div class="s-meta">Gr '+s.grade+' · '+getWorld(c)+' · '+done+'/8 · '+(s.xp||0)+' XP</div></div>'+
-      '<div class="s-btns">'+
-        '<button class="s-btn grn" onclick="showProg(\''+c+'\')">📊</button>'+
-        '<button class="s-btn" onclick="showCard(\''+c+'\')">🃏</button>'+
-        '<button class="s-btn" onclick="removeStudent(\''+c+'\')">🗑️</button>'+
+  if(!list) return;
+  if(!codes.length){
+    list.innerHTML='<div class="empty"><div class="empty-i">👥</div><div>No students — use Add Student below</div></div>';
+    return;
+  }
+
+  // Build data array
+  var data = codes.map(function(c){
+    var s=getStudent(c); if(!s) return null;
+    var p=getMerged(c);
+    var done=MISSIONS.filter(function(m){return!!p[m.id]}).length;
+    var xp=s.xp||0;
+    var lastActive=s.lastActive||s.last_active||null;
+    var risk=getRiskLevel(done, lastActive);
+    return { c:c, s:s, p:p, done:done, xp:xp, lastActive:lastActive, risk:risk };
+  }).filter(function(d){ return d && (!search || d.s.name.toLowerCase().indexOf(search)>-1 || d.c.indexOf(search)>-1); });
+
+  // Sort
+  data.sort(function(a,b){
+    if (_sortBy === 'progress') return b.done - a.done;
+    if (_sortBy === 'xp')       return b.xp - a.xp;
+    if (_sortBy === 'risk')     return getRiskScore(a.done,a.lastActive) - getRiskScore(b.done,b.lastActive);
+    return a.s.name.localeCompare(b.s.name); // name default
+  });
+
+  list.innerHTML = data.map(function(d){
+    var pct = Math.round(d.done / MISSIONS.length * 100);
+    var barColor = pct >= 60 ? 'var(--green)' : pct >= 30 ? 'var(--gold)' : 'var(--red)';
+    var riskClass = 'risk-'+d.risk;
+    var la = getLastActiveLabel(d.lastActive);
+    var skills = getSkillLevels(d.p);
+    var stds = getStandards(d.p);
+    var stdHtml = stds.length ? stds.map(function(s){ return '<span class="std-pill">'+s+'</span>'; }).join('') : '<span class="std-pill" style="opacity:.4;">No standards yet</span>';
+
+    return '<div class="s-card">'+
+
+      // ── TOP ROW: code, risk dot, name, last active, buttons ──
+      '<div class="s-card-top">'+
+        '<div class="s-code">'+d.c+'</div>'+
+        '<div class="risk-dot '+riskClass+'" title="'+
+          (d.risk==='green'?'On track':d.risk==='yellow'?'Needs attention':'At risk')+'"></div>'+
+        '<div class="s-info" style="flex:1;min-width:0;">'+
+          '<div class="s-name">'+d.s.name+'</div>'+
+          '<div class="s-meta">Gr '+d.s.grade+' · '+getWorld(d.c)+' · '+d.done+'/8 missions · '+d.xp+' XP</div>'+
+        '</div>'+
+        '<div class="s-btns">'+
+          '<button class="s-btn grn" onclick="showProg(''+d.c+'')">📊</button>'+
+          '<button class="s-btn" onclick="showCard(''+d.c+'')">🃏</button>'+
+          '<button class="s-btn" onclick="removeStudent(''+d.c+'')">🗑️</button>'+
+        '</div>'+
+      '</div>'+
+
+      // ── BOTTOM ROW: progress bar, skills, standards, last active ──
+      '<div class="s-card-bottom">'+
+
+        // Mini overall progress bar
+        '<div style="display:flex;align-items:center;gap:8px;">'+
+          '<div style="font-size:10px;font-weight:800;color:var(--muted);width:52px;flex-shrink:0;">Progress</div>'+
+          '<div class="mini-bar-bg">'+
+            '<div class="mini-bar-fg" style="width:'+pct+'%;background:'+barColor+';"></div>'+
+          '</div>'+
+          '<div style="font-size:10px;font-weight:900;color:'+barColor+';width:28px;text-align:right;">'+pct+'%</div>'+
+        '</div>'+
+
+        // Reading skill bar
+        '<div class="skill-row">'+
+          '<div class="skill-lbl">Reading</div>'+
+          '<div class="skill-bar-bg">'+
+            '<div class="skill-bar-fg" style="width:'+skills.reading+'%;background:'+skillColor(skills.reading)+';"></div>'+
+          '</div>'+
+          '<div style="font-size:10px;font-weight:800;color:'+skillColor(skills.reading)+';width:28px;text-align:right;">'+skills.reading+'%</div>'+
+        '</div>'+
+
+        // Math skill bar
+        '<div class="skill-row">'+
+          '<div class="skill-lbl">Math</div>'+
+          '<div class="skill-bar-bg">'+
+            '<div class="skill-bar-fg" style="width:'+skills.math+'%;background:'+skillColor(skills.math)+';"></div>'+
+          '</div>'+
+          '<div style="font-size:10px;font-weight:800;color:'+skillColor(skills.math)+';width:28px;text-align:right;">'+skills.math+'%</div>'+
+        '</div>'+
+
+        // Standards + last active row
+        '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">'+
+          '<div style="display:flex;gap:4px;flex-wrap:wrap;">'+stdHtml+'</div>'+
+          '<div class="last-active '+la.cls+'">🕐 '+la.text+'</div>'+
+        '</div>'+
+
       '</div>'+
     '</div>';
   }).join('');
@@ -426,13 +630,24 @@ function showProg(code){
     cb.addEventListener('change',function(){
       var id=cb.getAttribute('data-id');var xp=parseInt(cb.getAttribute('data-xp'));
       var manual=getManProg(_progCode);var st=getStudent(_progCode);
-      if(cb.checked){manual[id]={completedAt:Date.now()};if(st){st.xp=(st.xp||0)+xp;saveStudent(_progCode,st);db_saveStudent(_progCode,st).catch(function(e){console.warn(e)});}}
-      else{delete manual[id];if(st){st.xp=Math.max(0,(st.xp||0)-xp);saveStudent(_progCode,st);db_saveStudent(_progCode,st).catch(function(e){console.warn(e)});}}
-      saveManProg(_progCode,manual);
-      // Save progress to Supabase
-      var merged=getMerged(_progCode);
-      db_saveProgress(_progCode,merged).catch(function(e){console.warn('saveProgress failed',e)});
-      toast('Saved!');
+      // Use server-side idempotent mark — prevents XP double counting
+      db_teacherMarkMission(_progCode, id, xp, cb.checked).then(function(result){
+        if(result && result.missions){
+          localStorage.setItem('kt_quest_progress_'+_progCode, JSON.stringify(result.missions));
+        }
+        toast('✅ Saved!');
+        renderAll();
+      }).catch(function(e){
+        // Fallback: update locally only
+        if(cb.checked){
+          manual[id]={completedAt:Date.now(),manual:true};
+        } else {
+          delete manual[id];
+        }
+        saveManProg(_progCode,manual);
+        toast('⚠️ Saved locally — sync when online');
+        renderAll();
+      });
     });
   });
   document.getElementById('prog-modal').classList.add('open');
@@ -495,44 +710,52 @@ window.addEventListener('load',function(){
 });
 
 async function syncFromSupabase() {
+  toast('🔄 Syncing from cloud…');
+
+  // Fix #7: Back up current roster BEFORE overwriting
+  var rosterBackup = null;
+  try { rosterBackup = JSON.parse(JSON.stringify(getRoster())); } catch(e) {}
+
   try {
-    const classCode = _teacherSession ? _teacherSession.classCode : (getSettings().classCode || null);
-    if (!classCode) { toast('⚠️ No class code — check Settings'); return; }
+    var students = await db_getRosterWithProgress();
 
-    toast('🔄 Syncing from cloud…');
-
-    const students = await db_getRosterWithProgress(classCode);
-
-    // Always rebuild roster entirely from Supabase — don't rely on local cache
-    var newRoster = {};
-    if (students && students.length > 0) {
-      students.forEach(function(s) {
-        // Overwrite local with cloud data
-        saveStudent(s.code, {
-          code:            s.code,
-          name:            s.name,
-          grade:           s.grade,
-          classCode:       s.classCode,
-          xp:              s.xp || 0,
-          crowns:          s.crowns || 0,
-          profileComplete: s.profileComplete || false,
-        });
-        // Overwrite local progress with cloud progress
-        if (s.progress) {
-          localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(s.progress));
-        }
-        newRoster[s.code] = { name: s.name, grade: s.grade };
-      });
+    if (!students || !students.length) {
+      toast('☁️ No students found in cloud yet');
+      return;
     }
 
-    // Replace entire local roster with cloud roster
+    // Build new roster from cloud data
+    var newRoster = {};
+    students.forEach(function(s) {
+      saveStudent(s.code, {
+        code:            s.code,
+        name:            s.name,
+        grade:           s.grade,
+        classCode:       s.class_code || s.classCode,
+        xp:              s.xp || 0,
+        crowns:          s.crowns || 0,
+        profileComplete: s.profile_complete || s.profileComplete || false,
+        lastActive:      s.last_active || s.lastActive || null,
+      });
+      if (s.progress && Object.keys(s.progress).length > 0) {
+        localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(s.progress));
+      }
+      newRoster[s.code] = { name: s.name, grade: s.grade };
+    });
+
+    // Only replace roster after all students saved successfully
     saveRoster(newRoster);
     toast('✅ Synced ' + Object.keys(newRoster).length + ' students from cloud!');
     renderAll();
 
   } catch(e) {
-    console.warn('syncFromSupabase failed', e);
-    toast('⚠️ Sync failed — check your connection');
+    // Restore backup if sync failed mid-way
+    if (rosterBackup) {
+      saveRoster(rosterBackup);
+      console.warn('Sync failed, restored backup roster');
+    }
+    toast('⚠️ Sync failed — your data is safe, check your connection');
+    console.warn('syncFromSupabase failed:', e);
   }
 }
 </script>
