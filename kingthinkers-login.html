@@ -21,7 +21,6 @@
     overflow: hidden; color: var(--white);
   }
 
-  /* Stars */
   #stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
   .star {
     position:absolute; border-radius:50%; background:white;
@@ -29,7 +28,6 @@
   }
   @keyframes twinkle { 0%,100%{opacity:.1;transform:scale(1)} 50%{opacity:.8;transform:scale(1.4)} }
 
-  /* Floating particles */
   .particle {
     position:fixed; font-size:20px; pointer-events:none; z-index:0;
     animation: float var(--d,12s) ease-in-out infinite var(--delay,0s);
@@ -39,7 +37,6 @@
     50%      { transform: translateY(-40px) rotate(15deg); opacity:0.35; }
   }
 
-  /* Main card */
   .login-card {
     position: relative; z-index: 1;
     width: min(440px, calc(100vw - 32px));
@@ -56,7 +53,6 @@
     to   { opacity:1; transform:translateY(0) scale(1); }
   }
 
-  /* Crown glow */
   .crown-wrap {
     width: 90px; height: 90px; border-radius: 50%;
     background: radial-gradient(circle, rgba(245,168,0,0.25) 0%, transparent 70%);
@@ -66,14 +62,9 @@
   @keyframes glowPulse { 0%,100%{box-shadow:0 0 20px rgba(245,168,0,0.2)} 50%{box-shadow:0 0 40px rgba(245,168,0,0.45)} }
   .crown-icon { font-size: 52px; }
 
-  /* Logo */
-  .logo {
-    font-family: var(--f-d); font-size: 28px; font-weight: 900;
-    color: var(--gold); margin-bottom: 4px;
-  }
+  .logo { font-family: var(--f-d); font-size: 28px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
   .tagline { font-size: 13px; color: var(--muted); margin-bottom: 32px; font-style: italic; }
 
-  /* Tabs */
   .tabs {
     display: flex; gap: 0; width: 100%;
     background: var(--card); border-radius: 14px; padding: 4px;
@@ -87,12 +78,10 @@
   }
   .tab.active { background: var(--gold); color: var(--navy); }
 
-  /* Panels */
   .panel { width:100%; display:none; flex-direction:column; gap:16px; }
   .panel.active { display:flex; animation: panelIn 0.3s ease; }
   @keyframes panelIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 
-  /* Code input */
   .code-label {
     font-size: 11px; font-weight: 900; color: var(--muted);
     letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px;
@@ -120,7 +109,6 @@
   .code-hint a { color: var(--sky); text-decoration: none; cursor: pointer; }
   .code-hint a:hover { text-decoration: underline; }
 
-  /* Error message */
   .error-msg {
     background: rgba(251,113,133,0.1); border: 1px solid rgba(251,113,133,0.25);
     border-radius: 10px; padding: 10px 14px;
@@ -129,7 +117,6 @@
   }
   .error-msg.show { display: block; animation: panelIn 0.3s ease; }
 
-  /* Name input for new students */
   .field-group { display:flex; flex-direction:column; gap:6px; width:100%; }
   .field-label {
     font-size: 11px; font-weight: 900; color: var(--muted);
@@ -145,7 +132,6 @@
   .field-input:focus { border-color: var(--gold); }
   .field-input::placeholder { color: var(--muted); font-weight: 400; }
 
-  /* Grade grid */
   .grade-row { display:flex; gap:8px; flex-wrap:wrap; }
   .grade-chip {
     flex:1; min-width:44px;
@@ -161,7 +147,6 @@
   .grade-lbl { font-size:9px; font-weight:800; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; }
   .grade-chip.selected .grade-lbl { color:var(--sky); }
 
-  /* Buttons */
   .btn-primary {
     width: 100%; padding: 16px;
     background: linear-gradient(135deg, var(--gold), var(--amber));
@@ -176,16 +161,6 @@
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
 
-  .btn-ghost {
-    width:100%; padding:12px;
-    background: transparent; border: 1px solid var(--border);
-    border-radius: 12px;
-    font-family: var(--f-b); font-size: 14px; font-weight: 700;
-    color: var(--muted); cursor: pointer; transition: all 0.2s;
-  }
-  .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--white); }
-
-  /* Teacher link */
   .teacher-link {
     margin-top: 20px; font-size: 12px; color: var(--muted);
     text-align: center;
@@ -193,7 +168,6 @@
   .teacher-link a { color: var(--sky); text-decoration: none; cursor: pointer; }
   .teacher-link a:hover { text-decoration: underline; }
 
-  /* Loading state */
   .loading-screen {
     position: fixed; inset:0; z-index:200;
     background: var(--navy); display:none;
@@ -205,7 +179,6 @@
   .loading-text { font-family:var(--f-d); font-size:22px; font-weight:900; color:var(--gold); }
   .loading-sub  { font-size:14px; color:var(--muted); }
 
-  /* Welcome back banner */
   .welcome-back {
     background: rgba(0,196,140,0.1); border: 1px solid rgba(0,196,140,0.25);
     border-radius: 12px; padding: 12px 16px;
@@ -216,12 +189,12 @@
   .wb-name { font-family:var(--f-d); font-size:15px; font-weight:900; color:var(--green); }
   .wb-sub  { font-size:11px; color:var(--muted); }
 </style>
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="KingThinkers">
-  <meta name="theme-color" content="#F5A800">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KingThinkers">
+<meta name="theme-color" content="#F5A800">
 <script src="/kingthinkers/kt-db.js"></script>
 <script src="/kingthinkers/kt-audio.js"></script>
 </head>
@@ -229,7 +202,6 @@
 
 <div id="stars"></div>
 
-<!-- Loading -->
 <div class="loading-screen" id="loading">
   <div class="loading-crown">👑</div>
   <div class="loading-text" id="loading-text">Opening your kingdom…</div>
@@ -237,21 +209,15 @@
 </div>
 
 <div class="login-card" id="login-card">
-
   <div class="crown-wrap"><div class="crown-icon">👑</div></div>
-  <div style="position:fixed;top:14px;right:16px;z-index:100;">
-    
-  </div>
   <div class="logo">KingThinkers</div>
   <div class="tagline">Every Young King Deserves to Shine</div>
 
-  <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('login')">Enter My Code</button>
     <button class="tab" onclick="switchTab('new')">I'm New Here</button>
   </div>
 
-  <!-- ── LOGIN PANEL ── -->
   <div class="panel active" id="panel-login">
     <div id="welcome-back-slot"></div>
 
@@ -264,6 +230,9 @@
         <input class="code-box" id="c3" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" oninput="onCodeInput(3)" onkeydown="onCodeKey(event,3)">
       </div>
       <div class="code-hint">Ask your teacher for your King Code 👑</div>
+      <div class="code-hint" id="not-you-wrap" style="display:none;margin-top:6px;">
+        <a onclick="clearLastStudent()">Not you?</a>
+      </div>
     </div>
 
     <div class="error-msg" id="login-error">That code isn't in the roster. Ask your teacher for help!</div>
@@ -273,7 +242,6 @@
     </button>
   </div>
 
-  <!-- ── NEW STUDENT PANEL ── -->
   <div class="panel" id="panel-new">
     <div class="field-group">
       <div class="field-label">Your First Name</div>
@@ -297,7 +265,6 @@
       <input class="field-input" id="new-class" type="text" placeholder="e.g. MR-JOHNSON-3B" maxlength="20" oninput="validateNew()">
     </div>
 
-    <div class="error-msg" id="register-error" style="margin-bottom:8px;"></div>
     <button class="btn-primary" id="btn-new" onclick="doRegister()" disabled>
       Create My Kingdom →
     </button>
@@ -307,7 +274,6 @@
   <div class="teacher-link">
     Are you a teacher? <a onclick="window.location.href='/kingthinkers/kingthinkers-teacher-login.html'">Open Teacher Roster →</a>
   </div>
-
 </div>
 
 <script>
@@ -328,26 +294,28 @@ for (let i = 0; i < 8; i++) {
 }
 
 // ── STORAGE HELPERS ───────────────────────────────────────────
-function getRoster() {
-  try { return JSON.parse(localStorage.getItem('kt_roster') || '{}'); } catch(e){ return {}; }
-}
-function saveRoster(r) { localStorage.setItem('kt_roster', JSON.stringify(r)); }
-
 function getStudentKey(code) { return 'kt_student_' + code; }
 function getStudent(code) {
-  try { return JSON.parse(localStorage.getItem(getStudentKey(code)) || 'null'); } catch(e){ return null; }
+  try { return JSON.parse(localStorage.getItem(getStudentKey(code)) || 'null'); }
+  catch(e){ return null; }
 }
-function saveStudent(code, data) { localStorage.setItem(getStudentKey(code), JSON.stringify(data)); }
 
 // ── STATE ─────────────────────────────────────────────────────
-let newGrade = '3'; // pilot default
+let newGrade = '3';
 let lastCode = localStorage.getItem('kt_last_code') || '';
+
+// ── AUDIO SAFE WRAPPER ────────────────────────────────────────
+function audioTap() {
+  if (window.KTAudio && KTAudio.init) KTAudio.init();
+  if (window.KTAudio && KTAudio.tap) KTAudio.tap();
+}
 
 // ── TABS ──────────────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='new')));
   document.getElementById('panel-login').classList.toggle('active', tab==='login');
   document.getElementById('panel-new').classList.toggle('active', tab==='new');
+  document.getElementById('login-error').classList.remove('show');
 }
 
 // ── WELCOME BACK ──────────────────────────────────────────────
@@ -355,29 +323,40 @@ function switchTab(tab) {
   if (!lastCode) return;
   const student = getStudent(lastCode);
   if (!student) return;
+
   const slot = document.getElementById('welcome-back-slot');
   slot.innerHTML = `
     <div class="welcome-back">
       <div class="wb-avatar">👑</div>
-      <div style="flex:1;">
+      <div>
         <div class="wb-name">Welcome back, King ${student.name}!</div>
-        <div class="wb-sub">Code: ${lastCode} &nbsp;·&nbsp; Grade ${student.grade} &nbsp;·&nbsp; ${student.xp || 0} XP</div>
+        <div class="wb-sub">Code: ${lastCode} &nbsp;·&nbsp; Grade ${student.grade} &nbsp;·&nbsp; ${(student.xp || 0)} XP</div>
       </div>
-      <button onclick="clearWelcomeBack()" style="
-        background:none;border:none;color:rgba(255,255,255,.35);
-        font-size:11px;font-weight:800;cursor:pointer;
-        padding:4px 8px;border-radius:8px;
-        border:1px solid rgba(255,255,255,.1);
-        -webkit-tap-highlight-color:transparent;flex-shrink:0;
-      ">Not you?</button>
     </div>`;
-  // Pre-fill code boxes
+
   lastCode.split('').forEach((d,i) => {
     const box = document.getElementById('c'+i);
-    if (box) { box.value=d; box.classList.add('filled'); }
+    if (box) { box.value = d; box.classList.add('filled'); }
   });
+
   document.getElementById('btn-login').disabled = false;
+  document.getElementById('not-you-wrap').style.display = 'block';
 })();
+
+function clearLastStudent() {
+  localStorage.removeItem('kt_last_code');
+  if (typeof kt_clearSession === 'function') kt_clearSession();
+  lastCode = '';
+  document.getElementById('welcome-back-slot').innerHTML = '';
+  document.getElementById('not-you-wrap').style.display = 'none';
+  [0,1,2,3].forEach(i => {
+    const box = document.getElementById('c'+i);
+    box.value = '';
+    box.classList.remove('filled', 'error');
+  });
+  document.getElementById('btn-login').disabled = true;
+  document.getElementById('c0').focus();
+}
 
 // ── CODE INPUT ────────────────────────────────────────────────
 function onCodeInput(idx) {
@@ -391,10 +370,10 @@ function onCodeInput(idx) {
 }
 
 function onCodeKey(e, idx) {
-  if (e.key==='Backspace' && !document.getElementById('c'+idx).value && idx>0) {
+  if (e.key === 'Backspace' && !document.getElementById('c'+idx).value && idx > 0) {
     document.getElementById('c'+(idx-1)).focus();
   }
-  if (e.key==='Enter') doLogin();
+  if (e.key === 'Enter') doLogin();
 }
 
 function checkCodeComplete() {
@@ -406,89 +385,73 @@ function getEnteredCode() {
   return [0,1,2,3].map(i => document.getElementById('c'+i).value).join('');
 }
 
-// ── LOGIN ─────────────────────────────────────────────────────
-function clearWelcomeBack() {
-  // Clear stored session so a different student can log in
-  localStorage.removeItem('kt_last_code');
-  localStorage.removeItem('kt_active_code');
-  lastCode = '';
-  // Clear the code boxes
-  [0,1,2,3].forEach(function(i) {
-    var box = document.getElementById('c'+i);
-    if (box) { box.value = ''; box.classList.remove('filled'); }
+// Paste support
+document.addEventListener('DOMContentLoaded', function() {
+  const firstBox = document.getElementById('c0');
+  if (!firstBox) return;
+  firstBox.addEventListener('paste', function(e) {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').slice(0,4);
+    text.split('').forEach((d, i) => {
+      const box = document.getElementById('c'+i);
+      if (box) {
+        box.value = d;
+        box.classList.add('filled');
+      }
+    });
+    checkCodeComplete();
+    if (text.length === 4) doLogin();
   });
-  document.getElementById('btn-login').disabled = true;
-  document.getElementById('welcome-back-slot').innerHTML = '';
-}
+});
 
+// ── LOGIN ─────────────────────────────────────────────────────
 async function doLogin() {
-  if (typeof KTAudio !== 'undefined') { KTAudio.init(); KTAudio.tap(); }
+  audioTap();
   const code = getEnteredCode();
   if (code.length < 4) return;
 
-  const btn = document.getElementById('btn-login');
-  if (btn) btn.disabled = true;
-
-  try {
-    // Try Supabase first, fall back to localStorage
-    let student = null;
-    if (typeof db_getStudent === 'function') {
-      student = await db_getStudent(code);
-    }
-    if (!student) student = getStudent(code); // localStorage fallback
-
-    if (!student) {
-      [0,1,2,3].forEach(i => {
-        var b = document.getElementById('c'+i);
-        if (b) b.classList.add('error');
-      });
-      var errEl = document.getElementById('login-error');
-      if (errEl) errEl.classList.add('show');
-      setTimeout(() => [0,1,2,3].forEach(i => {
-        var b = document.getElementById('c'+i);
-        if (b) b.classList.remove('error');
-      }), 500);
-      if (btn) btn.disabled = false;
-      return;
-    }
-
-    // ── Clear previous student session data ──────────────────
-    // Wipe any stale progress/state from a different student on this device
-    var prevCode = localStorage.getItem('kt_active_code');
-    if (prevCode && prevCode !== code) {
-      localStorage.removeItem('kt_quest_progress_' + prevCode);
-      localStorage.removeItem('kt_manual_' + prevCode);
-      // Keep the student record itself for welcome-back detection
-    }
-
-    // Sync to localStorage as backup
-    localStorage.setItem('kt_student_' + code, JSON.stringify(student));
-
-    if (typeof kt_setActiveCode === 'function') {
-      kt_setActiveCode(code);
-    } else {
-      localStorage.setItem('kt_active_code', code);
-      localStorage.setItem('kt_last_code', code);
-    }
-
-    showLoading('Opening your kingdom, King ' + student.name + '…', 'Get ready to conquer!');
-    setTimeout(function() {
-      if (student.profileComplete) {
-        window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
-      } else {
-        window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
-      }
-    }, 1600);
-
-  } catch(e) {
-    console.warn('doLogin failed:', e);
-    var errEl = document.getElementById('login-error');
-    if (errEl) {
-      errEl.textContent = 'Connection error. Check your internet and try again.';
-      errEl.classList.add('show');
-    }
-    if (btn) btn.disabled = false;
+  if (typeof db_getStudent !== 'function') {
+    document.getElementById('login-error').textContent = 'Login service is unavailable right now.';
+    document.getElementById('login-error').classList.add('show');
+    return;
   }
+
+  let student = null;
+  try {
+    student = await db_getStudent(code);
+  } catch(e) {
+    document.getElementById('login-error').textContent = e && e.message ? e.message : 'Could not open your kingdom right now.';
+    document.getElementById('login-error').classList.add('show');
+    return;
+  }
+
+  if (!student) {
+    [0,1,2,3].forEach(i => document.getElementById('c'+i).classList.add('error'));
+    document.getElementById('login-error').textContent = "That code isn't in the roster. Ask your teacher for help!";
+    document.getElementById('login-error').classList.add('show');
+    setTimeout(() => [0,1,2,3].forEach(i => document.getElementById('c'+i).classList.remove('error')), 500);
+    return;
+  }
+
+  localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+
+  // clean prior student session state before switching users
+  if (typeof kt_clearSession === 'function') kt_clearSession();
+  if (typeof kt_setActiveCode === 'function') {
+    kt_setActiveCode(code);
+  } else {
+    localStorage.setItem('kt_active_code', code);
+    localStorage.setItem('kt_last_code', code);
+  }
+
+  showLoading(`Opening your kingdom, King ${student.name}…`, 'Get ready to conquer!');
+  setTimeout(() => {
+    if (student.profileComplete) {
+      window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
+    } else {
+      window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
+    }
+  }, 1600);
 }
 
 // ── REGISTER ──────────────────────────────────────────────────
@@ -506,73 +469,64 @@ function validateNew() {
 }
 
 function generateCode() {
-  const roster = getRoster();
-  const used = new Set(Object.keys(roster));
+  const used = new Set();
+  for (let i = 1000; i <= 9999; i++) used.add(false); // no-op, keeps function shape simple
   let code;
-  do { code = String(Math.floor(1000 + Math.random()*9000)); } while (used.has(code));
+  do {
+    code = String(Math.floor(1000 + Math.random()*9000));
+  } while (getStudent(code));
   return code;
 }
 
 async function doRegister() {
-  if (typeof KTAudio !== 'undefined') { KTAudio.init(); KTAudio.tap(); }
-  const name  = document.getElementById('new-name').value.trim();
-  const cls   = document.getElementById('new-class').value.trim().toUpperCase();
+  audioTap();
 
-  // Basic validation
-  if (name.length < 2) return;
+  const name = document.getElementById('new-name').value.trim();
+  const cls  = document.getElementById('new-class').value.trim().toUpperCase();
 
-  // Class code validation — must be 2+ chars, alphanumeric + hyphens only
-  if (cls.length < 2) {
-    var errEl = document.getElementById('register-error');
-    if (errEl) { errEl.textContent = 'Please enter your class code from your teacher.'; errEl.classList.add('show'); }
-    return;
-  }
-  if (!/^[A-Z0-9][A-Z0-9\-]{1,19}$/.test(cls)) {
-    var errEl = document.getElementById('register-error');
-    if (errEl) { errEl.textContent = 'Class code can only contain letters, numbers, and hyphens (e.g. MR-JOHNSON-3B).'; errEl.classList.add('show'); }
-    return;
-  }
+  if (name.length < 2 || cls.length < 2) return;
 
-  const btn = document.getElementById('btn-new');
-  if (btn) btn.disabled = true;
+  const code = generateCode();
+  const student = {
+    code,
+    name,
+    grade: newGrade,
+    classCode: cls,
+    xp: 0,
+    crowns: 0,
+    quests: 0,
+    profileComplete: false,
+    createdAt: Date.now(),
+    kingdom: 'Kingdom of Kente',
+  };
 
   try {
-    const code = generateCode();
-    const student = {
-      code, name, grade: newGrade, classCode: cls,
-      xp: 0, crowns: 0, quests: 0,
-      profileComplete: false,
-      createdAt: Date.now(),
-      kingdom: 'Kingdom of Kente',
-    };
-
-    // Save to Supabase + localStorage backup
     if (typeof db_saveStudent === 'function') {
       await db_saveStudent(code, student);
-    }
-    localStorage.setItem('kt_student_' + code, JSON.stringify(student));
-    const roster = getRoster();
-    roster[code] = { name, grade: newGrade, classCode: cls };
-    saveRoster(roster);
-
-    if (typeof kt_setActiveCode === 'function') {
-      kt_setActiveCode(code);
     } else {
-      localStorage.setItem('kt_active_code', code);
-      localStorage.setItem('kt_last_code', code);
+      localStorage.setItem('kt_student_' + code, JSON.stringify(student));
     }
-
-    showLoading('Welcome, King ' + name + '! Your code is ' + code, "Write it down — you'll need it next time!");
-    setTimeout(function() {
-      window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
-    }, 2400);
-
-  } catch(e) {
-    console.warn('doRegister failed:', e);
-    var errEl = document.getElementById('register-error');
-    if (errEl) { errEl.textContent = 'Could not create account. Check your connection and try again.'; errEl.classList.add('show'); }
-    if (btn) btn.disabled = false;
+  } catch (e) {
+    document.getElementById('login-error').textContent = e && e.message ? e.message : 'We could not create your kingdom right now.';
+    document.getElementById('login-error').classList.add('show');
+    switchTab('login');
+    return;
   }
+
+  localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+
+  if (typeof kt_clearSession === 'function') kt_clearSession();
+  if (typeof kt_setActiveCode === 'function') {
+    kt_setActiveCode(code);
+  } else {
+    localStorage.setItem('kt_active_code', code);
+    localStorage.setItem('kt_last_code', code);
+  }
+
+  showLoading(`Welcome, King ${name}! Your code is ${code}`, "Write it down — you'll need it next time!");
+  setTimeout(() => {
+    window.location.href = '/kingthinkers/kingthinkers-character-creator.html';
+  }, 2400);
 }
 
 // ── LOADING ───────────────────────────────────────────────────
@@ -581,13 +535,17 @@ function showLoading(text, sub) {
   document.getElementById('loading-sub').textContent = sub;
   document.getElementById('loading').classList.add('show');
 }
+
 // Start music on first interaction
 document.addEventListener("touchstart", function onFirst(){
-  if (typeof KTAudio !== "undefined") { KTAudio.init(); KTAudio.startMusic(); }
+  if (window.KTAudio && KTAudio.init) KTAudio.init();
+  if (window.KTAudio && KTAudio.startMusic) KTAudio.startMusic();
   document.removeEventListener("touchstart", onFirst);
 }, { once: true });
+
 document.addEventListener("click", function onFirstClick(){
-  if (typeof KTAudio !== "undefined") { KTAudio.init(); KTAudio.startMusic(); }
+  if (window.KTAudio && KTAudio.init) KTAudio.init();
+  if (window.KTAudio && KTAudio.startMusic) KTAudio.startMusic();
   document.removeEventListener("click", onFirstClick);
 }, { once: true });
 </script>
