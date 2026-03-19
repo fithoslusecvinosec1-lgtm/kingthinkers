@@ -1017,7 +1017,7 @@ function updateHomeProgress() {
     '<span style="font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--gold);">' + completedIds.length + ' / ' + total + '</span>' +
     '</div>' +
     '<div style="background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;">' +
-    '<div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;width:' + Math.round((completedIds.length/total)*100) + '%;;transition:width .5s ease;"></div>' +
+    '<div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;width:' + Math.round((completedIds.length/total)*100) + '%;transition:width .5s ease;"></div>' +
     '</div>' +
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">' +
     '<span style="font-size:12px;color:var(--muted);">Total XP Earned</span>' +
@@ -1062,8 +1062,13 @@ function getSageContext() {
   var progress = typeof getProgress === 'function' ? getProgress() : {};
   var completedCount = Object.keys(progress).length;
   var currentWorld = 'Egypt';
-  if (completedCount >= 8) currentWorld = 'Nubia';
-  if (completedCount >= 4 && completedCount < 8) currentWorld = 'Nubia';
+  if (completedCount >= 28) currentWorld = 'Diaspora';
+  else if (completedCount >= 24) currentWorld = 'Axum';
+  else if (completedCount >= 20) currentWorld = 'Timbuktu';
+  else if (completedCount >= 16) currentWorld = 'Songhai';
+  else if (completedCount >= 12) currentWorld = 'Mali';
+  else if (completedCount >= 9)  currentWorld = 'Kush';
+  else if (completedCount >= 4)  currentWorld = 'Nubia';
 
   var context = 'The student';
   if (student && student.name) context = 'King ' + student.name;
@@ -1315,7 +1320,8 @@ function updateHomeScreen() {
 loadProgressFromDB().then(function() {
   renderMap();
   updateHomeScreen();
-  updateHomeProgress();
+  // Note: updateHomeProgress() removed — home-progress element
+  // was replaced by the full home screen with rank/XP/stats cards
 });
 </script>
 </body>
