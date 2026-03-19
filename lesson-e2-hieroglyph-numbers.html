@@ -591,7 +591,7 @@ function renderMathProblem(area,p){
       <div class="math-display">${p.display}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;">
         <button class="tts-btn" id="tts-btn" onclick="KTTS.speak(document.getElementById('tts-target').textContent,'tts-target')">🔊 Read Aloud</button>
-        ${KTSteps.hasSteps() ? '<button class="hint-btn" id="step-btn" onclick="KTSteps.showNext('step-hint-container')">Show Step 1 →</button>' : ''}
+         ${KTSteps.hasSteps() ? '<button class="hint-btn" id="step-btn" onclick="KTSteps.showNext(&quot;step-hint-container&quot;)">Show Step 1 →</button>' : ''}
       </div>
       <div class="step-hint-container" id="step-hint-container"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:11px;margin-top:14px;">
