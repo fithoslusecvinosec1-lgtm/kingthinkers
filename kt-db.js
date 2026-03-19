@@ -29,9 +29,19 @@ function kt_clearSession() {
 
 function kt_getTeacherToken() {
   try {
+    // Check sessionStorage first
     var session = JSON.parse(sessionStorage.getItem('kt_teacher') || 'null');
-    return session && session.token ? session.token : null;
+    if (session && session.token) return session.token;
+    // Fallback: localStorage (survives tab close / refresh)
+    var stored = localStorage.getItem('kt_teacher_token');
+    if (stored) {
+      var fullSession = localStorage.getItem('kt_teacher_session');
+      if (fullSession) sessionStorage.setItem('kt_teacher', fullSession);
+      return stored;
+    }
+    return null;
   } catch(e) { return null; }
+} catch(e) { return null; }
 }
 
 // ── API CALL HELPER ───────────────────────────────────────────
@@ -176,13 +186,19 @@ async function db_getRosterWithProgress() {
   }
 }
 
-async function db_addStudent(code, name, grade) {
-  return await kt_api('add-student', { code: code, name: name, grade: grade }, true);
+async function db_addStudent(code, name, grade, classCode) {
+  return await kt_api('add-student', {
+    code: code, name: name, grade: grade,
+    classCode: classCode || null  // fallback auth if token missing
+  }, true);
 }
 
-async function db_bulkAddStudents(students) {
+async function db_bulkAddStudents(students, classCode) {
   // Atomic — all succeed or all fail
-  return await kt_api('bulk-add', { students: students }, true);
+  return await kt_api('bulk-add', {
+    students: students,
+    classCode: classCode || null  // fallback auth if token missing
+  }, true);
 }
 
 async function db_removeStudent(code) {

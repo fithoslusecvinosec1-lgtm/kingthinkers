@@ -261,8 +261,19 @@ var _teacherSession = null;
 
 // ── SESSION CHECK ─────────────────────────────────────────────
 function getTeacherSession() {
-  try { return JSON.parse(sessionStorage.getItem('kt_teacher') || 'null'); }
-  catch(e) { return null; }
+  try {
+    // Try sessionStorage first
+    var session = JSON.parse(sessionStorage.getItem('kt_teacher') || 'null');
+    if (session && session.token) return session;
+    // Fallback to localStorage (survives refresh / tab close)
+    var lsSession = JSON.parse(localStorage.getItem('kt_teacher_session') || 'null');
+    if (lsSession && lsSession.token) {
+      // Restore to sessionStorage for this session
+      sessionStorage.setItem('kt_teacher', JSON.stringify(lsSession));
+      return lsSession;
+    }
+    return null;
+  } catch(e) { return null; }
 }
 
 _teacherSession = getTeacherSession();
@@ -324,7 +335,7 @@ async function doAdd(){
   try {
     // Server add first — if it fails, don't update local state
     if(typeof db_addStudent==='function'){
-      await db_addStudent(code,name,grade);
+      await db_addStudent(code, name, grade, classCode);
     }
     var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
     saveStudent(code,s);
@@ -357,7 +368,8 @@ async function doBulk(){
 
   // Atomic API call — all succeed or all fail (no partial state)
   try {
-    await db_bulkAddStudents(students);
+    var _cc = _teacherSession ? _teacherSession.classCode : 'MY-CLASS';
+    await db_bulkAddStudents(students, _cc);
     // Only update local state after server confirms success
     students.forEach(function(s){
       saveStudent(s.code,{code:s.code,name:s.name,grade:s.grade,
@@ -778,6 +790,16 @@ function wireButtons() {
 
 // Boot — runs immediately since script is at bottom of body
 (function boot() {
+  // Debug: log session state to help diagnose 401s
+  var sess = getTeacherSession();
+  if (sess) {
+    console.log('✅ Teacher session loaded:', sess.username, '| Token:', sess.token ? 'present' : 'MISSING');
+    if (!sess.token) {
+      console.warn('⚠️ Session has no token — API calls may fail with 401. Re-login recommended.');
+    }
+  } else {
+    console.warn('❌ No teacher session found');
+  }
   renderAll();
   loadSettingsForm();
   wireButtons();
