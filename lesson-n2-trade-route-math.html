@@ -458,7 +458,7 @@ function gainXP(n){
   if(e) e.textContent=xp+' XP';
 }
 function gainCrowns(n){
-  if(!n) return; crowns+=n; correct++;
+  if(!n) return; crowns+=n;
   const e=document.getElementById('hud-crowns');
   if(e) e.textContent='👑 '+crowns;
 }
@@ -541,6 +541,7 @@ function answerMCQ(btn){
   if(fb) fb.style.display='block';
   if(isCorrect){
     btn.classList.add('correct');
+    correct++;
     const streak = KTStreak.onCorrect();
     gainXP(xpR); gainCrowns(crR);
     const msg = KTFeedback.getCorrect(streak);
@@ -638,6 +639,7 @@ function submitInput(){
 
   if(result.correct){
     input.style.borderColor='var(--green)';
+    correct++;
     const streak = KTStreak.onCorrect();
     gainXP(m.xp); gainCrowns(m.cr);
     const msg = KTFeedback.getCorrect(streak);
@@ -757,7 +759,7 @@ function showComplete() { KTAudio.questComplete();
   setTimeout(()=>showToast('👑','Progress Saved!','Your kingdom map has been updated!'),1800);
 }
 
-function launch(){ KTAudio.questComplete();
+function launch(){
   const em=LD.fireworks||['🌟','✨','🎉','👑','⭐','🏆','💛','🎊','⚡'];
   for(let i=0;i<22;i++){
     setTimeout(()=>{
