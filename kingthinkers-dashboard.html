@@ -184,6 +184,50 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
 
+/* ─── LEVEL / RANK SYSTEM ───────────────────────────────── */
+.level-bar-wrap{background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;margin:6px 0 2px;}
+.level-bar-fg{height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;transition:width 1s ease;}
+.rank-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,168,0,.12);border:1px solid rgba(245,168,0,.3);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:900;color:var(--gold);}
+.hero-card{background:linear-gradient(135deg,#1a1a3e,#0f2a1e);border:1px solid rgba(0,196,140,.25);border-radius:20px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(245,168,0,.08),transparent 60%);}
+.next-mission-label{font-size:10px;font-weight:900;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.next-mission-label::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse-dot 1.5s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
+.next-mission-title{font-family:var(--f-d);font-size:20px;font-weight:900;color:var(--white);margin-bottom:4px;}
+.next-mission-meta{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.primary-action-btn{display:block;width:100%;background:linear-gradient(135deg,var(--green),#00a87a);border:none;border-radius:14px;padding:16px;font-family:var(--f-d);font-size:17px;font-weight:900;color:#000;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;z-index:1;box-shadow:0 4px 20px rgba(0,196,140,.4);}
+.primary-action-btn:active{transform:scale(.97);}
+.streak-row{display:flex;gap:8px;margin-bottom:14px;}
+.streak-box{flex:1;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px;text-align:center;}
+.streak-val{font-family:var(--f-d);font-size:20px;font-weight:900;color:var(--gold);}
+.streak-lbl{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.completed-missions{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:14px;}
+.cm-title{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.cm-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);}
+.cm-item:last-child{border-bottom:none;padding-bottom:0;}
+.cm-icon{font-size:18px;width:28px;text-align:center;}
+.cm-name{font-size:13px;font-weight:700;flex:1;}
+.cm-xp{font-size:11px;font-weight:900;color:var(--gold);}
+/* Full screen celebration */
+#celebration-screen{position:fixed;inset:0;z-index:1000;background:rgba(6,6,18,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+#celebration-screen.show{opacity:1;pointer-events:all;}
+.celeb-crown{font-size:80px;animation:celeb-bounce .6s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes celeb-bounce{0%{transform:scale(0) rotate(-20deg);}60%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
+.celeb-title{font-family:var(--f-d);font-size:36px;font-weight:900;color:var(--gold);text-align:center;margin:16px 0 8px;text-shadow:0 0 30px rgba(245,168,0,.6);}
+.celeb-sub{font-size:16px;color:var(--white);text-align:center;margin-bottom:8px;}
+.celeb-xp{font-family:var(--f-d);font-size:28px;font-weight:900;color:var(--green);text-align:center;margin-bottom:6px;}
+.celeb-rank{font-size:14px;color:var(--gold);font-weight:700;text-align:center;margin-bottom:28px;}
+.celeb-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.cp{position:absolute;font-size:26px;animation:cp-fly var(--d,1.5s) ease-out forwards;}
+@keyframes cp-fly{0%{transform:translate(0,0) scale(0);opacity:1;}100%{transform:translate(var(--tx,0px),var(--ty,-200px)) scale(1);opacity:0;}}
+.celeb-continue-btn{background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:14px;padding:14px 40px;font-family:var(--f-d);font-size:16px;font-weight:900;color:#000;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+/* Level up flash */
+#levelup-flash{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;}
+#levelup-flash.show{animation:levelup-anim 2s ease forwards;}
+@keyframes levelup-anim{0%{opacity:0;}15%{opacity:1;}70%{opacity:1;}100%{opacity:0;}}
+.levelup-text{font-family:var(--f-d);font-size:52px;font-weight:900;color:var(--gold);text-shadow:0 0 40px rgba(245,168,0,.8);animation:levelup-scale 2s ease forwards;}
+@keyframes levelup-scale{0%{transform:scale(.5);}20%{transform:scale(1.2);}50%{transform:scale(1);}100%{transform:scale(1.3);opacity:0;}}
+
 /* ── TOAST ── */
 #toast{
   position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(20px);
@@ -230,24 +274,61 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   <div id="pages">
 
     <!-- HOME -->
-    <div class="page" id="page-home">
+    <div class="page active" id="page-home">
+
+      <!-- Greeting -->
       <div class="home-greeting" id="home-greeting">Good morning, King! 👑</div>
-      <div class="home-sub">Ready to build your kingdom today?</div>
 
-      <div class="home-card">
-        <div class="home-card-title">🗺️ Your Quest</div>
-        <div class="home-card-body">You're on a journey through ancient Africa. Complete missions to unlock new kingdoms and earn crowns.</div>
-        <button class="go-btn" onclick="switchPage('kingdom')">Go to Kingdom Map →</button>
+      <!-- Rank & XP bar -->
+      <div style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="rank-badge" id="rank-badge">⚔️ Rank 1 · Apprentice</div>
+          <div style="font-size:11px;color:var(--muted);" id="xp-to-next">0 / 100 XP</div>
+        </div>
+        <div class="level-bar-wrap"><div class="level-bar-fg" id="level-bar" style="width:0%"></div></div>
+        <div style="font-size:10px;color:var(--muted);text-align:right;margin-top:2px;" id="next-rank-label">Next: Warrior Scout at 100 XP</div>
       </div>
 
-      <div class="home-card">
-        <div class="home-card-title">📊 Today's Progress</div>
-        <div class="home-card-body" id="home-progress">Start a quest to see your progress here!</div>
+      <!-- Next Mission / Primary Action -->
+      <div class="hero-card" id="next-mission-card">
+        <div class="next-mission-label">⭐ Recommended for You</div>
+        <div class="next-mission-title" id="next-mission-title">Loading your next quest…</div>
+        <div class="next-mission-meta" id="next-mission-meta"></div>
+        <button class="primary-action-btn" id="next-mission-btn" onclick="launchNextMission()">
+          ⚔️ Start Quest
+        </button>
       </div>
+
+      <!-- Stats row -->
+      <div class="streak-row">
+        <div class="streak-box">
+          <div class="streak-val" id="home-missions">0</div>
+          <div class="streak-lbl">Missions</div>
+        </div>
+        <div class="streak-box">
+          <div class="streak-val" id="home-xp-total">0</div>
+          <div class="streak-lbl">Total XP</div>
+        </div>
+        <div class="streak-box">
+          <div class="streak-val" id="home-crowns">0</div>
+          <div class="streak-lbl">Crowns 👑</div>
+        </div>
+        <div class="streak-box">
+          <div class="streak-val" id="home-level">1</div>
+          <div class="streak-lbl">Level</div>
+        </div>
+      </div>
+
+      <!-- Completed missions -->
+      <div class="completed-missions" id="completed-list-wrap" style="display:none;">
+        <div class="cm-title">✅ Completed Missions</div>
+        <div id="completed-list"></div>
+      </div>
+
     </div>
 
     <!-- KINGDOM -->
-    <div class="page active" id="page-kingdom">
+    <div class="page" id="page-kingdom">
       <div class="map-header">
         <div class="map-title">🗺️ Kingdom Quest</div>
         <div class="map-sub">Tap a world to see its missions</div>
@@ -270,7 +351,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
     </div>
 
     <!-- LIBRARY -->
-    <div class="page" id="page-library">
+    <div class="page" id="page-library" style="display:none!important;">
       <div class="section-title">📚 King's Library</div>
       <div class="coming-soon">
         <div class="cs-icon">📚</div>
@@ -280,7 +361,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
     </div>
 
     <!-- MATH -->
-    <div class="page" id="page-math">
+    <div class="page" id="page-math" style="display:none!important;">
       <div class="section-title">🔢 Math Forge</div>
       <div class="coming-soon">
         <div class="cs-icon">🔢</div>
@@ -350,22 +431,15 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 
   <!-- BOTTOM NAV -->
   <div id="bottom-nav">
-    <button class="nav-btn" id="nav-home" onclick="switchPage('home')">
+    <button class="nav-btn active" id="nav-home" onclick="switchPage('home')">
       <span class="ni">🏠</span>
       <span class="nl">Home</span>
     </button>
-    <button class="nav-btn active" id="nav-kingdom" onclick="switchPage('kingdom')">
+    <button class="nav-btn" id="nav-kingdom" onclick="switchPage('kingdom')">
       <span class="ni">🗺️</span>
       <span class="nl">Quest</span>
     </button>
-    <button class="nav-btn" id="nav-library" onclick="switchPage('library')">
-      <span class="ni">📚</span>
-      <span class="nl">Library</span>
-    </button>
-    <button class="nav-btn" id="nav-math" onclick="switchPage('math')">
-      <span class="ni">🔢</span>
-      <span class="nl">Math</span>
-    </button>
+    <!-- Library & Math hidden until content is ready -->
     <button class="nav-btn" id="nav-sage" onclick="switchPage('sage')">
       <span class="ni">🤖</span>
       <span class="nl">Sage</span>
@@ -375,6 +449,22 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 </div><!-- /app -->
 
 <!-- TOAST -->
+<!-- Full Screen Celebration -->
+<div id="celebration-screen">
+  <div class="celeb-particles" id="celeb-particles"></div>
+  <div class="celeb-crown" id="celeb-crown">👑</div>
+  <div class="celeb-title" id="celeb-title">Quest Complete!</div>
+  <div class="celeb-sub" id="celeb-sub">You conquered this mission, King!</div>
+  <div class="celeb-xp" id="celeb-xp">+40 XP</div>
+  <div class="celeb-rank" id="celeb-rank"></div>
+  <button class="celeb-continue-btn" onclick="closeCelebration()">Keep Going 👑</button>
+</div>
+
+<!-- Level Up Flash -->
+<div id="levelup-flash">
+  <div class="levelup-text" id="levelup-text">LEVEL UP! 👑</div>
+</div>
+
 <div id="toast">
   <span id="toast-icon">👑</span>
   <div>
@@ -405,10 +495,9 @@ function switchPage(name) { KTAudio.tap();
   var btn = document.getElementById('nav-' + name);
   if (btn) btn.classList.add('active');
   // Render map if kingdom
-  if (name === 'kingdom') document.addEventListener("touchstart", function onFirst(){ KTAudio.init(); KTAudio.startMusic(); document.removeEventListener("touchstart", onFirst); }, { once: true });
-document.addEventListener("click", function onFirstClick(){ KTAudio.init(); KTAudio.startMusic(); document.removeEventListener("click", onFirstClick); }, { once: true });
-renderMap();
-  if (name === 'home') updateHomeProgress();
+  if (name === 'kingdom') renderMap();
+  if (name === 'home')    updateHomeScreen();
+  if (name === 'sage')    initSage();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -421,18 +510,107 @@ function showToast(icon, title, sub) {
   setTimeout(function() { t.classList.remove('show'); }, 2800);
 }
 
+// ── RANK / LEVEL SYSTEM ──────────────────────────────────────
+var RANKS = [
+  { level:1,  name:'Apprentice',      minXP:0,    icon:'⚔️'  },
+  { level:2,  name:'Warrior Scout',   minXP:100,  icon:'🛡️'  },
+  { level:3,  name:'Desert Rider',    minXP:220,  icon:'🐪'  },
+  { level:4,  name:'Nile Guardian',   minXP:380,  icon:'🌊'  },
+  { level:5,  name:'Pyramid Builder', minXP:580,  icon:'🔺'  },
+  { level:6,  name:'Royal Scribe',    minXP:820,  icon:'📜'  },
+  { level:7,  name:'Kingdom Knight',  minXP:1100, icon:'⚔️'  },
+  { level:8,  name:'High Priest',     minXP:1420, icon:'🏺'  },
+  { level:9,  name:'Pharaoh's Guard',minXP:1780, icon:'👁️'  },
+  { level:10, name:'The Pharaoh',     minXP:2200, icon:'👑'  },
+];
+
+function getRankForXP(totalXP) {
+  var rank = RANKS[0];
+  for (var i = RANKS.length - 1; i >= 0; i--) {
+    if (totalXP >= RANKS[i].minXP) { rank = RANKS[i]; break; }
+  }
+  return rank;
+}
+
+function getNextRank(totalXP) {
+  var current = getRankForXP(totalXP);
+  var next = RANKS.find(function(r){ return r.level === current.level + 1; });
+  return next || null;
+}
+
+function getLevelProgress(totalXP) {
+  var current = getRankForXP(totalXP);
+  var next = getNextRank(totalXP);
+  if (!next) return 100;
+  var range = next.minXP - current.minXP;
+  var earned = totalXP - current.minXP;
+  return Math.round(earned / range * 100);
+}
+
 // ── STATE ─────────────────────────────────────────────────────
-var xp = 60;
+var xp = 0;
 var crowns = 0;
 var selectedWorldId = null;
+var _lastLevel = 1;
 
 function gainXP(n) {
+  var oldRank = getRankForXP(xp);
   xp += n;
-  document.getElementById('topbar-xp').textContent = xp + ' XP';
+  var newRank = getRankForXP(xp);
+  var el = document.getElementById('topbar-xp');
+  if (el) el.textContent = xp + ' XP';
+  updateHomeXPBar();
+  if (newRank.level > oldRank.level) triggerLevelUp(newRank);
+  // Sync to DB debounced — avoid hammering on rapid XP gains
+  scheduleSyncStats();
 }
+
 function gainCrowns(n) {
   crowns += n;
-  document.getElementById('topbar-crowns').textContent = '👑 ' + crowns;
+  var el = document.getElementById('topbar-crowns');
+  if (el) el.textContent = '👑 ' + crowns;
+  updateHomeStats();
+  scheduleSyncStats();
+}
+
+var _syncStatsTimer = null;
+function scheduleSyncStats() {
+  if (_syncStatsTimer) clearTimeout(_syncStatsTimer);
+  _syncStatsTimer = setTimeout(function() {
+    var code = getActiveCode();
+    if (code && code !== 'demo' && typeof db_syncStudentStats === 'function') {
+      db_syncStudentStats(code, xp, crowns).catch(function(e) {
+        console.warn('Stats sync failed:', e);
+      });
+    }
+  }, 2000); // 2s debounce — batches rapid XP changes into one call
+}
+
+function updateHomeXPBar() {
+  var rank = getRankForXP(xp);
+  var next = getNextRank(xp);
+  var pct = getLevelProgress(xp);
+  var badge = document.getElementById('rank-badge');
+  var bar = document.getElementById('level-bar');
+  var xpLabel = document.getElementById('xp-to-next');
+  var nextLabel = document.getElementById('next-rank-label');
+  var levelNum = document.getElementById('home-level');
+  if (badge) badge.textContent = rank.icon + ' Level ' + rank.level + ' · ' + rank.name;
+  if (bar)   bar.style.width = pct + '%';
+  if (xpLabel) xpLabel.textContent = xp + ' / ' + (next ? next.minXP : xp) + ' XP';
+  if (nextLabel) nextLabel.textContent = next ? 'Next: ' + next.name + ' at ' + next.minXP + ' XP' : '👑 Max Rank!';
+  if (levelNum) levelNum.textContent = rank.level;
+}
+
+function updateHomeStats() {
+  var hm = document.getElementById('home-missions');
+  var hx = document.getElementById('home-xp-total');
+  var hc = document.getElementById('home-crowns');
+  var p = getProgress();
+  var done = Object.keys(p).length;
+  if (hm) hm.textContent = done;
+  if (hx) hx.textContent = xp;
+  if (hc) hc.textContent = crowns;
 }
 
 // ── STUDENT ───────────────────────────────────────────────────
@@ -738,25 +916,49 @@ function launchMission(missionId, worldId, lessonFile, xpReward) { KTAudio.unloc
   window.location.href = '/kingthinkers/' + lessonFile;
 }
 
-// ── CHECK COMPLETION ON LOAD ──────────────────────────────────
-(function checkCompletion() {
+// ── MISSION COMPLETION — RELIABLE HANDLER ────────────────────
+var _processedSignals = new Set();
+
+function processMissionSignal() {
   try {
-    var signal = localStorage.getItem('kt_mission_completed');
-    if (signal) {
+    var raw = localStorage.getItem('kt_mission_completed');
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (!data || !data.missionId) return;
+    // Deduplicate across tabs/refreshes
+    var key = data.missionId + '_' + (data.completedAt || '');
+    if (_processedSignals.has(key)) {
       localStorage.removeItem('kt_mission_completed');
-      var data = JSON.parse(signal);
+      return;
+    }
+    _processedSignals.add(key);
+    localStorage.removeItem('kt_mission_completed');
+    // Only apply if not already completed locally
+    var p = getProgress();
+    if (!p[data.missionId]) {
       completeMission(data.missionId);
       gainXP(data.xp || 40);
       gainCrowns(1);
-      setTimeout(function() {
-        KTAudio.questComplete();
-        showToast('👑', 'Quest Complete!', 'Well done, King! +' + (data.xp || 40) + ' XP');
-        renderMap();
-        updateHomeProgress();
-      }, 500);
     }
-  } catch(e) {}
-})();
+    renderMap();
+    var mName = data.missionId;
+    if (typeof WORLDS !== 'undefined') {
+      WORLDS.forEach(function(w){ w.missions.forEach(function(m){
+        if (m.id === data.missionId) mName = m.name;
+      });});
+    }
+    setTimeout(function() { updateHomeScreen(); showCelebration(mName, data.xp || 40); }, 400);
+  } catch(e) { console.warn('processMissionSignal failed:', e); }
+}
+
+// Check on load, on tab focus, and on storage events from other tabs
+processMissionSignal();
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible') processMissionSignal();
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'kt_mission_completed' && e.newValue) processMissionSignal();
+});
 
 // ── PERSONALISE ───────────────────────────────────────────────
 (function personalise() {
@@ -931,19 +1133,9 @@ async function sageSend(message) {
   try {
     var systemWithContext = SAGE_SYSTEM + '\n\nCurrent context: ' + getSageContext();
 
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 200,
-        system: systemWithContext,
-        messages: sageHistory,
-      })
-    });
-
-    var data = await response.json();
-    var reply = data.content && data.content[0] ? data.content[0].text : "Hmm, Sage is thinking... try again in a moment, King! 👑";
+    // Route through Edge Function — no API key in browser
+    var reply = await kt_sage(sageHistory, systemWithContext);
+    if (!reply) reply = "Hmm, Sage is thinking... try again in a moment, King! 👑";
 
     sageRemoveTyping();
     sageAddMessage('assistant', reply);
@@ -988,10 +1180,142 @@ function initSage() {
   sageHistory.push({ role: 'assistant', content: greeting });
 }
 
+// ── CELEBRATION SYSTEM ───────────────────────────────────────
+function showCelebration(missionName, xpEarned) {
+  var rank = getRankForXP(xp);
+  var screen = document.getElementById('celebration-screen');
+  var title  = document.getElementById('celeb-title');
+  var sub    = document.getElementById('celeb-sub');
+  var xpEl   = document.getElementById('celeb-xp');
+  var rankEl = document.getElementById('celeb-rank');
+  var parts  = document.getElementById('celeb-particles');
+
+  if (!screen) return;
+  if (title)  title.textContent  = 'Quest Complete! 👑';
+  if (sub)    sub.textContent    = 'You conquered "' + missionName + '", King!';
+  if (xpEl)   xpEl.textContent   = '+' + xpEarned + ' XP earned!';
+  if (rankEl) rankEl.textContent = rank.icon + ' ' + rank.name + ' · Level ' + rank.level;
+
+  // Particle burst
+  if (parts) {
+    parts.innerHTML = '';
+    var emojis = ['👑','⭐','✨','🌟','💫','🏆','🎉','🔥','💥'];
+    for (var i = 0; i < 20; i++) {
+      var p = document.createElement('div');
+      p.className = 'cp';
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      var tx = (Math.random() - 0.5) * 300;
+      var ty = -(100 + Math.random() * 300);
+      var d  = 0.8 + Math.random() * 1.2;
+      p.style.cssText = 'left:' + (20+Math.random()*60) + '%;top:' + (30+Math.random()*40) + '%;--tx:' + tx + 'px;--ty:' + ty + 'px;--d:' + d + 's;';
+      parts.appendChild(p);
+    }
+  }
+
+  screen.classList.add('show');
+  KTAudio.questComplete();
+}
+
+function closeCelebration() {
+  var screen = document.getElementById('celebration-screen');
+  if (screen) screen.classList.remove('show');
+  updateHomeScreen();
+}
+
+function triggerLevelUp(rank) {
+  var flash = document.getElementById('levelup-flash');
+  var text  = document.getElementById('levelup-text');
+  if (!flash) return;
+  if (text) text.textContent = 'LEVEL UP! ' + rank.icon;
+  flash.classList.remove('show');
+  void flash.offsetWidth;
+  flash.classList.add('show');
+  KTAudio.levelUp();
+  setTimeout(function(){ flash.classList.remove('show'); }, 2200);
+}
+
+// ── HOME PAGE LOGIC ───────────────────────────────────────────
+var MISSION_MAP = {};
+
+function getNextMission() {
+  var p = getProgress();
+  // Find first uncompleted mission across all worlds
+  var allMissions = [];
+  WORLDS.forEach(function(w) {
+    w.missions.forEach(function(m) { allMissions.push({ world: w, mission: m }); });
+  });
+  // Return first incomplete
+  for (var i = 0; i < allMissions.length; i++) {
+    if (!p[allMissions[i].mission.id]) return allMissions[i];
+  }
+  return null; // all done
+}
+
+function launchNextMission() {
+  var next = getNextMission();
+  if (!next) { switchPage('kingdom'); return; }
+  KTAudio.unlock();
+  launchMission(next.mission.id, next.world.id, next.mission.lessonFile, next.mission.xp);
+}
+
+function updateHomeScreen() {
+  var p = getProgress();
+  var student = getActiveStudent ? getActiveStudent() : null;
+
+  // Greeting
+  var hour = new Date().getHours();
+  var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  var name = (student && student.name) ? student.name : 'King';
+  var greetEl = document.getElementById('home-greeting');
+  if (greetEl) greetEl.textContent = greeting + ', King ' + name + '! 👑';
+
+  // XP bar
+  updateHomeXPBar();
+  updateHomeStats();
+
+  // Next mission card
+  var next = getNextMission();
+  var titleEl = document.getElementById('next-mission-title');
+  var metaEl  = document.getElementById('next-mission-meta');
+  var btnEl   = document.getElementById('next-mission-btn');
+  var labelEl = document.querySelector('.next-mission-label');
+
+  if (next) {
+    if (titleEl) titleEl.textContent = next.mission.name;
+    if (metaEl)  metaEl.textContent  = next.world.name + ' · ' + next.mission.type + ' · +' + next.mission.xp + ' XP';
+    if (btnEl)   btnEl.textContent   = '⚔️ Start Quest →';
+    if (labelEl) labelEl.innerHTML   = '<span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse-dot 1.5s ease-in-out infinite;"></span> ⭐ Recommended for You';
+  } else {
+    if (titleEl) titleEl.textContent = 'All Missions Complete! 🏆';
+    if (metaEl)  metaEl.textContent  = 'You have conquered every world, King!';
+    if (btnEl)   btnEl.textContent   = '🗺️ Review Kingdom Map';
+    if (labelEl) labelEl.innerHTML   = '👑 You're a Champion';
+  }
+
+  // Completed missions list
+  var done = Object.keys(p);
+  var wrap = document.getElementById('completed-list-wrap');
+  var list = document.getElementById('completed-list');
+  if (wrap) wrap.style.display = done.length ? 'block' : 'none';
+  if (list && done.length) {
+    var allMissions = [];
+    WORLDS.forEach(function(w){ w.missions.forEach(function(m){ allMissions.push({world:w,mission:m}); }); });
+    var completedItems = allMissions.filter(function(item){ return !!p[item.mission.id]; });
+    list.innerHTML = completedItems.slice(-5).reverse().map(function(item){
+      return '<div class="cm-item">'+
+        '<div class="cm-icon">'+(item.mission.type==='Reading'?'📖':'🔢')+'</div>'+
+        '<div class="cm-name">'+item.mission.name+'</div>'+
+        '<div class="cm-xp">+'+item.mission.xp+' XP</div>'+
+      '</div>';
+    }).join('');
+  }
+}
+
 // ── BOOT ─────────────────────────────────────────────────────
 // Load progress from Supabase then render map
 loadProgressFromDB().then(function() {
   renderMap();
+  updateHomeScreen();
   updateHomeProgress();
 });
 </script>

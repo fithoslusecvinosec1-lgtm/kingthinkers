@@ -842,19 +842,17 @@ async function sendSagePanel(prefill) {
     var lessonTitle = document.title.replace('KingThinkers — ', '');
     var systemWithCtx = SAGE_LESSON_SYSTEM + '\nThe student is currently working on the lesson: "' + lessonTitle + '".';
 
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 150,
-        system: systemWithCtx,
-        messages: sagePanelHistory,
-      })
-    });
-
-    var data = await response.json();
-    var reply = data.content && data.content[0] ? data.content[0].text : "Sage is having a moment — try again, King! 🔧";
+    var reply = null;
+    try {
+      var _sr = await fetch('https://bfyogmoqasqoefxxykdv.supabase.co/functions/v1/kt-api?action=sage-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: sagePanelHistory, systemPrompt: systemWithCtx })
+      });
+      var _sd = await _sr.json();
+      reply = _sd.reply || null;
+    } catch(e) { console.warn('Sage failed:', e); }
+    if (!reply) reply = "Sage is having a moment — try again, King! 🔧";
 
     var typing = document.getElementById('sage-panel-typing');
     if (typing) typing.outerHTML = '<div class="sp-msg-ai">' + reply + '</div>';

@@ -213,6 +213,42 @@ function _ls_getProgress(code) {
   catch(e) { return {}; }
 }
 
+// ── SAGE PROXY ───────────────────────────────────────────────
+// Routes Sage chat through Edge Function — no Anthropic key in browser
+
+async function kt_sage(messages, systemPrompt) {
+  try {
+    var data = await kt_api('sage-chat', {
+      messages: messages,
+      systemPrompt: systemPrompt || ''
+    });
+    return data && data.reply ? data.reply : null;
+  } catch(e) {
+    console.warn('kt_sage failed:', e.message);
+    return null;
+  }
+}
+
+// ── XP / CROWN SYNC ──────────────────────────────────────────
+// Call this after XP/crown changes to persist to server
+
+async function db_syncStudentStats(code, xp, crowns) {
+  // Always save locally first
+  var s = _ls_getStudent(code);
+  if (s) {
+    s.xp = xp;
+    s.crowns = crowns;
+    s.lastActive = new Date().toISOString();
+    localStorage.setItem('kt_student_' + code, JSON.stringify(s));
+  }
+  // Then sync to server via save-profile (updates last_active and xp)
+  try {
+    await kt_api('sync-stats', { code: code, xp: xp, crowns: crowns });
+  } catch(e) {
+    console.warn('db_syncStudentStats: API unavailable, saved locally only');
+  }
+}
+
 // Keep these for backward compat with existing code
 function getStudent(code) { return _ls_getStudent(code); }
 function saveStudent(code, s) {
