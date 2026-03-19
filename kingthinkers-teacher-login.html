@@ -169,13 +169,7 @@ html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--
 
 <script src="/kingthinkers/kt-db.js"></script>
 <script>
-const SUPABASE_URL = 'https://bfyogmoqasqoefxxykdv.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmeW9nbW9xYXNxb2VmeHh5a2R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MTc2MTEsImV4cCI6MjA4OTE5MzYxMX0.4a69dRJxfcEysDpfRkG4Evgf-kJC64qZ2uwXfmfldI0';
-const HEADERS = {
-  'Content-Type': 'application/json',
-  'apikey': SUPABASE_KEY,
-  'Authorization': 'Bearer ' + SUPABASE_KEY,
-};
+// API calls handled by kt-db.js Edge Function proxy
 
 // ── SIMPLE HASH (not cryptographic, just obfuscation for pilot) ──
 async function hashPassword(password) {
@@ -201,6 +195,11 @@ function getTeacherSession() {
 
 function setTeacherSession(teacher) {
   sessionStorage.setItem('kt_teacher', JSON.stringify(teacher));
+  // Also persist token in localStorage so it survives tab close / page refresh
+  if (teacher.token) {
+    localStorage.setItem('kt_teacher_token', teacher.token);
+    localStorage.setItem('kt_teacher_session', JSON.stringify(teacher));
+  }
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────
@@ -222,20 +221,17 @@ async function doLogin() {
 
   try {
     const hash = await hashPassword(password);
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/teachers?username=eq.${encodeURIComponent(username)}&password_hash=eq.${hash}&limit=1`,
-      { headers: HEADERS }
-    );
-    const data = await res.json();
+    const data = await db_teacherLogin(username, hash);
 
-    if (data && data.length > 0) {
-      const teacher = data[0];
+    if (data && data.teacher) {
+      const teacher = data.teacher;
       setTeacherSession({
         id:        teacher.id,
         username:  teacher.username,
         name:      teacher.name,
         classCode: teacher.class_code,
         school:    teacher.school,
+        token:     data.token,
       });
       document.getElementById('login-card').style.display = 'none';
       document.getElementById('loading').classList.add('show');
@@ -283,27 +279,17 @@ async function doRegister() {
 
   try {
     const hash = await hashPassword(password);
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/teachers`, {
-      method: 'POST',
-      headers: { ...HEADERS, 'Prefer': 'return=representation' },
-      body: JSON.stringify({
-        username:      username,
-        password_hash: hash,
-        name:          name,
-        class_code:    classCode,
-        school:        school || null,
-      })
-    });
+    const data = await db_teacherRegister(username, hash, name, classCode, school);
 
-    if (res.ok) {
-      const data = await res.json();
-      const teacher = Array.isArray(data) ? data[0] : data;
+    if (data && data.teacher) {
+      const teacher = data.teacher;
       setTeacherSession({
         id:        teacher.id,
         username:  teacher.username,
         name:      teacher.name,
         classCode: teacher.class_code,
         school:    teacher.school,
+        token:     data.token,
       });
       document.getElementById('register-card').style.display = 'none';
       document.getElementById('loading').classList.add('show');
@@ -311,8 +297,7 @@ async function doRegister() {
         window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
       }, 800);
     } else {
-      const err = await res.json();
-      if (err.message && err.message.includes('unique')) {
+      if (e.message && e.message.includes('already taken')) {
         errorEl.textContent = 'That username or class code is already taken. Please choose another.';
       } else {
         errorEl.textContent = 'Could not create account. Please try again.';
