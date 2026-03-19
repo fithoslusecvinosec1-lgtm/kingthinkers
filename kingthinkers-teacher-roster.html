@@ -141,7 +141,6 @@ textarea.inp{min-height:110px;resize:vertical;}
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#F5A800">
 <script src="/kingthinkers/kt-db.js"></script>
-<script src="/kingthinkers/kt-music.js"></script>
 </head>
 <body>
 
@@ -153,7 +152,7 @@ textarea.inp{min-height:110px;resize:vertical;}
   <div style="display:flex;gap:8px;">
     <button class="t-link" onclick="window.print()">🖨️ Print</button>
     <a class="t-link gold" href="/kingthinkers/kingthinkers-dashboard.html">👦 Student View</a>
-    <button class="t-link" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);">🚪 Log Out</button>
+    <button class="t-link" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);" onclick="logOut()">🚪 Log Out</button>
   </div>
 </div>
 
@@ -192,7 +191,7 @@ textarea.inp{min-height:110px;resize:vertical;}
 <!-- KING CODES -->
 <div class="section" id="codes">
   <div class="sh">🔑 King Codes</div>
-  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;">🖨️ Print All King Cards</button>
+  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;" onclick="printKingCards()">🖨️ Print All King Cards</button>
   <div class="kg" id="codes-grid"></div>
 </div>
 
@@ -210,13 +209,13 @@ textarea.inp{min-height:110px;resize:vertical;}
     <option value="4">4th Grade</option>
     <option value="5">5th Grade</option>
   </select>
-  <button class="add-btn" id="add-btn">Add King 👑</button>
+  <button class="add-btn" id="add-btn" onclick="doAdd()">Add King 👑</button>
 
   <div style="margin-top:28px;">
     <div class="sh" style="font-size:16px;">📥 Bulk Add</div>
     <label class="lbl">One name per line. Add grade after comma: Marcus, 3</label>
     <textarea id="bulk-names" class="inp" placeholder="Marcus&#10;Jaylen, 4&#10;Kofi, 2&#10;Amari&#10;Zion, 5"></textarea>
-    <button class="add-btn" id="bulk-btn">Add All Students</button>
+    <button class="add-btn" id="bulk-btn" onclick="doBulk()">Add All Students</button>
   </div>
 </div>
 
@@ -229,10 +228,10 @@ textarea.inp{min-height:110px;resize:vertical;}
   <input type="text" id="s-class" class="inp" placeholder="e.g. MR-JOHNSON-3B">
   <label class="lbl">School Name</label>
   <input type="text" id="s-school" class="inp" placeholder="e.g. MLK Elementary">
-  <button class="ghost-btn" id="save-settings-btn">Save Settings ✓</button>
-  <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);">☁️ Sync from Cloud</button>
-  <button class="ghost-btn" id="sample-btn">🧪 Load Sample Class</button>
-  <button class="danger-btn" id="clear-btn">🗑️ Reset All Data</button>
+  <button class="ghost-btn" id="save-settings-btn" onclick="saveSettingsNow()">Save Settings ✓</button>
+  <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);" onclick="syncFromSupabase()">☁️ Sync from Cloud</button>
+  <button class="ghost-btn" id="sample-btn" onclick="loadSampleClass()">🧪 Load Sample Class</button>
+  <button class="danger-btn" id="clear-btn" onclick="clearAllData()">🗑️ Reset All Data</button>
 </div>
 
 <!-- CARD MODAL -->
@@ -764,23 +763,59 @@ function wireButtons() {
   });
 }
 
-// Use DOMContentLoaded — fires earlier and more reliably than 'load' on iOS Safari
-document.addEventListener('DOMContentLoaded', function(){
+// Boot — runs immediately since script is at bottom of body
+(function boot() {
   renderAll();
   loadSettingsForm();
   wireButtons();
-  // Auto-sync from Supabase on load
   syncFromSupabase();
-});
+})();
 
-// Fallback: if DOMContentLoaded already fired (script at bottom of body), wire immediately
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  setTimeout(function(){
-    renderAll();
-    loadSettingsForm();
-    wireButtons();
-    syncFromSupabase();
-  }, 0);
+function saveSettingsNow() {
+  var t = document.getElementById('s-teacher');
+  var c = document.getElementById('s-class');
+  var sc = document.getElementById('s-school');
+  if (t)  putSetting('teacherName', t.value);
+  if (c)  putSetting('classCode',   c.value);
+  if (sc) putSetting('schoolName',  sc.value);
+  toast('✅ Settings saved!');
+}
+
+function loadSampleClass() {
+  if (!confirm('Load 5 sample students? This adds to your existing roster.')) return;
+  var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
+  names.forEach(function(n) {
+    var code = genCode();
+    var s = { code:code, name:n[0], grade:n[1],
+      classCode: _teacherSession ? _teacherSession.classCode : 'DEMO',
+      xp:0, crowns:0, createdAt:Date.now() };
+    saveStudent(code, s);
+    var r = getRoster(); r[code] = { name:n[0], grade:n[1] }; saveRoster(r);
+  });
+  toast('✅ Sample class loaded!');
+  renderAll();
+}
+
+function clearAllData() {
+  if (!confirm('Delete ALL student data? This cannot be undone.')) return;
+  var r = getRoster();
+  Object.keys(r).forEach(function(c){ localStorage.removeItem('kt_student_' + c); });
+  localStorage.removeItem('kt_roster');
+  toast('🗑️ All data cleared');
+  renderAll();
+}
+
+function printKingCards() {
+  document.body.classList.add('print-cards-only');
+  window.print();
+  document.body.classList.remove('print-cards-only');
+}
+
+function logOut() {
+  if (confirm('Log out of Teacher Roster?')) {
+    sessionStorage.removeItem('kt_teacher');
+    window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
+  }
 }
 
 async function syncFromSupabase() {
