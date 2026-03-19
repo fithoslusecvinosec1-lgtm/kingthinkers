@@ -261,18 +261,11 @@ var _teacherSession = null;
 
 // ── SESSION CHECK ─────────────────────────────────────────────
 function getTeacherSession() {
+  // Session-only — matches login page. No localStorage fallback.
+  // If the tab closes, the teacher must log in again (safer on shared devices).
   try {
-    // Try sessionStorage first
     var session = JSON.parse(sessionStorage.getItem('kt_teacher') || 'null');
-    if (session && session.token) return session;
-    // Fallback to localStorage (survives refresh / tab close)
-    var lsSession = JSON.parse(localStorage.getItem('kt_teacher_session') || 'null');
-    if (lsSession && lsSession.token) {
-      // Restore to sessionStorage for this session
-      sessionStorage.setItem('kt_teacher', JSON.stringify(lsSession));
-      return lsSession;
-    }
-    return null;
+    return (session && session.token) ? session : null;
   } catch(e) { return null; }
 }
 

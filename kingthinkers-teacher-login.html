@@ -123,7 +123,7 @@ html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--
     <label class="lbl">Password</label>
     <input type="password" id="t-password" class="inp" placeholder="Your password" autocomplete="current-password">
 
-    <button class="login-btn" id="login-btn">Sign In →</button>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In →</button>
     <div class="error-msg" id="login-error">Username or password incorrect. Please try again.</div>
 
     <div class="toggle-link">
@@ -147,12 +147,12 @@ html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--
 
     <label class="lbl">Class Code</label>
     <input type="text" id="r-class" class="inp" placeholder="e.g. JOHNSON-3B" autocomplete="off" autocorrect="off" autocapitalize="characters">
-    <div style="font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:14px;">Students will enter this when registering. Keep it simple.</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:14px;">Students will enter this when registering. Keep it simple. Letters, numbers, hyphens only (e.g. JOHNSON-3B).</div>
 
     <label class="lbl">School Name</label>
     <input type="text" id="r-school" class="inp" placeholder="e.g. MLK Elementary">
 
-    <button class="login-btn" id="register-btn">Create Account →</button>
+    <button class="login-btn" id="register-btn" onclick="doRegister()">Create Account →</button>
     <div class="error-msg" id="register-error">Something went wrong. Please try again.</div>
 
     <div class="toggle-link">
@@ -171,7 +171,18 @@ html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--
 <script>
 // API calls handled by kt-db.js Edge Function proxy
 
-// ── SIMPLE HASH (not cryptographic, just obfuscation for pilot) ──
+// ── PASSWORD HANDLING ────────────────────────────────────────
+// PILOT: SHA-256 client-side hash with a static salt.
+// This is obfuscation, not real security. The hash stored in the
+// DB is effectively the password — anyone with DB read access
+// could use it directly.
+//
+// POST-PILOT UPGRADE PATH:
+//   1. Move hashing to the Edge Function (never touch plaintext client-side)
+//   2. Use bcrypt or Argon2 on the server (supabase pg_crypto extension)
+//   3. Add rate-limiting to the teacher-login Edge Function action
+//   4. Consider Supabase Auth instead of rolling your own
+//
 async function hashPassword(password) {
   const encoder = new TextEncoder();
   const data = encoder.encode(password + 'kt_salt_2026');
@@ -194,12 +205,9 @@ function getTeacherSession() {
 }
 
 function setTeacherSession(teacher) {
+  // Session-only: clears when tab/browser closes — safer on shared school devices.
+  // The token is kept in sessionStorage only; localStorage is not used here.
   sessionStorage.setItem('kt_teacher', JSON.stringify(teacher));
-  // Also persist token in localStorage so it survives tab close / page refresh
-  if (teacher.token) {
-    localStorage.setItem('kt_teacher_token', teacher.token);
-    localStorage.setItem('kt_teacher_session', JSON.stringify(teacher));
-  }
 }
 
 // ── LOGIN ─────────────────────────────────────────────────────
@@ -220,6 +228,9 @@ async function doLogin() {
   errorEl.classList.remove('show');
 
   try {
+    if (typeof db_teacherLogin !== 'function') {
+      throw new Error('Login service unavailable. Please refresh and try again.');
+    }
     const hash = await hashPassword(password);
     const data = await db_teacherLogin(username, hash);
 
@@ -278,6 +289,9 @@ async function doRegister() {
   errorEl.classList.remove('show');
 
   try {
+    if (typeof db_teacherRegister !== 'function') {
+      throw new Error('Registration service unavailable. Please refresh and try again.');
+    }
     const hash = await hashPassword(password);
     const data = await db_teacherRegister(username, hash, name, classCode, school);
 
@@ -297,10 +311,12 @@ async function doRegister() {
         window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
       }, 800);
     } else {
-      if (e.message && e.message.includes('already taken')) {
+      // Check for duplicate username/class code error from Edge Function
+      var apiError = (data && data.error) ? data.error : '';
+      if (apiError.includes('unique') || apiError.includes('already') || apiError.includes('duplicate')) {
         errorEl.textContent = 'That username or class code is already taken. Please choose another.';
       } else {
-        errorEl.textContent = 'Could not create account. Please try again.';
+        errorEl.textContent = apiError || 'Could not create account. Please try again.';
       }
       errorEl.classList.add('show');
       btn.disabled = false;
