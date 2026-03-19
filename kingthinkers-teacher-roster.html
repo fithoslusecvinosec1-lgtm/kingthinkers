@@ -515,9 +515,9 @@ function renderRoster(){
           '<div class="s-meta">Gr '+d.s.grade+' · '+getWorld(d.c)+' · '+d.done+'/8 missions · '+d.xp+' XP</div>'+
         '</div>'+
         '<div class="s-btns">'+
-          '<button class="s-btn grn" onclick="showProg(\''+d.c+'\')">📋</button>'+
-          '<button class="s-btn" onclick="showCard('\''+d.c+'\'') ">🃏</button>'+
-          '<button class="s-btn" onclick="removeStudent('\''+d.c+'\'') ">🗑️</button>'+
+          '<button class="s-btn grn" data-action="prog" data-code="'+d.c+'">📋</button>'+
+          '<button class="s-btn" data-action="card" data-code="'+d.c+'">🃏</button>'+
+          '<button class="s-btn" data-action="del" data-code="'+d.c+'">🗑️</button>'+
         '</div>'+
       '</div>'+
 
@@ -576,7 +576,7 @@ function renderProgress(){
     var pct=Math.round(d.done/MISSIONS.length*100);
     var medal=(i===0&&d.done>0)?'🥇':(i===1&&d.done>0)?'🥈':(i===2&&d.done>0)?'🥉':'👑';
     var names=MISSIONS.filter(function(m){return!!d.p[m.id]}).map(function(m){return m.name});
-    return'<div class="p-card" onclick="showProg(\''+d.c+'\')">'+
+    return'<div class="p-card" data-action="prog" data-code="'+d.c+'">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;">'+
         '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">'+medal+'</span>'+
           '<div><div style="font-weight:800;font-size:14px;">'+d.s.name+'</div>'+
@@ -596,7 +596,7 @@ function renderCodes(){
   if(!codes.length){g.innerHTML='<div class="empty"><div class="empty-i">🔑</div><div>No codes yet</div></div>';return}
   g.innerHTML=codes.map(function(c){
     var s=getStudent(c);if(!s)return'';
-    return'<div class="kc" onclick="showCard(\''+c+'\')">'+
+    return'<div class="kc" data-action="card" data-code="'+c+'">'+
       '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
       '<div class="kc-name">King '+s.name+'</div><div class="kc-div"></div>'+
       '<div class="kc-lbl">King Code</div><div class="kc-code">'+c+'</div>'+
@@ -760,6 +760,19 @@ function wireButtons() {
       sessionStorage.removeItem('kt_teacher');
       window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
     }
+  });
+
+  // ── EVENT DELEGATION for roster cards ──────────────────────
+  // Handles all data-action buttons without inline onclick escaping issues
+  document.addEventListener('click', function(e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
+    var action = el.getAttribute('data-action');
+    var code   = el.getAttribute('data-code');
+    if (!code) return;
+    if (action === 'prog') showProg(code);
+    if (action === 'card') showCard(code);
+    if (action === 'del')  removeStudent(code);
   });
 }
 
