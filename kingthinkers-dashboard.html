@@ -468,7 +468,7 @@ function switchPage(name) {
 
   if (name === 'kingdom') renderMap();
   if (name === 'home') updateHomeScreen();
-  if (name === 'sage') initSage();
+  if (name === 'sage') ensureSageSession();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────
@@ -653,16 +653,19 @@ async function loadProgressFromDB() {
   if (!code) return getProgress();
 
   var localProgress = {};
-  try {
-    localProgress = JSON.parse(localStorage.getItem(getScopedKey('kt_quest_progress', code)) || '{}') || {};
-  } catch (e) {
+try {
+  localProgress = JSON.parse(localStorage.getItem(getScopedKey('kt_quest_progress', code)) || '{}') || {};
+  if (!localProgress || typeof localProgress !== 'object' || Array.isArray(localProgress)) {
     localProgress = {};
   }
+} catch (e) {
+  localProgress = {};
+}
 
   try {
     var p = await db_getProgress(code);
-    _progressCache = p || {};
-    localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(_progressCache));
+_progressCache = (p && typeof p === 'object' && !Array.isArray(p)) ? p : {};
+localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(_progressCache));
   } catch(e) {
     console.warn('loadProgressFromDB failed', e);
     _progressCache = localProgress;
@@ -960,12 +963,17 @@ async function processMissionSignal() {
     _processedSignals.add(key);
     localStorage.removeItem('kt_mission_completed');
 
-    var p = getProgress();
-    if (!p[data.missionId]) {
-      completeMission(data.missionId);
-      gainXP(data.xp || 40);
-      gainCrowns(1);
-    }
+    await loadProgressFromDB();
+
+var p = getProgress();
+if (!p[data.missionId]) {
+  completeMission(data.missionId);
+  gainXP(data.xp || 40);
+  gainCrowns(1);
+  await loadProgressFromDB();
+}
+
+renderMap();
 
     await loadProgressFromDB();
     renderMap();
@@ -1035,7 +1043,7 @@ function logOut() {
 var sageHistory = [];
 var sageTyping = false;
 var sageInitialized = false;
-var SAGE_FALLBACK_REPLY = 'Sage is offline, King.';
+var SAGE_FALLBACK_REPLY = 'Sage is resting for a moment, King. Try again in a bit — you still got this. 👑';
 
 function getSageContext() {
   var student = typeof getActiveStudent === 'function' ? getActiveStudent() : null;
@@ -1182,11 +1190,20 @@ async function sageSend(message) {
 
   var reply = null;
   try {
-    var systemWithContext = KTSagePrompts.buildDashboardSageSystem(
-      cleanMessage,
-      'Current context: ' + getSageContext()
-    );
-    reply = await kt_sage(sageHistory, systemWithContext);
+    var systemWithContext =
+  (window.KTSagePrompts && typeof KTSagePrompts.buildDashboardSageSystem === 'function')
+    ? KTSagePrompts.buildDashboardSageSystem(
+        cleanMessage,
+        'Current context: ' + getSageContext()
+      )
+    : (
+        'You are Sage, an elite but warm guide for KingThinkers. ' +
+        'Keep responses short, clear, age-appropriate, encouraging, and never give away answers directly. ' +
+        'Call the student "King" naturally.\n\n' +
+        'Current context: ' + getSageContext()
+      );
+
+reply = await kt_sage(sageHistory, systemWithContext);
   } catch (e) {
     console.warn('Sage send failed:', e);
   }
