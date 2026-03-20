@@ -1192,7 +1192,10 @@ async function sageSend(message) {
   sageShowTyping();
 
   try {
-    var systemWithContext = SAGE_SYSTEM + '\n\nCurrent context: ' + getSageContext();
+    var systemWithContext = buildDashboardSageSystem(
+  message,
+  'Current context: ' + getSageContext()
+);
     var reply = await kt_sage(sageHistory, systemWithContext);
     if (!reply) reply = 'Hmm, Sage is thinking... try again in a moment, King! 👑';
 
