@@ -165,8 +165,9 @@ async function db_saveStudent(code, student) {
       name: student.name || null,
       grade: student.grade || '3',
       classCode: student.classCode || student.class_code || null,
-      xp: typeof student.xp === 'number' ? student.xp : 0,
-      crowns: typeof student.crowns === 'number' ? student.crowns : 0,
+      xp: typeof student.xp === 'number' ? student.xp : undefined,
+      crowns: typeof student.crowns === 'number' ? student.crowns : undefined,
+      profileComplete: typeof student.profileComplete === 'boolean' ? student.profileComplete : undefined
     });
   } catch (e) {
     console.warn('db_saveStudent failed, localStorage only:', e.message);
@@ -179,18 +180,18 @@ async function db_saveProfile(code, skinId, hairId, outfitId) {
 
   var existing = _ls_getStudent(code) || {};
   existing.profileComplete = true;
-  existing.skinId = skinId || null;
-  existing.hairId = hairId || null;
-  existing.outfitId = outfitId || null;
+  if (skinId !== undefined) existing.skinId = skinId;
+  if (hairId !== undefined) existing.hairId = hairId;
+  if (outfitId !== undefined) existing.outfitId = outfitId;
 
   localStorage.setItem('kt_student_' + code, JSON.stringify(existing));
 
   try {
     await kt_api('save-profile', {
       code: code,
-      skinId: skinId || null,
-      hairId: hairId || null,
-      outfitId: outfitId || null,
+      skinId: existing.skinId || null,
+      hairId: existing.hairId || null,
+      outfitId: existing.outfitId || null,
       profileComplete: true,
     });
   } catch (e) {
