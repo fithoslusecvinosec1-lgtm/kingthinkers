@@ -42,13 +42,22 @@ function kt_clearSession() {
 // ── TEACHER SESSION ───────────────────────────────────────────
 // Sessions are sessionStorage-only — clears on tab close.
 
-function kt_getTeacherToken() {
+function kt_getTeacherSession() {
   try {
     var session = JSON.parse(sessionStorage.getItem('kt_teacher') || 'null');
-    return (session && session.token) ? session.token : null;
+    return (session && session.token) ? session : null;
   } catch (e) {
     return null;
   }
+}
+
+function kt_getTeacherToken() {
+  var session = kt_getTeacherSession();
+  return session ? session.token : null;
+}
+
+function kt_clearTeacherSession() {
+  sessionStorage.removeItem('kt_teacher');
 }
 
 // ── CORE API HELPER ───────────────────────────────────────────
@@ -109,6 +118,7 @@ async function kt_api(action, body, useTeacherToken) {
 
 // ── STUDENT FUNCTIONS ─────────────────────────────────────────
 
+// Authoritative student fetch with localStorage fallback.
 async function db_getStudent(code) {
   if (!code) return null;
   try {
@@ -138,8 +148,8 @@ async function db_getStudent(code) {
   }
 }
 
-// Expanded save so the client can persist more complete student state.
-// This still depends on your Edge Function accepting these fields.
+// Persist the core student record.
+// Profile/avatar fields belong in db_saveProfile().
 async function db_saveStudent(code, student) {
   if (!code || !student) return;
 
@@ -153,16 +163,13 @@ async function db_saveStudent(code, student) {
       classCode: student.classCode || student.class_code || null,
       xp: typeof student.xp === 'number' ? student.xp : 0,
       crowns: typeof student.crowns === 'number' ? student.crowns : 0,
-      profileComplete: !!student.profileComplete,
-      skinId: student.skinId || null,
-      hairId: student.hairId || null,
-      outfitId: student.outfitId || null,
     });
   } catch (e) {
     console.warn('db_saveStudent failed, localStorage only:', e.message);
   }
 }
 
+// Persist avatar/profile fields only.
 async function db_saveProfile(code, skinId, hairId, outfitId) {
   if (!code) return;
 
@@ -189,6 +196,7 @@ async function db_saveProfile(code, skinId, hairId, outfitId) {
 
 // ── PROGRESS FUNCTIONS ────────────────────────────────────────
 
+// Authoritative progress fetch with localStorage fallback.
 async function db_getProgress(code) {
   if (!code) return {};
   try {
@@ -218,7 +226,7 @@ async function db_saveProgress(code, missions) {
 }
 
 // ── LESSON COMPLETION ─────────────────────────────────────────
-// Server is authoritative for idempotency and final XP/crown totals.
+// Authoritative mission completion. Server decides final XP/crowns/missions.
 
 async function db_completeLesson(code, missionId, xpEarned) {
   if (!code || !missionId) return null;
@@ -267,6 +275,7 @@ async function db_completeLesson(code, missionId, xpEarned) {
 
 // ── XP / CROWN SYNC ──────────────────────────────────────────
 
+// Explicit stat sync only.
 async function db_syncStudentStats(code, xp, crowns) {
   if (!code) return;
 
@@ -416,13 +425,16 @@ function getStudent(code) {
 }
 
 // NOTE: localStorage-only.
-// Use db_saveStudent() for server persistence.
-function saveStudent(code, s) {
-  console.warn('saveStudent() is localStorage-only. Use db_saveStudent() for remote persistence.');
+// Use db_saveStudent() for core record persistence.
+// Use db_saveProfile() for avatar/profile persistence.
+const saveStudentLocalOnly = function(code, s) {
+  console.warn('saveStudent() is localStorage-only. Use db_saveStudent() for core record persistence and db_saveProfile() for avatar/profile fields.');
   if (code && s) {
     localStorage.setItem('kt_student_' + code, JSON.stringify(s));
   }
-}
+};
+
+window.saveStudent = saveStudentLocalOnly;
 
 function getQuestProgress(code) {
   return _ls_getProgress(code);

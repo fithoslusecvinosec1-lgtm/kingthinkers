@@ -157,11 +157,11 @@ html,body{height:100%;background:var(--navy);font-family:var(--f-b);color:var(--
   <div class="loading" id="loading">Loading your classroom…</div>
 
   <div class="student-link">
-    <a href="/kingthinkers/kingthinkers-login.html">👦 Go to Student Login</a>
+    <a href="kingthinkers-login.html">👦 Go to Student Login</a>
   </div>
 </div>
 
-<script src="/kingthinkers/kt-db.js"></script>
+<script src="kt-db.js"></script>
 <script>
 // ── SIMPLE HASH (pilot only; real security should be server-side) ──
 async function hashPassword(password) {
@@ -174,6 +174,7 @@ async function hashPassword(password) {
 
 // ── SESSION ───────────────────────────────────────────────────
 function getTeacherSession() {
+  if (typeof kt_getTeacherSession === 'function') return kt_getTeacherSession();
   try { return JSON.parse(sessionStorage.getItem('kt_teacher') || 'null'); }
   catch(e) { return null; }
 }
@@ -183,13 +184,17 @@ function setTeacherSession(teacher) {
 }
 
 function clearTeacherSession() {
+  if (typeof kt_clearTeacherSession === 'function') {
+    kt_clearTeacherSession();
+    return;
+  }
   sessionStorage.removeItem('kt_teacher');
 }
 
 function checkSession() {
   const session = getTeacherSession();
   if (session && session.token && session.username && session.classCode) {
-    window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
+    window.location.href = 'kingthinkers-teacher-roster.html';
   }
 }
 
@@ -252,7 +257,7 @@ async function doLogin() {
       document.getElementById('loading').classList.add('show');
 
       setTimeout(() => {
-        window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
+        window.location.href = 'kingthinkers-teacher-roster.html';
       }, 800);
       return;
     }
@@ -313,7 +318,7 @@ async function doRegister() {
       document.getElementById('loading').classList.add('show');
 
       setTimeout(() => {
-        window.location.href = '/kingthinkers/kingthinkers-teacher-roster.html';
+        window.location.href = 'kingthinkers-teacher-roster.html';
       }, 800);
       return;
     }

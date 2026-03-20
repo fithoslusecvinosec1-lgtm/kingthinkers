@@ -140,7 +140,7 @@ textarea.inp{min-height:110px;resize:vertical;}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#F5A800">
-<script src="/kingthinkers/kt-db.js"></script>
+<script src="kt-db.js"></script>
 </head>
 <body>
 
@@ -151,7 +151,7 @@ textarea.inp{min-height:110px;resize:vertical;}
   </div>
   <div style="display:flex;gap:8px;">
     <button class="t-link" onclick="window.print()">🖨️ Print</button>
-    <a class="t-link gold" href="/kingthinkers/kingthinkers-dashboard.html">👦 Student View</a>
+    <a class="t-link gold" href="kingthinkers-dashboard.html">👦 Student View</a>
     <button class="t-link" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);" onclick="logOut()">🚪 Log Out</button>
   </div>
 </div>
@@ -263,6 +263,7 @@ var _teacherSession = null;
 function getTeacherSession() {
   // Session-only — matches login page. No localStorage fallback.
   // If the tab closes, the teacher must log in again (safer on shared devices).
+  if (typeof kt_getTeacherSession === 'function') return kt_getTeacherSession();
   try {
     var session = JSON.parse(sessionStorage.getItem('kt_teacher') || 'null');
     return (session && session.token) ? session : null;
@@ -271,14 +272,14 @@ function getTeacherSession() {
 
 _teacherSession = getTeacherSession();
 if (!_teacherSession) {
-  window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
+  window.location.href = 'kingthinkers-teacher-login.html';
 }
 
 // ── STORAGE ───────────────────────────────────────────────────
 function getRoster(){try{return JSON.parse(localStorage.getItem('kt_roster')||'{}')}catch(e){return{}}}
 function saveRoster(r){localStorage.setItem('kt_roster',JSON.stringify(r))}
 function getStudent(c){try{return JSON.parse(localStorage.getItem('kt_student_'+c)||'null')}catch(e){return null}}
-function saveStudent(c,s){localStorage.setItem('kt_student_'+c,JSON.stringify(s))}
+function saveStudentLocal(c,s){localStorage.setItem('kt_student_'+c,JSON.stringify(s))}
 function getSettings(){try{return JSON.parse(localStorage.getItem('kt_settings')||'{}')}catch(e){return{}}}
 function putSetting(k,v){var s=getSettings();s[k]=v;localStorage.setItem('kt_settings',JSON.stringify(s))}
 function getDevProg(c){try{return JSON.parse(localStorage.getItem('kt_quest_progress_'+c)||'{}')}catch(e){return{}}}
@@ -315,6 +316,44 @@ function getWorld(c){
   if(done<4)return'Egypt';if(done<8)return'Nubia';return'Kush+';
 }
 
+
+async function loadSampleStudents() {
+  if (!confirm('Load 5 sample students? This adds to your existing roster.')) return;
+  var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
+  var classCode = _teacherSession ? _teacherSession.classCode : 'DEMO';
+  var students = names.map(function(n) {
+    return {
+      code: genCode(),
+      name: n[0],
+      grade: n[1],
+      classCode: classCode,
+      xp: 0,
+      crowns: 0,
+      createdAt: Date.now()
+    };
+  });
+
+  try {
+    if (typeof db_bulkAddStudents === 'function') {
+      await db_bulkAddStudents(students.map(function(s) {
+        return { code: s.code, name: s.name, grade: s.grade };
+      }), classCode);
+    }
+
+    var r = getRoster();
+    students.forEach(function(s) {
+      saveStudentLocal(s.code, s);
+      r[s.code] = { name: s.name, grade: s.grade };
+    });
+    saveRoster(r);
+    toast('✅ Sample class loaded!');
+    renderAll();
+  } catch (e) {
+    toast('⚠️ Sample class failed: ' + e.message);
+    console.warn('loadSampleStudents failed:', e);
+  }
+}
+
 // ── ADD ───────────────────────────────────────────────────────
 async function doAdd(){
   var nameEl=document.getElementById('f-name');
@@ -331,7 +370,7 @@ async function doAdd(){
       await db_addStudent(code, name, grade, classCode);
     }
     var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
-    saveStudent(code,s);
+    saveStudentLocal(code,s);
     var r=getRoster();r[code]={name:name,grade:grade};saveRoster(r);
     nameEl.value='';
     toast('King '+name+' added! Code: '+code);
@@ -365,7 +404,7 @@ async function doBulk(){
     await db_bulkAddStudents(students, _cc);
     // Only update local state after server confirms success
     students.forEach(function(s){
-      saveStudent(s.code,{code:s.code,name:s.name,grade:s.grade,
+      saveStudentLocal(s.code,{code:s.code,name:s.name,grade:s.grade,
         classCode:_teacherSession?_teacherSession.classCode:'MY-CLASS',
         xp:0,crowns:0,createdAt:Date.now()});
     });
@@ -739,20 +778,7 @@ function wireButtons() {
 
   on('sync-btn', function(){ syncFromSupabase(); });
 
-  on('sample-btn', function(){
-    if (!confirm('Load 5 sample students? This adds to your existing roster.')) return;
-    var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
-    names.forEach(function(n){
-      var code = genCode();
-      var s = { code:code, name:n[0], grade:n[1],
-        classCode: _teacherSession ? _teacherSession.classCode : 'DEMO',
-        xp:0, crowns:0, createdAt:Date.now() };
-      saveStudent(code, s);
-      var r = getRoster(); r[code] = { name:n[0], grade:n[1] }; saveRoster(r);
-    });
-    toast('✅ Sample class loaded!');
-    renderAll();
-  });
+  on('sample-btn', function(){ loadSampleStudents(); });
 
   on('clear-btn', function(){
     if (!confirm('Delete ALL student data? This cannot be undone.')) return;
@@ -771,10 +797,12 @@ function wireButtons() {
 
   on('logout-btn', function(){
     if (confirm('Log out of Teacher Roster?')) {
-      sessionStorage.removeItem('kt_teacher');
-      localStorage.removeItem('kt_teacher_token');
-      localStorage.removeItem('kt_teacher_session');
-      window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
+      if (typeof kt_clearTeacherSession === 'function') {
+        kt_clearTeacherSession();
+      } else {
+        sessionStorage.removeItem('kt_teacher');
+      }
+      window.location.href = 'kingthinkers-teacher-login.html';
     }
   });
 
@@ -821,18 +849,7 @@ function saveSettingsNow() {
 }
 
 function loadSampleClass() {
-  if (!confirm('Load 5 sample students? This adds to your existing roster.')) return;
-  var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
-  names.forEach(function(n) {
-    var code = genCode();
-    var s = { code:code, name:n[0], grade:n[1],
-      classCode: _teacherSession ? _teacherSession.classCode : 'DEMO',
-      xp:0, crowns:0, createdAt:Date.now() };
-    saveStudent(code, s);
-    var r = getRoster(); r[code] = { name:n[0], grade:n[1] }; saveRoster(r);
-  });
-  toast('✅ Sample class loaded!');
-  renderAll();
+  loadSampleStudents();
 }
 
 function clearAllData() {
@@ -852,10 +869,12 @@ function printKingCards() {
 
 function logOut() {
   if (confirm('Log out of Teacher Roster?')) {
-    sessionStorage.removeItem('kt_teacher');
-    localStorage.removeItem('kt_teacher_token');
-    localStorage.removeItem('kt_teacher_session');
-    window.location.href = '/kingthinkers/kingthinkers-teacher-login.html';
+    if (typeof kt_clearTeacherSession === 'function') {
+      kt_clearTeacherSession();
+    } else {
+      sessionStorage.removeItem('kt_teacher');
+    }
+    window.location.href = 'kingthinkers-teacher-login.html';
   }
 }
 
@@ -877,7 +896,7 @@ async function syncFromSupabase(silent) {
     // Build new roster from cloud data
     var newRoster = {};
     students.forEach(function(s) {
-      saveStudent(s.code, {
+      saveStudentLocal(s.code, {
         code:            s.code,
         name:            s.name,
         grade:           s.grade,
