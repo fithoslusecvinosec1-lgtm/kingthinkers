@@ -152,7 +152,7 @@ textarea.inp{min-height:110px;resize:vertical;}
   <div style="display:flex;gap:8px;">
     <button class="t-link" onclick="window.print()">🖨️ Print</button>
     <a class="t-link gold" href="kingthinkers-dashboard.html">👦 Student View</a>
-    <button class="t-link" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);" onclick="logOut()">🚪 Log Out</button>
+    <button class="t-link" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);">🚪 Log Out</button>
   </div>
 </div>
 
@@ -209,7 +209,7 @@ textarea.inp{min-height:110px;resize:vertical;}
     <option value="4">4th Grade</option>
     <option value="5">5th Grade</option>
   </select>
-  <button class="add-btn" id="add-btn" onclick="doAdd()">Add King 👑</button>
+  <button class="add-btn" id="add-btn">Add King 👑</button>
 
   <div style="margin-top:28px;">
     <div class="sh" style="font-size:16px;">📥 Bulk Add</div>
@@ -230,7 +230,7 @@ textarea.inp{min-height:110px;resize:vertical;}
   <input type="text" id="s-school" class="inp" placeholder="e.g. MLK Elementary">
   <button class="ghost-btn" id="save-settings-btn" onclick="saveSettingsNow()">Save Settings ✓</button>
   <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);" onclick="syncFromSupabase()">☁️ Sync from Cloud</button>
-  <button class="ghost-btn" id="sample-btn" onclick="loadSampleClass()">🧪 Load Sample Class</button>
+  <button class="ghost-btn" id="sample-btn">🧪 Load Sample Class</button>
   <button class="danger-btn" id="clear-btn" onclick="clearAllData()">🗑️ Reset All Data</button>
 </div>
 
@@ -733,7 +733,10 @@ function wireButtons() {
   _wired = true;
   function on(id, fn) {
     var el = document.getElementById(id);
-    if (el) { el.addEventListener('click', fn); }
+    if (el) {
+      el.onclick = null;
+      el.addEventListener('click', fn);
+    }
     else { console.warn('Button not found: ' + id); }
   }
 
