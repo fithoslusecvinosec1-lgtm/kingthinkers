@@ -869,7 +869,24 @@ function toggleSagePanel() {
     }
   }
 }
+function getLessonSageContext() {
+  var activeCode = localStorage.getItem('kt_active_code');
+  var student = null;
 
+  try {
+    if (activeCode) {
+      student = JSON.parse(localStorage.getItem('kt_student_' + activeCode) || 'null');
+    }
+  } catch (e) {}
+
+  return {
+    name: student && student.name ? student.name : 'King',
+    grade: student && student.grade ? student.grade : '3',
+    lessonTitle: document.title.replace('KingThinkers — ', ''),
+    world: 'Egypt',
+    subject: 'Reading'
+  };
+}
 async function sendSagePanel(prefill) {
   if (sagePanelBusy) return;
   var input = document.getElementById('sage-panel-input');
