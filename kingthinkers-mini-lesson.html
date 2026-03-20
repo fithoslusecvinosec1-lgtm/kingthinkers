@@ -356,8 +356,8 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="KingThinkers">
 <meta name="theme-color" content="#F5A800">
-<script src="/kingthinkers/kt-db.js"></script>
-<script src="/kingthinkers/kt-audio.js"></script>
+<script src="kt-db.js"></script>
+<script src="kt-audio.js"></script>
 </head>
 <body>
 
@@ -407,7 +407,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
     </div>
     <div class="hud-crowns">👑 <span id="crown-count">0</span></div>
     <div class="hud-streak">🔥 7</div>
-    <button class="hud-btn" onclick="window.location.href='/kingthinkers/kingthinkers-dashboard.html'">← Map</button>
+    <button class="hud-btn" onclick="nextQuest()">← Map</button>
     <button class="hud-btn" id="mute-btn" onclick="toggleMute()">🔊 Sound</button>
   </div>
 
@@ -456,6 +456,11 @@ let totalQs     = 0;
 let startTime   = Date.now();
 let vocabSel    = { word: null, def: null };
 let missionSubmitted = false;
+const DASHBOARD_URL = 'kingthinkers-dashboard.html';
+
+function getDashboardReturnUrl() {
+  return localStorage.getItem('kt_last_dashboard_url') || DASHBOARD_URL;
+}
 
 const sageMessages = [
   "<strong>Welcome to your first quest, King! 👑</strong> You're about to read a story about an ancient Egyptian pharaoh with a mysterious secret. Read carefully — Sage will ask you questions to test your wisdom. Ready?",
@@ -483,6 +488,23 @@ function syncHud() {
   if (xpNum) xpNum.textContent = xp;
   if (xpBar) xpBar.style.width = Math.min(xp / 10, 100) + '%';
   if (crownCount) crownCount.textContent = crowns;
+}
+
+function getActiveLessonCode() {
+  if (typeof kt_getActiveCode === 'function') return kt_getActiveCode();
+  return localStorage.getItem('kt_active_code');
+}
+
+function resetLessonState() {
+  phase = 0;
+  xp = 60;
+  crowns = 0;
+  correct = 0;
+  totalQs = 0;
+  startTime = Date.now();
+  vocabSel = { word: null, def: null };
+  missionSubmitted = false;
+  syncHud();
 }
 
 // ─── STARS ────────────────────────────────────────────────
@@ -848,14 +870,48 @@ function advancePhase() {
 }
 
 // ─── COMPLETE ─────────────────────────────────────────────
-function showComplete() {
+async function completeActiveMission(acc, lessonBonusXp) {
+  try {
+    const active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+    if (!active || !active.missionId) return null;
+
+    const persistedMissionXp = typeof active.xp === 'number' ? active.xp : 0;
+    const signal = {
+      missionId: active.missionId,
+      worldId: active.worldId,
+      xp: persistedMissionXp,
+      bonusXp: typeof lessonBonusXp === 'number' ? lessonBonusXp : 0,
+      accuracy: acc,
+      completedAt: Date.now()
+    };
+    localStorage.setItem('kt_mission_completed', JSON.stringify(signal));
+    localStorage.removeItem('kt_active_mission');
+
+    const code = getActiveLessonCode();
+    if (code && code !== 'demo' && typeof db_completeLesson === 'function') {
+      return await db_completeLesson(code, active.missionId, persistedMissionXp);
+    }
+    return null;
+  } catch (e) {
+    console.warn('completeActiveMission failed', e);
+    return null;
+  }
+}
+
+function scheduleMapReturn() {
+  setTimeout(() => {
+    window.location.href = getDashboardReturnUrl();
+  }, 1400);
+}
+
+async function showComplete() {
   audioSafe('questComplete');
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
   const acc = totalQs > 0 ? Math.round((correct / totalQs) * 100) : 0;
-  const bonusXP = acc === 100 ? 50 : acc >= 75 ? 25 : 0;
+  const lessonBonusXp = acc === 100 ? 50 : acc >= 75 ? 25 : 0;
 
-  gainXP(bonusXP);
+  gainXP(lessonBonusXp);
 
   document.getElementById('final-crowns').textContent = crowns;
   document.getElementById('final-xp').textContent = xp;
@@ -868,26 +924,7 @@ function showComplete() {
 
   if (!missionSubmitted) {
     missionSubmitted = true;
-
-    try {
-      const active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
-      if (active) {
-        const signal = {
-          missionId: active.missionId,
-          worldId: active.worldId,
-          xp: active.xp,
-          accuracy: acc,
-          completedAt: Date.now()
-        };
-        localStorage.setItem('kt_mission_completed', JSON.stringify(signal));
-        localStorage.removeItem('kt_active_mission');
-
-        const code = localStorage.getItem('kt_active_code');
-        if (code && code !== 'demo' && typeof db_completeLesson === 'function') {
-          db_completeLesson(code, active.missionId, active.xp).catch(e => console.warn('db_completeLesson failed', e));
-        }
-      }
-    } catch(e) {}
+    await completeActiveMission(acc, lessonBonusXp);
   }
 
   setTimeout(() => showToast('👑', 'Progress Saved!', 'Your kingdom map has been updated!'), 1800);
@@ -910,23 +947,12 @@ function launchFireworks() {
 // ─── ACTIONS ──────────────────────────────────────────────
 function nextQuest() {
   showToast('⚔️', 'Back to Kingdom Map…', 'Keep conquering, King!');
-  setTimeout(() => {
-    window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
-  }, 1400);
+  scheduleMapReturn();
 }
 
 function reviewLesson() {
   document.getElementById('complete-screen').classList.remove('show');
-
-  phase = 0;
-  xp = 60;
-  crowns = 0;
-  correct = 0;
-  totalQs = 0;
-  startTime = Date.now();
-  vocabSel = { word: null, def: null };
-
-  syncHud();
+  resetLessonState();
   renderPhase();
 }
 
@@ -971,7 +997,7 @@ document.addEventListener('click', function onFirstClick(){
 }, { once: true });
 
 // ─── INIT ─────────────────────────────────────────────────
-syncHud();
+resetLessonState();
 renderPhase();
 </script>
 

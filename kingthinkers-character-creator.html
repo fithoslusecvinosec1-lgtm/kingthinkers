@@ -468,8 +468,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KingThinkers">
   <meta name="theme-color" content="#F5A800">
-<script src="/kingthinkers/kt-db.js"></script>
-<script src="/kingthinkers/kt-audio.js"></script>
+<script src="kt-db.js"></script>
+<script src="kt-audio.js"></script>
 </head>
 <body>
 
@@ -986,13 +986,14 @@ async function enterKingdom() { KTAudio.levelUp();
       student.hairId   = state.hairId;
       student.outfitId = state.outfitId;
       student.name     = student.name || state.name;
-      // Save to Supabase + localStorage
-      await db_saveStudent(code, student);
+      localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+      // Persist avatar/profile fields to the server
+      await db_saveProfile(code, state.skinId, state.hairId, state.outfitId);
     }
   } catch(e) {
     console.warn('enterKingdom save failed', e);
   }
-  window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
+  window.location.href = 'kingthinkers-dashboard.html';
 }
 
 // ── BOOT ──────────────────────────────────────────────────────
