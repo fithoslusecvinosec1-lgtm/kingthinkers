@@ -458,10 +458,6 @@ let vocabSel    = { word: null, def: null };
 let missionSubmitted = false;
 const DASHBOARD_URL = 'kingthinkers-dashboard.html';
 
-function getDashboardReturnUrl() {
-  return localStorage.getItem('kt_last_dashboard_url') || DASHBOARD_URL;
-}
-
 const sageMessages = [
   "<strong>Welcome to your first quest, King! 👑</strong> You're about to read a story about an ancient Egyptian pharaoh with a mysterious secret. Read carefully — Sage will ask you questions to test your wisdom. Ready?",
   "<strong>Great job reading! 👏</strong> Now let's see how well you understood the story. Think about what you just read — the answer is in the passage!",
@@ -900,7 +896,7 @@ async function completeActiveMission(acc, lessonBonusXp) {
 
 function scheduleMapReturn() {
   setTimeout(() => {
-    window.location.href = getDashboardReturnUrl();
+    window.location.href = DASHBOARD_URL;
   }, 1400);
 }
 

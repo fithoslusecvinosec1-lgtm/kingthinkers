@@ -399,10 +399,6 @@ let phase=0,baseXP=0,baseCrowns=0,sessionXP=0,sessionCrowns=0,correct=0,totalQs=
 
 const LESSON_DASHBOARD_URL = 'kingthinkers-dashboard.html';
 
-function getDashboardReturnUrl(){
-  return localStorage.getItem('kt_last_dashboard_url') || LESSON_DASHBOARD_URL;
-}
-
 function getActiveLessonCode(){
   if(typeof kt_getActiveCode === 'function') return kt_getActiveCode();
   return localStorage.getItem('kt_active_code');
@@ -460,7 +456,7 @@ function lessonAudioToggleMute(){ return lessonAudioCall('toggleMute'); }
 function safeNavigateToDashboard(delay){
   const ms = typeof delay === 'number' ? delay : 0;
   window.setTimeout(function(){
-    window.location.href = getDashboardReturnUrl();
+    window.location.href = LESSON_DASHBOARD_URL;
   }, Math.max(0, ms));
 }
 

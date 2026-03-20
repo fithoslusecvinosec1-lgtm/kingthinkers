@@ -660,9 +660,9 @@ async function loadProgressFromDB() {
   }
 
   try {
-    var remoteProgress = await db_getProgress(code);
-    _progressCache = Object.assign({}, remoteProgress || {}, localProgress);
-    localStorage.setItem(getScopedKey('kt_quest_progress', code), JSON.stringify(_progressCache));
+    var p = await db_getProgress(code);
+    _progressCache = p || {};
+    localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(_progressCache));
   } catch(e) {
     console.warn('loadProgressFromDB failed', e);
     _progressCache = localProgress;
