@@ -724,11 +724,11 @@ var WORLDS = [
     desc: 'The ancient kingdom of Egypt along the Nile River — home of pharaohs, pyramids, and great wisdom.',
     unlockMsg: 'Egypt conquered! The warriors of Nubia await!',
     missions: [
-      { id:'e1', name:"The Pharaoh's Secret",  type:'Reading', xp:40, lessonFile:'kingthinkers-mini-lesson.html' },
-      { id:'e2', name:'Hieroglyph Numbers',     type:'Math',    xp:35, lessonFile:'lesson-e2-hieroglyph-numbers.html' },
-      { id:'e3', name:"The Nile's Gift",        type:'Reading', xp:40, lessonFile:'lesson-e3-the-niles-gift.html' },
-      { id:'e4', name:'Pyramid Fractions',      type:'Math',    xp:35, lessonFile:'lesson-e4-pyramid-fractions.html' },
-    ]
+  { id:'e1', name:"The Pharaoh's Secret", type:'Reading', xp:40, lessonId:'egypt-e1' },
+  { id:'e2', name:'Hieroglyph Numbers', type:'Math', xp:35, lessonId:'egypt-m1' },
+  { id:'e3', name:"The Nile's Gift", type:'Reading', xp:40, lessonId:null },
+  { id:'e4', name:'Pyramid Fractions', type:'Math', xp:35, lessonId:null }
+]
   },
   {
     id: 'nubia', name: 'Nubia', fullName: 'Kingdom of Nubia', icon: '🏹',
@@ -736,10 +736,10 @@ var WORLDS = [
     desc: 'South of Egypt, the mighty Nubian warriors and traders built one of Africa\'s greatest kingdoms.',
     unlockMsg: 'Nubia conquered! The iron forges of Kush await!',
     missions: [
-      { id:'n1', name:'Warriors of the South', type:'Reading', xp:40, lessonFile:'lesson-n1-warriors-of-the-south.html' },
-      { id:'n2', name:'Trade Route Math',      type:'Math',    xp:35, lessonFile:'lesson-n2-trade-route-math.html' },
-      { id:'n3', name:'The Black Pharaohs',    type:'Reading', xp:40, lessonFile:'lesson-n3-the-black-pharaohs.html' },
-      { id:'n4', name:'Archery Angles',        type:'Math',    xp:35, lessonFile:'lesson-n4-archery-angles.html' },
+      { id:'n1', name:'Warriors of the South', type:'Reading', xp:40, lessonId:'lesson-n1-warriors-of-the-south.html' },
+      { id:'n2', name:'Trade Route Math',      type:'Math',    xp:35, lessonId:'lesson-n2-trade-route-math.html' },
+      { id:'n3', name:'The Black Pharaohs',    type:'Reading', xp:40, lessonId:'lesson-n3-the-black-pharaohs.html' },
+      { id:'n4', name:'Archery Angles',        type:'Math',    xp:35, lessonId:'lesson-n4-archery-angles.html' },
     ]
   },
   {
@@ -748,11 +748,11 @@ var WORLDS = [
     desc: 'The Kingdom of Kush was famous for its iron-working and military power.',
     unlockMsg: 'Kush conquered! The golden roads of Mali await!',
     missions: [
-      { id:'k1', name:'Iron Masters',       type:'Reading', xp:45, lessonFile:null },
-      { id:'k2', name:'The Royal Market',   type:'Math',    xp:40, lessonFile:null },
-      { id:'k3', name:'Kush Conquers Egypt',type:'Reading', xp:45, lessonFile:null },
-      { id:'k4', name:'Fortress Geometry',  type:'Math',    xp:40, lessonFile:null },
-      { id:'k5', name:'Crown the King',     type:'Reading', xp:50, lessonFile:null },
+      { id:'k1', name:'Iron Masters',       type:'Reading', xp:45, lessonId:null },
+      { id:'k2', name:'The Royal Market',   type:'Math',    xp:40, lessonId:null },
+      { id:'k3', name:'Kush Conquers Egypt',type:'Reading', xp:45, lessonId:null },
+      { id:'k4', name:'Fortress Geometry',  type:'Math',    xp:40, lessonId:null },
+      { id:'k5', name:'Crown the King',     type:'Reading', xp:50, lessonId:null },
     ]
   },
   {
@@ -761,10 +761,10 @@ var WORLDS = [
     desc: 'The Mali Empire produced Mansa Musa — the richest person in all of human history.',
     unlockMsg: 'Mali conquered! The scholars of Songhai await!',
     missions: [
-      { id:'m1', name:"Mansa Musa's Gold",     type:'Reading', xp:48, lessonFile:null },
-      { id:'m2', name:'The Golden Trade',      type:'Math',    xp:44, lessonFile:null },
-      { id:'m3', name:'Sundiata Rises',        type:'Reading', xp:48, lessonFile:null },
-      { id:'m4', name:'Camel Caravan Math',    type:'Math',    xp:44, lessonFile:null },
+      { id:'m1', name:"Mansa Musa's Gold",     type:'Reading', xp:48, lessonId:null },
+      { id:'m2', name:'The Golden Trade',      type:'Math',    xp:44, lessonId:null },
+      { id:'m3', name:'Sundiata Rises',        type:'Reading', xp:48, lessonId:null },
+      { id:'m4', name:'Camel Caravan Math',    type:'Math',    xp:44, lessonId:null },
     ]
   },
   {
@@ -773,10 +773,10 @@ var WORLDS = [
     desc: 'The largest empire in African history, stretching across West Africa.',
     unlockMsg: 'Songhai conquered! The libraries of Timbuktu await!',
     missions: [
-      { id:'s1', name:'River Kings',             type:'Reading', xp:50, lessonFile:null },
-      { id:'s2', name:'Empire Division',         type:'Math',    xp:46, lessonFile:null },
-      { id:'s3', name:'Askia the Great',         type:'Reading', xp:50, lessonFile:null },
-      { id:'s4', name:'West African Trade Routes',type:'Math',   xp:46, lessonFile:null },
+      { id:'s1', name:'River Kings',             type:'Reading', xp:50, lessonId:null },
+      { id:'s2', name:'Empire Division',         type:'Math',    xp:46, lessonId:null },
+      { id:'s3', name:'Askia the Great',         type:'Reading', xp:50, lessonId:null },
+      { id:'s4', name:'West African Trade Routes',type:'Math',   xp:46, lessonId:null },
     ]
   },
   {
@@ -785,10 +785,10 @@ var WORLDS = [
     desc: 'The intellectual capital of medieval Africa — home of the great Sankore University.',
     unlockMsg: 'Timbuktu conquered! The sea traders of Axum await!',
     missions: [
-      { id:'t1', name:'The Great Library',    type:'Reading', xp:55, lessonFile:null },
-      { id:'t2', name:"Scholar's Math",       type:'Math',    xp:50, lessonFile:null },
-      { id:'t3', name:'Manuscripts of Ages',  type:'Reading', xp:55, lessonFile:null },
-      { id:'t4', name:'Astronomy Numbers',    type:'Math',    xp:50, lessonFile:null },
+      { id:'t1', name:'The Great Library',    type:'Reading', xp:55, lessonId:null },
+      { id:'t2', name:"Scholar's Math",       type:'Math',    xp:50, lessonId:null },
+      { id:'t3', name:'Manuscripts of Ages',  type:'Reading', xp:55, lessonId:null },
+      { id:'t4', name:'Astronomy Numbers',    type:'Math',    xp:50, lessonId:null },
     ]
   },
   {
@@ -797,10 +797,10 @@ var WORLDS = [
     desc: 'A mighty East African trading empire controlling the Red Sea routes.',
     unlockMsg: 'Axum conquered! The final kingdom — the Diaspora — awaits!',
     missions: [
-      { id:'ax1', name:'The Obelisk Builders', type:'Reading', xp:58, lessonFile:null },
-      { id:'ax2', name:'Red Sea Trade Math',   type:'Math',    xp:54, lessonFile:null },
-      { id:'ax3', name:'Kingdom of Faith',     type:'Reading', xp:58, lessonFile:null },
-      { id:'ax4', name:'Stone Tower Geometry', type:'Math',    xp:54, lessonFile:null },
+      { id:'ax1', name:'The Obelisk Builders', type:'Reading', xp:58, lessonId:null },
+      { id:'ax2', name:'Red Sea Trade Math',   type:'Math',    xp:54, lessonId:null },
+      { id:'ax3', name:'Kingdom of Faith',     type:'Reading', xp:58, lessonId:null },
+      { id:'ax4', name:'Stone Tower Geometry', type:'Math',    xp:54, lessonId:null },
     ]
   },
   {
@@ -809,10 +809,10 @@ var WORLDS = [
     desc: 'The story of Black kings and queens who carried their greatness across the world.',
     unlockMsg: 'You have conquered the Kingdom Quest! 👑',
     missions: [
-      { id:'d1', name:'The Harlem Renaissance', type:'Reading', xp:65, lessonFile:null },
-      { id:'d2', name:'Civil Rights Math',      type:'Math',    xp:60, lessonFile:null },
-      { id:'d3', name:'Black Inventors',        type:'Reading', xp:65, lessonFile:null },
-      { id:'d4', name:'Legacy Numbers',         type:'Math',    xp:60, lessonFile:null },
+      { id:'d1', name:'The Harlem Renaissance', type:'Reading', xp:65, lessonId:null },
+      { id:'d2', name:'Civil Rights Math',      type:'Math',    xp:60, lessonId:null },
+      { id:'d3', name:'Black Inventors',        type:'Reading', xp:65, lessonId:null },
+      { id:'d4', name:'Legacy Numbers',         type:'Math',    xp:60, lessonId:null },
     ]
   },
 ];
@@ -902,7 +902,7 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
 
   world.missions.forEach(function(m) {
     var done = isMissionDone(m.id);
-    var hasLesson = !!m.lessonFile;
+    var hasLesson = !!m.lessonId;
 
     var item = document.createElement('div');
     item.className = 'mission-item' + (done ? ' done' : (hasLesson ? ' playable' : ''));
@@ -924,19 +924,19 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
     item.appendChild(type);
 
     if (hasLesson && !done) {
-      var playBtn = document.createElement('button');
-      playBtn.className = 'play-btn';
-      playBtn.textContent = '▶ Play';
-      playBtn.setAttribute('data-lesson', m.lessonFile);
-      playBtn.setAttribute('data-id', m.id);
-      playBtn.setAttribute('data-world', worldId);
-      playBtn.setAttribute('data-xp', m.xp);
-      playBtn.onclick = function(e) {
-        e.stopPropagation();
-        launchMission(m.id, worldId, m.lessonFile, m.xp);
-      };
-      item.appendChild(playBtn);
-    } else if (!hasLesson && !done) {
+  var playBtn = document.createElement('button');
+  playBtn.className = 'play-btn';
+  playBtn.textContent = '▶ Play';
+  playBtn.setAttribute('data-lesson-id', m.lessonId);
+  playBtn.setAttribute('data-id', m.id);
+  playBtn.setAttribute('data-world', worldId);
+  playBtn.setAttribute('data-xp', m.xp);
+  playBtn.onclick = function(e) {
+    e.stopPropagation();
+    launchMission(m.id, worldId, m.lessonId, m.xp);
+  };
+  item.appendChild(playBtn);
+} else if (!hasLesson && !done) {
       var xpLabel = document.createElement('span');
       xpLabel.style.cssText = 'font-size:10px;color:var(--gold);font-weight:800;margin-left:auto;flex-shrink:0;';
       xpLabel.textContent = '+' + m.xp + ' XP';
@@ -953,23 +953,24 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
 }
 
 // ── LAUNCH MISSION ────────────────────────────────────────────
-function launchMission(missionId, worldId, lessonFile, xpReward) {
-  if (!lessonFile) {
+function launchMission(missionId, worldId, lessonId, xpReward) {
+  if (!lessonId) {
     showToast('🔒', 'Quest Locked', 'This mission is not available yet.');
     return;
   }
+
   if (typeof KTAudio !== 'undefined') KTAudio.unlock();
-  var targetUrl = resolveAppUrl(lessonFile);
+
   localStorage.setItem('kt_last_dashboard_url', window.location.href);
   localStorage.setItem('kt_active_mission', JSON.stringify({
     missionId: missionId,
     worldId: worldId,
     xp: xpReward,
-    lessonFile: lessonFile,
-    lessonUrl: targetUrl,
+    lessonId: lessonId,
     launchedAt: Date.now()
   }));
-  window.location.href = targetUrl;
+
+  window.location.href = 'lesson-player.html?id=' + encodeURIComponent(lessonId);
 }
 
 // ── MISSION COMPLETION — RELIABLE HANDLER ────────────────────
@@ -1349,27 +1350,32 @@ var MISSION_MAP = {};
 
 function getNextMission() {
   var p = getProgress();
-  // Only consider unlocked worlds with available lesson files
+
   for (var wi = 0; wi < WORLDS.length; wi++) {
     var w = WORLDS[wi];
     var status = worldStatus(w);
-    if (status === 'locked') continue; // skip locked worlds
+    if (status === 'locked') continue;
+
     for (var mi = 0; mi < w.missions.length; mi++) {
       var m = w.missions[mi];
-      if (!p[m.id] && m.lessonFile) {
-        // Found: not done AND has a real lesson file
+      if (!p[m.id] && m.lessonId) {
         return { world: w, mission: m };
       }
     }
   }
-  return null; // all available missions done
+
+  return null;
 }
 
 function launchNextMission() {
   var next = getNextMission();
-  if (!next) { switchPage('kingdom'); return; }
+  if (!next) {
+    switchPage('kingdom');
+    return;
+  }
+
   if (typeof KTAudio !== 'undefined') KTAudio.unlock();
-  launchMission(next.mission.id, next.world.id, next.mission.lessonFile, next.mission.xp);
+  launchMission(next.mission.id, next.world.id, next.mission.lessonId, next.mission.xp);
 }
 
 function updateHomeScreen() {
