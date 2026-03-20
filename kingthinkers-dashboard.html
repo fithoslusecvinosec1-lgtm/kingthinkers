@@ -726,8 +726,8 @@ var WORLDS = [
     missions: [
   { id:'e1', name:"The Pharaoh's Secret", type:'Reading', xp:40, lessonId:'egypt-e1' },
   { id:'e2', name:'Hieroglyph Numbers', type:'Math', xp:35, lessonId:'egypt-m1' },
-  { id:'e3', name:"The Nile's Gift", type:'Reading', xp:40, lessonId:null },
-  { id:'e4', name:'Pyramid Fractions', type:'Math', xp:35, lessonId:null }
+  { id:'e3', name:"The Nile's Gift", type:'Reading', xp:40, lessonId:'lesson-e3-the-niles-gift.html' },
+  { id:'e4', name:'Pyramid Fractions', type:'Math', xp:35, lessonId:'lesson-e4-pyramid-fractions.html' }
 ]
   },
   {
@@ -970,14 +970,21 @@ function launchMission(missionId, worldId, lessonId, xpReward) {
     launchedAt: Date.now()
   }));
 
-  window.location.href = 'lesson-player.html?id=' + encodeURIComponent(lessonId);
+  var isLegacyHtmlLesson = /\.html?(?:[?#].*)?$/i.test(lessonId);
+  var destination = isLegacyHtmlLesson
+    ? '/kingthinkers/' + lessonId.replace(/^\/+/, '')
+    : '/kingthinkers/lesson-player.html?id=' + encodeURIComponent(lessonId);
+
+  window.location.href = destination;
 }
 
 // ── MISSION COMPLETION — RELIABLE HANDLER ────────────────────
 var _processedSignals = new Set();
 
-function processMissionSignal() {
+async function processMissionSignal() {
   try {
+    await loadProgressFromDB();
+
     var raw = localStorage.getItem('kt_mission_completed');
     if (!raw) return;
     var data = JSON.parse(raw);
