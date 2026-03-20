@@ -1134,7 +1134,7 @@ function sageAddMessage(role, text) {
   div.className = 'sage-msg';
   div.style.justifyContent = role === 'user' ? 'flex-end' : 'flex-start';
 
-  var safeText = (text == null) ? '' : String(text);
+  var safeText = text == null ? '' : String(text);
 
   if (role === 'assistant') {
     var avatar = document.createElement('div');
