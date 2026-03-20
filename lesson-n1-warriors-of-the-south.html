@@ -678,30 +678,58 @@ function selVocab(type,id){
 }
 
 // ── COMPLETE ──────────────────────────────────────────────────────────────────
+function completeActiveMission(acc) {
+  try {
+    const active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+    if (!active || !active.missionId) return 0;
+
+    const persistedMissionXp = typeof active.xp === 'number' ? active.xp : 0;
+    const signal = {
+      missionId: active.missionId,
+      worldId: active.worldId,
+      xp: persistedMissionXp,
+      accuracy: acc,
+      completedAt: Date.now()
+    };
+
+    localStorage.setItem('kt_mission_completed', JSON.stringify(signal));
+    localStorage.removeItem('kt_active_mission');
+
+    const code = kt_getActiveCode ? kt_getActiveCode() : localStorage.getItem('kt_active_code');
+    if (code && code !== 'demo') {
+      db_completeLesson(code, active.missionId, persistedMissionXp).catch(e => console.warn('db_completeLesson failed', e));
+    }
+
+    return persistedMissionXp;
+  } catch (e) {
+    console.warn('completeActiveMission failed', e);
+    return 0;
+  }
+}
+
+function scheduleMapReturn() {
+  setTimeout(function () {
+    window.location.href = '/kingthinkers/kingthinkers-dashboard.html';
+  }, 3200);
+}
+
 function showComplete() { KTAudio.questComplete();
   const elapsed=Math.round((Date.now()-startTime)/1000);
   const acc=totalQs>0?Math.round((correct/totalQs)*100):100;
-  gainXP(acc===100?50:acc>=75?25:0);
-  document.getElementById('f-xp').textContent=xp;
+  const completionBonusXp = acc===100?50:acc>=75?25:0;
+  const celebrationXp = xp + completionBonusXp;
+
+  completeActiveMission(acc);
+
+  if (completionBonusXp) gainXP(completionBonusXp);
+  document.getElementById('f-xp').textContent=celebrationXp;
   document.getElementById('f-cr').textContent=crowns;
   document.getElementById('f-acc').textContent=acc+'%';
   document.getElementById('f-time').textContent=elapsed+'s';
   document.getElementById('complete-screen').classList.add('show');
   launch();
-  try{
-    const active=JSON.parse(localStorage.getItem('kt_active_mission')||'null');
-    if(active){
-      const signal = {missionId:active.missionId,worldId:active.worldId,xp:active.xp,accuracy:acc,completedAt:Date.now()};
-      localStorage.setItem('kt_mission_completed',JSON.stringify(signal));
-      localStorage.removeItem('kt_active_mission');
-      // Save to Supabase
-      const code = kt_getActiveCode ? kt_getActiveCode() : localStorage.getItem('kt_active_code');
-      if(code && code!=='demo'){
-        db_completeLesson(code, active.missionId, active.xp).catch(e=>console.warn('db_completeLesson failed',e));
-      }
-    }
-  }catch(e){}
   setTimeout(()=>showToast('👑','Progress Saved!','Your kingdom map has been updated!'),1800);
+  scheduleMapReturn();
 }
 
 function launch(){
@@ -790,121 +818,156 @@ bootLesson();
 var sagePanelHistory = [];
 var sagePanelBusy = false;
 var sagePanelOpen = false;
+var lessonSageInitialized = false;
+var LESSON_SAGE_FALLBACK = 'Sage is offline, King.';
 
-var SAGE_LESSON_SYSTEM = `You are Sage, the AI guide inside KingThinkers — a game-based learning app for Black male students K-5.
-Personality: Fun, playful, encouraging like a cool older sibling. Call the student "King".
-Rules:
-- NEVER give away the answer directly — give hints that lead them to figure it out
-- Keep ALL responses under 3 sentences — students need short answers
-- Use emojis naturally but sparingly
-- Reference the African civilization setting when relevant
-- Always end with encouragement to keep going
-- If celebrating, make it feel EPIC`;
+function getLessonSageGreeting() {
+  return 'Hey King! I'm Sage. Ask for a hint or a quick explanation. 👑';
+}
+
+function getLessonSageMode(message) {
+  return KTSagePrompts.detectSageMode(message, { inLesson: true });
+}
+
+function getLessonSagePhaseLabel() {
+  if (typeof phase !== 'number') return 'lesson';
+  if (phase === 0) return 'intro';
+  if (phase >= 1 && phase <= 3) return 'question ' + phase;
+  if (phase === 4) return 'checkpoint';
+  if (phase === 5) return 'question 4';
+  if (phase >= 6) return 'complete';
+  return 'lesson';
+}
+
+function getLessonSageQuestionText() {
+  if (typeof LD === 'undefined') return '';
+  var index = -1;
+  if (typeof phase === 'number' && phase >= 1 && phase <= 3) index = phase - 1;
+  else if (typeof phase === 'number' && phase === 5) index = 3;
+  if (index < 0) return '';
+
+  if (LD.type === 'reading' && LD.questions && LD.questions[index]) {
+    return LD.questions[index].question || '';
+  }
+  if (LD.problems && LD.problems[index]) {
+    return LD.problems[index].question || LD.problems[index].problem || '';
+  }
+  return '';
+}
+
+function getLessonSageContext(message) {
+  return {
+    lessonTitle: document.title.replace('KingThinkers — ', ''),
+    currentPhase: getLessonSagePhaseLabel(),
+    currentQuestion: getLessonSageQuestionText(),
+    mode: getLessonSageMode(message)
+  };
+}
+
+function createLessonSageMessage(role, text) {
+  var div = document.createElement('div');
+  div.className = role === 'user' ? 'sp-msg-user' : 'sp-msg-ai';
+  div.textContent = text == null ? '' : String(text);
+  return div;
+}
+
+function createLessonSageTyping() {
+  var div = document.createElement('div');
+  div.className = 'sp-msg-ai';
+  div.id = 'sage-panel-typing';
+  div.textContent = 'Sage is thinking…';
+  return div;
+}
+
+function renderLessonSageHistory() {
+  var msgs = document.getElementById('sage-panel-messages');
+  if (!msgs) return;
+  msgs.replaceChildren();
+  for (var i = 0; i < sagePanelHistory.length; i++) {
+    msgs.appendChild(createLessonSageMessage(sagePanelHistory[i].role, sagePanelHistory[i].content));
+  }
+  if (sagePanelBusy) msgs.appendChild(createLessonSageTyping());
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendLessonSageMessage(role, text) {
+  var msgs = document.getElementById('sage-panel-messages');
+  var node = createLessonSageMessage(role, text);
+  if (msgs) {
+    msgs.appendChild(node);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+}
+
+function showLessonSageTyping() {
+  var msgs = document.getElementById('sage-panel-messages');
+  if (!msgs || document.getElementById('sage-panel-typing')) return;
+  msgs.appendChild(createLessonSageTyping());
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeLessonSageTyping() {
+  var typing = document.getElementById('sage-panel-typing');
+  if (typing) typing.remove();
+}
+
+function ensureLessonSageSession() {
+  if (lessonSageInitialized) {
+    renderLessonSageHistory();
+    return;
+  }
+  lessonSageInitialized = true;
+  sagePanelHistory = [{ role: 'assistant', content: getLessonSageGreeting() }];
+  renderLessonSageHistory();
+}
 
 function toggleSagePanel() {
   sagePanelOpen = !sagePanelOpen;
   var panel = document.getElementById('sage-panel');
-  if (panel) {
-    panel.style.display = sagePanelOpen ? 'block' : 'none';
-    if (sagePanelOpen && sagePanelHistory.length === 0) {
-      // Greeting
-      var msgs = document.getElementById('sage-panel-messages');
-      if (msgs) msgs.innerHTML = '<div class="sp-msg-ai">Hey King! 👋 I\'m Sage — need a hint or some encouragement? I got you! Just ask! 👑</div>';
-      sagePanelHistory.push({ role: 'assistant', content: 'Hey King! Need a hint or encouragement? I got you!' });
-    }
-  }
+  if (!panel) return;
+  panel.style.display = sagePanelOpen ? 'block' : 'none';
+  if (sagePanelOpen) ensureLessonSageSession();
 }
-function getLessonSageContext() {
-  var activeCode = localStorage.getItem('kt_active_code');
-  var student = null;
 
-  try {
-    if (activeCode) {
-      student = JSON.parse(localStorage.getItem('kt_student_' + activeCode) || 'null');
-    }
-  } catch (e) {}
-
-  return {
-    name: student && student.name ? student.name : 'King',
-    grade: student && student.grade ? student.grade : '3',
-    lessonTitle: document.title.replace('KingThinkers — ', ''),
-    world: 'Egypt',
-    subject: 'Reading'
-  };
-}
 async function sendSagePanel(prefill) {
   if (sagePanelBusy) return;
+
   var input = document.getElementById('sage-panel-input');
   var text = prefill || (input ? input.value.trim() : '');
   if (!text) return;
   if (input) input.value = '';
 
   KTAudio.tap();
+  ensureLessonSageSession();
+
+  var cleanText = String(text).trim();
+  sagePanelHistory.push({ role: 'user', content: cleanText });
+  appendLessonSageMessage('user', cleanText);
+
   sagePanelBusy = true;
+  showLessonSageTyping();
 
-  var msgs = document.getElementById('sage-panel-messages');
-  if (msgs) {
-    msgs.innerHTML += '<div class="sp-msg-user">' + text + '</div>';
-    msgs.innerHTML += '<div class="sp-msg-ai" id="sage-panel-typing">Sage is thinking… ✨</div>';
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  sagePanelHistory.push({ role: 'user', content: text });
-
+  var reply = null;
   try {
-    // Get lesson context
-   var ctx = getLessonSageContext();
-var lowerText = String(text || '').toLowerCase();
-var systemWithCtx;
-
-if (lowerText.indexOf('hint') > -1) {
-  systemWithCtx = KTSagePrompts.buildHintModePrompt(ctx);
-} else if (
-  lowerText.indexOf('confused') > -1 ||
-  lowerText.indexOf('stuck') > -1 ||
-  lowerText.indexOf("don't get it") > -1 ||
-  lowerText.indexOf('frustrated') > -1
-) {
-  systemWithCtx = KTSagePrompts.buildFrustrationRecoveryPrompt(ctx);
-} else if (
-  lowerText.indexOf('celebrate') > -1 ||
-  lowerText.indexOf('high five') > -1 ||
-  lowerText.indexOf('you got it') > -1
-) {
-  systemWithCtx = KTSagePrompts.buildCelebrationPrompt({
-    name: ctx.name,
-    achievement: 'great effort in ' + ctx.lessonTitle
-  });
-} else {
-  systemWithCtx = KTSagePrompts.buildLessonPrompt(ctx);
-}
-
-    var reply = null;
-    try {
-      var _sr = await fetch('https://bfyogmoqasqoefxxykdv.supabase.co/functions/v1/kt-api?action=sage-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: sagePanelHistory, systemPrompt: systemWithCtx })
-      });
-      var _sd = await _sr.json();
-      reply = _sd.reply || null;
-    } catch(e) { console.warn('Sage failed:', e); }
-    if (!reply) reply = "Sage is having a moment — try again, King! 🔧";
-
-    var typing = document.getElementById('sage-panel-typing');
-    if (typing) typing.outerHTML = '<div class="sp-msg-ai">' + reply + '</div>';
-
-    sagePanelHistory.push({ role: 'assistant', content: reply });
-    if (sagePanelHistory.length > 12) sagePanelHistory = sagePanelHistory.slice(-10);
-    KTAudio.coin();
-
-    if (msgs) msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) {
-    var typing = document.getElementById('sage-panel-typing');
-    if (typing) typing.outerHTML = '<div class="sp-msg-ai">Sage can\'t connect right now — keep going, you got this King! 💪</div>';
+    var ctx = getLessonSageContext(cleanText);
+    var systemWithCtx = KTSagePrompts.buildLessonSagePromptFromContext(cleanText, ctx);
+    reply = await kt_sage(sagePanelHistory, systemWithCtx);
+  } catch (e) {
+    console.warn('Sage failed:', e);
   }
 
   sagePanelBusy = false;
+  removeLessonSageTyping();
+
+  if (!reply) reply = LESSON_SAGE_FALLBACK;
+  sagePanelHistory.push({ role: 'assistant', content: reply });
+  appendLessonSageMessage('assistant', reply);
+
+  if (sagePanelHistory.length > 12) {
+    sagePanelHistory = [sagePanelHistory[0]].concat(sagePanelHistory.slice(-11));
+  }
+
+  if (reply !== LESSON_SAGE_FALLBACK) KTAudio.coin();
 }
 </script>
 
