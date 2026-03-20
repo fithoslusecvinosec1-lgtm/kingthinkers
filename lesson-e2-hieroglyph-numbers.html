@@ -891,8 +891,31 @@ async function sendSagePanel(prefill) {
 
   try {
     // Get lesson context
-    var lessonTitle = document.title.replace('KingThinkers — ', '');
-    var systemWithCtx = SAGE_LESSON_SYSTEM + '\nThe student is currently working on the lesson: "' + lessonTitle + '".';
+    var ctx = getLessonSageContext();
+var lowerText = String(text || '').toLowerCase();
+var systemWithCtx;
+
+if (lowerText.indexOf('hint') > -1) {
+  systemWithCtx = KTSagePrompts.buildHintModePrompt(ctx);
+} else if (
+  lowerText.indexOf('confused') > -1 ||
+  lowerText.indexOf('stuck') > -1 ||
+  lowerText.indexOf("don't get it") > -1 ||
+  lowerText.indexOf('frustrated') > -1
+) {
+  systemWithCtx = KTSagePrompts.buildFrustrationRecoveryPrompt(ctx);
+} else if (
+  lowerText.indexOf('celebrate') > -1 ||
+  lowerText.indexOf('high five') > -1 ||
+  lowerText.indexOf('you got it') > -1
+) {
+  systemWithCtx = KTSagePrompts.buildCelebrationPrompt({
+    name: ctx.name,
+    achievement: 'great effort in ' + ctx.lessonTitle
+  });
+} else {
+  systemWithCtx = KTSagePrompts.buildLessonPrompt(ctx);
+}
 
     var reply = null;
     try {
