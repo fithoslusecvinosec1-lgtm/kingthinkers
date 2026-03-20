@@ -31,6 +31,10 @@ function kt_setActiveCode(code) {
   } catch (e) {}
 }
 
+function kt_getScopedProgressKey(code) {
+  return 'kt_quest_progress_' + code;
+}
+
 function kt_clearSession() {
   localStorage.removeItem('kt_active_code');
   localStorage.removeItem('kt_active_mission');
@@ -202,7 +206,7 @@ async function db_getProgress(code) {
   try {
     var data = await kt_api('get-progress', { code: code });
     var missions = (data && data.missions) ? data.missions : {};
-    localStorage.setItem('kt_quest_progress_' + code, JSON.stringify(missions));
+    localStorage.setItem(kt_getScopedProgressKey(code), JSON.stringify(missions));
     return missions;
   } catch (e) {
     console.warn('db_getProgress failed, using localStorage:', e.message);
@@ -213,7 +217,7 @@ async function db_getProgress(code) {
 async function db_saveProgress(code, missions) {
   if (!code || !missions) return;
 
-  localStorage.setItem('kt_quest_progress_' + code, JSON.stringify(missions));
+  localStorage.setItem(kt_getScopedProgressKey(code), JSON.stringify(missions));
 
   try {
     await kt_api('save-progress', {
@@ -235,7 +239,7 @@ async function db_completeLesson(code, missionId, xpEarned) {
   var local = _ls_getProgress(code);
   if (!local[missionId]) {
     local[missionId] = { completedAt: new Date().toISOString() };
-    localStorage.setItem('kt_quest_progress_' + code, JSON.stringify(local));
+    localStorage.setItem(kt_getScopedProgressKey(code), JSON.stringify(local));
 
     var student = _ls_getStudent(code);
     if (student) {
@@ -263,7 +267,7 @@ async function db_completeLesson(code, missionId, xpEarned) {
     }
 
     if (result && result.missions) {
-      localStorage.setItem('kt_quest_progress_' + code, JSON.stringify(result.missions));
+      localStorage.setItem(kt_getScopedProgressKey(code), JSON.stringify(result.missions));
     }
 
     return result;
@@ -412,7 +416,7 @@ function _ls_getStudent(code) {
 function _ls_getProgress(code) {
   if (!code) return {};
   try {
-    return JSON.parse(localStorage.getItem('kt_quest_progress_' + code) || '{}');
+    return JSON.parse(localStorage.getItem(kt_getScopedProgressKey(code)) || '{}');
   } catch (e) {
     return {};
   }

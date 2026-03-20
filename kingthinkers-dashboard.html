@@ -600,8 +600,9 @@ function getActiveCode() {
   return localStorage.getItem('kt_active_code') || null;
 }
 
-function getScopedKey(base) {
-  return base + '_' + getActiveCode();
+function getScopedKey(base, code) {
+  var activeCode = code || getActiveCode();
+  return activeCode ? (base + '_' + activeCode) : base;
 }
 
 function getActiveStudent() {
@@ -619,8 +620,11 @@ function getProgress() {
   if (_progressCache !== null) return _progressCache;
   try {
     var raw = localStorage.getItem(getScopedKey('kt_quest_progress'));
-    return raw ? JSON.parse(raw) : {};
-  } catch(e) { return {}; }
+    _progressCache = raw ? JSON.parse(raw) : {};
+  } catch(e) {
+    _progressCache = {};
+  }
+  return _progressCache;
 }
 
 function saveProgress(p) {
@@ -646,7 +650,14 @@ function completeMission(id) {
 
 async function loadProgressFromDB() {
   var code = getActiveCode();
-  if (!code) return;
+  if (!code) return getProgress();
+
+  var localProgress = {};
+  try {
+    localProgress = JSON.parse(localStorage.getItem(getScopedKey('kt_quest_progress', code)) || '{}') || {};
+  } catch (e) {
+    localProgress = {};
+  }
 
   try {
     var p = await db_getProgress(code);
@@ -654,6 +665,7 @@ async function loadProgressFromDB() {
     localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(_progressCache));
   } catch(e) {
     console.warn('loadProgressFromDB failed', e);
+    _progressCache = localProgress;
   }
 
   try {
@@ -908,21 +920,30 @@ function selectWorld(worldId) {
 
 // ── LAUNCH MISSION ────────────────────────────────────────────
 function launchMission(missionId, worldId, lessonFile, xpReward) {
+  if (!lessonFile) {
+    showToast('🔒', 'Quest Locked', 'This mission is not available yet.');
+    return;
+  }
   if (typeof KTAudio !== 'undefined') KTAudio.unlock();
 
+  var targetUrl = resolveAppUrl(lessonFile);
+  localStorage.setItem('kt_last_dashboard_url', window.location.href);
   localStorage.setItem('kt_active_mission', JSON.stringify({
     missionId: missionId,
     worldId: worldId,
-    xp: xpReward
+    xp: xpReward,
+    lessonFile: lessonFile,
+    lessonUrl: targetUrl,
+    launchedAt: Date.now()
   }));
 
-  window.location.href = resolveAppUrl(lessonFile);
+  window.location.href = targetUrl;
 }
 
 // ── MISSION COMPLETION — RELIABLE HANDLER ────────────────────
 var _processedSignals = new Set();
 
-function processMissionSignal() {
+async function processMissionSignal() {
   try {
     var raw = localStorage.getItem('kt_mission_completed');
     if (!raw) return;
@@ -946,6 +967,7 @@ function processMissionSignal() {
       gainCrowns(1);
     }
 
+    await loadProgressFromDB();
     renderMap();
 
     var mName = data.missionId;
@@ -964,7 +986,6 @@ function processMissionSignal() {
   }
 }
 
-processMissionSignal();
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') processMissionSignal();
 });
@@ -1334,6 +1355,8 @@ function updateHomeScreen() {
 
 // ── BOOT ─────────────────────────────────────────────────────
 loadProgressFromDB().then(function() {
+  return processMissionSignal();
+}).then(function() {
   renderMap();
   updateHomeScreen();
 }).catch(function(e) {
