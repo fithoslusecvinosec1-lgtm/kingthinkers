@@ -138,10 +138,10 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KingThinkers">
   <meta name="theme-color" content="#F5A800">
-<script src="/kingthinkers/kt-db.js"></script>
-<script src="/kingthinkers/kt-audio.js"></script>
-<script src="/kingthinkers/kt-math-engine.js"></script>
-<script src="/kingthinkers/kt-sage-prompts.js"></script>
+<script src="kt-db.js"></script>
+<script src="kt-audio.js"></script>
+<script src="kt-math-engine.js"></script>
+<script src="kt-sage-prompts.js"></script>
 </head>
 <body>
 <div id="stars"></div>
@@ -157,7 +157,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
     <div class="xp-num" id="xp-num" style="color:#A78BFA;">60 XP</div>
     <div class="hud-crowns" id="hud-crowns">👑 0</div>
     <div class="hud-grade" id="hud-grade">3rd Grade · Math</div>
-    <button class="hud-btn" onclick="window.location.href='/kingthinkers/kingthinkers-dashboard.html'">← Map</button>
+    <button class="hud-btn" onclick="goMap()">← Map</button>
     <button class="hud-btn" id="mute-btn" onclick="toggleSoundBtn()">🔊</button>
   </div>
 
@@ -394,10 +394,84 @@ const LD = {
   ]
 };
 
-let phase=0,xp=60,crowns=0,correct=0,totalQs=0,startTime=Date.now(),
+let phase=0,baseXP=0,baseCrowns=0,sessionXP=0,sessionCrowns=0,correct=0,totalQs=0,startTime=Date.now(),
     vocabSel={word:null,def:null},vocabDone=0;
 
+const LESSON_DASHBOARD_URL = 'kingthinkers-dashboard.html';
+
+function getActiveLessonCode(){
+  if(typeof kt_getActiveCode === 'function') return kt_getActiveCode();
+  return localStorage.getItem('kt_active_code');
+}
+
+function getActiveStudentSnapshot(){
+  const code = getActiveLessonCode();
+  if(!code) return {};
+  try {
+    return JSON.parse(localStorage.getItem('kt_student_' + code) || 'null') || {};
+  } catch (err) {
+    console.warn('failed to load active student snapshot', err);
+    return {};
+  }
+}
+
+function updateLessonHud(){
+  const totalXP = baseXP + sessionXP;
+  const totalCrowns = baseCrowns + sessionCrowns;
+  const pct=Math.min(100,Math.round((sessionXP/200)*100));
+  const f=document.getElementById('xp-fill');
+  if(f) f.style.width=pct+'%';
+  const e=document.getElementById('xp-num');
+  if(e) e.textContent=totalXP+' XP';
+  const c=document.getElementById('hud-crowns');
+  if(c) c.textContent='👑 '+totalCrowns;
+}
+
+function resetLessonState(){
+  const student = getActiveStudentSnapshot();
+  phase=0;baseXP=typeof student.xp==='number'?student.xp:0;baseCrowns=typeof student.crowns==='number'?student.crowns:0;
+  sessionXP=0;sessionCrowns=0;correct=0;totalQs=0;startTime=Date.now();
+  vocabSel={word:null,def:null};vocabDone=0;
+  updateLessonHud();
+}
+
+function lessonAudioCall(method){
+  if(!window.KTAudio || typeof KTAudio[method] !== 'function') return null;
+  try {
+    return KTAudio[method].apply(KTAudio, Array.prototype.slice.call(arguments, 1));
+  } catch (err) {
+    console.warn('lesson audio failed', method, err);
+    return null;
+  }
+}
+function lessonAudioCorrect(){ return lessonAudioCall('correct'); }
+function lessonAudioWrong(){ return lessonAudioCall('wrong'); }
+function lessonAudioCoin(){ return lessonAudioCall('coin'); }
+function lessonAudioQuestComplete(){ return lessonAudioCall('questComplete'); }
+function lessonAudioTap(){ return lessonAudioCall('tap'); }
+function lessonAudioInit(){ return lessonAudioCall('init'); }
+function lessonAudioStartMusic(){ return lessonAudioCall('startMusic'); }
+function lessonAudioToggleMute(){ return lessonAudioCall('toggleMute'); }
+
+function safeNavigateToDashboard(delay){
+  const ms = typeof delay === 'number' ? delay : 0;
+  window.setTimeout(function(){
+    window.location.href = LESSON_DASHBOARD_URL;
+  }, Math.max(0, ms));
+}
+
+function initializeLessonAudioGuards(){
+  function onFirstGesture(){
+    lessonAudioInit();
+    lessonAudioStartMusic();
+  }
+  document.addEventListener('touchstart', onFirstGesture, { once: true });
+  document.addEventListener('click', onFirstGesture, { once: true });
+}
+
+
 function bootLesson(){
+  resetLessonState();
   KTStreak.reset();
   // Stars
   const c=document.getElementById('stars');
@@ -451,17 +525,12 @@ function setSage(html){
 }
 
 function gainXP(n){
-  if(!n) return; xp+=n;
-  const pct=Math.min(100,Math.round(((xp-60)/200)*100));
-  const f=document.getElementById('xp-fill');
-  if(f) f.style.width=pct+'%';
-  const e=document.getElementById('xp-num');
-  if(e) e.textContent=xp+' XP';
+  if(!n) return; sessionXP+=n;
+  updateLessonHud();
 }
 function gainCrowns(n){
-  if(!n) return; crowns+=n;
-  const e=document.getElementById('hud-crowns');
-  if(e) e.textContent='👑 '+crowns;
+  if(!n) return; sessionCrowns+=n;
+  updateLessonHud();
 }
 function showToast(icon,title,sub){
   const t=document.getElementById('toast');
@@ -552,7 +621,7 @@ function answerMCQ(btn){
     html += '<div class="correct-mega">' + msg + '</div>';
     html += '<div class="fb correct-fb">✅ ' + cfb + '</div>';
     if(fb) fb.innerHTML = html;
-    KTAudio.correct();
+    lessonAudioCorrect();
     const xpBonus = streak >= 3 ? Math.round(xpR * 0.2) : 0;
     if(xpBonus) gainXP(xpBonus);
     showToast('👑', streak >= 3 ? '🔥 ' + streak + ' streak!' : 'Correct!', '+' + (xpR + xpBonus) + ' XP');
@@ -568,7 +637,7 @@ function answerMCQ(btn){
     const tryAgain = KTFeedback.getTryAgain();
     if(fb) fb.innerHTML = '<div class="fb wrong-fb">💭 ' + errorMsg + '</div>' +
       '<div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;">💪 ' + tryAgain + '</div>';
-    KTAudio.wrong();
+    lessonAudioWrong();
     showToast('🤖', 'Not quite!', tryAgain.substring(0, 40));
     setTimeout(()=>{
       document.querySelectorAll('.choice').forEach(c=>{c.disabled=false;c.classList.remove('wrong','correct');});
@@ -654,7 +723,7 @@ function submitInput(){
     html += '<div class="correct-mega">' + (isImproved ? KTFeedback.getImprovement() : msg) + '</div>';
     html += '<div class="fb correct-fb">✅ ' + m.cfb + '</div>';
     if(fb) fb.innerHTML = html;
-    KTAudio.correct();
+    lessonAudioCorrect();
     const xpBonus = streak >= 3 ? Math.round(m.xp * 0.2) : 0;
     if(xpBonus) gainXP(xpBonus);
     showToast('👑', streak >= 3 ? '🔥 ' + streak + ' in a row!' : 'Correct!', '+' + (m.xp + xpBonus) + ' XP');
@@ -666,7 +735,7 @@ function submitInput(){
     const tryAgain = KTFeedback.getTryAgain();
     if(fb) fb.innerHTML = '<div class="fb wrong-fb">💭 ' + errorMsg + '</div>' +
       '<div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:6px;">💪 ' + tryAgain + '</div>';
-    KTAudio.wrong();
+    lessonAudioWrong();
     showToast('🤖', 'Not quite!', errorMsg.substring(0, 40) + '…');
     setTimeout(()=>{
       input.disabled=false;
@@ -719,7 +788,7 @@ function selVocab(type,id){
     if(vocabSel.word===vocabSel.def){
       const color=LD.vocabPairs.find(p=>p.id===vocabSel.word)?.color||LD.accentColor;
       [wEl,dEl].forEach(e=>{e.classList.add('matched');e.style.borderColor=color;e.style.color=color;e.style.background=color+'18';});
-      gainXP(10);gainCrowns(1);KTAudio.coin(); showToast('✅','Matched!','+10 XP');
+      gainXP(10);gainCrowns(1);lessonAudioCoin(); showToast('✅','Matched!','+10 XP');
       vocabSel={word:null,def:null};
       vocabDone++;
       if(vocabDone>=LD.vocabPairs.length){
@@ -737,30 +806,77 @@ function selVocab(type,id){
 }
 
 // ── COMPLETE ──────────────────────────────────────────────────────────────────
-function showComplete() { KTAudio.questComplete();
+async function completeActiveMission(acc, lessonBonusXp) {
+  try {
+    const active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+    if (!active || !active.missionId) return null;
+
+    const persistedMissionXp = typeof active.xp === 'number' ? active.xp : 0;
+    const signal = {
+      missionId: active.missionId,
+      worldId: active.worldId,
+      xp: persistedMissionXp,
+      sessionXp: sessionXP,
+      bonusXp: typeof lessonBonusXp === 'number' ? lessonBonusXp : 0,
+      accuracy: acc,
+      completedAt: Date.now()
+    };
+
+    localStorage.setItem('kt_mission_completed', JSON.stringify(signal));
+    localStorage.removeItem('kt_active_mission');
+
+    const code = getActiveLessonCode();
+    let serverResult = null;
+    if (code && code !== 'demo') {
+      serverResult = await db_completeLesson(code, active.missionId, persistedMissionXp);
+      if (serverResult) {
+        if ((typeof serverResult.xp === 'number' || typeof serverResult.crowns === 'number') && code) {
+          const student = JSON.parse(localStorage.getItem('kt_student_' + code) || 'null') || {};
+          if (typeof serverResult.xp === 'number') student.xp = serverResult.xp;
+          if (typeof serverResult.crowns === 'number') student.crowns = serverResult.crowns;
+          localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+        }
+        if (serverResult.missions && code) {
+          localStorage.setItem('kt_quest_progress_' + code, JSON.stringify(serverResult.missions));
+        }
+      }
+    }
+
+    return {
+      active: active,
+      persistedMissionXp: persistedMissionXp,
+      sessionXp: sessionXP,
+      lessonBonusXp: typeof lessonBonusXp === 'number' ? lessonBonusXp : 0,
+      serverResult: serverResult
+    };
+  } catch (e) {
+    console.warn('completeActiveMission failed', e);
+    return null;
+  }
+}
+
+function scheduleMapReturn() {
+  safeNavigateToDashboard(3200);
+}
+
+async function showComplete() { lessonAudioQuestComplete();
   const elapsed=Math.round((Date.now()-startTime)/1000);
   const acc=totalQs>0?Math.round((correct/totalQs)*100):100;
-  gainXP(acc===100?50:acc>=75?25:0);
-  document.getElementById('f-xp').textContent=xp;
-  document.getElementById('f-cr').textContent=crowns;
+  const lessonBonusXp = acc===100?50:acc>=75?25:0;
+  const lessonXpEarned = sessionXP;
+  const totalLessonXpEarned = lessonXpEarned + lessonBonusXp;
+
+  await completeActiveMission(acc, lessonBonusXp);
+
+  if (lessonBonusXp) gainXP(lessonBonusXp);
+  document.getElementById('f-xp').textContent=totalLessonXpEarned;
+  document.getElementById('f-cr').textContent=sessionCrowns;
   document.getElementById('f-acc').textContent=acc+'%';
   document.getElementById('f-time').textContent=elapsed+'s';
   document.getElementById('complete-screen').classList.add('show');
   launch();
-  try{
-    const active=JSON.parse(localStorage.getItem('kt_active_mission')||'null');
-    if(active){
-      const signal = {missionId:active.missionId,worldId:active.worldId,xp:active.xp,accuracy:acc,completedAt:Date.now()};
-      localStorage.setItem('kt_mission_completed',JSON.stringify(signal));
-      localStorage.removeItem('kt_active_mission');
-      // Save to Supabase
-      const code = kt_getActiveCode ? kt_getActiveCode() : localStorage.getItem('kt_active_code');
-      if(code && code!=='demo'){
-        db_completeLesson(code, active.missionId, active.xp).catch(e=>console.warn('db_completeLesson failed',e));
-      }
-    }
-  }catch(e){}
-  setTimeout(()=>showToast('👑','Progress Saved!','Your kingdom map has been updated!'),1800);
+  setTimeout(()=>showToast('👑','Progress Saved!','Mission XP saved. Lesson bonus stayed local.'),1800);
+  scheduleMapReturn();
 }
 
 function launch(){
@@ -775,14 +891,13 @@ function launch(){
   }
 }
 
-function goMap(){showToast('⚔️','Back to the map…','Keep conquering!');setTimeout(()=>window.location.href='/kingthinkers/kingthinkers-dashboard.html',1400);}
-function retry(){document.getElementById('complete-screen').classList.remove('show');phase=0;xp=60;crowns=0;correct=0;totalQs=0;startTime=Date.now();vocabDone=0;vocabSel={word:null,def:null};renderPhase();}
+function goMap(){showToast('⚔️','Back to the map…','Keep conquering!');safeNavigateToDashboard(1400);}
+function retry(){document.getElementById('complete-screen').classList.remove('show');resetLessonState();renderPhase();}
 
-document.addEventListener("touchstart", function onFirst(){ KTAudio.init(); KTAudio.startMusic(); document.removeEventListener("touchstart", onFirst); }, { once: true });
-document.addEventListener("click", function onFirstClick(){ KTAudio.init(); KTAudio.startMusic(); document.removeEventListener("click", onFirstClick); }, { once: true });
+initializeLessonAudioGuards();
 function toggleSoundBtn(){
-  KTAudio.init();
-  var unmuted=KTAudio.toggleMute();
+  lessonAudioInit();
+  var unmuted=lessonAudioToggleMute();
   var btn=document.getElementById('mute-btn');
   if(btn) btn.textContent=unmuted?'🔊':'🔇';
 }
@@ -849,121 +964,156 @@ bootLesson();
 var sagePanelHistory = [];
 var sagePanelBusy = false;
 var sagePanelOpen = false;
+var lessonSageInitialized = false;
+var LESSON_SAGE_FALLBACK = 'Sage is offline, King.';
 
-var SAGE_LESSON_SYSTEM = `You are Sage, the AI guide inside KingThinkers — a game-based learning app for Black male students K-5.
-Personality: Fun, playful, encouraging like a cool older sibling. Call the student "King".
-Rules:
-- NEVER give away the answer directly — give hints that lead them to figure it out
-- Keep ALL responses under 3 sentences — students need short answers
-- Use emojis naturally but sparingly
-- Reference the African civilization setting when relevant
-- Always end with encouragement to keep going
-- If celebrating, make it feel EPIC`;
+function getLessonSageGreeting() {
+  return 'Hey King! I'm Sage. Ask for a hint or a quick explanation. 👑';
+}
+
+function getLessonSageMode(message) {
+  return KTSagePrompts.detectSageMode(message, { inLesson: true });
+}
+
+function getLessonSagePhaseLabel() {
+  if (typeof phase !== 'number') return 'lesson';
+  if (phase === 0) return 'intro';
+  if (phase >= 1 && phase <= 3) return 'question ' + phase;
+  if (phase === 4) return 'checkpoint';
+  if (phase === 5) return 'question 4';
+  if (phase >= 6) return 'complete';
+  return 'lesson';
+}
+
+function getLessonSageQuestionText() {
+  if (typeof LD === 'undefined') return '';
+  var index = -1;
+  if (typeof phase === 'number' && phase >= 1 && phase <= 3) index = phase - 1;
+  else if (typeof phase === 'number' && phase === 5) index = 3;
+  if (index < 0) return '';
+
+  if (LD.type === 'reading' && LD.questions && LD.questions[index]) {
+    return LD.questions[index].question || '';
+  }
+  if (LD.problems && LD.problems[index]) {
+    return LD.problems[index].question || LD.problems[index].problem || '';
+  }
+  return '';
+}
+
+function getLessonSageContext(message) {
+  return {
+    lessonTitle: document.title.replace('KingThinkers — ', ''),
+    currentPhase: getLessonSagePhaseLabel(),
+    currentQuestion: getLessonSageQuestionText(),
+    mode: getLessonSageMode(message)
+  };
+}
+
+function createLessonSageMessage(role, text) {
+  var div = document.createElement('div');
+  div.className = role === 'user' ? 'sp-msg-user' : 'sp-msg-ai';
+  div.textContent = text == null ? '' : String(text);
+  return div;
+}
+
+function createLessonSageTyping() {
+  var div = document.createElement('div');
+  div.className = 'sp-msg-ai';
+  div.id = 'sage-panel-typing';
+  div.textContent = 'Sage is thinking…';
+  return div;
+}
+
+function renderLessonSageHistory() {
+  var msgs = document.getElementById('sage-panel-messages');
+  if (!msgs) return;
+  msgs.replaceChildren();
+  for (var i = 0; i < sagePanelHistory.length; i++) {
+    msgs.appendChild(createLessonSageMessage(sagePanelHistory[i].role, sagePanelHistory[i].content));
+  }
+  if (sagePanelBusy) msgs.appendChild(createLessonSageTyping());
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendLessonSageMessage(role, text) {
+  var msgs = document.getElementById('sage-panel-messages');
+  var node = createLessonSageMessage(role, text);
+  if (msgs) {
+    msgs.appendChild(node);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+}
+
+function showLessonSageTyping() {
+  var msgs = document.getElementById('sage-panel-messages');
+  if (!msgs || document.getElementById('sage-panel-typing')) return;
+  msgs.appendChild(createLessonSageTyping());
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeLessonSageTyping() {
+  var typing = document.getElementById('sage-panel-typing');
+  if (typing) typing.remove();
+}
+
+function ensureLessonSageSession() {
+  if (lessonSageInitialized) {
+    renderLessonSageHistory();
+    return;
+  }
+  lessonSageInitialized = true;
+  sagePanelHistory = [{ role: 'assistant', content: getLessonSageGreeting() }];
+  renderLessonSageHistory();
+}
 
 function toggleSagePanel() {
   sagePanelOpen = !sagePanelOpen;
   var panel = document.getElementById('sage-panel');
-  if (panel) {
-    panel.style.display = sagePanelOpen ? 'block' : 'none';
-    if (sagePanelOpen && sagePanelHistory.length === 0) {
-      // Greeting
-      var msgs = document.getElementById('sage-panel-messages');
-      if (msgs) msgs.innerHTML = '<div class="sp-msg-ai">Hey King! 👋 I\'m Sage — need a hint or some encouragement? I got you! Just ask! 👑</div>';
-      sagePanelHistory.push({ role: 'assistant', content: 'Hey King! Need a hint or encouragement? I got you!' });
-    }
-  }
+  if (!panel) return;
+  panel.style.display = sagePanelOpen ? 'block' : 'none';
+  if (sagePanelOpen) ensureLessonSageSession();
 }
-function getLessonSageContext() {
-  var activeCode = localStorage.getItem('kt_active_code');
-  var student = null;
 
-  try {
-    if (activeCode) {
-      student = JSON.parse(localStorage.getItem('kt_student_' + activeCode) || 'null');
-    }
-  } catch (e) {}
-
-  return {
-    name: student && student.name ? student.name : 'King',
-    grade: student && student.grade ? student.grade : '3',
-    lessonTitle: document.title.replace('KingThinkers — ', ''),
-    world: 'Egypt',
-    subject: 'Reading'
-  };
-}
 async function sendSagePanel(prefill) {
   if (sagePanelBusy) return;
+
   var input = document.getElementById('sage-panel-input');
   var text = prefill || (input ? input.value.trim() : '');
   if (!text) return;
   if (input) input.value = '';
 
-  KTAudio.tap();
+  lessonAudioTap();
+  ensureLessonSageSession();
+
+  var cleanText = String(text).trim();
+  sagePanelHistory.push({ role: 'user', content: cleanText });
+  appendLessonSageMessage('user', cleanText);
+
   sagePanelBusy = true;
+  showLessonSageTyping();
 
-  var msgs = document.getElementById('sage-panel-messages');
-  if (msgs) {
-    msgs.innerHTML += '<div class="sp-msg-user">' + text + '</div>';
-    msgs.innerHTML += '<div class="sp-msg-ai" id="sage-panel-typing">Sage is thinking… ✨</div>';
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  sagePanelHistory.push({ role: 'user', content: text });
-
+  var reply = null;
   try {
-    // Get lesson context
-    var ctx = getLessonSageContext();
-var lowerText = String(text || '').toLowerCase();
-var systemWithCtx;
-
-if (lowerText.indexOf('hint') > -1) {
-  systemWithCtx = KTSagePrompts.buildHintModePrompt(ctx);
-} else if (
-  lowerText.indexOf('confused') > -1 ||
-  lowerText.indexOf('stuck') > -1 ||
-  lowerText.indexOf("don't get it") > -1 ||
-  lowerText.indexOf('frustrated') > -1
-) {
-  systemWithCtx = KTSagePrompts.buildFrustrationRecoveryPrompt(ctx);
-} else if (
-  lowerText.indexOf('celebrate') > -1 ||
-  lowerText.indexOf('high five') > -1 ||
-  lowerText.indexOf('you got it') > -1
-) {
-  systemWithCtx = KTSagePrompts.buildCelebrationPrompt({
-    name: ctx.name,
-    achievement: 'great effort in ' + ctx.lessonTitle
-  });
-} else {
-  systemWithCtx = KTSagePrompts.buildLessonPrompt(ctx);
-}
-
-    var reply = null;
-    try {
-      var _sr = await fetch('https://bfyogmoqasqoefxxykdv.supabase.co/functions/v1/kt-api?action=sage-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: sagePanelHistory, systemPrompt: systemWithCtx })
-      });
-      var _sd = await _sr.json();
-      reply = _sd.reply || null;
-    } catch(e) { console.warn('Sage failed:', e); }
-    if (!reply) reply = "Sage is having a moment — try again, King! 🔧";
-
-    var typing = document.getElementById('sage-panel-typing');
-    if (typing) typing.outerHTML = '<div class="sp-msg-ai">' + reply + '</div>';
-
-    sagePanelHistory.push({ role: 'assistant', content: reply });
-    if (sagePanelHistory.length > 12) sagePanelHistory = sagePanelHistory.slice(-10);
-    KTAudio.coin();
-
-    if (msgs) msgs.scrollTop = msgs.scrollHeight;
-  } catch(e) {
-    var typing = document.getElementById('sage-panel-typing');
-    if (typing) typing.outerHTML = '<div class="sp-msg-ai">Sage can\'t connect right now — keep going, you got this King! 💪</div>';
+    var ctx = getLessonSageContext(cleanText);
+    var systemWithCtx = KTSagePrompts.buildLessonSagePromptFromContext(cleanText, ctx);
+    reply = await kt_sage(sagePanelHistory, systemWithCtx);
+  } catch (e) {
+    console.warn('Sage failed:', e);
   }
 
   sagePanelBusy = false;
+  removeLessonSageTyping();
+
+  if (!reply) reply = LESSON_SAGE_FALLBACK;
+  sagePanelHistory.push({ role: 'assistant', content: reply });
+  appendLessonSageMessage('assistant', reply);
+
+  if (sagePanelHistory.length > 12) {
+    sagePanelHistory = [sagePanelHistory[0]].concat(sagePanelHistory.slice(-11));
+  }
+
+  if (reply !== LESSON_SAGE_FALLBACK) lessonAudioCoin();
 }
 </script>
 
