@@ -1,14 +1,16 @@
-// ── KINGTHINKERS DB CLIENT v6 ─────────────────────────────────
+// ── KINGTHINKERS DB CLIENT v7 ─────────────────────────────────
 // All database calls proxy through the kt-api Supabase Edge Function.
 // No keys are exposed to the browser.
 //
-// v6 changes:
-//   - kt_api handles non-JSON / empty error responses safely
-//   - db_saveProfile now explicitly persists profileComplete: true
-//   - db_saveStudent expanded to persist more student fields when available
-//   - kt_clearSession now clears active mission/session-related local state
+// v7 changes:
+//   - teacher session is sessionStorage-only
+//   - added kt_setTeacherSession()
+//   - kt_api safely handles empty / non-JSON responses
+//   - kt_clearSession clears active mission/session-related local state
+//   - db_saveProfile explicitly persists profileComplete: true
+//   - db_saveStudent persists core student fields only
 //   - improved warning logs preserve actual error messages
-//   - saveStudent compat alias now warns that it is localStorage-only
+//   - saveStudent compat alias warns that it is localStorage-only
 
 const KT_API = 'https://bfyogmoqasqoefxxykdv.supabase.co/functions/v1/kt-api';
 const KT_TIMEOUT_MS = 8000;
@@ -39,12 +41,13 @@ function kt_clearSession() {
   localStorage.removeItem('kt_active_code');
   localStorage.removeItem('kt_active_mission');
   localStorage.removeItem('kt_mission_completed');
-  // Keep kt_last_code for welcome-back UX; remove it here if you want full wipe:
+  // Keep kt_last_code for welcome-back UX
   // localStorage.removeItem('kt_last_code');
 }
 
 // ── TEACHER SESSION ───────────────────────────────────────────
-// Sessions are sessionStorage-only — clears on tab close.
+// Session token is issued and signed by the Edge Function.
+// Keep it in sessionStorage only.
 
 function kt_getTeacherSession() {
   try {
@@ -60,6 +63,11 @@ function kt_getTeacherToken() {
   return session ? session.token : null;
 }
 
+function kt_setTeacherSession(session) {
+  if (!session || !session.token) return;
+  sessionStorage.setItem('kt_teacher', JSON.stringify(session));
+}
+
 function kt_clearTeacherSession() {
   sessionStorage.removeItem('kt_teacher');
 }
@@ -71,6 +79,7 @@ async function kt_api(action, body, useTeacherToken) {
   useTeacherToken = !!useTeacherToken;
 
   var headers = { 'Content-Type': 'application/json' };
+
   if (useTeacherToken) {
     var token = kt_getTeacherToken();
     if (token) headers['x-kt-session'] = token;
@@ -90,11 +99,12 @@ async function kt_api(action, body, useTeacherToken) {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body),
-      signal: controller ? controller.signal : undefined,
+      signal: controller ? controller.signal : undefined
     });
 
     var rawText = await res.text();
     var data = {};
+
     try {
       data = rawText ? JSON.parse(rawText) : {};
     } catch (_) {
@@ -125,6 +135,7 @@ async function kt_api(action, body, useTeacherToken) {
 // Authoritative student fetch with localStorage fallback.
 async function db_getStudent(code) {
   if (!code) return null;
+
   try {
     var data = await kt_api('student-login', { code: code });
     if (data && data.student) {
@@ -140,11 +151,13 @@ async function db_getStudent(code) {
         skinId: s.skin_id || null,
         hairId: s.hair_id || null,
         outfitId: s.outfit_id || null,
-        lastActive: s.last_active || null,
+        lastActive: s.last_active || null
       };
+
       localStorage.setItem('kt_student_' + code, JSON.stringify(student));
       return student;
     }
+
     return null;
   } catch (e) {
     console.warn('db_getStudent failed, using localStorage:', e.message);
@@ -165,8 +178,8 @@ async function db_saveStudent(code, student) {
       name: student.name || null,
       grade: student.grade || '3',
       classCode: student.classCode || student.class_code || null,
-      xp: typeof student.xp === 'number' ? student.xp : undefined,
-      crowns: typeof student.crowns === 'number' ? student.crowns : undefined,
+      xp: typeof student.xp === 'number' ? student.xp : 0,
+      crowns: typeof student.crowns === 'number' ? student.crowns : 0,
       profileComplete: typeof student.profileComplete === 'boolean' ? student.profileComplete : undefined
     });
   } catch (e) {
@@ -180,19 +193,19 @@ async function db_saveProfile(code, skinId, hairId, outfitId) {
 
   var existing = _ls_getStudent(code) || {};
   existing.profileComplete = true;
-  if (skinId !== undefined) existing.skinId = skinId;
-  if (hairId !== undefined) existing.hairId = hairId;
-  if (outfitId !== undefined) existing.outfitId = outfitId;
+  existing.skinId = skinId || null;
+  existing.hairId = hairId || null;
+  existing.outfitId = outfitId || null;
 
   localStorage.setItem('kt_student_' + code, JSON.stringify(existing));
 
   try {
     await kt_api('save-profile', {
       code: code,
-      skinId: existing.skinId || null,
-      hairId: existing.hairId || null,
-      outfitId: existing.outfitId || null,
-      profileComplete: true,
+      skinId: skinId || null,
+      hairId: hairId || null,
+      outfitId: outfitId || null,
+      profileComplete: true
     });
   } catch (e) {
     console.warn('db_saveProfile failed, localStorage only:', e.message);
@@ -204,6 +217,7 @@ async function db_saveProfile(code, skinId, hairId, outfitId) {
 // Authoritative progress fetch with localStorage fallback.
 async function db_getProgress(code) {
   if (!code) return {};
+
   try {
     var data = await kt_api('get-progress', { code: code });
     var missions = (data && data.missions) ? data.missions : {};
@@ -254,7 +268,7 @@ async function db_completeLesson(code, missionId, xpEarned) {
     var result = await kt_api('complete-lesson', {
       code: code,
       missionId: missionId,
-      xpEarned: xpEarned || 0,
+      xpEarned: xpEarned || 0
     });
 
     // Reconcile with server truth
@@ -395,9 +409,8 @@ async function kt_sage(messages, systemPrompt) {
       messages: messages,
       systemPrompt: systemPrompt || ''
     });
-    console.log('kt_sage success:', data);
     return (data && data.reply) ? data.reply : null;
-  } catch(e) {
+  } catch (e) {
     console.error('kt_sage failed:', e);
     return null;
   }
@@ -449,4 +462,4 @@ function db_getAllStudents() {
   return db_getRosterWithProgress();
 }
 
-console.log('✅ KingThinkers DB v6 loaded');
+console.log('✅ KingThinkers DB v7 loaded');
