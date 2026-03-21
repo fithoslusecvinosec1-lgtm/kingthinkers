@@ -456,6 +456,22 @@ window.KTLessonEngine = (function () {
     if (step.type === 'complete') return renderComplete(step.data);
   }
 
+  function getSageContext() {
+    var step = state.steps[state.stepIndex] || null;
+    var activity = step && step.type === 'activity' ? step.data : null;
+
+    return {
+      lessonTitle: state.lesson && state.lesson.title ? state.lesson.title : 'Lesson',
+      subject: state.lesson && state.lesson.subject ? state.lesson.subject : 'lesson',
+      currentPhase: step ? step.type + ':' + state.stepIndex : 'lesson',
+      currentQuestion: activity ? safeText(activity.prompt || activity.question || '') : '',
+      answerChoices: activity && Array.isArray(activity.choices)
+        ? activity.choices.map(function (choice) { return safeText(choice); })
+        : [],
+      studentAlreadyWrong: !!document.querySelector('.choice.wrong, .feedback.bad, .match-item.wrong')
+    };
+  }
+
   function exitToDashboard() {
     var last = localStorage.getItem('kt_last_dashboard_url');
     if (last) {
@@ -483,7 +499,14 @@ window.KTLessonEngine = (function () {
 
   return {
     init: init,
-    exitToDashboard: exitToDashboard
+    exitToDashboard: exitToDashboard,
+    getSageContext: getSageContext,
+    get currentLesson() {
+      return state.lesson;
+    },
+    get currentStepIndex() {
+      return state.stepIndex;
+    }
   };
 })();
 
