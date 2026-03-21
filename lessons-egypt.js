@@ -791,5 +791,115 @@ window.KT_LESSONS.egypt = [
     text: 'You uncovered the story of the Black Pharaohs and learned a powerful truth: the greatest leaders protect, respect, and uplift.',
     badge: 'Dynasty Reader'
   }
+},
+{
+  id: 'nubia-m4',
+  worldId: 'nubia',
+  title: 'Archery Angles',
+  subject: 'math',
+  grade: '3',
+  xp: 35,
+  crownReward: 1,
+  estMinutes: 6,
+
+  intro: {
+    kicker: 'Nubia · Mission 4',
+    text: 'King, Nubian archers trained with more than strength — they used geometry too. In this quest, you’ll study angles, shapes, and area like a true sharpshooter.',
+    sage: 'A great archer understands space, shape, and aim, King. Let’s train your geometry eye. 🏹'
+  },
+
+  teach: [
+    {
+      type: 'text',
+      title: 'Geometry for Archers',
+      body: 'Archers need to understand direction, shape, and space. Angles help describe how something opens, and area tells how much space is inside a shape.'
+    },
+    {
+      type: 'text',
+      title: 'Know Your Angle Types',
+      body: 'A right angle is exactly 90 degrees. An acute angle is smaller than 90 degrees. An obtuse angle is larger than 90 degrees.'
+    }
+  ],
+
+  activities: [
+    {
+      id: 'nubia-m4-q1',
+      type: 'mcq',
+      prompt: 'An archer holds her bow at an angle less than 90 degrees. What kind of angle is it?',
+      hint: 'Angles smaller than a right angle are acute.',
+      choices: [
+        'Right angle',
+        'Obtuse angle',
+        'Acute angle',
+        'Straight angle'
+      ],
+      answer: 2,
+      correctFeedback: 'Perfect. An angle less than 90 degrees is an acute angle.',
+      wrongFeedback: 'Compare it to a right angle. If it is smaller than 90 degrees, it is acute.',
+      xp: 8
+    },
+    {
+      id: 'nubia-m4-q2',
+      type: 'mcq',
+      prompt: 'The archery target has 4 equal sides and 4 right angles. What shape is it?',
+      hint: 'Look for the shape that has both equal sides and right angles.',
+      choices: [
+        'Rectangle',
+        'Rhombus',
+        'Square',
+        'Trapezoid'
+      ],
+      answer: 2,
+      correctFeedback: 'Yes. A square has 4 equal sides and 4 right angles.',
+      wrongFeedback: 'A rectangle has right angles, but not always equal sides. Which shape has both?',
+      xp: 8
+    },
+    {
+      id: 'nubia-m4-vocab',
+      type: 'match',
+      prompt: 'Match each geometry word to its meaning.',
+      pairs: [
+        ['Acute', 'An angle that measures less than 90 degrees'],
+        ['Obtuse', 'An angle that measures more than 90 degrees'],
+        ['Area', 'The amount of space inside a 2D shape'],
+        ['Perimeter', 'The total distance around the outside of a shape']
+      ],
+      correctFeedback: 'Excellent, King. A sharp mind makes a sharp archer. 📚',
+      wrongFeedback: 'Not quite. Try matching the geometry words again.',
+      xp: 7
+    },
+    {
+      id: 'nubia-m4-q3',
+      type: 'input',
+      prompt: 'A training field has 4 rows of unit squares, with 6 squares in each row. What is the area?',
+      answer: '24',
+      hint: 'Area = rows × squares in each row.',
+      correctFeedback: 'Excellent. 4 × 6 = 24 square units.',
+      wrongFeedback: 'Multiply the number of rows by the number of squares in each row.',
+      xp: 6
+    },
+    {
+      id: 'nubia-m4-q4',
+      type: 'mcq',
+      prompt: 'A new archery range is 9 meters long and 7 meters wide. What is its area?',
+      hint: 'Area of a rectangle = length × width.',
+      choices: [
+        '54 square meters',
+        '63 square meters',
+        '32 square meters',
+        '49 square meters'
+      ],
+      answer: 1,
+      correctFeedback: 'KING! 9 × 7 = 63 square meters.',
+      wrongFeedback: 'Multiply length by width: 9 × 7.',
+      xp: 6
+    }
+  ],
+
+  wrapUp: {
+    title: 'Sharpshooter Scholar! 👑',
+    text: 'You trained like a Nubian archer and used geometry to master angles, shapes, and area.',
+    badge: 'Bow Geometry Master'
+  }
 }
 ];
