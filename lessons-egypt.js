@@ -426,5 +426,133 @@ window.KT_LESSONS.egypt = [
     text: 'You used fraction power like a royal architect of Egypt. Strong math minds build strong kingdoms.',
     badge: 'Pyramid Planner'
   }
+},
+{
+  id: 'nubia-e1',
+  worldId: 'nubia',
+  title: 'Warriors of the South',
+  subject: 'reading',
+  grade: '3',
+  xp: 40,
+  crownReward: 1,
+  estMinutes: 6,
+
+  intro: {
+    kicker: 'Nubia · Mission 1',
+    text: 'King, travel south into mighty Nubia, the Land of the Bow. Read closely to learn how Nubian warriors trained their minds as well as their weapons.',
+    sage: 'Real warriors prepare before the battle begins, King. Read like a scholar and uncover Queen Tiwa’s lesson. ⚔️'
+  },
+
+  reading: {
+    passage: [
+      'South of Egypt, along the upper Nile River, stood the powerful kingdom of Nubia. For many years, Nubians and Egyptians traded, fought, and sometimes ruled each other. But the Nubians were never weak in spirit. They were known as some of the most skilled warriors and traders in the ancient world.',
+      'Nubia’s greatest strength was its archers. Ancient Egyptians even called Nubia “Ta-Seti,” which means “Land of the Bow.” Nubian archers were so respected that Egyptian pharaohs hired them as elite soldiers to guard the royal palace.',
+      'Each morning before breakfast, young Amara practiced with his bow. His grandmother, Queen Tiwa, watched him from the courtyard. “Your arrow must know the target before it flies,” she told him. “A warrior who shoots in anger misses. A warrior who shoots with patience never misses.”',
+      'Amara lowered his bow and asked, “But grandmother, what if the enemy attacks fast?” Queen Tiwa smiled. “Then your preparation today is your protection tomorrow. Every morning you practice, you are building a wall that no arrow can break.”',
+      'The Nubians were not only powerful fighters. They were also master traders. Gold, ivory, ebony wood, and exotic animals traveled north from Nubia into Egypt and beyond. Their merchants traveled dangerous roads and made the kingdom prosperous for centuries.',
+      'Amara released three arrows in quick succession. All three struck the center of the target. Queen Tiwa nodded. “Now you understand,” she said softly. “Strength is built before the battle begins.”'
+    ],
+    vocab: [
+      { term: 'archers', definition: 'skilled fighters who use bows and arrows' },
+      { term: 'patience', definition: 'the ability to stay calm and wait for the right moment' },
+      { term: 'prosperous', definition: 'wealthy and successful' },
+      { term: 'succession', definition: 'one right after another' }
+    ]
+  },
+
+  teach: [
+    {
+      type: 'text',
+      title: 'Read for the Big Lesson',
+      body: 'Strong readers notice details, causes, word meanings, and the big idea the author wants us to learn.'
+    }
+  ],
+
+  activities: [
+    {
+      id: 'nubia-e1-q1',
+      type: 'mcq',
+      prompt: 'What did ancient Egyptians call Nubia, and what did that name mean?',
+      hint: 'Look in the second paragraph for both the name and its meaning.',
+      choices: [
+        '"Land of the Bow" — because of Nubia’s famous archers',
+        '"Land of Gold" — because Nubia had giant gold mines',
+        '"Land of the Pharaoh" — because Egypt fully ruled Nubia',
+        '"Land of Arrows" — because Nubians invented arrows'
+      ],
+      answer: 0,
+      correctFeedback: 'Exactly. Egyptians called Nubia “Ta-Seti,” which meant “Land of the Bow.”',
+      wrongFeedback: 'Go back to paragraph two. The passage gives both the name and the meaning together.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e1-q2',
+      type: 'mcq',
+      prompt: 'According to Queen Tiwa, why is daily practice so important for a warrior?',
+      hint: 'Focus on what she says about preparation today and protection tomorrow.',
+      choices: [
+        'Because the enemy might attack at any second',
+        'Because lazy warriors are punished by the Pharaoh',
+        'Because preparation today becomes protection tomorrow',
+        'Because practice makes arrows fly faster than others'
+      ],
+      answer: 2,
+      correctFeedback: 'Outstanding. Queen Tiwa teaches that practice now protects you later.',
+      wrongFeedback: 'Look closely at Queen Tiwa’s exact words about preparation and protection.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e1-vocab',
+      type: 'match',
+      prompt: 'Match each Nubian warrior word to its meaning.',
+      pairs: [
+        ['Archer', 'A skilled fighter who uses a bow and arrow'],
+        ['Patience', 'The ability to stay calm and wait for the right moment'],
+        ['Prosperous', 'Very wealthy and successful'],
+        ['Succession', 'Things happening one right after another']
+      ],
+      correctFeedback: 'Excellent work, King. Your warrior vocabulary is strong. 📚',
+      wrongFeedback: 'Not quite. Try matching the words again.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e1-q3',
+      type: 'mcq',
+      prompt: 'In the passage, what does the word “succession” most likely mean?',
+      hint: 'Think about the sentence: Amara shot three arrows in quick succession.',
+      choices: [
+        'With great force and power',
+        'One right after another without stopping',
+        'Very slowly and carefully',
+        'Spinning around in a circle'
+      ],
+      answer: 1,
+      correctFeedback: 'Yes. “Succession” means one thing following another quickly.',
+      wrongFeedback: 'The word “quick” is a clue. Think about the timing of the arrows.',
+      xp: 5
+    },
+    {
+      id: 'nubia-e1-q4',
+      type: 'mcq',
+      prompt: 'What is the main lesson Queen Tiwa is teaching Amara?',
+      hint: 'Think about patience, practice, and her final message at the end.',
+      choices: [
+        'Arrows are stronger than swords in every battle',
+        'True strength comes from patient preparation before challenges arrive',
+        'Grandmothers always know more than warriors',
+        'Nubian archers never miss from any distance'
+      ],
+      answer: 1,
+      correctFeedback: 'KING! 👑 That is the heart of the story. Real strength is built through calm, steady preparation.',
+      wrongFeedback: 'Look at all of Queen Tiwa’s advice together. What big idea connects patience, practice, and protection?',
+      xp: 5
+    }
+  ],
+
+  wrapUp: {
+    title: 'Warrior Scholar! 👑',
+    text: 'You conquered Nubia’s first challenge and learned a true warrior’s lesson: strength is built before the battle begins.',
+    badge: 'Land of the Bow Reader'
+  }
 }
 ];
