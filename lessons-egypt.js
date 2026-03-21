@@ -182,5 +182,133 @@ window.KT_LESSONS.egypt = [
       text: 'You used number power to solve Egyptian math challenges like a royal scribe.',
       badge: 'Number Scribe'
     }
+  },
+  {
+  id: 'egypt-e3',
+  worldId: 'egypt',
+  title: "The Nile's Gift",
+  subject: 'reading',
+  grade: '3',
+  xp: 40,
+  crownReward: 1,
+  estMinutes: 6,
+
+  intro: {
+    kicker: 'Kingdom of Egypt · Mission 3',
+    text: "King, today you'll discover why the Nile River was the greatest gift to ancient Egypt. Read closely and uncover how one river helped build an entire civilization.",
+    sage: "The Nile was more than water, King — it was life, food, travel, and power. Read like a scholar. 🌊"
+  },
+
+  reading: {
+    passage: [
+      "Of all the gifts Egypt received, none was greater than the Nile River. While the Sahara Desert around Egypt was harsh and dry, the Nile created a narrow ribbon of green, fertile land where life could grow.",
+      "Every summer, the Nile flooded its banks. This was not a disaster — it was a blessing. When the waters pulled back, they left behind a thick layer of dark, rich soil called silt. Egyptian farmers planted crops in this silt and grew huge harvests of wheat, barley, and vegetables.",
+      "Young Prince Kofi stood by the river, watching the water move past. His teacher, Grandmother Ayana, asked him to look beyond the green fields. Just past them, the land turned to dry yellow desert.",
+      "\"What if the Nile were not here?\" she asked. Kofi thought carefully. \"Then there would only be desert. No farms. No food.\" Grandmother Ayana nodded. \"And no Egypt at all.\"",
+      "The Nile was also Egypt's great highway. Boats carried grain, stone, gold, and people up and down the river. Without the Nile, even the giant stones for the pyramids could not have been moved from the quarries where they were cut.",
+      "As Prince Kofi watched the white sails of the boats, he understood the truth. The Nile was not just a river. It was the backbone of an entire civilization."
+    ],
+    vocab: [
+      { term: 'fertile', definition: 'rich soil that helps plants grow well' },
+      { term: 'silt', definition: 'dark, rich soil left behind by floodwaters' },
+      { term: 'highway', definition: 'a main route used to move people and goods' },
+      { term: 'civilization', definition: 'an organized society with cities, culture, and government' }
+    ]
+  },
+
+  teach: [
+    {
+      type: 'text',
+      title: 'Reading Like a Scholar',
+      body: 'Strong readers look for key details, cause and effect, word meaning, and the big idea the author wants us to understand.'
+    }
+  ],
+
+  activities: [
+    {
+      id: 'egypt-e3-q1',
+      type: 'mcq',
+      prompt: 'According to the passage, what did the Nile leave behind after its summer floods?',
+      hint: 'Look in the second paragraph for the special soil left after the water pulled back.',
+      choices: [
+        'Sand and rocks from the desert',
+        'A thick layer of dark, rich soil called silt',
+        'Large stones for building pyramids',
+        'Fresh water pools that stayed all year'
+      ],
+      answer: 1,
+      correctFeedback: "Yes! The passage says the Nile left behind 'a thick layer of dark, rich soil called silt.'",
+      wrongFeedback: 'Go back to paragraph two. Look for the exact word that names the rich soil.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-q2',
+      type: 'mcq',
+      prompt: 'Why were Egyptian farmers able to grow such large harvests?',
+      hint: 'Think about cause and effect. What did the Nile do that helped crops grow?',
+      choices: [
+        'Egypt received heavy rain every year',
+        'Farmers had better tools than other people',
+        'The Nile floods left rich silt that made the soil great for crops',
+        'The Pharaoh ordered everyone to work harder'
+      ],
+      answer: 2,
+      correctFeedback: 'Exactly. The Nile left rich silt behind, and that made farming possible.',
+      wrongFeedback: 'The passage does not mention heavy rain or better tools. Focus on what the Nile left behind.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-vocab',
+      type: 'match',
+      prompt: 'Match each vocabulary word to its meaning.',
+      pairs: [
+        ['silt', 'dark, rich soil left behind by floodwaters'],
+        ['fertile', 'able to produce large amounts of crops'],
+        ['civilization', 'an organized society with cities and culture'],
+        ['highway', 'a main route used to move people and goods']
+      ],
+      correctFeedback: 'Excellent work, King. Your word power is growing strong. 📚',
+      wrongFeedback: 'Not quite. Try another match, King.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-q3',
+      type: 'mcq',
+      prompt: 'In the passage, the Nile is called Egypt’s great “highway.” What does that comparison mean?',
+      hint: 'Think about what a highway does. How did the Nile do the same job?',
+      choices: [
+        'The Nile was a paved road built by the Pharaoh',
+        'The Nile was the main route for moving people and goods across Egypt',
+        'The Nile was the fastest river in Africa',
+        'The Nile looked like a road from above'
+      ],
+      answer: 1,
+      correctFeedback: 'Perfect. Like a highway, the Nile helped move people and goods from place to place.',
+      wrongFeedback: 'This is a comparison, not a real road. Think about what highways and rivers can both do.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-q4',
+      type: 'mcq',
+      prompt: 'At the end, the author says the Nile was “the backbone of an entire civilization.” What is the main message?',
+      hint: 'A backbone supports the whole body. What did the Nile support in Egypt?',
+      choices: [
+        'The Nile looked like a backbone',
+        'The Nile was only important for farmers',
+        'Egypt depended on the Nile for life, farming, travel, and growth',
+        'The Nile was the most beautiful river in the world'
+      ],
+      answer: 2,
+      correctFeedback: 'KING! 👑 That is the big idea. Egypt depended on the Nile for almost everything.',
+      wrongFeedback: 'Think bigger than farming. What would Egypt have been without the Nile?',
+      xp: 10
+    }
+  ],
+
+  wrapUp: {
+    title: 'The Nile’s Secret Revealed! 🌊',
+    text: 'You discovered that the Nile was not just a river — it was the force that helped Egypt live, grow, travel, and thrive.',
+    badge: 'River Scholar'
   }
+}
 ];
