@@ -842,6 +842,18 @@ function toggleSoundBtn(){
   var btn=document.getElementById('mute-btn');
   if(btn) btn.textContent=unmuted?'🔊':'🔇';
 }
+window.toggleSagePanel = function(){
+  if (typeof window.__toggleSagePanelImpl === 'function') {
+    return window.__toggleSagePanelImpl();
+  }
+  console.warn('Sage panel is still loading.');
+};
+window.sendSagePanel = function(prefill){
+  if (typeof window.__sendSagePanelImpl === 'function') {
+    return window.__sendSagePanelImpl(prefill);
+  }
+  console.warn('Sage panel is still loading.');
+};
 bootLesson();
 
 </script>
@@ -1035,7 +1047,7 @@ function ensureLessonSageSession() {
   renderLessonSageHistory();
 }
 
-function toggleSagePanel() {
+window.__toggleSagePanelImpl = function toggleSagePanel() {
   sagePanelOpen = !sagePanelOpen;
   var panel = document.getElementById('sage-panel');
   if (!panel) return;
@@ -1043,7 +1055,7 @@ function toggleSagePanel() {
   if (sagePanelOpen) ensureLessonSageSession();
 }
 
-async function sendSagePanel(prefill) {
+window.__sendSagePanelImpl = async function sendSagePanel(prefill) {
   if (sagePanelBusy) return;
 
   var input = document.getElementById('sage-panel-input');
