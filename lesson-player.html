@@ -249,7 +249,7 @@
       <div class="top-meta">
         <div class="pill gold" id="lesson-xp-pill">+0 XP</div>
         <div class="pill green" id="lesson-crowns-pill">👑 0</div>
-        <button class="top-btn" onclick="KTLessonEngine.exitToDashboard()">← Back</button>
+        <button class="top-btn" type="button" onclick="KTLessonEngine.exitToDashboard()">← Back</button>
       </div>
     </div>
 
@@ -262,7 +262,6 @@
     <div class="content" id="lesson-content"></div>
   </div>
 
-      <!-- Floating Sage Button -->
   <div id="sage-float-btn" style="
     position:fixed;bottom:80px;right:16px;z-index:2000;
     width:54px;height:54px;border-radius:50%;
@@ -275,7 +274,6 @@
     touch-action:manipulation;
   ">🤖</div>
 
-  <!-- Sage Panel -->
   <div id="sage-panel" style="
     position:fixed;bottom:144px;right:12px;z-index:2001;
     width:min(340px,92vw);
@@ -423,7 +421,10 @@
           wrap.appendChild(makeMessage(sageState.history[i].role, sageState.history[i].content));
         }
 
-        if (sageState.busy) wrap.appendChild(makeTyping());
+        if (sageState.busy) {
+          wrap.appendChild(makeTyping());
+        }
+
         wrap.scrollTop = wrap.scrollHeight;
       }
 
@@ -600,7 +601,7 @@
         if (explainBtn && !explainBtn.dataset.bound) {
           explainBtn.dataset.bound = '1';
           explainBtn.addEventListener('click', function () {
-            sendMessage('I’m confused. Can you explain this differently?');
+            sendMessage("I'm confused. Can you explain this differently?");
           });
         }
 
@@ -624,9 +625,3 @@
   </script>
 </body>
 </html>
-  
-        
-        
-       
-     
-        
