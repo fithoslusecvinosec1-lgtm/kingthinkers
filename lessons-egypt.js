@@ -554,5 +554,115 @@ window.KT_LESSONS.egypt = [
     text: 'You conquered Nubia’s first challenge and learned a true warrior’s lesson: strength is built before the battle begins.',
     badge: 'Land of the Bow Reader'
   }
+},
+{
+  id: 'nubia-m2',
+  worldId: 'nubia',
+  title: 'Trade Route Math',
+  subject: 'math',
+  grade: '3',
+  xp: 35,
+  crownReward: 1,
+  estMinutes: 6,
+
+  intro: {
+    kicker: 'Nubia · Mission 2',
+    text: 'King, step into the role of a Nubian merchant. Use multiplication, division, perimeter, and two-step thinking to guide your trade caravan safely and wisely.',
+    sage: 'Great traders use strong math, King. Count carefully, solve step by step, and protect the kingdom’s riches. 🏺'
+  },
+
+  teach: [
+    {
+      type: 'text',
+      title: 'Merchant Math',
+      body: 'Nubian traders used math to count goods, measure journeys, and make fair trades. Strong math skills kept caravans moving and kingdoms thriving.'
+    },
+    {
+      type: 'text',
+      title: 'Solve in Steps',
+      body: 'Some problems take one step. Others take two. Read carefully, decide what to do first, then check your answer.'
+    }
+  ],
+
+  activities: [
+    {
+      id: 'nubia-m2-q1',
+      type: 'mcq',
+      prompt: 'Your caravan has 7 camels. Each camel carries 9 bags of gold dust. How many bags are there in all?',
+      hint: 'This is 7 groups of 9.',
+      choices: [
+        '54 bags',
+        '63 bags',
+        '72 bags',
+        '56 bags'
+      ],
+      answer: 1,
+      correctFeedback: 'Excellent. 7 × 9 = 63 bags of gold dust.',
+      wrongFeedback: 'Skip-count by 9 seven times, or use 7 groups of 9.',
+      xp: 8
+    },
+    {
+      id: 'nubia-m2-q2',
+      type: 'mcq',
+      prompt: 'The trade route is 240 miles long. Your caravan travels 40 miles each day. How many days will the journey take?',
+      hint: 'Ask: 40 × what number = 240?',
+      choices: [
+        '4 days',
+        '5 days',
+        '6 days',
+        '8 days'
+      ],
+      answer: 2,
+      correctFeedback: 'Yes. 240 ÷ 40 = 6, so the trip takes 6 days.',
+      wrongFeedback: 'Use division or think of a multiplication fact with 40.',
+      xp: 8
+    },
+    {
+      id: 'nubia-m2-vocab',
+      type: 'match',
+      prompt: 'Match each trade math word to its meaning.',
+      pairs: [
+        ['Perimeter', 'The total distance around the outside of a shape'],
+        ['Product', 'The result of multiplying two numbers'],
+        ['Difference', 'The result of subtracting one number from another'],
+        ['Estimate', 'A careful guess close to the exact answer']
+      ],
+      correctFeedback: 'Strong work, King. A smart trader knows the language of math. 📚',
+      wrongFeedback: 'Not quite. Try matching the math words again.',
+      xp: 7
+    },
+    {
+      id: 'nubia-m2-q3',
+      type: 'input',
+      prompt: 'A trading tent is 8 meters long and 5 meters wide. What is the perimeter?',
+      answer: '26',
+      hint: 'Add all four sides: 8 + 8 + 5 + 5.',
+      correctFeedback: 'Great work. The perimeter is 26 meters.',
+      wrongFeedback: 'Perimeter means the total distance around the outside. Add all four sides.',
+      xp: 6
+    },
+    {
+      id: 'nubia-m2-q4',
+      type: 'mcq',
+      prompt: 'You start with 85 ivory pieces. You trade 28 away, then sell 15 more. How many ivory pieces are left?',
+      hint: 'Do it in two steps: subtract 28, then subtract 15.',
+      choices: [
+        '26 pieces',
+        '42 pieces',
+        '38 pieces',
+        '57 pieces'
+      ],
+      answer: 1,
+      correctFeedback: 'KING! 85 - 28 = 57, and 57 - 15 = 42. You have 42 ivory pieces left.',
+      wrongFeedback: 'Subtract 28 first. Then take that new amount and subtract 15 more.',
+      xp: 6
+    }
+  ],
+
+  wrapUp: {
+    title: 'Master Trader! 👑',
+    text: 'You used merchant math like a true leader of Nubia. Strong counting and strong thinking keep trade routes alive.',
+    badge: 'Caravan Counter'
+  }
 }
 ];
