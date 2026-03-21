@@ -74,12 +74,16 @@ window.KTLessonEngine = (function () {
   function updateProgressBar() {
     var fill = $('lesson-progress-fill');
     if (!fill || !state.steps.length) return;
-    var pct = Math.round((state.stepIndex / (state.steps.length - 1)) * 100);
+
+    var maxIndex = Math.max(1, state.steps.length - 1);
+    var pct = Math.round((state.stepIndex / maxIndex) * 100);
     fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
   }
 
   function renderCard(html) {
-    $('lesson-content').innerHTML = html;
+    var content = $('lesson-content');
+    if (!content) return;
+    content.innerHTML = html;
     updateProgressBar();
     updateTopStats();
   }
@@ -102,8 +106,8 @@ window.KTLessonEngine = (function () {
   function renderIntro(data) {
     renderCard(
       '<div class="card">' +
-        '<div class="kicker">' + safeText(data.kicker || (state.lesson.subject + ' quest')) + '</div>' +
-        '<div class="title">' + safeText(state.lesson.title) + '</div>' +
+        '<div class="kicker">' + safeText(data.kicker || ((state.lesson && state.lesson.subject) || 'Lesson') + ' quest') + '</div>' +
+        '<div class="title">' + safeText(state.lesson && state.lesson.title) + '</div>' +
         '<div class="sub">' + safeText(data.text) + '</div>' +
         '<div class="sage"><strong>Sage:</strong> ' + safeText(data.sage || '') + '</div>' +
         '<div class="btn-row">' +
@@ -113,7 +117,7 @@ window.KTLessonEngine = (function () {
     );
 
     $('kt-next-btn').onclick = function () {
-      if (window.KTAudio) KTAudio.tap();
+      if (window.KTAudio && typeof KTAudio.tap === 'function') KTAudio.tap();
       nextStep();
     };
   }
@@ -148,7 +152,7 @@ window.KTLessonEngine = (function () {
     renderCard(html);
 
     $('kt-next-btn').onclick = function () {
-      if (window.KTAudio) KTAudio.tap();
+      if (window.KTAudio && typeof KTAudio.tap === 'function') KTAudio.tap();
       nextStep();
     };
   }
@@ -165,14 +169,16 @@ window.KTLessonEngine = (function () {
     );
 
     $('kt-next-btn').onclick = function () {
-      if (window.KTAudio) KTAudio.tap();
+      if (window.KTAudio && typeof KTAudio.tap === 'function') KTAudio.tap();
       nextStep();
     };
   }
 
   function disableChoices() {
     var nodes = document.querySelectorAll('.choice');
-    nodes.forEach(function (btn) { btn.disabled = true; });
+    nodes.forEach(function (btn) {
+      btn.disabled = true;
+    });
   }
 
   function renderMCQ(activity) {
@@ -180,7 +186,7 @@ window.KTLessonEngine = (function () {
 
     var html =
       '<div class="card">' +
-        '<div class="q-prompt">' + safeText(activity.prompt) + '</div>' +
+        '<div class="q-prompt">' + safeText(activity.prompt || activity.question) + '</div>' +
         (activity.hint ? '<div class="q-hint">' + safeText(activity.hint) + '</div>' : '') +
         '<div class="choices" id="kt-choices"></div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
@@ -192,7 +198,7 @@ window.KTLessonEngine = (function () {
     renderCard(html);
 
     var choicesWrap = $('kt-choices');
-    activity.choices.forEach(function (choice, index) {
+    (activity.choices || []).forEach(function (choice, index) {
       var btn = document.createElement('button');
       btn.className = 'choice';
       btn.textContent = safeText(choice);
@@ -206,13 +212,14 @@ window.KTLessonEngine = (function () {
         if (isCorrect) {
           state.correctCount += 1;
           gainXP(activity.xp || 0);
-          if (window.KTAudio) KTAudio.correct();
+
+          if (window.KTAudio && typeof KTAudio.correct === 'function') KTAudio.correct();
           btn.classList.add('correct');
 
           feedback.className = 'feedback good show';
           feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
         } else {
-          if (window.KTAudio) KTAudio.wrong();
+          if (window.KTAudio && typeof KTAudio.wrong === 'function') KTAudio.wrong();
           btn.classList.add('wrong');
 
           var buttons = document.querySelectorAll('.choice');
@@ -228,7 +235,7 @@ window.KTLessonEngine = (function () {
     });
 
     $('kt-next-btn').onclick = function () {
-      if (window.KTAudio) KTAudio.tap();
+      if (window.KTAudio && typeof KTAudio.tap === 'function') KTAudio.tap();
       nextStep();
     };
   }
@@ -236,6 +243,7 @@ window.KTLessonEngine = (function () {
   function renderTrueFalse(activity) {
     renderMCQ({
       prompt: activity.prompt,
+      question: activity.question,
       hint: activity.hint,
       choices: ['True', 'False'],
       answer: activity.answer ? 0 : 1,
@@ -247,14 +255,20 @@ window.KTLessonEngine = (function () {
 
   function renderMatch(activity) {
     state.gradableCount += 1;
-    state.match = { selectedWord: null, selectedDef: null, matchedCount: 0 };
+    state.match = {
+      selectedWord: null,
+      selectedDef: null,
+      matchedCount: 0
+    };
 
     var pairs = Array.isArray(activity.pairs) ? activity.pairs.slice() : [];
-    var defs = pairs.slice().sort(function () { return Math.random() - 0.5; });
+    var defs = pairs.slice().sort(function () {
+      return Math.random() - 0.5;
+    });
 
     var html =
       '<div class="card">' +
-        '<div class="q-prompt">' + safeText(activity.prompt) + '</div>' +
+        '<div class="q-prompt">' + safeText(activity.prompt || activity.question) + '</div>' +
         '<div class="q-hint">Tap a word, then tap its meaning.</div>' +
         '<div class="match-grid">' +
           '<div class="match-col" id="kt-match-words"></div>' +
@@ -278,7 +292,9 @@ window.KTLessonEngine = (function () {
       btn.setAttribute('data-word', pair[0]);
       btn.onclick = function () {
         if (btn.classList.contains('matched')) return;
-        document.querySelectorAll('[data-word]').forEach(function (n) { n.classList.remove('selected'); });
+        document.querySelectorAll('[data-word]').forEach(function (n) {
+          n.classList.remove('selected');
+        });
         btn.classList.add('selected');
         state.match.selectedWord = pair[0];
         tryResolveMatch(activity);
@@ -293,7 +309,9 @@ window.KTLessonEngine = (function () {
       btn.setAttribute('data-def-word', pair[0]);
       btn.onclick = function () {
         if (btn.classList.contains('matched')) return;
-        document.querySelectorAll('[data-def-word]').forEach(function (n) { n.classList.remove('selected'); });
+        document.querySelectorAll('[data-def-word]').forEach(function (n) {
+          n.classList.remove('selected');
+        });
         btn.classList.add('selected');
         state.match.selectedDef = pair[0];
         tryResolveMatch(activity);
@@ -302,7 +320,7 @@ window.KTLessonEngine = (function () {
     });
 
     $('kt-next-btn').onclick = function () {
-      if (window.KTAudio) KTAudio.tap();
+      if (window.KTAudio && typeof KTAudio.tap === 'function') KTAudio.tap();
       nextStep();
     };
   }
@@ -318,7 +336,8 @@ window.KTLessonEngine = (function () {
     var feedback = $('kt-feedback');
 
     if (word === def) {
-      if (window.KTAudio) KTAudio.coin();
+      if (window.KTAudio && typeof KTAudio.coin === 'function') KTAudio.coin();
+
       if (wordNode) {
         wordNode.classList.remove('selected');
         wordNode.classList.add('matched');
@@ -342,7 +361,8 @@ window.KTLessonEngine = (function () {
         $('kt-next-row').style.display = 'flex';
       }
     } else {
-      if (window.KTAudio) KTAudio.wrong();
+      if (window.KTAudio && typeof KTAudio.wrong === 'function') KTAudio.wrong();
+
       if (wordNode) wordNode.classList.add('wrong');
       if (defNode) defNode.classList.add('wrong');
 
@@ -364,12 +384,8 @@ window.KTLessonEngine = (function () {
     var finalLessonXP = state.lesson.xp || state.xpEarned || 0;
     var finalLessonCrowns = state.lesson.crownReward || state.crownsEarned || 1;
 
-    if (state.crownsEarned < finalLessonCrowns) {
-      state.crownsEarned = finalLessonCrowns;
-    }
-    if (state.xpEarned < finalLessonXP) {
-      state.xpEarned = finalLessonXP;
-    }
+    if (state.crownsEarned < finalLessonCrowns) state.crownsEarned = finalLessonCrowns;
+    if (state.xpEarned < finalLessonXP) state.xpEarned = finalLessonXP;
 
     renderCard(
       '<div class="card">' +
@@ -408,7 +424,7 @@ window.KTLessonEngine = (function () {
       console.warn('Lesson completion sync failed:', e);
     }
 
-    if (window.KTAudio) KTAudio.questComplete();
+    if (window.KTAudio && typeof KTAudio.questComplete === 'function') KTAudio.questComplete();
 
     $('kt-finish-btn').onclick = function () {
       exitToDashboard();
@@ -468,7 +484,7 @@ window.KTLessonEngine = (function () {
       answerChoices: activity && Array.isArray(activity.choices)
         ? activity.choices.map(function (choice) { return safeText(choice); })
         : [],
-      studentAlreadyWrong: !!document.querySelector('.choice.wrong, .feedback.bad, .match-item.wrong')
+      studentAlreadyWrong: !!document.querySelector('.choice.wrong, .feedback.bad.show, .match-item.wrong')
     };
   }
 
@@ -488,10 +504,13 @@ window.KTLessonEngine = (function () {
     state.startedAt = Date.now();
 
     if (window.KTAudio) {
-      document.addEventListener('click', function bootAudio() {
-        KTAudio.init();
-        KTAudio.startMusic();
-      }, { once: true });
+      function bootAudio() {
+        if (typeof KTAudio.init === 'function') KTAudio.init();
+        if (typeof KTAudio.startMusic === 'function') KTAudio.startMusic();
+      }
+
+      document.addEventListener('click', bootAudio, { once: true });
+      document.addEventListener('touchstart', bootAudio, { once: true });
     }
 
     renderCurrentStep();
