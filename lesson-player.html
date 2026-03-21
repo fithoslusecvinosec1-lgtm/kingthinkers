@@ -262,7 +262,7 @@
     <div class="content" id="lesson-content"></div>
   </div>
 
-    <!-- Floating Sage Button -->
+      <!-- Floating Sage Button -->
   <div id="sage-float-btn" style="
     position:fixed;bottom:80px;right:16px;z-index:2000;
     width:54px;height:54px;border-radius:50%;
@@ -423,10 +423,7 @@
           wrap.appendChild(makeMessage(sageState.history[i].role, sageState.history[i].content));
         }
 
-        if (sageState.busy) {
-          wrap.appendChild(makeTyping());
-        }
-
+        if (sageState.busy) wrap.appendChild(makeTyping());
         wrap.scrollTop = wrap.scrollHeight;
       }
 
@@ -625,221 +622,11 @@
       }
     })();
   </script>
-    (function () {
-      var sagePanelHistory = [];
-      var sagePanelBusy = false;
-      var sagePanelOpen = false;
-      var lessonSageInitialized = false;
-      var LESSON_SAGE_FALLBACK = 'Sage is offline, King.';
-
-      function getLessonSageGreeting() {
-        return 'Hey King! I’m Sage. Ask for a hint or a quick explanation. 👑';
-      }
-
-      function getLessonPlayerState() {
-        if (window.KTLessonEngine && typeof window.KTLessonEngine.getSageContext === 'function') {
-          return window.KTLessonEngine.getSageContext();
-        }
-        return {
-          lessonTitle: document.title.replace('KingThinkers', '').replace('Lesson', '').trim() || 'Lesson',
-          subject: 'lesson',
-          currentPhase: 'lesson',
-          currentQuestion: '',
-          answerChoices: [],
-          studentAlreadyWrong: false
-        };
-      }
-
-      function createLessonSageMessage(role, text) {
-        var div = document.createElement('div');
-        div.style.marginBottom = '8px';
-        div.style.padding = '10px 12px';
-        div.style.borderRadius = role === 'user' ? '12px 12px 4px 12px' : '12px 12px 12px 4px';
-        div.style.background = role === 'user' ? 'rgba(245,168,0,.12)' : '#16163A';
-        div.style.border = role === 'user'
-          ? '1px solid rgba(245,168,0,.2)'
-          : '1px solid rgba(0,196,140,.15)';
-        div.style.color = '#fff';
-        div.style.fontSize = '13px';
-        div.style.lineHeight = '1.5';
-        div.textContent = text == null ? '' : String(text);
-        return div;
-      }
-
-      function createLessonSageTyping() {
-        var div = document.createElement('div');
-        div.id = 'sage-panel-typing';
-        div.style.marginBottom = '8px';
-        div.style.padding = '10px 12px';
-        div.style.borderRadius = '12px 12px 12px 4px';
-        div.style.background = '#16163A';
-        div.style.border = '1px solid rgba(0,196,140,.15)';
-        div.style.color = 'rgba(255,255,255,.8)';
-        div.style.fontSize = '13px';
-        div.style.lineHeight = '1.5';
-        div.textContent = 'Sage is thinking…';
-        return div;
-      }
-
-      function renderLessonSageHistory() {
-        var msgs = document.getElementById('sage-panel-messages');
-        if (!msgs) return;
-        msgs.replaceChildren();
-        for (var i = 0; i < sagePanelHistory.length; i++) {
-          msgs.appendChild(createLessonSageMessage(sagePanelHistory[i].role, sagePanelHistory[i].content));
-        }
-        if (sagePanelBusy) msgs.appendChild(createLessonSageTyping());
-        msgs.scrollTop = msgs.scrollHeight;
-      }
-
-      function appendLessonSageMessage(role, text) {
-        var msgs = document.getElementById('sage-panel-messages');
-        if (!msgs) return;
-        msgs.appendChild(createLessonSageMessage(role, text));
-        msgs.scrollTop = msgs.scrollHeight;
-      }
-
-      function showLessonSageTyping() {
-        var msgs = document.getElementById('sage-panel-messages');
-        if (!msgs || document.getElementById('sage-panel-typing')) return;
-        msgs.appendChild(createLessonSageTyping());
-        msgs.scrollTop = msgs.scrollHeight;
-      }
-
-      function removeLessonSageTyping() {
-        var el = document.getElementById('sage-panel-typing');
-        if (el) el.remove();
-      }
-
-      function ensureLessonSageSession() {
-        if (lessonSageInitialized) {
-          renderLessonSageHistory();
-          return;
-        }
-        lessonSageInitialized = true;
-        sagePanelHistory = [{ role: 'assistant', content: getLessonSageGreeting() }];
-        renderLessonSageHistory();
-      }
-
-      function toggleSagePanel() {
-        var panel = document.getElementById('sage-panel');
-        if (!panel) return;
-        sagePanelOpen = !sagePanelOpen;
-        panel.style.display = sagePanelOpen ? 'block' : 'none';
-        if (sagePanelOpen) ensureLessonSageSession();
-      }
-
-      async function sendSagePanel(prefill) {
-        if (sagePanelBusy) return;
-
-        var input = document.getElementById('sage-panel-input');
-        var text = prefill || (input ? input.value.trim() : '');
-        if (!text) return;
-        if (input) input.value = '';
-
-        if (window.KTAudio && typeof window.KTAudio.tap === 'function') {
-          try { window.KTAudio.tap(); } catch (e) {}
-        }
-
-        ensureLessonSageSession();
-
-        var cleanText = String(text).trim();
-        sagePanelHistory.push({ role: 'user', content: cleanText });
-        appendLessonSageMessage('user', cleanText);
-
-        sagePanelBusy = true;
-        showLessonSageTyping();
-
-        var reply = null;
-
-        try {
-          var ctx = getLessonPlayerState();
-
-          if (!window.KTSagePrompts) {
-            throw new Error('KTSagePrompts is not loaded');
-          }
-
-          var mode = window.KTSagePrompts.detectSageMode(cleanText, {
-            inLesson: true,
-            studentAlreadyWrong: !!ctx.studentAlreadyWrong
-          });
-
-          var systemWithCtx = window.KTSagePrompts.buildLessonSagePromptFromContext(cleanText, {
-            lessonTitle: ctx.lessonTitle || 'Lesson',
-            subject: ctx.subject || 'lesson',
-            currentPhase: ctx.currentPhase || 'lesson',
-            currentQuestion: ctx.currentQuestion || '',
-            answerChoices: Array.isArray(ctx.answerChoices) ? ctx.answerChoices : [],
-            studentAlreadyWrong: !!ctx.studentAlreadyWrong,
-            mode: mode
-          });
-
-          if (typeof window.kt_sage === 'function') {
-            reply = await window.kt_sage(sagePanelHistory, systemWithCtx);
-          } else {
-            throw new Error('kt_sage is not available on window');
-          }
-        } catch (e) {
-          console.warn('Sage failed:', e);
-        }
-
-        sagePanelBusy = false;
-        removeLessonSageTyping();
-
-        if (!reply) reply = LESSON_SAGE_FALLBACK;
-        sagePanelHistory.push({ role: 'assistant', content: reply });
-        appendLessonSageMessage('assistant', reply);
-
-        if (sagePanelHistory.length > 12) {
-          sagePanelHistory = [sagePanelHistory[0]].concat(sagePanelHistory.slice(-11));
-        }
-
-        if (window.KTAudio && typeof window.KTAudio.coin === 'function' && reply !== LESSON_SAGE_FALLBACK) {
-          try { window.KTAudio.coin(); } catch (e) {}
-        }
-      }
-
-      window.toggleSagePanel = toggleSagePanel;
-      window.sendSagePanel = sendSagePanel;
-
-      document.addEventListener('DOMContentLoaded', function () {
-        var floatBtn = document.getElementById('sage-float-btn');
-        var closeBtn = document.getElementById('sage-close-btn');
-        var sendBtn = document.getElementById('sage-send-btn');
-        var input = document.getElementById('sage-panel-input');
-        var hintBtn = document.getElementById('sage-hint-btn');
-        var explainBtn = document.getElementById('sage-explain-btn');
-        var celebrateBtn = document.getElementById('sage-celebrate-btn');
-
-        if (floatBtn) floatBtn.addEventListener('click', toggleSagePanel);
-        if (closeBtn) closeBtn.addEventListener('click', toggleSagePanel);
-        if (sendBtn) sendBtn.addEventListener('click', function () { sendSagePanel(); });
-
-        if (input) {
-          input.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') sendSagePanel();
-          });
-        }
-
-        if (hintBtn) {
-          hintBtn.addEventListener('click', function () {
-            sendSagePanel('Give me a hint for this question!');
-          });
-        }
-
-        if (explainBtn) {
-          explainBtn.addEventListener('click', function () {
-            sendSagePanel('I’m confused. Can you explain this differently?');
-          });
-        }
-
-        if (celebrateBtn) {
-          celebrateBtn.addEventListener('click', function () {
-            sendSagePanel('Celebrate with me!');
-          });
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
+  
+        
+        
+       
+     
+        
