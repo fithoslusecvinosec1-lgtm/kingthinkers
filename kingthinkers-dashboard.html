@@ -475,27 +475,22 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 <script>
 // ── NAVIGATION ────────────────────────────────────────────────
 function switchPage(name) { if (typeof KTAudio !== 'undefined') KTAudio.tap();
-  // Hide all pages
   document.querySelectorAll('.page').forEach(function(p) {
     p.style.display = 'none';
     p.classList.remove('active');
   });
-  // Deactivate all nav buttons
   document.querySelectorAll('.nav-btn').forEach(function(b) {
     b.classList.remove('active');
   });
-  // Show target page
   var page = document.getElementById('page-' + name);
   if (page) {
     page.style.display = 'block';
     page.classList.add('active');
   }
-  // Activate nav button
   var btn = document.getElementById('nav-' + name);
   if (btn) btn.classList.add('active');
-  // Render map if kingdom
   if (name === 'kingdom') renderMap();
-  if (name === 'home')    updateHomeScreen();
+  if (name === 'home') updateHomeScreen();
   if (name === 'sage') ensureSageSession();
 }
 
@@ -532,8 +527,8 @@ var RANKS = [
   { level:6,  name:'Royal Scribe',    minXP:820,  icon:'📜'  },
   { level:7,  name:'Kingdom Knight',  minXP:1100, icon:'⚔️'  },
   { level:8,  name:'High Priest',     minXP:1420, icon:'🏺'  },
-  { level:9,  name:"Pharaoh's Guard",minXP:1780, icon:'👁️'  },
-  { level:10, name:'The Pharaoh',     minXP:2200, icon:'👑'  },
+  { level:9,  name:"Pharaoh's Guard", minXP:1780, icon:'👁️'  },
+  { level:10, name:'The Pharaoh',     minXP:2200, icon:'👑'  }
 ];
 
 function getRankForXP(totalXP) {
@@ -573,7 +568,6 @@ function gainXP(n) {
   if (el) el.textContent = xp + ' XP';
   updateHomeXPBar();
   if (newRank.level > oldRank.level) triggerLevelUp(newRank);
-  // Sync to DB debounced — avoid hammering on rapid XP gains
   scheduleSyncStats();
 }
 
@@ -595,39 +589,11 @@ function scheduleSyncStats() {
         console.warn('Stats sync failed:', e);
       });
     }
-  }, 2000); // 2s debounce — batches rapid XP changes into one call
-}
-
-function updateHomeXPBar() {
-  var rank = getRankForXP(xp);
-  var next = getNextRank(xp);
-  var pct = getLevelProgress(xp);
-  var badge = document.getElementById('rank-badge');
-  var bar = document.getElementById('level-bar');
-  var xpLabel = document.getElementById('xp-to-next');
-  var nextLabel = document.getElementById('next-rank-label');
-  var levelNum = document.getElementById('home-level');
-  if (badge) badge.textContent = rank.icon + ' Level ' + rank.level + ' · ' + rank.name;
-  if (bar)   bar.style.width = pct + '%';
-  if (xpLabel) xpLabel.textContent = xp + ' / ' + (next ? next.minXP : xp) + ' XP';
-  if (nextLabel) nextLabel.textContent = next ? 'Next: ' + next.name + ' at ' + next.minXP + ' XP' : '👑 Max Rank!';
-  if (levelNum) levelNum.textContent = rank.level;
-}
-
-function updateHomeStats() {
-  var hm = document.getElementById('home-missions');
-  var hx = document.getElementById('home-xp-total');
-  var hc = document.getElementById('home-crowns');
-  var p = getProgress();
-  var done = Object.keys(p).length;
-  if (hm) hm.textContent = done;
-  if (hx) hx.textContent = xp;
-  if (hc) hc.textContent = crowns;
+  }, 2000);
 }
 
 // ── STUDENT ───────────────────────────────────────────────────
 function getActiveCode() {
-  // Returns null for unauthenticated — callers must guard against null/'demo'
   return localStorage.getItem('kt_active_code') || null;
 }
 function getScopedKey(base, code) {
@@ -641,12 +607,11 @@ function getActiveStudent() {
     return raw ? JSON.parse(raw) : null;
   } catch(e) { return null; }
 }
-// Progress cache — loaded once from Supabase, updated locally
+
 var _progressCache = null;
 
 function getProgress() {
   if (_progressCache !== null) return _progressCache;
-  // Fall back to localStorage while Supabase loads
   try {
     var raw = localStorage.getItem(getScopedKey('kt_quest_progress'));
     return raw ? JSON.parse(raw) : {};
@@ -655,7 +620,6 @@ function getProgress() {
 function saveProgress(p) {
   _progressCache = p;
   localStorage.setItem(getScopedKey('kt_quest_progress'), JSON.stringify(p));
-  // Save to Supabase async (non-blocking)
   var code = getActiveCode();
   if (code) {
     if (typeof db_saveProgress === 'function') db_saveProgress(code, p).catch(function(e){ console.warn('saveProgress failed', e); });
@@ -670,12 +634,26 @@ function completeMission(id) {
   saveProgress(p);
 }
 
-// Load progress from Supabase on boot
+// NEW: mission completion helpers that support both mission id and lesson id
+function isMissionComplete(mission) {
+  if (!mission) return false;
+  var progress = getProgress();
+  return !!(
+    progress[mission.id] ||
+    (mission.lessonId && progress[mission.lessonId])
+  );
+}
+
+function getCompletedMissionRecord(mission) {
+  if (!mission) return null;
+  var progress = getProgress();
+  return progress[mission.id] || (mission.lessonId ? progress[mission.lessonId] : null) || null;
+}
+
 async function loadProgressFromDB() {
   var code = getActiveCode();
   if (!code) return getProgress();
 
-  // Validated local fallback
   var localProgress = {};
   try {
     var raw = localStorage.getItem(getScopedKey('kt_quest_progress', code));
@@ -685,7 +663,6 @@ async function loadProgressFromDB() {
     }
   } catch(e) { localProgress = {}; }
 
-  // Fetch authoritative progress from Supabase
   try {
     var p = await db_getProgress(code);
     _progressCache = (p && typeof p === 'object' && !Array.isArray(p)) ? p : {};
@@ -695,7 +672,6 @@ async function loadProgressFromDB() {
     _progressCache = localProgress;
   }
 
-  // Fetch authoritative XP/crowns from Supabase — single source of truth
   try {
     if (typeof db_getStudent === 'function') {
       var student = await db_getStudent(code);
@@ -724,11 +700,11 @@ var WORLDS = [
     desc: 'The ancient kingdom of Egypt along the Nile River — home of pharaohs, pyramids, and great wisdom.',
     unlockMsg: 'Egypt conquered! The warriors of Nubia await!',
     missions: [
-  { id:'e1', name:"The Pharaoh's Secret", type:'Reading', xp:40, lessonId:'egypt-e1' },
-  { id:'e2', name:'Hieroglyph Numbers', type:'Math', xp:35, lessonId:'egypt-m1' },
-  { id:'e3', name:"The Nile's Gift", type:'Reading', xp:40, lessonId:'egypt-e3' },
-  { id:'e4', name:'Pyramid Fractions', type:'Math', xp:35, lessonId:'egypt-m4' }
-]
+      { id:'e1', name:"The Pharaoh's Secret", type:'Reading', xp:40, lessonId:'egypt-e1' },
+      { id:'e2', name:'Hieroglyph Numbers', type:'Math', xp:35, lessonId:'egypt-m1' },
+      { id:'e3', name:"The Nile's Gift", type:'Reading', xp:40, lessonId:'egypt-e3' },
+      { id:'e4', name:'Pyramid Fractions', type:'Math', xp:35, lessonId:'egypt-m4' }
+    ]
   },
   {
     id: 'nubia', name: 'Nubia', fullName: 'Kingdom of Nubia', icon: '🏹',
@@ -737,9 +713,9 @@ var WORLDS = [
     unlockMsg: 'Nubia conquered! The iron forges of Kush await!',
     missions: [
       { id:'n1', name:'Warriors of the South', type:'Reading', xp:40, lessonId:'nubia-e1' },
-      { id:'n2', name:'Trade Route Math',      type:'Math',    xp:35, lessonId:'nubia-m2' },
-      { id:'n3', name:'The Black Pharaohs',    type:'Reading', xp:40, lessonId:'nubia-e3' },
-      { id:'n4', name:'Archery Angles',        type:'Math',    xp:35, lessonId:'nubia-m4' },
+      { id:'n2', name:'Trade Route Math', type:'Math', xp:35, lessonId:'nubia-m2' },
+      { id:'n3', name:'The Black Pharaohs', type:'Reading', xp:40, lessonId:'nubia-e3' },
+      { id:'n4', name:'Archery Angles', type:'Math', xp:35, lessonId:'nubia-m4' }
     ]
   },
   {
@@ -748,11 +724,11 @@ var WORLDS = [
     desc: 'The Kingdom of Kush was famous for its iron-working and military power.',
     unlockMsg: 'Kush conquered! The golden roads of Mali await!',
     missions: [
-      { id:'k1', name:'Iron Masters',       type:'Reading', xp:45, lessonId:null },
-      { id:'k2', name:'The Royal Market',   type:'Math',    xp:40, lessonId:null },
-      { id:'k3', name:'Kush Conquers Egypt',type:'Reading', xp:45, lessonId:null },
-      { id:'k4', name:'Fortress Geometry',  type:'Math',    xp:40, lessonId:null },
-      { id:'k5', name:'Crown the King',     type:'Reading', xp:50, lessonId:null },
+      { id:'k1', name:'Iron Masters', type:'Reading', xp:45, lessonId:null },
+      { id:'k2', name:'The Royal Market', type:'Math', xp:40, lessonId:null },
+      { id:'k3', name:'Kush Conquers Egypt', type:'Reading', xp:45, lessonId:null },
+      { id:'k4', name:'Fortress Geometry', type:'Math', xp:40, lessonId:null },
+      { id:'k5', name:'Crown the King', type:'Reading', xp:50, lessonId:null }
     ]
   },
   {
@@ -761,10 +737,10 @@ var WORLDS = [
     desc: 'The Mali Empire produced Mansa Musa — the richest person in all of human history.',
     unlockMsg: 'Mali conquered! The scholars of Songhai await!',
     missions: [
-      { id:'m1', name:"Mansa Musa's Gold",     type:'Reading', xp:48, lessonId:null },
-      { id:'m2', name:'The Golden Trade',      type:'Math',    xp:44, lessonId:null },
-      { id:'m3', name:'Sundiata Rises',        type:'Reading', xp:48, lessonId:null },
-      { id:'m4', name:'Camel Caravan Math',    type:'Math',    xp:44, lessonId:null },
+      { id:'m1', name:"Mansa Musa's Gold", type:'Reading', xp:48, lessonId:null },
+      { id:'m2', name:'The Golden Trade', type:'Math', xp:44, lessonId:null },
+      { id:'m3', name:'Sundiata Rises', type:'Reading', xp:48, lessonId:null },
+      { id:'m4', name:'Camel Caravan Math', type:'Math', xp:44, lessonId:null }
     ]
   },
   {
@@ -773,10 +749,10 @@ var WORLDS = [
     desc: 'The largest empire in African history, stretching across West Africa.',
     unlockMsg: 'Songhai conquered! The libraries of Timbuktu await!',
     missions: [
-      { id:'s1', name:'River Kings',             type:'Reading', xp:50, lessonId:null },
-      { id:'s2', name:'Empire Division',         type:'Math',    xp:46, lessonId:null },
-      { id:'s3', name:'Askia the Great',         type:'Reading', xp:50, lessonId:null },
-      { id:'s4', name:'West African Trade Routes',type:'Math',   xp:46, lessonId:null },
+      { id:'s1', name:'River Kings', type:'Reading', xp:50, lessonId:null },
+      { id:'s2', name:'Empire Division', type:'Math', xp:46, lessonId:null },
+      { id:'s3', name:'Askia the Great', type:'Reading', xp:50, lessonId:null },
+      { id:'s4', name:'West African Trade Routes', type:'Math', xp:46, lessonId:null }
     ]
   },
   {
@@ -785,10 +761,10 @@ var WORLDS = [
     desc: 'The intellectual capital of medieval Africa — home of the great Sankore University.',
     unlockMsg: 'Timbuktu conquered! The sea traders of Axum await!',
     missions: [
-      { id:'t1', name:'The Great Library',    type:'Reading', xp:55, lessonId:null },
-      { id:'t2', name:"Scholar's Math",       type:'Math',    xp:50, lessonId:null },
-      { id:'t3', name:'Manuscripts of Ages',  type:'Reading', xp:55, lessonId:null },
-      { id:'t4', name:'Astronomy Numbers',    type:'Math',    xp:50, lessonId:null },
+      { id:'t1', name:'The Great Library', type:'Reading', xp:55, lessonId:null },
+      { id:'t2', name:"Scholar's Math", type:'Math', xp:50, lessonId:null },
+      { id:'t3', name:'Manuscripts of Ages', type:'Reading', xp:55, lessonId:null },
+      { id:'t4', name:'Astronomy Numbers', type:'Math', xp:50, lessonId:null }
     ]
   },
   {
@@ -798,9 +774,9 @@ var WORLDS = [
     unlockMsg: 'Axum conquered! The final kingdom — the Diaspora — awaits!',
     missions: [
       { id:'ax1', name:'The Obelisk Builders', type:'Reading', xp:58, lessonId:null },
-      { id:'ax2', name:'Red Sea Trade Math',   type:'Math',    xp:54, lessonId:null },
-      { id:'ax3', name:'Kingdom of Faith',     type:'Reading', xp:58, lessonId:null },
-      { id:'ax4', name:'Stone Tower Geometry', type:'Math',    xp:54, lessonId:null },
+      { id:'ax2', name:'Red Sea Trade Math', type:'Math', xp:54, lessonId:null },
+      { id:'ax3', name:'Kingdom of Faith', type:'Reading', xp:58, lessonId:null },
+      { id:'ax4', name:'Stone Tower Geometry', type:'Math', xp:54, lessonId:null }
     ]
   },
   {
@@ -810,23 +786,24 @@ var WORLDS = [
     unlockMsg: 'You have conquered the Kingdom Quest! 👑',
     missions: [
       { id:'d1', name:'The Harlem Renaissance', type:'Reading', xp:65, lessonId:null },
-      { id:'d2', name:'Civil Rights Math',      type:'Math',    xp:60, lessonId:null },
-      { id:'d3', name:'Black Inventors',        type:'Reading', xp:65, lessonId:null },
-      { id:'d4', name:'Legacy Numbers',         type:'Math',    xp:60, lessonId:null },
+      { id:'d2', name:'Civil Rights Math', type:'Math', xp:60, lessonId:null },
+      { id:'d3', name:'Black Inventors', type:'Reading', xp:65, lessonId:null },
+      { id:'d4', name:'Legacy Numbers', type:'Math', xp:60, lessonId:null }
     ]
-  },
+  }
 ];
 
 // ── WORLD STATUS ──────────────────────────────────────────────
 function worldStatus(world) {
   var idx = WORLDS.indexOf(world);
-  var allDone = world.missions.every(function(m){ return isMissionDone(m.id); });
+  var allDone = world.missions.every(function(m){ return isMissionComplete(m); });
   if (allDone) return 'done';
-  // Egypt and Nubia always unlocked for pilot
+
   if (idx === 0 || idx === 1) return 'current';
-  // Others unlock when previous world is complete
+
   var prev = WORLDS[idx - 1];
-  if (prev && prev.missions.every(function(m){ return isMissionDone(m.id); })) return 'current';
+  if (prev && prev.missions.every(function(m){ return isMissionComplete(m); })) return 'current';
+
   return 'locked';
 }
 
@@ -837,7 +814,6 @@ function renderMap() {
   path.innerHTML = '';
 
   WORLDS.forEach(function(world, idx) {
-    // Connector before world (except first)
     if (idx > 0) {
       var conn = document.createElement('div');
       conn.className = 'world-connector';
@@ -845,11 +821,12 @@ function renderMap() {
     }
 
     var status = worldStatus(world);
-    var doneMissions = world.missions.filter(function(m){ return isMissionDone(m.id); }).length;
+    var doneMissions = world.missions.filter(function(m){ return isMissionComplete(m); }).length;
 
     var node = document.createElement('div');
     node.className = 'world-node ' + status + (selectedWorldId === world.id ? ' selected' : '');
     node.setAttribute('data-world-id', world.id);
+    node.setAttribute('data-done-count', doneMissions);
 
     var bubble = document.createElement('div');
     bubble.className = 'world-bubble';
@@ -870,7 +847,6 @@ function renderMap() {
     path.appendChild(node);
   });
 
-  // Auto-select Egypt on first load
   if (!selectedWorldId) {
     selectWorld('egypt');
   } else {
@@ -884,24 +860,21 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
   var world = WORLDS.find(function(w){ return w.id === worldId; });
   if (!world) return;
 
-  // Update node styles
   document.querySelectorAll('.world-node').forEach(function(n) {
     n.classList.remove('selected');
   });
   var selectedNode = document.querySelector('[data-world-id="' + worldId + '"]');
   if (selectedNode) selectedNode.classList.add('selected');
 
-  // Populate detail panel
   document.getElementById('wd-icon').textContent = world.icon;
   document.getElementById('wd-title').textContent = world.fullName;
   document.getElementById('wd-desc').textContent = world.desc;
 
-  // Render missions
   var missionsEl = document.getElementById('wd-missions');
   missionsEl.innerHTML = '';
 
   world.missions.forEach(function(m) {
-    var done = isMissionDone(m.id);
+    var done = isMissionComplete(m);
     var hasLesson = !!m.lessonId;
 
     var item = document.createElement('div');
@@ -924,19 +897,19 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
     item.appendChild(type);
 
     if (hasLesson && !done) {
-  var playBtn = document.createElement('button');
-  playBtn.className = 'play-btn';
-  playBtn.textContent = '▶ Play';
-  playBtn.setAttribute('data-lesson-id', m.lessonId);
-  playBtn.setAttribute('data-id', m.id);
-  playBtn.setAttribute('data-world', worldId);
-  playBtn.setAttribute('data-xp', m.xp);
-  playBtn.onclick = function(e) {
-    e.stopPropagation();
-    launchMission(m.id, worldId, m.lessonId, m.xp);
-  };
-  item.appendChild(playBtn);
-} else if (!hasLesson && !done) {
+      var playBtn = document.createElement('button');
+      playBtn.className = 'play-btn';
+      playBtn.textContent = '▶ Play';
+      playBtn.setAttribute('data-lesson-id', m.lessonId);
+      playBtn.setAttribute('data-id', m.id);
+      playBtn.setAttribute('data-world', worldId);
+      playBtn.setAttribute('data-xp', m.xp);
+      playBtn.onclick = function(e) {
+        e.stopPropagation();
+        launchMission(m.id, worldId, m.lessonId, m.xp);
+      };
+      item.appendChild(playBtn);
+    } else if (!hasLesson && !done) {
       var xpLabel = document.createElement('span');
       xpLabel.style.cssText = 'font-size:10px;color:var(--gold);font-weight:800;margin-left:auto;flex-shrink:0;';
       xpLabel.textContent = '+' + m.xp + ' XP';
@@ -946,7 +919,6 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
     missionsEl.appendChild(item);
   });
 
-  // Show detail panel
   var detail = document.getElementById('world-detail');
   detail.classList.add('visible');
   detail.style.display = 'block';
@@ -988,34 +960,46 @@ async function processMissionSignal() {
     var raw = localStorage.getItem('kt_mission_completed');
     if (!raw) return;
     var data = JSON.parse(raw);
-    if (!data || !data.missionId) return;
-    // Deduplicate across tabs/refreshes
-    var key = data.missionId + '_' + (data.completedAt || '');
+    if (!data) return;
+
+    var missionKey = data.missionId || data.lessonId;
+    if (!missionKey) return;
+
+    var key = missionKey + '_' + (data.completedAt || '');
     if (_processedSignals.has(key)) {
       localStorage.removeItem('kt_mission_completed');
       return;
     }
     _processedSignals.add(key);
     localStorage.removeItem('kt_mission_completed');
-    // Only apply if not already completed locally
+
     var p = getProgress();
-    if (!p[data.missionId]) {
-      completeMission(data.missionId);
+    if (!p[missionKey]) {
+      completeMission(missionKey);
       gainXP(data.xp || 40);
       gainCrowns(1);
     }
+
     renderMap();
-    var mName = data.missionId;
+
+    var mName = missionKey;
     if (typeof WORLDS !== 'undefined') {
-      WORLDS.forEach(function(w){ w.missions.forEach(function(m){
-        if (m.id === data.missionId) mName = m.name;
-      });});
+      WORLDS.forEach(function(w){
+        w.missions.forEach(function(m){
+          if (m.id === missionKey || m.lessonId === missionKey) mName = m.name;
+        });
+      });
     }
-    setTimeout(function() { updateHomeScreen(); showCelebration(mName, data.xp || 40); }, 400);
-  } catch(e) { console.warn('processMissionSignal failed:', e); }
+
+    setTimeout(function() {
+      updateHomeScreen();
+      showCelebration(mName, data.xp || 40);
+    }, 400);
+  } catch(e) {
+    console.warn('processMissionSignal failed:', e);
+  }
 }
 
-// Check on load, on tab focus, and on storage events from other tabs
 processMissionSignal();
 document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') processMissionSignal();
@@ -1028,13 +1012,10 @@ window.addEventListener('storage', function(e) {
 (function personalise() {
   var student = getActiveStudent();
   if (!student) return;
-  // Set name/greeting only — XP and crowns are loaded from Supabase in loadProgressFromDB
   var greeting = document.getElementById('home-greeting');
   if (greeting) greeting.textContent = 'Good morning, King ' + student.name + '! 👑';
   var topbar = document.getElementById('topbar-title');
   if (topbar) topbar.textContent = '👑 ' + student.name + "'s Kingdom";
-  // Seed XP/crowns from local cache as a fast initial display
-  // (will be overwritten by Supabase data when loadProgressFromDB completes)
   if (typeof student.xp === 'number' && student.xp > 0) {
     xp = student.xp;
     var xpEl = document.getElementById('topbar-xp');
@@ -1062,25 +1043,24 @@ function updateHomeProgress() {
     return;
   }
 
-  // Count completed missions and total XP earned
   var totalXP = 0;
   var completedMissions = [];
   WORLDS.forEach(function(w) {
     w.missions.forEach(function(m) {
-      if (progress[m.id]) {
+      if (isMissionComplete(m)) {
         totalXP += m.xp;
         completedMissions.push(m.name);
       }
     });
   });
 
-  // Find most recent completion
   var latest = null;
   var latestTime = 0;
   WORLDS.forEach(function(w) {
     w.missions.forEach(function(m) {
-      if (progress[m.id] && progress[m.id].completedAt > latestTime) {
-        latestTime = progress[m.id].completedAt;
+      var rec = getCompletedMissionRecord(m);
+      if (rec && rec.completedAt > latestTime) {
+        latestTime = rec.completedAt;
         latest = m.name;
       }
     });
@@ -1111,13 +1091,11 @@ function logOut() {
     } else {
       localStorage.removeItem('kt_active_code');
     }
-    // Clear mission signals so they don't replay after re-login
     localStorage.removeItem('kt_active_mission');
     localStorage.removeItem('kt_mission_completed');
     window.location.href = resolveAppUrl('kingthinkers-login.html');
   }
 }
-
 
 // ── SAGE AI TUTOR ─────────────────────────────────────────────
 var sageHistory = [];
@@ -1135,8 +1113,8 @@ function getSageContext() {
   else if (completedCount >= 20) currentWorld = 'Timbuktu';
   else if (completedCount >= 16) currentWorld = 'Songhai';
   else if (completedCount >= 12) currentWorld = 'Mali';
-  else if (completedCount >= 9)  currentWorld = 'Kush';
-  else if (completedCount >= 4)  currentWorld = 'Nubia';
+  else if (completedCount >= 9) currentWorld = 'Kush';
+  else if (completedCount >= 4) currentWorld = 'Nubia';
 
   var context = 'The student';
   if (student && student.name) context = 'King ' + student.name;
@@ -1273,7 +1251,6 @@ async function sageSend(message) {
   }
 }
 
-
 function sageSendInput() {
   var input = document.getElementById('sage-input');
   if (!input) return;
@@ -1284,8 +1261,6 @@ function sageSendInput() {
   sageSend(text);
 }
 
-// ensureSageSession — only inits once per page load
-// Conversation persists across tab switches
 function ensureSageSession() {
   if (sageInitialized) {
     sageRenderHistory();
@@ -1314,7 +1289,6 @@ function showCelebration(missionName, xpEarned) {
   if (xpEl)   xpEl.textContent   = '+' + xpEarned + ' XP earned!';
   if (rankEl) rankEl.textContent = rank.icon + ' ' + rank.name + ' · Level ' + rank.level;
 
-  // Particle burst
   if (parts) {
     parts.innerHTML = '';
     var emojis = ['👑','⭐','✨','🌟','💫','🏆','🎉','🔥','💥'];
@@ -1356,8 +1330,6 @@ function triggerLevelUp(rank) {
 var MISSION_MAP = {};
 
 function getNextMission() {
-  var p = getProgress();
-
   for (var wi = 0; wi < WORLDS.length; wi++) {
     var w = WORLDS[wi];
     var status = worldStatus(w);
@@ -1365,7 +1337,7 @@ function getNextMission() {
 
     for (var mi = 0; mi < w.missions.length; mi++) {
       var m = w.missions[mi];
-      if (!p[m.id] && m.lessonId) {
+      if (!isMissionComplete(m) && m.lessonId) {
         return { world: w, mission: m };
       }
     }
@@ -1385,22 +1357,49 @@ function launchNextMission() {
   launchMission(next.mission.id, next.world.id, next.mission.lessonId, next.mission.xp);
 }
 
+function updateHomeXPBar() {
+  var rank = getRankForXP(xp);
+  var next = getNextRank(xp);
+  var pct = getLevelProgress(xp);
+  var badge = document.getElementById('rank-badge');
+  var bar = document.getElementById('level-bar');
+  var xpLabel = document.getElementById('xp-to-next');
+  var nextLabel = document.getElementById('next-rank-label');
+  var levelNum = document.getElementById('home-level');
+  if (badge) badge.textContent = rank.icon + ' Level ' + rank.level + ' · ' + rank.name;
+  if (bar) bar.style.width = pct + '%';
+  if (xpLabel) xpLabel.textContent = xp + ' / ' + (next ? next.minXP : xp) + ' XP';
+  if (nextLabel) nextLabel.textContent = next ? 'Next: ' + next.name + ' at ' + next.minXP + ' XP' : '👑 Max Rank!';
+  if (levelNum) levelNum.textContent = rank.level;
+}
+
+function updateHomeStats() {
+  var hm = document.getElementById('home-missions');
+  var hx = document.getElementById('home-xp-total');
+  var hc = document.getElementById('home-crowns');
+  var done = 0;
+  WORLDS.forEach(function(w) {
+    w.missions.forEach(function(m) {
+      if (isMissionComplete(m)) done++;
+    });
+  });
+  if (hm) hm.textContent = done;
+  if (hx) hx.textContent = xp;
+  if (hc) hc.textContent = crowns;
+}
+
 function updateHomeScreen() {
-  var p = getProgress();
   var student = getActiveStudent ? getActiveStudent() : null;
 
-  // Greeting
   var hour = new Date().getHours();
   var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
   var name = (student && student.name) ? student.name : 'King';
   var greetEl = document.getElementById('home-greeting');
   if (greetEl) greetEl.textContent = greeting + ', King ' + name + '! 👑';
 
-  // XP bar
   updateHomeXPBar();
   updateHomeStats();
 
-  // Next mission card
   var next = getNextMission();
   var titleEl = document.getElementById('next-mission-title');
   var metaEl  = document.getElementById('next-mission-meta');
@@ -1409,25 +1408,25 @@ function updateHomeScreen() {
 
   if (next) {
     if (titleEl) titleEl.textContent = next.mission.name;
-    if (metaEl)  metaEl.textContent  = next.world.name + ' · ' + next.mission.type + ' · +' + next.mission.xp + ' XP';
-    if (btnEl)   btnEl.textContent   = '⚔️ Start Quest →';
-    if (labelEl) labelEl.innerHTML   = '<span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse-dot 1.5s ease-in-out infinite;"></span> ⭐ Recommended for You';
+    if (metaEl) metaEl.textContent = next.world.name + ' · ' + next.mission.type + ' · +' + next.mission.xp + ' XP';
+    if (btnEl) btnEl.textContent = '⚔️ Start Quest →';
+    if (labelEl) labelEl.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse-dot 1.5s ease-in-out infinite;"></span> ⭐ Recommended for You';
   } else {
     if (titleEl) titleEl.textContent = 'All Missions Complete! 🏆';
-    if (metaEl)  metaEl.textContent  = 'You have conquered every world, King!';
-    if (btnEl)   btnEl.textContent   = '🗺️ Review Kingdom Map';
-    if (labelEl) labelEl.innerHTML   = "👑 You're a Champion";
+    if (metaEl) metaEl.textContent = 'You have conquered every world, King!';
+    if (btnEl) btnEl.textContent = '🗺️ Review Kingdom Map';
+    if (labelEl) labelEl.innerHTML = "👑 You're a Champion";
   }
 
-  // Completed missions list
-  var done = Object.keys(p);
   var wrap = document.getElementById('completed-list-wrap');
   var list = document.getElementById('completed-list');
-  if (wrap) wrap.style.display = done.length ? 'block' : 'none';
-  if (list && done.length) {
-    var allMissions = [];
-    WORLDS.forEach(function(w){ w.missions.forEach(function(m){ allMissions.push({world:w,mission:m}); }); });
-    var completedItems = allMissions.filter(function(item){ return !!p[item.mission.id]; });
+
+  var allMissions = [];
+  WORLDS.forEach(function(w){ w.missions.forEach(function(m){ allMissions.push({world:w, mission:m}); }); });
+  var completedItems = allMissions.filter(function(item){ return isMissionComplete(item.mission); });
+
+  if (wrap) wrap.style.display = completedItems.length ? 'block' : 'none';
+  if (list && completedItems.length) {
     list.innerHTML = completedItems.slice(-5).reverse().map(function(item){
       return '<div class="cm-item">'+
         '<div class="cm-icon">'+(item.mission.type==='Reading'?'📖':'🔢')+'</div>'+
@@ -1439,7 +1438,7 @@ function updateHomeScreen() {
 }
 
 // ── BOOT ─────────────────────────────────────────────────────
-processMissionSignal(); // sync check before DB loads
+processMissionSignal();
 loadProgressFromDB().then(function() {
   return processMissionSignal();
 }).then(function() {
