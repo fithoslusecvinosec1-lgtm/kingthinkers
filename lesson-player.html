@@ -242,6 +242,26 @@
   <!-- engine -->
   <script src="/kingthinkers/lesson-engine.js"></script>
 </head>
+<body>
+  <div id="app">
+    <div class="topbar">
+      <div class="brand">👑 KingThinkers</div>
+      <div class="top-meta">
+        <div class="pill gold" id="lesson-xp-pill">+0 XP</div>
+        <div class="pill green" id="lesson-crowns-pill">👑 0</div>
+        <button class="top-btn" onclick="KTLessonEngine.exitToDashboard()">← Back</button>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="lesson-progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="content" id="lesson-content"></div>
+  </div>
+
   <!-- Floating Sage Button -->
   <div id="sage-float-btn" onclick="toggleSagePanel()" style="
     position:fixed;bottom:80px;right:16px;z-index:2000;
@@ -339,7 +359,7 @@
         return KTLessonEngine.getSageContext();
       }
       return {
-        lessonTitle: document.title.replace('KingThinkers ', '').replace('Lesson', '').trim() || 'Lesson',
+        lessonTitle: document.title.replace('KingThinkers', '').replace('Lesson', '').trim() || 'Lesson',
         subject: 'lesson',
         currentPhase: 'lesson',
         currentQuestion: '',
@@ -435,6 +455,10 @@
       if (!text) return;
       if (input) input.value = '';
 
+      if (window.KTAudio && typeof KTAudio.tap === 'function') {
+        try { KTAudio.tap(); } catch (e) {}
+      }
+
       ensureLessonSageSession();
 
       var cleanText = String(text).trim();
@@ -462,7 +486,11 @@
           mode: mode
         });
 
-        reply = await kt_sage(sagePanelHistory, systemWithCtx);
+        if (typeof window.kt_sage === 'function') {
+          reply = await window.kt_sage(sagePanelHistory, systemWithCtx);
+        } else {
+          console.warn('kt_sage is not available on window');
+        }
       } catch (e) {
         console.warn('Sage failed:', e);
       }
@@ -483,24 +511,5 @@
       }
     }
   </script>
-<body>
-  <div id="app">
-    <div class="topbar">
-      <div class="brand">👑 KingThinkers</div>
-      <div class="top-meta">
-        <div class="pill gold" id="lesson-xp-pill">+0 XP</div>
-        <div class="pill green" id="lesson-crowns-pill">👑 0</div>
-        <button class="top-btn" onclick="KTLessonEngine.exitToDashboard()">← Back</button>
-      </div>
-    </div>
-
-    <div class="progress-wrap">
-      <div class="progress-track">
-        <div class="progress-fill" id="lesson-progress-fill"></div>
-      </div>
-    </div>
-
-    <div class="content" id="lesson-content"></div>
-  </div>
 </body>
 </html>
