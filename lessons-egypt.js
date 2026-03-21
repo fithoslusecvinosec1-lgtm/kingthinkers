@@ -664,5 +664,132 @@ window.KT_LESSONS.egypt = [
     text: 'You used merchant math like a true leader of Nubia. Strong counting and strong thinking keep trade routes alive.',
     badge: 'Caravan Counter'
   }
+},
+{
+  id: 'nubia-e3',
+  worldId: 'nubia',
+  title: 'The Black Pharaohs',
+  subject: 'reading',
+  grade: '3',
+  xp: 40,
+  crownReward: 1,
+  estMinutes: 6,
+
+  intro: {
+    kicker: 'Nubia · Mission 3',
+    text: 'King, this quest tells the powerful story of Nubian rulers who conquered Egypt and then led it with wisdom and respect. Read closely and uncover what true leadership looks like.',
+    sage: 'Power can win a battle, King — but respect wins hearts. Let’s learn from the Black Pharaohs. 👑'
+  },
+
+  reading: {
+    passage: [
+      'One of history’s most remarkable stories is the rise of the Nubian pharaohs. Around 750 BCE, a Nubian king named Piye marched north and conquered Egypt, one of the most powerful kingdoms in the ancient world.',
+      'Piye and the rulers after him became Egypt’s 25th Dynasty. These kings are often called the Black Pharaohs. They ruled Egypt for nearly 100 years. But Piye was different from many conquerors. He gave strict orders that Egyptian temples must not be harmed, and he followed Egyptian religious ceremonies very carefully.',
+      'Young Zara once asked her grandfather, a royal scribe, why a Nubian king would respect Egyptian customs after winning. Her grandfather smiled and answered, “Conquest can take a city. Only respect can keep it.”',
+      'The Nubian pharaohs built pyramids, expanded trade, and restored temples that had fallen into disrepair. They did not see themselves as outsiders. They saw themselves as guardians of Egyptian civilization, responsible for protecting and strengthening it.',
+      'Under Nubian rule, Egypt experienced a cultural revival. Art, architecture, and religion all grew stronger. The Nubians showed that leadership is not only about military power. It is also about wisdom, respect, and lifting up what has been placed in your care.'
+    ],
+    vocab: [
+      { term: 'devout', definition: 'deeply respectful of religion and sacred practices' },
+      { term: 'conquest', definition: 'taking control by force or war' },
+      { term: 'guardian', definition: 'a protector who keeps something safe' },
+      { term: 'revival', definition: 'a return to strength, activity, or success' }
+    ]
+  },
+
+  teach: [
+    {
+      type: 'text',
+      title: 'Leadership and Respect',
+      body: 'Strong readers look for the author’s big message. In this passage, the author wants us to think about what makes a leader truly great.'
+    }
+  ],
+
+  activities: [
+    {
+      id: 'nubia-e3-q1',
+      type: 'mcq',
+      prompt: 'What did Pharaoh Piye do differently from many conquerors when he took over Egypt?',
+      hint: 'Look in the second paragraph for the actions that showed respect.',
+      choices: [
+        'He burned Egyptian temples to show his power',
+        'He protected Egyptian temples and followed Egyptian religious customs carefully',
+        'He made Nubian the only language in Egypt',
+        'He refused to call himself a pharaoh'
+      ],
+      answer: 1,
+      correctFeedback: 'Exactly. Piye protected temples and respected Egyptian religious traditions.',
+      wrongFeedback: 'Go back to paragraph two and find the details that show Piye acted with respect.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e3-q2',
+      type: 'mcq',
+      prompt: 'According to Zara’s grandfather, why did Piye respect Egyptian customs after conquering Egypt?',
+      hint: 'Focus on the line about conquest and respect.',
+      choices: [
+        'He was afraid Egyptian soldiers would rebel',
+        'Egyptian customs were proven to be the best',
+        'Respect wins people’s loyalty in a way conquest alone cannot',
+        'He was born in Egypt'
+      ],
+      answer: 2,
+      correctFeedback: 'Outstanding. The grandfather teaches that conquest can take control, but respect helps keep people loyal.',
+      wrongFeedback: 'Read the grandfather’s words again. He compares what conquest can do and what respect can do.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e3-vocab',
+      type: 'match',
+      prompt: 'Match each royal word to its meaning.',
+      pairs: [
+        ['Devout', 'Deeply religious or showing strong reverence'],
+        ['Conquest', 'The act of taking control by force or war'],
+        ['Guardian', 'A protector responsible for keeping something safe'],
+        ['Revival', 'A return to strength, activity, or popularity']
+      ],
+      correctFeedback: 'Excellent, King. Your royal vocabulary is growing strong. 📚',
+      wrongFeedback: 'Not quite. Try matching the words again.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e3-q3',
+      type: 'mcq',
+      prompt: 'In the passage, the Nubian pharaohs are called “guardians” of Egyptian civilization. What does that mean?',
+      hint: 'Think about what a guardian does.',
+      choices: [
+        'They were hired guards for the Egyptian king',
+        'They saw themselves as protectors of what they had inherited',
+        'They built giant walls around Egypt',
+        'They hid all Egyptian treasures underground'
+      ],
+      answer: 1,
+      correctFeedback: 'Yes. They believed it was their duty to protect and strengthen Egyptian civilization.',
+      wrongFeedback: 'The passage explains that they felt responsible for keeping Egyptian civilization safe and strong.',
+      xp: 5
+    },
+    {
+      id: 'nubia-e3-q4',
+      type: 'mcq',
+      prompt: 'What is the main message of this passage about great leadership?',
+      hint: 'Look closely at the final paragraph.',
+      choices: [
+        'Great leaders must be the strongest fighters',
+        'Great leaders force their own culture on others',
+        'True leadership combines strength with wisdom, respect, and lifting others up',
+        'Only people born into royalty can be great leaders'
+      ],
+      answer: 2,
+      correctFeedback: 'KING! 👑 That is the big idea. Real leadership is not just power — it is wisdom, respect, and care for others.',
+      wrongFeedback: 'The last paragraph tells you directly what leadership is and is not about.',
+      xp: 5
+    }
+  ],
+
+  wrapUp: {
+    title: 'Royal Scholar! 👑',
+    text: 'You uncovered the story of the Black Pharaohs and learned a powerful truth: the greatest leaders protect, respect, and uplift.',
+    badge: 'Dynasty Reader'
+  }
 }
 ];
