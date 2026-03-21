@@ -310,5 +310,121 @@ window.KT_LESSONS.egypt = [
     text: 'You discovered that the Nile was not just a river — it was the force that helped Egypt live, grow, travel, and thrive.',
     badge: 'River Scholar'
   }
+},
+{
+  id: 'egypt-m4',
+  worldId: 'egypt',
+  title: 'Pyramid Fractions',
+  subject: 'math',
+  grade: '3',
+  xp: 35,
+  crownReward: 1,
+  estMinutes: 6,
+
+  intro: {
+    kicker: 'Egypt · Mission 4',
+    text: 'King, the pyramid builders need your fraction skills. Use number wisdom to help divide parts, compare fractions, and solve royal math challenges.',
+    sage: 'Fractions helped ancient builders plan with precision, King. Let’s build like a royal architect. 🔺'
+  },
+
+  teach: [
+    {
+      type: 'text',
+      title: 'Fraction Power',
+      body: 'A fraction names part of a whole. The top number tells how many parts you have. The bottom number tells how many equal parts there are in all.'
+    },
+    {
+      type: 'text',
+      title: 'Compare Carefully',
+      body: 'When two fractions have the same denominator, compare the numerators. The bigger top number means the bigger fraction.'
+    }
+  ],
+
+  activities: [
+    {
+      id: 'egypt-m4-q1',
+      type: 'mcq',
+      prompt: 'The pyramid has 8 equal sections. Workers finished 3 of them. What fraction of the pyramid is complete?',
+      hint: 'Think: parts finished over total equal parts.',
+      choices: [
+        '3/5',
+        '5/8',
+        '3/8',
+        '8/3'
+      ],
+      answer: 2,
+      correctFeedback: 'Yes! 3 out of 8 equal sections is 3/8.',
+      wrongFeedback: 'Use the pattern: parts done on top, total equal parts on the bottom.',
+      xp: 8
+    },
+    {
+      id: 'egypt-m4-q2',
+      type: 'mcq',
+      prompt: 'A stone sled traveled 4 of 6 equal parts of the road. How far has it gone as a fraction?',
+      hint: 'Count what the sled traveled first, then the total number of equal parts.',
+      choices: [
+        '2/6',
+        '6/4',
+        '4/6',
+        '1/2'
+      ],
+      answer: 2,
+      correctFeedback: 'Correct. The sled traveled 4 out of 6 equal parts, so the fraction is 4/6.',
+      wrongFeedback: 'The fraction should show traveled parts over total parts.',
+      xp: 8
+    },
+    {
+      id: 'egypt-m4-vocab',
+      type: 'match',
+      prompt: 'Match each fraction word to its meaning.',
+      pairs: [
+        ['Numerator', 'The top number of a fraction'],
+        ['Denominator', 'The bottom number showing total equal parts'],
+        ['Fraction', 'A number that names part of a whole'],
+        ['Equal', 'The same amount or value']
+      ],
+      correctFeedback: 'Excellent, King. You’re speaking fraction language like a scholar. 📚',
+      wrongFeedback: 'Not quite. Try matching the math words again.',
+      xp: 7
+    },
+    {
+      id: 'egypt-m4-q3',
+      type: 'mcq',
+      prompt: 'Amara ate 2/5 of his bread. Kofi ate 4/5 of his bread. Who ate more?',
+      hint: 'The denominators are the same, so compare the top numbers.',
+      choices: [
+        'Amara, because 2 comes first',
+        'They ate the same amount',
+        'Kofi, because 4/5 is greater than 2/5',
+        'Amara, because smaller fractions taste better'
+      ],
+      answer: 2,
+      correctFeedback: 'Exactly. With the same denominator, the bigger numerator means the bigger fraction. 4/5 is more than 2/5.',
+      wrongFeedback: 'Both fractions have fifths, so only the top numbers need to be compared.',
+      xp: 6
+    },
+    {
+      id: 'egypt-m4-q4',
+      type: 'mcq',
+      prompt: 'The royal kitchen had 12 jars of honey and used 4. Which fraction shows the honey left before reducing?',
+      hint: 'First find how many jars are left, then write left over total.',
+      choices: [
+        '4/12',
+        '8/12',
+        '2/3',
+        '12/8'
+      ],
+      answer: 1,
+      correctFeedback: 'Yes. 12 minus 4 equals 8, so 8/12 shows the honey left before reducing.',
+      wrongFeedback: 'Subtract first: 12 - 4. Then place the amount left over the total of 12.',
+      xp: 6
+    }
+  ],
+
+  wrapUp: {
+    title: 'Fraction King! 👑',
+    text: 'You used fraction power like a royal architect of Egypt. Strong math minds build strong kingdoms.',
+    badge: 'Pyramid Planner'
+  }
 }
 ];
