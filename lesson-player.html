@@ -402,7 +402,7 @@
     function renderLessonSageHistory() {
       var msgs = document.getElementById('sage-panel-messages');
       if (!msgs) return;
-      msgs.replaceChildren();
+      while (msgs.firstChild) msgs.removeChild(msgs.firstChild);
       for (var i = 0; i < sagePanelHistory.length; i++) {
         msgs.appendChild(createLessonSageMessage(sagePanelHistory[i].role, sagePanelHistory[i].content));
       }
@@ -426,7 +426,7 @@
 
     function removeLessonSageTyping() {
       var el = document.getElementById('sage-panel-typing');
-      if (el) el.remove();
+      if (el && el.parentNode) el.parentNode.removeChild(el);
     }
 
     function ensureLessonSageSession() {
@@ -471,20 +471,30 @@
       var reply = null;
       try {
         var ctx = getLessonPlayerState();
-        var mode = KTSagePrompts.detectSageMode(cleanText, {
-          inLesson: true,
-          studentAlreadyWrong: !!ctx.studentAlreadyWrong
-        });
+        var sagePrompts = window.KTSagePrompts || null;
+        var mode = (sagePrompts && typeof sagePrompts.detectSageMode === 'function')
+          ? sagePrompts.detectSageMode(cleanText, {
+              inLesson: true,
+              studentAlreadyWrong: !!ctx.studentAlreadyWrong
+            })
+          : 'lesson';
 
-        var systemWithCtx = KTSagePrompts.buildLessonSagePromptFromContext(cleanText, {
-          lessonTitle: ctx.lessonTitle || 'Lesson',
-          subject: ctx.subject || 'lesson',
-          currentPhase: ctx.currentPhase || 'lesson',
-          currentQuestion: ctx.currentQuestion || '',
-          answerChoices: Array.isArray(ctx.answerChoices) ? ctx.answerChoices : [],
-          studentAlreadyWrong: !!ctx.studentAlreadyWrong,
-          mode: mode
-        });
+        var systemWithCtx = (sagePrompts && typeof sagePrompts.buildLessonSagePromptFromContext === 'function')
+          ? sagePrompts.buildLessonSagePromptFromContext(cleanText, {
+              lessonTitle: ctx.lessonTitle || 'Lesson',
+              subject: ctx.subject || 'lesson',
+              currentPhase: ctx.currentPhase || 'lesson',
+              currentQuestion: ctx.currentQuestion || '',
+              answerChoices: Array.isArray(ctx.answerChoices) ? ctx.answerChoices : [],
+              studentAlreadyWrong: !!ctx.studentAlreadyWrong,
+              mode: mode
+            })
+          : ('You are Sage, the lesson coach inside KingThinkers. Keep replies short, encouraging, and focused on the current lesson. ' +
+             'Call the student King and give one useful next step.\n\n' +
+             'Lesson title: ' + (ctx.lessonTitle || 'Lesson') + '. ' +
+             'Subject: ' + (ctx.subject || 'lesson') + '. ' +
+             'Current phase: ' + (ctx.currentPhase || 'lesson') + '. ' +
+             'Current question prompt: ' + (ctx.currentQuestion || '') + '.');
 
         if (typeof window.kt_sage === 'function') {
           reply = await window.kt_sage(sagePanelHistory, systemWithCtx);
