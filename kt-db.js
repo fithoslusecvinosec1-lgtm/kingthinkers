@@ -461,5 +461,37 @@ function getQuestProgress(code) {
 function db_getAllStudents() {
   return db_getRosterWithProgress();
 }
+// ── GLOBAL EXPORTS ────────────────────────────────────────────
 
+window.kt_api = kt_api;
+window.kt_sage = kt_sage;
+
+window.kt_getActiveCode = kt_getActiveCode;
+window.kt_setActiveCode = kt_setActiveCode;
+window.kt_clearSession = kt_clearSession;
+
+window.kt_getTeacherSession = kt_getTeacherSession;
+window.kt_getTeacherToken = kt_getTeacherToken;
+window.kt_setTeacherSession = kt_setTeacherSession;
+window.kt_clearTeacherSession = kt_clearTeacherSession;
+
+window.db_getStudent = db_getStudent;
+window.db_saveStudent = db_saveStudent;
+window.db_saveProfile = db_saveProfile;
+window.db_getProgress = db_getProgress;
+window.db_saveProgress = db_saveProgress;
+window.db_completeLesson = db_completeLesson;
+window.db_syncStudentStats = db_syncStudentStats;
+
+window.db_teacherLogin = db_teacherLogin;
+window.db_teacherRegister = db_teacherRegister;
+window.db_getRosterWithProgress = db_getRosterWithProgress;
+window.db_addStudent = db_addStudent;
+window.db_bulkAddStudents = db_bulkAddStudents;
+window.db_removeStudent = db_removeStudent;
+window.db_teacherMarkMission = db_teacherMarkMission;
+
+window.getStudent = getStudent;
+window.getQuestProgress = getQuestProgress;
+window.db_getAllStudents = db_getAllStudents;
 console.log('✅ KingThinkers DB v7 loaded');
