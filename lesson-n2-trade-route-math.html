@@ -23,7 +23,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
 .dunes::before{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;
   background:radial-gradient(ellipse 60% 80px at 30% 100%,#1A1408 0%,transparent 70%),
              radial-gradient(ellipse 40% 60px at 70% 100%,#120F05 0%,transparent 70%);}
-.game{position:relative;z-index:10;display:flex;flex-direction:column;height:100vh;max-width:860px;margin:0 auto;padding:0 0 16px;}
+.game{position:relative;z-index:10;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;max-width:860px;margin:0 auto;padding:0 0 16px;}
 /* HUD */
 .hud{display:flex;align-items:center;gap:12px;padding:10px 20px;background:rgba(8,8,22,.75);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
 .hud-logo{font-family:var(--f-d);font-size:13px;color:var(--gold);font-weight:700;white-space:nowrap;}
@@ -57,7 +57,7 @@ html,body{height:100%;background:var(--bg);color:var(--white);font-family:var(--
 .sage-name{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
 .sage-bubble{font-size:13px;color:rgba(255,255,255,.82);line-height:1.5;}
 /* Content */
-.content{flex:1;overflow-y:auto;padding:0 20px 80px;scroll-behavior:smooth;}
+.content{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px 80px;scroll-behavior:smooth;}
 .content::-webkit-scrollbar{width:4px;}
 .content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
 /* Story */
