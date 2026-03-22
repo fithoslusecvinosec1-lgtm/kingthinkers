@@ -247,6 +247,99 @@ window.KTLessonEngine = (function () {
     });
   }
 
+  function checkInputAnswer(studentValue, correctAnswer) {
+    if (window.KTTolerance && typeof window.KTTolerance.check === 'function') {
+      return window.KTTolerance.check(studentValue, correctAnswer);
+    }
+
+    var normalizedStudent = safeText(studentValue).trim().replace(/,/g, '').replace(/\s/g, '');
+    var normalizedAnswer = safeText(correctAnswer).trim().replace(/\s/g, '');
+    if (normalizedStudent === normalizedAnswer) return { correct: true };
+
+    var studentNum = parseFloat(normalizedStudent);
+    var answerNum = parseFloat(normalizedAnswer);
+    if (!isNaN(studentNum) && !isNaN(answerNum) && Math.abs(studentNum - answerNum) < 0.001) {
+      return { correct: true };
+    }
+
+    return { correct: false };
+  }
+
+  function renderInput(activity) {
+    state.gradableCount += 1;
+
+    var html =
+      '<div class="card">' +
+        '<div class="q-prompt">' + safeText(activity.prompt) + '</div>' +
+        (activity.hint ? '<div class="q-hint">' + safeText(activity.hint) + '</div>' : '') +
+        '<input id="kt-input-answer" class="choice" type="text" inputmode="decimal" placeholder="Type your answer" autocomplete="off" style="width:100%;text-align:center;cursor:text;" />' +
+        '<div class="feedback" id="kt-feedback"></div>' +
+        '<div class="btn-row">' +
+          '<button class="btn btn-primary" id="kt-check-btn">Check Answer</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn" style="display:none;">Next →</button>' +
+        '</div>' +
+      '</div>';
+
+    renderCard(html);
+
+    var input = $('kt-input-answer');
+    var feedback = $('kt-feedback');
+    var checkBtn = $('kt-check-btn');
+    var nextBtn = $('kt-next-btn');
+
+    function lockInput() {
+      input.disabled = true;
+      checkBtn.disabled = true;
+    }
+
+    function showNext() {
+      nextBtn.style.display = 'inline-flex';
+    }
+
+    function submitAnswer() {
+      var value = input.value;
+      if (!safeText(value).trim()) {
+        feedback.className = 'feedback bad show';
+        feedback.textContent = 'Type an answer first, King.';
+        input.focus();
+        return;
+      }
+
+      var result = checkInputAnswer(value, activity.answer);
+      lockInput();
+
+      if (result.correct) {
+        state.correctCount += 1;
+        gainXP(activity.xp || 0);
+        if (window.KTAudio && typeof window.KTAudio.correct === 'function') KTAudio.correct();
+        input.classList.add('correct');
+        feedback.className = 'feedback good show';
+        feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
+        showNext();
+        return;
+      }
+
+      if (window.KTAudio && typeof window.KTAudio.wrong === 'function') KTAudio.wrong();
+      input.classList.add('wrong');
+      feedback.className = 'feedback bad show';
+      feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
+      showNext();
+    }
+
+    checkBtn.onclick = submitAnswer;
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !checkBtn.disabled) {
+        event.preventDefault();
+        submitAnswer();
+      }
+    });
+    nextBtn.onclick = function () {
+      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
+      nextStep();
+    };
+    input.focus();
+  }
+
   function renderMatch(activity) {
     state.gradableCount += 1;
     state.match = { selectedWord: null, selectedDef: null, matchedCount: 0 };
@@ -428,6 +521,7 @@ window.KTLessonEngine = (function () {
     if (activity.type === 'mcq') return renderMCQ(activity);
     if (activity.type === 'true_false') return renderTrueFalse(activity);
     if (activity.type === 'match') return renderMatch(activity);
+    if (activity.type === 'input') return renderInput(activity);
 
     renderCard(
       '<div class="card">' +
