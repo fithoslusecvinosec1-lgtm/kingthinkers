@@ -23,6 +23,15 @@ window.KTLessonEngine = (function () {
     return value == null ? '' : String(value);
   }
 
+  function escapeHtml(value) {
+    return safeText(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function getLessonIdFromUrl() {
     var params = new URLSearchParams(window.location.search);
     return params.get('id');
@@ -41,7 +50,29 @@ window.KTLessonEngine = (function () {
     return null;
   }
 
-  function buildSteps(lesson) {
+  function isPhasedLesson(lesson) {
+    return !!(
+      lesson &&
+      (
+        lesson.phase1_concept ||
+        (Array.isArray(lesson.phase2_worked) && lesson.phase2_worked.length) ||
+        (Array.isArray(lesson.phase3_practice) && lesson.phase3_practice.length) ||
+        (Array.isArray(lesson.phase4_test) && lesson.phase4_test.length)
+      )
+    );
+  }
+
+  function normalizeChoices(choices) {
+    if (!Array.isArray(choices)) return [];
+    return choices.map(function (choice) {
+      if (choice && typeof choice === 'object') {
+        return safeText(choice.text);
+      }
+      return safeText(choice);
+    });
+  }
+
+  function buildLegacySteps(lesson) {
     var steps = [];
 
     steps.push({ type: 'intro', data: lesson.intro || {} });
@@ -66,6 +97,85 @@ window.KTLessonEngine = (function () {
     return steps;
   }
 
+  function buildPhasedSteps(lesson) {
+    var steps = [];
+    var phase1 = lesson.phase1_concept;
+    var phase2 = Array.isArray(lesson.phase2_worked) ? lesson.phase2_worked : [];
+    var phase3 = Array.isArray(lesson.phase3_practice) ? lesson.phase3_practice : [];
+    var phase4 = Array.isArray(lesson.phase4_test) ? lesson.phase4_test : [];
+
+    steps.push({ type: 'intro', data: lesson.intro || {} });
+
+    if (phase1) {
+      steps.push({ type: 'phase_concept', data: phase1 });
+    }
+
+    phase2.forEach(function (item, index) {
+      steps.push({
+        type: 'phase_worked',
+        data: item,
+        meta: {
+          section: 'worked',
+          index: index,
+          total: phase2.length
+        }
+      });
+    });
+
+    if (phase3.length) {
+      steps.push({
+        type: 'phase_section',
+        data: {
+          title: 'Guided Practice',
+          body: 'Now it is your turn, King. Use what you just learned and solve these with support.'
+        }
+      });
+
+      phase3.forEach(function (item, index) {
+        steps.push({
+          type: 'activity',
+          data: item,
+          meta: {
+            section: 'practice',
+            index: index,
+            total: phase3.length
+          }
+        });
+      });
+    }
+
+    if (phase4.length) {
+      steps.push({
+        type: 'phase_section',
+        data: {
+          title: 'Show What You Know',
+          body: 'Now prove your power, King. These questions check what you can do on your own.'
+        }
+      });
+
+      phase4.forEach(function (item, index) {
+        steps.push({
+          type: 'activity',
+          data: item,
+          meta: {
+            section: 'test',
+            index: index,
+            total: phase4.length
+          }
+        });
+      });
+    }
+
+    steps.push({ type: 'complete', data: lesson.wrapUp || {} });
+    return steps;
+  }
+
+  function buildSteps(lesson) {
+    return isPhasedLesson(lesson)
+      ? buildPhasedSteps(lesson)
+      : buildLegacySteps(lesson);
+  }
+
   function updateTopStats() {
     if ($('lesson-xp-pill')) $('lesson-xp-pill').textContent = '+' + state.xpEarned + ' XP';
     if ($('lesson-crowns-pill')) $('lesson-crowns-pill').textContent = '👑 ' + state.crownsEarned;
@@ -75,8 +185,8 @@ window.KTLessonEngine = (function () {
     var fill = $('lesson-progress-fill');
     if (!fill || !state.steps.length) return;
 
-    var denominator = Math.max(1, state.steps.length - 1);
-    var pct = Math.round((state.stepIndex / denominator) * 100);
+    var denom = Math.max(1, state.steps.length - 1);
+    var pct = Math.round((state.stepIndex / denom) * 100);
     fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
   }
 
@@ -101,23 +211,32 @@ window.KTLessonEngine = (function () {
     updateTopStats();
   }
 
+  function playAudio(name) {
+    if (!window.KTAudio || typeof window.KTAudio[name] !== 'function') return;
+    try {
+      window.KTAudio[name]();
+    } catch (e) {}
+  }
+
   function renderIntro(data) {
     renderCard(
       '<div class="card">' +
-        '<div class="kicker">' + safeText(data.kicker || (state.lesson.subject + ' quest')) + '</div>' +
-        '<div class="title">' + safeText(state.lesson.title) + '</div>' +
-        '<div class="sub">' + safeText(data.text) + '</div>' +
-        '<div class="sage"><strong>Sage:</strong> ' + safeText(data.sage || '') + '</div>' +
+        '<div class="kicker">' + escapeHtml(data.kicker || (state.lesson.subject + ' quest')) + '</div>' +
+        '<div class="title">' + escapeHtml(state.lesson.title) + '</div>' +
+        '<div class="sub">' + escapeHtml(data.text) + '</div>' +
+        (data.sage ? '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>' : '') +
         '<div class="btn-row">' +
           '<button class="btn btn-primary" id="kt-next-btn">Start Quest ⚔️</button>' +
         '</div>' +
       '</div>'
     );
 
-    $('kt-next-btn').onclick = function () {
-      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
-      nextStep();
-    };
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
   }
 
   function renderReading(data) {
@@ -127,7 +246,7 @@ window.KTLessonEngine = (function () {
         '<div class="passage">';
 
     (data.passage || []).forEach(function (p) {
-      html += '<p>' + safeText(p) + '</p>';
+      html += '<p>' + escapeHtml(p) + '</p>';
     });
 
     html += '</div>';
@@ -136,7 +255,7 @@ window.KTLessonEngine = (function () {
       html += '<div class="section-title" style="margin-top:16px;">🧠 Vocabulary</div>';
       html += '<div class="vocab-list">';
       data.vocab.forEach(function (item) {
-        html += '<div class="vocab-item"><strong>' + safeText(item.term) + ':</strong> ' + safeText(item.definition) + '</div>';
+        html += '<div class="vocab-item"><strong>' + escapeHtml(item.term) + ':</strong> ' + escapeHtml(item.definition) + '</div>';
       });
       html += '</div>';
     }
@@ -149,41 +268,148 @@ window.KTLessonEngine = (function () {
 
     renderCard(html);
 
-    $('kt-next-btn').onclick = function () {
-      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
-      nextStep();
-    };
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
   }
 
   function renderTeach(data) {
     renderCard(
       '<div class="card">' +
-        '<div class="section-title">' + safeText(data.title || 'Learn') + '</div>' +
-        '<div class="sub">' + safeText(data.body || '') + '</div>' +
+        '<div class="section-title">' + escapeHtml(data.title || 'Learn') + '</div>' +
+        '<div class="sub">' + escapeHtml(data.body || '') + '</div>' +
         '<div class="btn-row">' +
           '<button class="btn btn-primary" id="kt-next-btn">Continue →</button>' +
         '</div>' +
       '</div>'
     );
 
-    $('kt-next-btn').onclick = function () {
-      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
-      nextStep();
-    };
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
+  }
+
+  function renderPhaseSection(data) {
+    renderCard(
+      '<div class="card">' +
+        '<div class="kicker">New Phase</div>' +
+        '<div class="section-title">' + escapeHtml(data.title || 'Next Phase') + '</div>' +
+        '<div class="sub">' + escapeHtml(data.body || '') + '</div>' +
+        '<div class="btn-row">' +
+          '<button class="btn btn-primary" id="kt-next-btn">Continue →</button>' +
+        '</div>' +
+      '</div>'
+    );
+
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
+  }
+
+  function renderPhaseConcept(data) {
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 1 · Learn the Idea</div>' +
+        '<div class="section-title">' + escapeHtml(data.title || 'Concept') + '</div>' +
+        (data.definition ? '<div class="sub" style="margin-bottom:12px;">' + escapeHtml(data.definition) + '</div>' : '');
+
+    if (data.example) {
+      html += '<div class="sage" style="margin-top:0;">';
+      if (data.example.context) {
+        html += '<div><strong>Example:</strong> ' + escapeHtml(data.example.context) + '</div>';
+      }
+      if (data.example.equation) {
+        html += '<div style="margin-top:8px;"><strong>Fraction:</strong> ' + escapeHtml(data.example.equation) + '</div>';
+      }
+      if (data.example.visual) {
+        html += '<div style="margin-top:8px;"><strong>Visual:</strong> ' + escapeHtml(data.example.visual) + '</div>';
+      }
+      html += '</div>';
+    }
+
+    if (data.sage) {
+      html += '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>';
+    }
+
+    html +=
+        '<div class="btn-row">' +
+          '<button class="btn btn-primary" id="kt-next-btn">I Got It →</button>' +
+        '</div>' +
+      '</div>';
+
+    renderCard(html);
+
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
+  }
+
+  function renderPhaseWorked(data, meta) {
+    meta = meta || {};
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 2 · Worked Example ' + (meta.index + 1) + ' of ' + meta.total + '</div>' +
+        '<div class="section-title">' + escapeHtml(data.problem || 'Worked Example') + '</div>';
+
+    if (Array.isArray(data.steps) && data.steps.length) {
+      data.steps.forEach(function (step, index) {
+        html +=
+          '<div class="sage" style="margin-top:' + (index === 0 ? '8px' : '12px') + ';">' +
+            '<strong>Step ' + (index + 1) + ':</strong> ' + escapeHtml(step.display || '') +
+            (step.explanation ? '<div style="margin-top:6px;">' + escapeHtml(step.explanation) + '</div>' : '') +
+            (step.visual ? '<div style="margin-top:6px;"><em>' + escapeHtml(step.visual) + '</em></div>' : '') +
+          '</div>';
+      });
+    }
+
+    if (data.sage) {
+      html += '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>';
+    }
+
+    html +=
+        '<div class="btn-row">' +
+          '<button class="btn btn-primary" id="kt-next-btn">Continue →</button>' +
+        '</div>' +
+      '</div>';
+
+    renderCard(html);
+
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
   }
 
   function disableChoices() {
     var nodes = document.querySelectorAll('.choice');
-    nodes.forEach(function (btn) { btn.disabled = true; });
+    nodes.forEach(function (btn) {
+      btn.disabled = true;
+    });
   }
 
   function renderMCQ(activity) {
     state.gradableCount += 1;
 
+    var choices = normalizeChoices(activity.choices);
     var html =
       '<div class="card">' +
-        '<div class="q-prompt">' + safeText(activity.prompt) + '</div>' +
-        (activity.hint ? '<div class="q-hint">' + safeText(activity.hint) + '</div>' : '') +
+        (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
+        '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
+        (activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
         '<div class="choices" id="kt-choices"></div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
         '<div class="btn-row" id="kt-next-row" style="display:none;">' +
@@ -194,10 +420,11 @@ window.KTLessonEngine = (function () {
     renderCard(html);
 
     var choicesWrap = $('kt-choices');
-    activity.choices.forEach(function (choice, index) {
+    choices.forEach(function (choice, index) {
       var btn = document.createElement('button');
       btn.className = 'choice';
       btn.textContent = safeText(choice);
+
       btn.onclick = function () {
         disableChoices();
 
@@ -207,14 +434,15 @@ window.KTLessonEngine = (function () {
 
         if (isCorrect) {
           state.correctCount += 1;
-          gainXP(activity.xp || 0);
-          if (window.KTAudio && typeof window.KTAudio.correct === 'function') KTAudio.correct();
+          gainXP(activity.xp || activity.xpReward || 0);
+          gainCrowns(activity.crownReward || 0);
+          playAudio('correct');
           btn.classList.add('correct');
 
           feedback.className = 'feedback good show';
           feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
         } else {
-          if (window.KTAudio && typeof window.KTAudio.wrong === 'function') KTAudio.wrong();
+          playAudio('wrong');
           btn.classList.add('wrong');
 
           var buttons = document.querySelectorAll('.choice');
@@ -224,120 +452,33 @@ window.KTLessonEngine = (function () {
           feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
         }
 
-        $('kt-next-row').style.display = 'flex';
+        if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
       };
+
       choicesWrap.appendChild(btn);
     });
 
-    $('kt-next-btn').onclick = function () {
-      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
-      nextStep();
-    };
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
   }
 
   function renderTrueFalse(activity) {
     renderMCQ({
       prompt: activity.prompt,
+      question: activity.question,
       hint: activity.hint,
+      standard: activity.standard,
       choices: ['True', 'False'],
       answer: activity.answer ? 0 : 1,
       correctFeedback: activity.correctFeedback,
       wrongFeedback: activity.wrongFeedback,
-      xp: activity.xp || 0
+      xp: activity.xp || activity.xpReward || 0,
+      crownReward: activity.crownReward || 0
     });
-  }
-
-  function checkInputAnswer(studentValue, correctAnswer) {
-    if (window.KTTolerance && typeof window.KTTolerance.check === 'function') {
-      return window.KTTolerance.check(studentValue, correctAnswer);
-    }
-
-    var normalizedStudent = safeText(studentValue).trim().replace(/,/g, '').replace(/\s/g, '');
-    var normalizedAnswer = safeText(correctAnswer).trim().replace(/\s/g, '');
-    if (normalizedStudent === normalizedAnswer) return { correct: true };
-
-    var studentNum = parseFloat(normalizedStudent);
-    var answerNum = parseFloat(normalizedAnswer);
-    if (!isNaN(studentNum) && !isNaN(answerNum) && Math.abs(studentNum - answerNum) < 0.001) {
-      return { correct: true };
-    }
-
-    return { correct: false };
-  }
-
-  function renderInput(activity) {
-    state.gradableCount += 1;
-
-    var html =
-      '<div class="card">' +
-        '<div class="q-prompt">' + safeText(activity.prompt) + '</div>' +
-        (activity.hint ? '<div class="q-hint">' + safeText(activity.hint) + '</div>' : '') +
-        '<input id="kt-input-answer" class="choice" type="text" inputmode="decimal" placeholder="Type your answer" autocomplete="off" style="width:100%;text-align:center;cursor:text;" />' +
-        '<div class="feedback" id="kt-feedback"></div>' +
-        '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-check-btn">Check Answer</button>' +
-          '<button class="btn btn-primary" id="kt-next-btn" style="display:none;">Next →</button>' +
-        '</div>' +
-      '</div>';
-
-    renderCard(html);
-
-    var input = $('kt-input-answer');
-    var feedback = $('kt-feedback');
-    var checkBtn = $('kt-check-btn');
-    var nextBtn = $('kt-next-btn');
-
-    function lockInput() {
-      input.disabled = true;
-      checkBtn.disabled = true;
-    }
-
-    function showNext() {
-      nextBtn.style.display = 'inline-flex';
-    }
-
-    function submitAnswer() {
-      var value = input.value;
-      if (!safeText(value).trim()) {
-        feedback.className = 'feedback bad show';
-        feedback.textContent = 'Type an answer first, King.';
-        input.focus();
-        return;
-      }
-
-      var result = checkInputAnswer(value, activity.answer);
-      lockInput();
-
-      if (result.correct) {
-        state.correctCount += 1;
-        gainXP(activity.xp || 0);
-        if (window.KTAudio && typeof window.KTAudio.correct === 'function') KTAudio.correct();
-        input.classList.add('correct');
-        feedback.className = 'feedback good show';
-        feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
-        showNext();
-        return;
-      }
-
-      if (window.KTAudio && typeof window.KTAudio.wrong === 'function') KTAudio.wrong();
-      input.classList.add('wrong');
-      feedback.className = 'feedback bad show';
-      feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
-      showNext();
-    }
-
-    checkBtn.onclick = submitAnswer;
-    input.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter' && !checkBtn.disabled) {
-        event.preventDefault();
-        submitAnswer();
-      }
-    });
-    nextBtn.onclick = function () {
-      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
-      nextStep();
-    };
-    input.focus();
   }
 
   function renderMatch(activity) {
@@ -345,11 +486,14 @@ window.KTLessonEngine = (function () {
     state.match = { selectedWord: null, selectedDef: null, matchedCount: 0 };
 
     var pairs = Array.isArray(activity.pairs) ? activity.pairs.slice() : [];
-    var defs = pairs.slice().sort(function () { return Math.random() - 0.5; });
+    var defs = pairs.slice().sort(function () {
+      return Math.random() - 0.5;
+    });
 
     var html =
       '<div class="card">' +
-        '<div class="q-prompt">' + safeText(activity.prompt) + '</div>' +
+        (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
+        '<div class="q-prompt">' + escapeHtml(activity.prompt || 'Match each item') + '</div>' +
         '<div class="q-hint">Tap a word, then tap its meaning.</div>' +
         '<div class="match-grid">' +
           '<div class="match-col" id="kt-match-words"></div>' +
@@ -373,7 +517,9 @@ window.KTLessonEngine = (function () {
       btn.setAttribute('data-word', pair[0]);
       btn.onclick = function () {
         if (btn.classList.contains('matched')) return;
-        document.querySelectorAll('[data-word]').forEach(function (n) { n.classList.remove('selected'); });
+        document.querySelectorAll('[data-word]').forEach(function (n) {
+          n.classList.remove('selected');
+        });
         btn.classList.add('selected');
         state.match.selectedWord = pair[0];
         tryResolveMatch(activity);
@@ -388,7 +534,9 @@ window.KTLessonEngine = (function () {
       btn.setAttribute('data-def-word', pair[0]);
       btn.onclick = function () {
         if (btn.classList.contains('matched')) return;
-        document.querySelectorAll('[data-def-word]').forEach(function (n) { n.classList.remove('selected'); });
+        document.querySelectorAll('[data-def-word]').forEach(function (n) {
+          n.classList.remove('selected');
+        });
         btn.classList.add('selected');
         state.match.selectedDef = pair[0];
         tryResolveMatch(activity);
@@ -396,10 +544,12 @@ window.KTLessonEngine = (function () {
       defsWrap.appendChild(btn);
     });
 
-    $('kt-next-btn').onclick = function () {
-      if (window.KTAudio && typeof window.KTAudio.tap === 'function') KTAudio.tap();
-      nextStep();
-    };
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
   }
 
   function tryResolveMatch(activity) {
@@ -413,7 +563,7 @@ window.KTLessonEngine = (function () {
     var feedback = $('kt-feedback');
 
     if (word === def) {
-      if (window.KTAudio && typeof window.KTAudio.coin === 'function') KTAudio.coin();
+      playAudio('coin');
 
       if (wordNode) {
         wordNode.classList.remove('selected');
@@ -432,13 +582,14 @@ window.KTLessonEngine = (function () {
 
       if (state.match.matchedCount === (activity.pairs || []).length) {
         state.correctCount += 1;
-        gainXP(activity.xp || 0);
+        gainXP(activity.xp || activity.xpReward || 0);
+        gainCrowns(activity.crownReward || 0);
         feedback.className = 'feedback good show';
         feedback.textContent = safeText(activity.correctFeedback || 'Perfect matching, King!');
-        $('kt-next-row').style.display = 'flex';
+        if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
       }
     } else {
-      if (window.KTAudio && typeof window.KTAudio.wrong === 'function') KTAudio.wrong();
+      playAudio('wrong');
       if (wordNode) wordNode.classList.add('wrong');
       if (defNode) defNode.classList.add('wrong');
 
@@ -454,8 +605,89 @@ window.KTLessonEngine = (function () {
     }
   }
 
+  function normalizeInputAnswer(value) {
+    return safeText(value).trim().toLowerCase().replace(/\s+/g, '');
+  }
+
+  function renderInput(activity) {
+    state.gradableCount += 1;
+
+    var html =
+      '<div class="card">' +
+        (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
+        '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
+        (activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
+        '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
+        '<div class="btn-row">' +
+          '<button class="btn btn-primary" id="kt-submit-btn">Check Answer</button>' +
+        '</div>' +
+        '<div class="feedback" id="kt-feedback"></div>' +
+        '<div class="btn-row" id="kt-next-row" style="display:none;">' +
+          '<button class="btn btn-primary" id="kt-next-btn">Next →</button>' +
+        '</div>' +
+      '</div>';
+
+    renderCard(html);
+
+    var input = $('kt-input-answer');
+    var submit = $('kt-submit-btn');
+    var feedback = $('kt-feedback');
+
+    function checkAnswer() {
+      if (!input) return;
+
+      var userValue = normalizeInputAnswer(input.value);
+      var correctValue = normalizeInputAnswer(activity.answer);
+
+      if (!userValue) {
+        feedback.className = 'feedback bad show';
+        feedback.textContent = 'Type an answer first, King.';
+        return;
+      }
+
+      input.disabled = true;
+      submit.disabled = true;
+
+      if (userValue === correctValue) {
+        state.correctCount += 1;
+        gainXP(activity.xp || activity.xpReward || 0);
+        gainCrowns(activity.crownReward || 0);
+        playAudio('correct');
+
+        feedback.className = 'feedback good show';
+        feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
+      } else {
+        playAudio('wrong');
+        feedback.className = 'feedback bad show';
+        feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
+      }
+
+      if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
+    }
+
+    if (submit) submit.onclick = checkAnswer;
+    if (input) {
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          checkAnswer();
+        }
+      });
+    }
+
+    if ($('kt-next-btn')) {
+      $('kt-next-btn').onclick = function () {
+        playAudio('tap');
+        nextStep();
+      };
+    }
+  }
+
   async function renderComplete(data) {
-    var accuracy = state.gradableCount ? Math.round((state.correctCount / state.gradableCount) * 100) : 100;
+    var accuracy = state.gradableCount
+      ? Math.round((state.correctCount / state.gradableCount) * 100)
+      : 100;
+
     var finalLessonXP = state.lesson.xp || state.xpEarned || 0;
     var finalLessonCrowns = state.lesson.crownReward || state.crownsEarned || 1;
 
@@ -469,14 +701,14 @@ window.KTLessonEngine = (function () {
     renderCard(
       '<div class="card">' +
         '<div class="kicker">Quest Complete</div>' +
-        '<div class="title">' + safeText(data.title || 'You Did It, King! 👑') + '</div>' +
-        '<div class="sub">' + safeText(data.text || 'You completed the lesson.') + '</div>' +
+        '<div class="title">' + escapeHtml(data.title || 'You Did It, King! 👑') + '</div>' +
+        '<div class="sub">' + escapeHtml(data.text || 'You completed the lesson.') + '</div>' +
         '<div class="complete-grid">' +
           '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
           '<div class="stat"><div class="stat-num">' + state.crownsEarned + '</div><div class="stat-label">Crowns</div></div>' +
           '<div class="stat"><div class="stat-num">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>' +
         '</div>' +
-        (data.badge ? '<div class="sage" style="margin-top:16px;"><strong>Badge Unlocked:</strong> ' + safeText(data.badge) + '</div>' : '') +
+        (data.badge ? '<div class="sage" style="margin-top:16px;"><strong>Badge Unlocked:</strong> ' + escapeHtml(data.badge) + '</div>' : '') +
         '<div class="btn-row">' +
           '<button class="btn btn-primary" id="kt-finish-btn">Return to Kingdom →</button>' +
         '</div>' +
@@ -485,7 +717,9 @@ window.KTLessonEngine = (function () {
 
     try {
       var active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
-      var code = localStorage.getItem('kt_active_code');
+      var code = (typeof window.kt_getActiveCode === 'function')
+        ? window.kt_getActiveCode()
+        : localStorage.getItem('kt_active_code');
 
       if (active && code && typeof window.db_completeLesson === 'function') {
         localStorage.setItem('kt_mission_completed', JSON.stringify({
@@ -503,13 +737,13 @@ window.KTLessonEngine = (function () {
       console.warn('Lesson completion sync failed:', e);
     }
 
-    if (window.KTAudio && typeof window.KTAudio.questComplete === 'function') {
-      KTAudio.questComplete();
-    }
+    playAudio('questComplete');
 
-    $('kt-finish-btn').onclick = function () {
-      exitToDashboard();
-    };
+    if ($('kt-finish-btn')) {
+      $('kt-finish-btn').onclick = function () {
+        exitToDashboard();
+      };
+    }
   }
 
   function renderActivity(activity) {
@@ -526,7 +760,7 @@ window.KTLessonEngine = (function () {
     renderCard(
       '<div class="card">' +
         '<div class="title">Unsupported Activity</div>' +
-        '<div class="sub">This lesson uses an activity type not supported yet: ' + safeText(activity.type) + '</div>' +
+        '<div class="sub">This lesson uses an activity type not supported yet: ' + escapeHtml(activity.type) + '</div>' +
       '</div>'
     );
   }
@@ -540,7 +774,7 @@ window.KTLessonEngine = (function () {
           '<div class="btn-row"><button class="btn btn-primary" id="kt-back-btn">Back to Kingdom</button></div>' +
         '</div>'
       );
-      $('kt-back-btn').onclick = exitToDashboard;
+      if ($('kt-back-btn')) $('kt-back-btn').onclick = exitToDashboard;
       return;
     }
 
@@ -550,6 +784,9 @@ window.KTLessonEngine = (function () {
     if (step.type === 'intro') return renderIntro(step.data);
     if (step.type === 'reading') return renderReading(step.data);
     if (step.type === 'teach') return renderTeach(step.data);
+    if (step.type === 'phase_concept') return renderPhaseConcept(step.data);
+    if (step.type === 'phase_worked') return renderPhaseWorked(step.data, step.meta);
+    if (step.type === 'phase_section') return renderPhaseSection(step.data);
     if (step.type === 'activity') return renderActivity(step.data);
     if (step.type === 'complete') return renderComplete(step.data);
   }
@@ -564,7 +801,7 @@ window.KTLessonEngine = (function () {
       currentPhase: step ? step.type + ':' + state.stepIndex : 'lesson',
       currentQuestion: activity ? safeText(activity.prompt || activity.question || '') : '',
       answerChoices: activity && Array.isArray(activity.choices)
-        ? activity.choices.map(function (choice) { return safeText(choice); })
+        ? normalizeChoices(activity.choices)
         : [],
       studentAlreadyWrong: !!document.querySelector('.choice.wrong, .feedback.bad, .match-item.wrong')
     };
@@ -587,8 +824,10 @@ window.KTLessonEngine = (function () {
 
     if (window.KTAudio) {
       document.addEventListener('click', function bootAudio() {
-        if (typeof KTAudio.init === 'function') KTAudio.init();
-        if (typeof KTAudio.startMusic === 'function') KTAudio.startMusic();
+        try {
+          window.KTAudio.init();
+          window.KTAudio.startMusic();
+        } catch (e) {}
       }, { once: true });
     }
 
@@ -609,5 +848,7 @@ window.KTLessonEngine = (function () {
 })();
 
 document.addEventListener('DOMContentLoaded', function () {
-  KTLessonEngine.init();
+  if (window.KTLessonEngine && typeof window.KTLessonEngine.init === 'function') {
+    window.KTLessonEngine.init();
+  }
 });
