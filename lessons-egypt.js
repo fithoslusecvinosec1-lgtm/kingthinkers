@@ -119,9 +119,9 @@ window.KT_LESSONS.egypt = [
   estMinutes: 22,
 
   intro: {
-    kicker: 'Kingdom of Egypt · Math Quest',
+    kicker: 'Kingdom of Egypt · Mission 2',
     text: 'King, the royal scribes of Egypt were the best math minds in the ancient world. They counted gold, grain, and stone — keeping the kingdom running. Today you will sharpen your addition skills just like they did.',
-    sage: 'The scribes never guessed — they knew their place value. Let me teach you their secret. 📜'
+    sage: 'Welcome to Mission 2, King. The scribes never guessed — they lined up place values and solved with precision. 📜'
   },
 
   phase1_concept: {

@@ -146,6 +146,8 @@ function _ktSageAppendContext(prompt, extraContext) {
 function buildLessonContext(ctx) {
   ctx = ctx || {};
   var lines = [];
+  if (ctx.lessonId) lines.push('Lesson id: ' + ctx.lessonId + '.');
+  if (ctx.worldId) lines.push('World id: ' + ctx.worldId + '.');
   if (ctx.lessonTitle) lines.push('Lesson title: ' + ctx.lessonTitle + '.');
   if (ctx.subject) lines.push('Subject: ' + ctx.subject + '.');
   if (ctx.currentPhase) lines.push('Current phase: ' + ctx.currentPhase + '.');

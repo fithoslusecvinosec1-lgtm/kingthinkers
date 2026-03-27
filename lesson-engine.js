@@ -989,6 +989,8 @@ window.KTLessonEngine = (function () {
     var activity = step && step.type === 'activity' ? step.data : null;
 
     return {
+      lessonId: state.lesson && state.lesson.id ? state.lesson.id : '',
+      worldId: state.lesson && state.lesson.worldId ? state.lesson.worldId : '',
       lessonTitle: state.lesson && state.lesson.title ? state.lesson.title : 'Lesson',
       subject: state.lesson && state.lesson.subject ? state.lesson.subject : 'lesson',
       currentPhase: step ? step.type + ':' + state.stepIndex : 'lesson',
