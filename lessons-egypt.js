@@ -108,7 +108,7 @@ window.KT_LESSONS.egypt = [
   },
 
   {
-  id: 'egypt-m1',
+  id: 'egypt-e2',
   worldId: 'egypt',
   title: 'Hieroglyph Numbers',
   subject: 'math',
@@ -453,7 +453,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'egypt-m4',
+  id: 'egypt-e4',
   worldId: 'egypt',
   title: 'Pyramid Fractions',
   subject: 'math',
@@ -569,7 +569,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-e1',
+  id: 'nubia-n1',
   worldId: 'nubia',
   title: 'Warriors of the South',
   subject: 'reading',
@@ -697,7 +697,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-m2',
+  id: 'nubia-n2',
   worldId: 'nubia',
   title: 'Trade Route Math',
   subject: 'math',
@@ -807,7 +807,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-e3',
+  id: 'nubia-n3',
   worldId: 'nubia',
   title: 'The Black Pharaohs',
   subject: 'reading',
@@ -934,7 +934,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-m4',
+  id: 'nubia-n4',
   worldId: 'nubia',
   title: 'Archery Angles',
   subject: 'math',
