@@ -108,7 +108,7 @@ window.KT_LESSONS.egypt = [
   },
 
   {
-  id: 'egypt-m1',
+  id: 'egypt-e2',
   worldId: 'egypt',
   title: 'Hieroglyph Numbers',
   subject: 'math',
@@ -119,9 +119,9 @@ window.KT_LESSONS.egypt = [
   estMinutes: 22,
 
   intro: {
-    kicker: 'Kingdom of Egypt · Math Quest',
+    kicker: 'Kingdom of Egypt · Mission 2',
     text: 'King, the royal scribes of Egypt were the best math minds in the ancient world. They counted gold, grain, and stone — keeping the kingdom running. Today you will sharpen your addition skills just like they did.',
-    sage: 'The scribes never guessed — they knew their place value. Let me teach you their secret. 📜'
+    sage: 'Welcome to Mission 2, King. The scribes never guessed — they lined up place values and solved with precision. 📜'
   },
 
   phase1_concept: {
@@ -323,7 +323,7 @@ window.KT_LESSONS.egypt = [
     text: 'You added three-digit numbers using place value — the same way Egypt\'s greatest scribes kept the kingdom\'s records. That is real power.',
     badge: 'Royal Scribe'
   }
-}
+},
     {
   id: 'egypt-e3',
   worldId: 'egypt',
@@ -453,7 +453,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'egypt-m4',
+  id: 'egypt-e4',
   worldId: 'egypt',
   title: 'Pyramid Fractions',
   subject: 'math',
@@ -569,7 +569,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-e1',
+  id: 'nubia-n1',
   worldId: 'nubia',
   title: 'Warriors of the South',
   subject: 'reading',
@@ -697,7 +697,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-m2',
+  id: 'nubia-n2',
   worldId: 'nubia',
   title: 'Trade Route Math',
   subject: 'math',
@@ -807,7 +807,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-e3',
+  id: 'nubia-n3',
   worldId: 'nubia',
   title: 'The Black Pharaohs',
   subject: 'reading',
@@ -934,7 +934,7 @@ window.KT_LESSONS.egypt = [
   }
 },
 {
-  id: 'nubia-m4',
+  id: 'nubia-n4',
   worldId: 'nubia',
   title: 'Archery Angles',
   subject: 'math',
