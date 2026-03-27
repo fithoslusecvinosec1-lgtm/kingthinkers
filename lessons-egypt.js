@@ -107,82 +107,180 @@ window.KT_LESSONS.egypt = [
     }
   },
 
-  {
-    id: 'egypt-m1',
-    worldId: 'egypt',
-    title: 'Hieroglyph Numbers',
-    subject: 'math',
-    grade: '3',
-    xp: 35,
-    crownReward: 1,
-    estMinutes: 5,
+   {
+  id: 'egypt-m1',
+  worldId: 'egypt',
+  title: 'Hieroglyph Numbers',
+  subject: 'math',
+  grade: '3',
+  standard: '3.NBT.A.2',
+  xp: 35,
+  crownReward: 1,
+  estMinutes: 20,
 
-    intro: {
-      kicker: 'Kingdom of Egypt · Math Quest',
-      text: 'King, today you will use number wisdom to solve Egyptian math challenges.',
-      sage: 'Math is another kind of power, King. Let’s sharpen it. 🔢'
-    },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Add with confidence',
-        body: 'When we add, we combine groups to find the total.'
-      }
-    ],
-
-    activities: [
-      {
-        id: 'egypt-m1-q1',
-        type: 'mcq',
-        prompt: 'What is 12 + 8?',
-        hint: 'Count on from 12.',
-        choices: ['18', '19', '20', '21'],
-        answer: 2,
-        correctFeedback: 'Correct. 12 + 8 = 20.',
-        wrongFeedback: 'Try counting on from 12 by 8 more.',
-        xp: 10
-      },
-      {
-        id: 'egypt-m1-q2',
-        type: 'mcq',
-        prompt: 'What is 25 + 15?',
-        hint: 'Add tens, then ones.',
-        choices: ['35', '40', '45', '50'],
-        answer: 1,
-        correctFeedback: 'Yes. 25 + 15 = 40.',
-        wrongFeedback: 'Break it apart: 20 + 10 and 5 + 5.',
-        xp: 10
-      },
-      {
-        id: 'egypt-m1-q3',
-        type: 'true_false',
-        prompt: '30 + 7 = 37',
-        hint: 'Combine 3 tens and 7 ones.',
-        answer: true,
-        correctFeedback: 'Exactly right.',
-        wrongFeedback: 'Think about place value: tens and ones.',
-        xp: 5
-      },
-      {
-        id: 'egypt-m1-q4',
-        type: 'mcq',
-        prompt: 'A scribe counted 14 scrolls and then 6 more. How many scrolls in all?',
-        hint: 'This is an addition story problem.',
-        choices: ['18', '19', '20', '21'],
-        answer: 2,
-        correctFeedback: 'Correct. 14 + 6 = 20.',
-        wrongFeedback: 'Add the 6 more scrolls to the 14 scrolls.',
-        xp: 10
-      }
-    ],
-
-    wrapUp: {
-      title: 'Math Quest Complete! 👑',
-      text: 'You used number power to solve Egyptian math challenges like a royal scribe.',
-      badge: 'Number Scribe'
-    }
+  intro: {
+    kicker: 'Kingdom of Egypt · Math Quest',
+    text: 'King, today you will train like a royal scribe and use addition to count scrolls, stones, and supplies across Egypt.',
+    sage: 'I’ll teach you first, then we’ll solve together, then you’ll prove your number power. 🔢'
   },
+
+  phase1_concept: {
+    title: 'Adding Tens and Ones',
+    definition: 'Addition puts numbers together to find the total.',
+    example: {
+      context: 'A royal scribe counted 12 scrolls in one basket and 8 more scrolls in another basket.',
+      equation: '12 + 8 = 20',
+      visual: 'Show 12 as 1 ten and 2 ones, then add 8 ones to make 2 tens.'
+    },
+    sage: 'Watch how I combine tens and ones, King. Then you’ll try it with me.'
+  },
+
+  phase2_worked: [
+    {
+      problem: 'The palace kitchen has 14 honey cakes on one tray and 6 more on another tray. How many honey cakes are there in all?',
+      steps: [
+        {
+          display: '14 + 6 = ?',
+          explanation: 'Start with 14. That is 1 ten and 4 ones.',
+          visual: 'Show one group of ten and four single cakes.'
+        },
+        {
+          display: '14 + 6 = ?',
+          explanation: 'Add 6 more ones to the 4 ones.',
+          visual: 'Animate six more single cakes joining the four ones.'
+        },
+        {
+          display: '14 + 6 = 20',
+          explanation: '4 ones plus 6 ones makes 10 ones, which becomes 1 new ten. Now there are 2 tens, so the total is 20.',
+          visual: 'Regroup 10 ones into one ten rod; show 2 tens and 0 ones.'
+        }
+      ],
+      sage: 'Nice and clean. When ones make 10, regroup them into a new ten.'
+    },
+    {
+      problem: 'Workers carried 25 stones in the morning and 15 more in the afternoon. How many stones did they carry altogether?',
+      steps: [
+        {
+          display: '25 + 15 = ?',
+          explanation: 'Break both numbers into tens and ones.',
+          visual: 'Show 25 as 2 tens and 5 ones, and 15 as 1 ten and 5 ones.'
+        },
+        {
+          display: '25 + 15 = ?',
+          explanation: 'Add the tens: 2 tens plus 1 ten equals 3 tens.',
+          visual: 'Highlight the three tens together.'
+        },
+        {
+          display: '25 + 15 = ?',
+          explanation: 'Add the ones: 5 ones plus 5 ones equals 10 ones.',
+          visual: 'Highlight the ten ones.'
+        },
+        {
+          display: '25 + 15 = 40',
+          explanation: '10 ones becomes 1 more ten. Now there are 4 tens, so the total is 40.',
+          visual: 'Regroup the ten ones into a fourth ten rod.'
+        }
+      ],
+      sage: 'You can add tens and ones separately, then put them back together.'
+    }
+  ],
+
+  phase3_practice: [
+    {
+      id: 'egypt-m1-p1',
+      type: 'mcq',
+      prompt: 'A scribe counted 13 papyrus sheets and then 7 more. How many sheets are there in all?',
+      hint: 'Start at 13 and count on 7 more, or make a new ten.',
+      choices: ['18', '19', '20', '21'],
+      answer: 2,
+      correctFeedback: 'Correct. 13 plus 7 makes 20 because 3 ones and 7 ones make a new ten.',
+      wrongFeedback: 'Think about the ones first. 3 ones plus 7 ones makes 10 ones, which becomes 1 ten.',
+      xp: 8
+    },
+    {
+      id: 'egypt-m1-p2',
+      type: 'true_false',
+      prompt: '24 + 16 = 40',
+      hint: 'Add tens first, then ones.',
+      answer: true,
+      correctFeedback: 'Yes. 2 tens + 1 ten = 3 tens, and 4 ones + 6 ones = 10 ones. That makes 4 tens total.',
+      wrongFeedback: 'Break the numbers apart. 24 is 2 tens and 4 ones. 16 is 1 ten and 6 ones.',
+      xp: 7
+    },
+    {
+      id: 'egypt-m1-p3',
+      type: 'input',
+      prompt: 'The royal storehouse had 31 baskets of grain. Farmers brought 8 more baskets. How many baskets are there now?',
+      hint: 'Count on from 31 by 8, or think 1 one + 8 ones makes 9 ones.',
+      answer: '39',
+      correctFeedback: 'Great work. 31 + 8 = 39.',
+      wrongFeedback: 'Start with 31. Adding 8 more changes the ones place from 1 to 9.',
+      xp: 8
+    },
+    {
+      id: 'egypt-m1-p4',
+      type: 'mcq',
+      prompt: 'Which number sentence matches this story: “A builder moved 22 stones, then moved 18 more stones”?',
+      hint: 'Look for the sentence that combines both groups.',
+      choices: ['22 - 18', '22 + 18', '18 + 18', '22 + 8'],
+      answer: 1,
+      correctFeedback: 'Exactly. The story combines two groups, so you add: 22 + 18.',
+      wrongFeedback: 'The builder moved one group, then more of the same thing. That means put the groups together.',
+      xp: 8
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'egypt-m1-t1',
+      standard: '3.NBT.A.2',
+      type: 'mcq',
+      prompt: 'The palace library has 18 scrolls on one shelf and 7 more on another shelf. How many scrolls are there altogether?',
+      choices: ['24', '25', '26', '27'],
+      answer: 1,
+      correctFeedback: 'Right. 18 + 7 = 25.',
+      wrongFeedback: 'Start at 18 and add 7 more. 2 more gets you to 20, then 5 more gets you to 25.',
+      xp: 10
+    },
+    {
+      id: 'egypt-m1-t2',
+      standard: '3.NBT.A.2',
+      type: 'true_false',
+      prompt: '32 + 9 = 40',
+      answer: false,
+      correctFeedback: 'Correct. 32 + 9 = 41, not 40.',
+      wrongFeedback: '32 has 2 ones. Adding 9 ones gives 11 ones, which is 1 ten and 1 one. So the total is 41.',
+      xp: 10
+    },
+    {
+      id: 'egypt-m1-t3',
+      standard: '3.NBT.A.2',
+      type: 'input',
+      prompt: 'Workers carried 27 stones in the morning and 15 more in the afternoon. How many stones did they carry in all?',
+      answer: '42',
+      correctFeedback: 'Excellent. 27 + 15 = 42.',
+      wrongFeedback: 'Add tens and ones. 2 tens + 1 ten = 3 tens. 7 ones + 5 ones = 12 ones, which becomes 1 more ten and 2 ones. Total: 42.',
+      xp: 10
+    },
+    {
+      id: 'egypt-m1-t4',
+      standard: '3.NBT.A.2',
+      type: 'mcq',
+      prompt: 'A temple keeper counted 41 candles, then added 8 more candles. How many candles are there now?',
+      choices: ['48', '49', '50', '51'],
+      answer: 1,
+      correctFeedback: 'Yes. 41 + 8 = 49.',
+      wrongFeedback: '41 has 1 one. Add 8 ones and you get 9 ones, so the total is 49.',
+      xp: 10
+    }
+  ],
+
+  wrapUp: {
+    title: 'Math Quest Complete! 👑',
+    text: 'You added tens and ones like a royal Egyptian scribe and used number power to find totals fast.',
+    badge: 'Number Scribe'
+  }
+},
   {
   id: 'egypt-e3',
   worldId: 'egypt',
