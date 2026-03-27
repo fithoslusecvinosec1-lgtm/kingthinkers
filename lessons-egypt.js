@@ -323,7 +323,7 @@ window.KT_LESSONS.egypt = [
     text: 'You added three-digit numbers using place value — the same way Egypt\'s greatest scribes kept the kingdom\'s records. That is real power.',
     badge: 'Royal Scribe'
   }
-}
+},
     {
   id: 'egypt-e3',
   worldId: 'egypt',
