@@ -107,7 +107,7 @@ window.KT_LESSONS.egypt = [
     }
   },
 
-   {
+  {
   id: 'egypt-m1',
   worldId: 'egypt',
   title: 'Hieroglyph Numbers',
@@ -116,72 +116,103 @@ window.KT_LESSONS.egypt = [
   standard: '3.NBT.A.2',
   xp: 35,
   crownReward: 1,
-  estMinutes: 20,
+  estMinutes: 22,
 
   intro: {
     kicker: 'Kingdom of Egypt · Math Quest',
-    text: 'King, today you will train like a royal scribe and use addition to count scrolls, stones, and supplies across Egypt.',
-    sage: 'I’ll teach you first, then we’ll solve together, then you’ll prove your number power. 🔢'
+    text: 'King, the royal scribes of Egypt were the best math minds in the ancient world. They counted gold, grain, and stone — keeping the kingdom running. Today you will sharpen your addition skills just like they did.',
+    sage: 'The scribes never guessed — they knew their place value. Let me teach you their secret. 📜'
   },
 
   phase1_concept: {
-    title: 'Adding Tens and Ones',
-    definition: 'Addition puts numbers together to find the total.',
+    title: 'Adding with Place Value',
+    definition: 'Place value means every digit has a position — ones, tens, and hundreds. When we add, we line up matching positions and combine them.',
     example: {
-      context: 'A royal scribe counted 12 scrolls in one basket and 8 more scrolls in another basket.',
-      equation: '12 + 8 = 20',
-      visual: 'Show 12 as 1 ten and 2 ones, then add 8 ones to make 2 tens.'
+      context: 'A royal scribe counted 234 gold coins in the morning and received 152 more in the afternoon.',
+      equation: '234 + 152 = ?',
+      visual: 'place_value_columns',
+      visual_data: {
+        type: 'columns',
+        label_a: '234',
+        label_b: '152',
+        hundreds_a: 2, tens_a: 3, ones_a: 4,
+        hundreds_b: 1, tens_b: 5, ones_b: 2,
+        result: '386',
+        steps: [
+          'Ones: 4 + 2 = 6',
+          'Tens: 3 + 5 = 8',
+          'Hundreds: 2 + 1 = 3',
+          'Answer: 386'
+        ]
+      }
     },
-    sage: 'Watch how I combine tens and ones, King. Then you’ll try it with me.'
+    sage: 'Line up your ones, tens, and hundreds — then add each column. Watch me do it step by step.'
   },
 
   phase2_worked: [
     {
-      problem: 'The palace kitchen has 14 honey cakes on one tray and 6 more on another tray. How many honey cakes are there in all?',
+      problem: 'The pharaoh\'s treasury holds 245 silver rings. The Nile traders deliver 132 more. How many rings in total?',
+      equation: '245 + 132 = ?',
       steps: [
         {
-          display: '14 + 6 = ?',
-          explanation: 'Start with 14. That is 1 ten and 4 ones.',
-          visual: 'Show one group of ten and four single cakes.'
+          display: '245 + 132 = ?',
+          explanation: 'Line up the numbers by place value: ones under ones, tens under tens, hundreds under hundreds.',
+          visual: 'Show 245 and 132 stacked in place value columns'
         },
         {
-          display: '14 + 6 = ?',
-          explanation: 'Add 6 more ones to the 4 ones.',
-          visual: 'Animate six more single cakes joining the four ones.'
+          display: 'Ones: 5 + 2 = 7',
+          explanation: 'Start with the ones column. 5 ones plus 2 ones equals 7 ones.',
+          visual: 'Ones column highlighted, 7 appears in ones position'
         },
         {
-          display: '14 + 6 = 20',
-          explanation: '4 ones plus 6 ones makes 10 ones, which becomes 1 new ten. Now there are 2 tens, so the total is 20.',
-          visual: 'Regroup 10 ones into one ten rod; show 2 tens and 0 ones.'
+          display: 'Tens: 4 + 3 = 7',
+          explanation: 'Now the tens column. 4 tens plus 3 tens equals 7 tens.',
+          visual: 'Tens column highlighted, 7 appears in tens position'
+        },
+        {
+          display: 'Hundreds: 2 + 1 = 3',
+          explanation: 'Finally the hundreds column. 2 hundreds plus 1 hundred equals 3 hundreds.',
+          visual: 'Hundreds column highlighted, 3 appears in hundreds position'
+        },
+        {
+          display: '245 + 132 = 377',
+          explanation: 'Put it together: 3 hundreds, 7 tens, 7 ones = 377 rings total.',
+          visual: 'Full answer 377 revealed with all columns highlighted'
         }
       ],
-      sage: 'Nice and clean. When ones make 10, regroup them into a new ten.'
+      sage: 'No regrouping needed here — each column stayed under 10. The next one gets trickier.'
     },
     {
-      problem: 'Workers carried 25 stones in the morning and 15 more in the afternoon. How many stones did they carry altogether?',
+      problem: 'A pyramid uses 356 large stones and 275 small stones. How many stones total?',
+      equation: '356 + 275 = ?',
       steps: [
         {
-          display: '25 + 15 = ?',
-          explanation: 'Break both numbers into tens and ones.',
-          visual: 'Show 25 as 2 tens and 5 ones, and 15 as 1 ten and 5 ones.'
+          display: '356 + 275 = ?',
+          explanation: 'Line up by place value. This time we will need to regroup — watch carefully.',
+          visual: 'Show 356 and 275 stacked in place value columns'
         },
         {
-          display: '25 + 15 = ?',
-          explanation: 'Add the tens: 2 tens plus 1 ten equals 3 tens.',
-          visual: 'Highlight the three tens together.'
+          display: 'Ones: 6 + 5 = 11',
+          explanation: '6 ones plus 5 ones equals 11. That\'s more than 9 — so we write 1 and carry 1 ten.',
+          visual: 'Ones column: 11 shown, 1 written below, 1 carried to tens column'
         },
         {
-          display: '25 + 15 = ?',
-          explanation: 'Add the ones: 5 ones plus 5 ones equals 10 ones.',
-          visual: 'Highlight the ten ones.'
+          display: 'Tens: 5 + 7 + 1 carried = 13',
+          explanation: '5 tens plus 7 tens plus the 1 we carried equals 13. Write 3, carry 1 hundred.',
+          visual: 'Tens column: 13 shown, 3 written below, 1 carried to hundreds column'
         },
         {
-          display: '25 + 15 = 40',
-          explanation: '10 ones becomes 1 more ten. Now there are 4 tens, so the total is 40.',
-          visual: 'Regroup the ten ones into a fourth ten rod.'
+          display: 'Hundreds: 3 + 2 + 1 carried = 6',
+          explanation: '3 hundreds plus 2 hundreds plus the 1 we carried equals 6 hundreds.',
+          visual: 'Hundreds column: 6 written below'
+        },
+        {
+          display: '356 + 275 = 631',
+          explanation: '6 hundreds, 3 tens, 1 one = 631 stones. The pyramid is taking shape!',
+          visual: 'Full answer 631 revealed'
         }
       ],
-      sage: 'You can add tens and ones separately, then put them back together.'
+      sage: 'Regrouping is just carrying — when a column hits 10 or more, pass the extra to the next column. That\'s it, King.'
     }
   ],
 
@@ -189,44 +220,54 @@ window.KT_LESSONS.egypt = [
     {
       id: 'egypt-m1-p1',
       type: 'mcq',
-      prompt: 'A scribe counted 13 papyrus sheets and then 7 more. How many sheets are there in all?',
-      hint: 'Start at 13 and count on 7 more, or make a new ten.',
-      choices: ['18', '19', '20', '21'],
-      answer: 2,
-      correctFeedback: 'Correct. 13 plus 7 makes 20 because 3 ones and 7 ones make a new ten.',
-      wrongFeedback: 'Think about the ones first. 3 ones plus 7 ones makes 10 ones, which becomes 1 ten.',
+      prompt: 'What is 341 + 215?',
+      hint: 'Add ones first: 1 + 5. Then tens: 4 + 1. Then hundreds: 3 + 2.',
+      choices: ['446', '546', '556', '646'],
+      answer: 1,
+      correctFeedback: 'Yes! 341 + 215 = 556. Ones: 6, Tens: 5, Hundreds: 5.',
+      wrongFeedback: 'Try each column separately — ones, then tens, then hundreds.',
       xp: 8
     },
     {
       id: 'egypt-m1-p2',
       type: 'true_false',
-      prompt: '24 + 16 = 40',
-      hint: 'Add tens first, then ones.',
+      prompt: '128 + 243 = 371',
+      hint: 'Check the ones: 8 + 3 = 11. Do you need to regroup?',
       answer: true,
-      correctFeedback: 'Yes. 2 tens + 1 ten = 3 tens, and 4 ones + 6 ones = 10 ones. That makes 4 tens total.',
-      wrongFeedback: 'Break the numbers apart. 24 is 2 tens and 4 ones. 16 is 1 ten and 6 ones.',
-      xp: 7
+      correctFeedback: 'Correct! 8 + 3 = 11, write 1 carry 1. Tens: 2 + 4 + 1 = 7. Hundreds: 1 + 2 = 3. Answer: 371.',
+      wrongFeedback: '8 + 3 = 11 — write the 1, carry a ten. Then tens: 2 + 4 + 1 carried = 7. Hundreds: 1 + 2 = 3. That gives 371.',
+      xp: 8
     },
     {
       id: 'egypt-m1-p3',
       type: 'input',
-      prompt: 'The royal storehouse had 31 baskets of grain. Farmers brought 8 more baskets. How many baskets are there now?',
-      hint: 'Count on from 31 by 8, or think 1 one + 8 ones makes 9 ones.',
-      answer: '39',
-      correctFeedback: 'Great work. 31 + 8 = 39.',
-      wrongFeedback: 'Start with 31. Adding 8 more changes the ones place from 1 to 9.',
-      xp: 8
+      prompt: 'The royal baker used 164 cups of flour in the morning and 278 cups in the afternoon. How many cups total?',
+      hint: 'Set up the columns: 164 + 278. Start with the ones: 4 + 8.',
+      answer: '442',
+      correctFeedback: 'Excellent! 164 + 278 = 442. Ones: 4+8=12, write 2 carry 1. Tens: 6+7+1=14, write 4 carry 1. Hundreds: 1+2+1=4.',
+      wrongFeedback: 'Work column by column. Ones: 4+8=12, write 2, carry 1. Tens: 6+7+1=14, write 4, carry 1. Hundreds: 1+2+1=4. What do you get?',
+      xp: 10
     },
     {
       id: 'egypt-m1-p4',
       type: 'mcq',
-      prompt: 'Which number sentence matches this story: “A builder moved 22 stones, then moved 18 more stones”?',
-      hint: 'Look for the sentence that combines both groups.',
-      choices: ['22 - 18', '22 + 18', '18 + 18', '22 + 8'],
-      answer: 1,
-      correctFeedback: 'Exactly. The story combines two groups, so you add: 22 + 18.',
-      wrongFeedback: 'The builder moved one group, then more of the same thing. That means put the groups together.',
+      prompt: 'Which addition requires regrouping?',
+      hint: 'Look at the ones column in each problem. If the ones add up to 10 or more, you need to regroup.',
+      choices: ['231 + 145', '304 + 263', '157 + 286', '410 + 329'],
+      answer: 2,
+      correctFeedback: 'Right — 157 + 286 needs regrouping because 7 + 6 = 13 in the ones column.',
+      wrongFeedback: 'Check the ones digit in each pair. Which ones column adds up to 10 or more?',
       xp: 8
+    },
+    {
+      id: 'egypt-m1-p5',
+      type: 'input',
+      prompt: 'A Nubian trader brings 376 beads to Egypt. An Egyptian merchant already has 459 beads. How many beads are there altogether?',
+      hint: 'This is 376 + 459. Watch the ones: 6 + 9 is more than 9, so you\'ll need to regroup twice.',
+      answer: '835',
+      correctFeedback: 'King! 376 + 459 = 835. Double regrouping — you handled it perfectly.',
+      wrongFeedback: 'Ones: 6+9=15, write 5 carry 1. Tens: 7+5+1=13, write 3 carry 1. Hundreds: 3+4+1=8. Put it together.',
+      xp: 10
     }
   ],
 
@@ -235,53 +276,55 @@ window.KT_LESSONS.egypt = [
       id: 'egypt-m1-t1',
       standard: '3.NBT.A.2',
       type: 'mcq',
-      prompt: 'The palace library has 18 scrolls on one shelf and 7 more on another shelf. How many scrolls are there altogether?',
-      choices: ['24', '25', '26', '27'],
+      prompt: 'The pharaoh\'s scribe counted 423 gold coins on Monday and 354 more on Tuesday. How many coins in total?',
+      choices: ['767', '777', '677', '876'],
       answer: 1,
-      correctFeedback: 'Right. 18 + 7 = 25.',
-      wrongFeedback: 'Start at 18 and add 7 more. 2 more gets you to 20, then 5 more gets you to 25.',
-      xp: 10
+      correctFeedback: '423 + 354 = 777. No regrouping needed — each column stayed under 10.',
+      wrongFeedback: 'Add column by column. Ones: 3+4=7. Tens: 2+5=7. Hundreds: 4+3=7. The answer is 777, not ' + '—' + ' check your ones and tens carefully.'
     },
     {
       id: 'egypt-m1-t2',
       standard: '3.NBT.A.2',
       type: 'true_false',
-      prompt: '32 + 9 = 40',
-      answer: false,
-      correctFeedback: 'Correct. 32 + 9 = 41, not 40.',
-      wrongFeedback: '32 has 2 ones. Adding 9 ones gives 11 ones, which is 1 ten and 1 one. So the total is 41.',
-      xp: 10
+      prompt: '265 + 178 = 443',
+      hint_disabled: true,
+      answer: true,
+      correctFeedback: 'Correct! 265 + 178 = 443. Ones: 5+8=13, write 3 carry 1. Tens: 6+7+1=14, write 4 carry 1. Hundreds: 2+1+1=4. Answer: 443.',
+      wrongFeedback: '265 + 178: Ones: 5+8=13, write 3, carry 1. Tens: 6+7+1=14, write 4, carry 1. Hundreds: 2+1+1=4. The answer IS 443 — so the statement is true.'
     },
     {
       id: 'egypt-m1-t3',
       standard: '3.NBT.A.2',
       type: 'input',
-      prompt: 'Workers carried 27 stones in the morning and 15 more in the afternoon. How many stones did they carry in all?',
-      answer: '42',
-      correctFeedback: 'Excellent. 27 + 15 = 42.',
-      wrongFeedback: 'Add tens and ones. 2 tens + 1 ten = 3 tens. 7 ones + 5 ones = 12 ones, which becomes 1 more ten and 2 ones. Total: 42.',
-      xp: 10
+      prompt: 'Workers placed 487 stones on the east side of the pyramid and 346 stones on the west side. What is the total number of stones?',
+      answer: '833',
+      correctFeedback: '487 + 346 = 833. Ones: 7+6=13, write 3, carry 1. Tens: 8+4+1=13, write 3, carry 1. Hundreds: 4+3+1=8.',
+      wrongFeedback: 'Remember to regroup when a column reaches 10 or more. Ones: 7+6=13. Tens: 8+4+1=13. Hundreds: 4+3+1=8. What is the full answer?'
     },
     {
       id: 'egypt-m1-t4',
       standard: '3.NBT.A.2',
       type: 'mcq',
-      prompt: 'A temple keeper counted 41 candles, then added 8 more candles. How many candles are there now?',
-      choices: ['48', '49', '50', '51'],
-      answer: 1,
-      correctFeedback: 'Yes. 41 + 8 = 49.',
-      wrongFeedback: '41 has 1 one. Add 8 ones and you get 9 ones, so the total is 49.',
-      xp: 10
+      prompt: 'A Nile boat carried 215 bags of grain on its first trip and 362 bags on its second trip. Which shows the correct way to find the total?',
+      choices: [
+        '215 + 362 = 577',
+        '215 + 362 = 587',
+        '215 + 362 = 477',
+        '215 + 362 = 567'
+      ],
+      answer: 0,
+      correctFeedback: '215 + 362 = 577. Ones: 5+2=7. Tens: 1+6=7. Hundreds: 2+3=5. The boat carried 577 bags in total.',
+      wrongFeedback: 'Add each column: Ones: 5+2=7. Tens: 1+6=7. Hundreds: 2+3=5. Which answer matches 577?'
     }
   ],
 
   wrapUp: {
-    title: 'Math Quest Complete! 👑',
-    text: 'You added tens and ones like a royal Egyptian scribe and used number power to find totals fast.',
-    badge: 'Number Scribe'
+    title: 'Quest Complete, King! 👑',
+    text: 'You added three-digit numbers using place value — the same way Egypt\'s greatest scribes kept the kingdom\'s records. That is real power.',
+    badge: 'Royal Scribe'
   }
-},
-  {
+}
+    {
   id: 'egypt-e3',
   worldId: 'egypt',
   title: "The Nile's Gift",
