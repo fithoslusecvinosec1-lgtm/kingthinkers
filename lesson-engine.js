@@ -307,6 +307,51 @@ window.KTLessonEngine = (function () {
     );
   }
 
+  function renderPlaceValueColumnsVisual(visual) {
+    if (!isVisualObject(visual)) return '';
+
+    var ha = Math.max(0, Number(visual.hundreds_a || 0));
+    var ta = Math.max(0, Number(visual.tens_a || 0));
+    var oa = Math.max(0, Number(visual.ones_a || 0));
+    var hb = Math.max(0, Number(visual.hundreds_b || 0));
+    var tb = Math.max(0, Number(visual.tens_b || 0));
+    var ob = Math.max(0, Number(visual.ones_b || 0));
+
+    function renderRow(label, h, t, o) {
+      return (
+        '<div style="display:grid;grid-template-columns:82px repeat(3,minmax(0,1fr));gap:8px;align-items:center;margin-top:8px;">' +
+          '<div style="font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' +
+          '<div style="padding:10px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);text-align:center;font-family:var(--f-d);font-size:24px;color:var(--gold);">' + h + '</div>' +
+          '<div style="padding:10px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);text-align:center;font-family:var(--f-d);font-size:24px;color:var(--gold);">' + t + '</div>' +
+          '<div style="padding:10px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);text-align:center;font-family:var(--f-d);font-size:24px;color:var(--gold);">' + o + '</div>' +
+        '</div>'
+      );
+    }
+
+    var result = visual.result
+      ? (
+          '<div style="margin-top:10px;padding:10px;border-radius:10px;background:rgba(0,196,140,.08);border:1px solid rgba(0,196,140,.2);font-family:var(--f-d);font-size:24px;text-align:center;color:var(--gold);">' +
+            escapeHtml(visual.result) +
+          '</div>'
+        )
+      : '';
+
+    return (
+      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
+        (visual.label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(visual.label) + '</div>' : '') +
+        '<div style="display:grid;grid-template-columns:82px repeat(3,minmax(0,1fr));gap:8px;align-items:center;">' +
+          '<div></div>' +
+          '<div style="font-size:11px;font-weight:900;color:var(--muted);text-align:center;letter-spacing:.06em;">HUNDREDS</div>' +
+          '<div style="font-size:11px;font-weight:900;color:var(--muted);text-align:center;letter-spacing:.06em;">TENS</div>' +
+          '<div style="font-size:11px;font-weight:900;color:var(--muted);text-align:center;letter-spacing:.06em;">ONES</div>' +
+        '</div>' +
+        renderRow(visual.label_a || 'Number A', ha, ta, oa) +
+        renderRow(visual.label_b || 'Number B', hb, tb, ob) +
+        result +
+      '</div>'
+    );
+  }
+
   function renderGenericVisualObject(visual) {
     if (!isVisualObject(visual)) return '';
 
@@ -337,6 +382,10 @@ window.KTLessonEngine = (function () {
           '<div style="font-family:var(--f-d);font-size:28px;color:var(--gold);">' + escapeHtml(visual.value || '') + '</div>' +
         '</div>'
       );
+    }
+
+    if (visual.type === 'columns' || visual.type === 'place_value_columns') {
+      return renderPlaceValueColumnsVisual(visual);
     }
 
     return '';
@@ -454,6 +503,9 @@ window.KTLessonEngine = (function () {
   }
 
   function renderPhaseConcept(data) {
+    var conceptVisual = data && data.example
+      ? (data.example.visual_data || data.example.visual)
+      : null;
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 1 · Learn the Idea</div>' +
@@ -466,9 +518,9 @@ window.KTLessonEngine = (function () {
         html += '<div><strong>Example:</strong> ' + escapeHtml(data.example.context) + '</div>';
       }
       if (data.example.equation) {
-        html += '<div style="margin-top:8px;"><strong>Fraction:</strong> ' + escapeHtml(data.example.equation) + '</div>';
+        html += '<div style="margin-top:8px;"><strong>Equation:</strong> ' + escapeHtml(data.example.equation) + '</div>';
       }
-      html += renderVisualBlock(data.example.visual);
+      html += renderVisualBlock(conceptVisual);
       html += '</div>';
     }
 
@@ -497,7 +549,8 @@ window.KTLessonEngine = (function () {
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 2 · Worked Example ' + (meta.index + 1) + ' of ' + meta.total + '</div>' +
-        '<div class="section-title">' + escapeHtml(data.problem || 'Worked Example') + '</div>';
+        '<div class="section-title">' + escapeHtml(data.problem || 'Worked Example') + '</div>' +
+        (data.equation ? '<div class="q-hint"><strong>Equation:</strong> ' + escapeHtml(data.equation) + '</div>' : '');
 
     if (Array.isArray(data.steps) && data.steps.length) {
       data.steps.forEach(function (step, index) {
@@ -545,7 +598,7 @@ window.KTLessonEngine = (function () {
       '<div class="card">' +
         (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
-        (activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
+        (!activity.hint_disabled && activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
         (activity.visual ? renderVisualBlock(activity.visual) : '') +
         '<div class="choices" id="kt-choices"></div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
@@ -608,6 +661,7 @@ window.KTLessonEngine = (function () {
       prompt: activity.prompt,
       question: activity.question,
       hint: activity.hint,
+      hint_disabled: activity.hint_disabled,
       standard: activity.standard,
       visual: activity.visual,
       choices: ['True', 'False'],
@@ -754,7 +808,7 @@ window.KTLessonEngine = (function () {
       '<div class="card">' +
         (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
-        (activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
+        (!activity.hint_disabled && activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
         (activity.visual ? renderVisualBlock(activity.visual) : '') +
         '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
         '<div class="btn-row">' +
