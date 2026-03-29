@@ -105,10 +105,10 @@ window.KT_LESSONS.egypt = [
       text: 'You discovered that great leaders gain power by listening, learning, and serving others wisely.',
       badge: 'Seeker of Secrets'
     }
-  },
+  },,
 
   {
-  id: 'egypt-e2',
+    id: 'egypt-e2',
   worldId: 'egypt',
   title: 'Hieroglyph Numbers',
   subject: 'math',
@@ -324,7 +324,8 @@ window.KT_LESSONS.egypt = [
     badge: 'Royal Scribe'
   }
 },
-    {
+    {,
+
   id: 'egypt-e3',
   worldId: 'egypt',
   title: "The Nile's Gift",
