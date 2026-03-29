@@ -302,7 +302,7 @@ function getStudent(code) {
 
 // ── STATE ─────────────────────────────────────────────────────
 let newGrade = '3';
-let lastCode = localStorage.getItem('kt_last_code') || '';
+let lastCode = sessionStorage.getItem('kt_last_code') || localStorage.getItem('kt_last_code') || '';
 
 // ── AUDIO SAFE WRAPPER ────────────────────────────────────────
 function audioTap() {
@@ -325,14 +325,24 @@ function switchTab(tab) {
   if (!student) return;
 
   const slot = document.getElementById('welcome-back-slot');
-  slot.innerHTML = `
-    <div class="welcome-back">
-      <div class="wb-avatar">👑</div>
-      <div>
-        <div class="wb-name">Welcome back, King ${student.name}!</div>
-        <div class="wb-sub">Code: ${lastCode} &nbsp;·&nbsp; Grade ${student.grade} &nbsp;·&nbsp; ${(student.xp || 0)} XP</div>
-      </div>
-    </div>`;
+  const wrap = document.createElement('div');
+  wrap.className = 'welcome-back';
+  const avatar = document.createElement('div');
+  avatar.className = 'wb-avatar';
+  avatar.textContent = '👑';
+  const meta = document.createElement('div');
+  const nameEl = document.createElement('div');
+  nameEl.className = 'wb-name';
+  nameEl.textContent = 'Welcome back, King ' + (student.name || '') + '!';
+  const subEl = document.createElement('div');
+  subEl.className = 'wb-sub';
+  subEl.textContent = 'Code: ' + lastCode + ' · Grade ' + (student.grade || '') + ' · ' + (student.xp || 0) + ' XP';
+  meta.appendChild(nameEl);
+  meta.appendChild(subEl);
+  wrap.appendChild(avatar);
+  wrap.appendChild(meta);
+  slot.textContent = '';
+  slot.appendChild(wrap);
 
   lastCode.split('').forEach((d,i) => {
     const box = document.getElementById('c'+i);
@@ -344,10 +354,12 @@ function switchTab(tab) {
 })();
 
 function clearLastStudent() {
+  sessionStorage.removeItem('kt_last_code');
   localStorage.removeItem('kt_last_code');
+  localStorage.removeItem('kt_remember_student_code');
   if (typeof kt_clearSession === 'function') kt_clearSession();
   lastCode = '';
-  document.getElementById('welcome-back-slot').innerHTML = '';
+  document.getElementById('welcome-back-slot').textContent = '';
   document.getElementById('not-you-wrap').style.display = 'none';
   [0,1,2,3].forEach(i => {
     const box = document.getElementById('c'+i);
@@ -441,7 +453,8 @@ async function doLogin() {
     kt_setActiveCode(code);
   } else {
     localStorage.setItem('kt_active_code', code);
-    localStorage.setItem('kt_last_code', code);
+    sessionStorage.setItem('kt_last_code', code);
+    localStorage.removeItem('kt_last_code');
   }
 
   showLoading(`Opening your kingdom, King ${student.name}…`, 'Get ready to conquer!');
@@ -520,7 +533,8 @@ async function doRegister() {
     kt_setActiveCode(code);
   } else {
     localStorage.setItem('kt_active_code', code);
-    localStorage.setItem('kt_last_code', code);
+    sessionStorage.setItem('kt_last_code', code);
+    localStorage.removeItem('kt_last_code');
   }
 
   showLoading(`Welcome, King ${name}! Your code is ${code}`, "Write it down — you'll need it next time!");
