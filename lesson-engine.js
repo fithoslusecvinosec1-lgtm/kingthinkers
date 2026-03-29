@@ -8,6 +8,8 @@ window.KTLessonEngine = (function () {
     correctCount: 0,
     gradableCount: 0,
     startedAt: Date.now(),
+    workedStepIndex: 0,
+    streakCount: 0,       // consecutive correct answers in Phase 3
     match: {
       selectedWord: null,
       selectedDef: null,
@@ -546,38 +548,70 @@ window.KTLessonEngine = (function () {
 
   function renderPhaseWorked(data, meta) {
     meta = meta || {};
+    var steps = Array.isArray(data.steps) ? data.steps : [];
+    var revealed = state.workedStepIndex; // how many steps shown so far
+    var isLastStep = revealed >= steps.length - 1;
+    var allRevealed = revealed >= steps.length;
+
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 2 · Worked Example ' + (meta.index + 1) + ' of ' + meta.total + '</div>' +
         '<div class="section-title">' + escapeHtml(data.problem || 'Worked Example') + '</div>' +
         (data.equation ? '<div class="q-hint"><strong>Equation:</strong> ' + escapeHtml(data.equation) + '</div>' : '');
 
-    if (Array.isArray(data.steps) && data.steps.length) {
-      data.steps.forEach(function (step, index) {
-        html +=
-          '<div class="sage" style="margin-top:' + (index === 0 ? '8px' : '12px') + ';">' +
-            '<strong>Step ' + (index + 1) + ':</strong> ' + escapeHtml(step.display || '') +
-            (step.explanation ? '<div style="margin-top:6px;">' + escapeHtml(step.explanation) + '</div>' : '') +
-            renderVisualBlock(step.visual) +
-          '</div>';
-      });
+    // Show all steps up to and including the current revealed index
+    steps.forEach(function (step, index) {
+      if (index > revealed) return; // not revealed yet
+      var isNew = index === revealed && !allRevealed;
+      html +=
+        '<div class="phase2-step' + (isNew ? ' phase2-step-new' : '') + '" style="margin-top:' + (index === 0 ? '10px' : '14px') + ';">' +
+          '<div class="phase2-step-label">Step ' + (index + 1) + ' of ' + steps.length + '</div>' +
+          '<div class="phase2-step-display">' + escapeHtml(step.display || '') + '</div>' +
+          (step.explanation
+            ? '<div class="phase2-step-explanation">' + escapeHtml(step.explanation) + '</div>'
+            : '') +
+          renderVisualBlock(step.visual) +
+        '</div>';
+    });
+
+    // Show Sage comment only after all steps are revealed
+    if (allRevealed && data.sage) {
+      html += '<div class="sage" style="margin-top:14px;"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>';
     }
 
-    if (data.sage) {
-      html += '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>';
-    }
-
-    html +=
+    // Button: "Next Step" while steps remain, "Got it →" when all revealed
+    if (!allRevealed) {
+      html +=
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Continue →</button>' +
-        '</div>' +
-      '</div>';
+          '<button class="btn btn-primary" id="kt-next-step-btn">Next Step →</button>' +
+          '<div class="phase2-progress">' + (revealed + 1) + ' / ' + steps.length + ' steps</div>' +
+        '</div>';
+    } else {
+      html +=
+        '<div class="btn-row">' +
+          '<button class="btn btn-primary" id="kt-next-btn">Got it, let\'s go! →</button>' +
+        '</div>';
+    }
 
+    html += '</div>';
     renderCard(html);
 
+    // "Next Step" — reveal one more step, re-render same lesson step
+    if ($('kt-next-step-btn')) {
+      $('kt-next-step-btn').onclick = function () {
+        if (typeof playAudio === 'function') playAudio('tap');
+        else if (window.KTAudio) KTAudio.tap();
+        state.workedStepIndex += 1;
+        renderPhaseWorked(data, meta);
+      };
+    }
+
+    // "Got it" — advance to the next lesson step and reset reveal index
     if ($('kt-next-btn')) {
       $('kt-next-btn').onclick = function () {
-        playAudio('tap');
+        if (typeof playAudio === 'function') playAudio('tap');
+        else if (window.KTAudio) KTAudio.tap();
+        state.workedStepIndex = 0; // reset for the next worked example
         nextStep();
       };
     }
@@ -593,6 +627,31 @@ window.KTLessonEngine = (function () {
   function isPhase4Activity() {
     var step = state.steps[state.stepIndex];
     return step && step.meta && step.meta.section === 'test';
+  }
+
+  function isPhase3Activity() {
+    var step = state.steps[state.stepIndex];
+    return step && step.meta && step.meta.section === 'practice';
+  }
+
+  function handleStreak(isCorrect, feedbackEl) {
+    if (!isPhase3Activity()) return;
+    if (isCorrect) {
+      state.streakCount += 1;
+      if (state.streakCount === 3) {
+        // King Mode banner — inject above the feedback
+        var banner = document.createElement('div');
+        banner.className = 'king-mode-banner';
+        banner.innerHTML = '👑 KING MODE! 3 in a row — bonus XP!';
+        if (feedbackEl && feedbackEl.parentNode) {
+          feedbackEl.parentNode.insertBefore(banner, feedbackEl);
+        }
+        gainXP(10); // bonus XP for 3-streak
+        if (window.KTAudio) KTAudio.questComplete();
+      }
+    } else {
+      state.streakCount = 0;
+    }
   }
 
   function renderMCQ(activity) {
@@ -636,6 +695,7 @@ window.KTLessonEngine = (function () {
 
           feedback.className = 'feedback good show';
           feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
+          handleStreak(true, feedback);
         } else {
           playAudio('wrong');
           btn.classList.add('wrong');
@@ -645,6 +705,7 @@ window.KTLessonEngine = (function () {
 
           feedback.className = 'feedback bad show';
           feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
+          handleStreak(false, feedback);
         }
 
         if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
@@ -854,10 +915,12 @@ window.KTLessonEngine = (function () {
 
         feedback.className = 'feedback good show';
         feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
+        handleStreak(true, feedback);
       } else {
         playAudio('wrong');
         feedback.className = 'feedback bad show';
         feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
+        handleStreak(false, feedback);
       }
 
       if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
