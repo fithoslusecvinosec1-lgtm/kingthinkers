@@ -459,114 +459,186 @@ window.KT_LESSONS.egypt = [
   title: 'Pyramid Fractions',
   subject: 'math',
   grade: '3',
+  standard: '3.NF.A.1',
   xp: 35,
   crownReward: 1,
-  estMinutes: 6,
+  estMinutes: 22,
 
   intro: {
-    kicker: 'Egypt · Mission 4',
-    text: 'King, the pyramid builders need your fraction skills. Use number wisdom to help divide parts, compare fractions, and solve royal math challenges.',
-    sage: 'Fractions helped ancient builders plan with precision, King. Let’s build like a royal architect. 🔺'
+    kicker: 'Kingdom of Egypt · Math Quest',
+    text: 'King, Egyptian builders divided their pyramids into equal sections to plan the work. Understanding fractions helped them build some of the greatest structures in history. Today you will learn to read and compare fractions the way the royal architects did.',
+    sage: 'A fraction is just a way of naming a part. Let me show you how the scribes used them. 📐'
   },
 
-  teach: [
+  phase1_concept: {
+    title: 'What is a Fraction?',
+    definition: 'A fraction names equal parts of a whole. The bottom number (denominator) tells how many equal parts in all. The top number (numerator) tells how many parts you are counting.',
+    example: {
+      context: 'Workers divided the Great Pyramid face into 8 equal sections. They finished painting 3 of them.',
+      equation: '3/8 of the pyramid face is painted',
+      visual: 'fraction_bar',
+      visual_data: {
+        type: 'fraction_bar',
+        total: 8,
+        filled: 3,
+        label: '3 out of 8 equal sections = 3/8'
+      }
+    },
+    sage: 'Remember: bottom is total equal parts, top is the parts we care about. Now watch how I find a fraction step by step.'
+  },
+
+  phase2_worked: [
     {
-      type: 'text',
-      title: 'Fraction Power',
-      body: 'A fraction names part of a whole. The top number tells how many parts you have. The bottom number tells how many equal parts there are in all.'
+      problem: 'A stone sled traveled across 4 of 6 equal parts of the road to the pyramid. What fraction of the road has it traveled?',
+      equation: '? / ? = traveled parts / total equal parts',
+      steps: [
+        {
+          display: 'How many equal parts is the road split into?',
+          explanation: 'The road is divided into 6 equal parts. That is our denominator — the bottom number.',
+          visual: 'fraction_bar_6_0'
+        },
+        {
+          display: 'How many parts did the sled travel?',
+          explanation: 'The sled traveled 4 parts. That is our numerator — the top number.',
+          visual: 'fraction_bar_6_4'
+        },
+        {
+          display: '4/6 of the road',
+          explanation: 'Put it together: 4 parts traveled out of 6 total equal parts = 4/6.',
+          visual: 'fraction_bar_6_4_labeled'
+        }
+      ],
+      sage: 'Always count the total equal parts first — that is your denominator. Then count the parts you need — that is your numerator.'
     },
     {
-      type: 'text',
-      title: 'Compare Carefully',
-      body: 'When two fractions have the same denominator, compare the numerators. The bigger top number means the bigger fraction.'
+      problem: 'Amara ate 2 slices of bread cut into 5 equal slices. Kofi ate 4 slices of bread also cut into 5 equal slices. Write each as a fraction and say who ate more.',
+      equation: 'Amara: ?/5   Kofi: ?/5   Who is greater?',
+      steps: [
+        {
+          display: 'Amara: 2 slices out of 5 = 2/5',
+          explanation: 'Both breads are cut into 5 equal slices. Amara ate 2 of them. Fraction: 2/5.',
+          visual: 'fraction_bar_5_2'
+        },
+        {
+          display: 'Kofi: 4 slices out of 5 = 4/5',
+          explanation: 'Kofi ate 4 of the 5 slices. Fraction: 4/5.',
+          visual: 'fraction_bar_5_4'
+        },
+        {
+          display: '2/5 < 4/5 — Kofi ate more',
+          explanation: 'Same denominator, so compare the numerators. 4 is greater than 2, so 4/5 is greater than 2/5. Kofi ate more.',
+          visual: 'fraction_compare_2_5_vs_4_5'
+        }
+      ],
+      sage: 'When the denominators match, the bigger numerator wins. Same-size slices — more slices means more food.'
     }
   ],
 
-  activities: [
+  phase3_practice: [
     {
-      id: 'egypt-m4-q1',
+      id: 'egypt-e4-p1',
       type: 'mcq',
       prompt: 'The pyramid has 8 equal sections. Workers finished 3 of them. What fraction of the pyramid is complete?',
-      hint: 'Think: parts finished over total equal parts.',
-      choices: [
-        '3/5',
-        '5/8',
-        '3/8',
-        '8/3'
-      ],
+      hint: 'Bottom number = total equal sections. Top number = finished sections.',
+      choices: ['3/5', '5/8', '3/8', '8/3'],
       answer: 2,
-      correctFeedback: 'Yes! 3 out of 8 equal sections is 3/8.',
-      wrongFeedback: 'Use the pattern: parts done on top, total equal parts on the bottom.',
-      xp: 8
-    },
-    {
-      id: 'egypt-m4-q2',
-      type: 'mcq',
-      prompt: 'A stone sled traveled 4 of 6 equal parts of the road. How far has it gone as a fraction?',
-      hint: 'Count what the sled traveled first, then the total number of equal parts.',
-      choices: [
-        '2/6',
-        '6/4',
-        '4/6',
-        '1/2'
-      ],
-      answer: 2,
-      correctFeedback: 'Correct. The sled traveled 4 out of 6 equal parts, so the fraction is 4/6.',
-      wrongFeedback: 'The fraction should show traveled parts over total parts.',
-      xp: 8
-    },
-    {
-      id: 'egypt-m4-vocab',
-      type: 'match',
-      prompt: 'Match each fraction word to its meaning.',
-      pairs: [
-        ['Numerator', 'The top number of a fraction'],
-        ['Denominator', 'The bottom number showing total equal parts'],
-        ['Fraction', 'A number that names part of a whole'],
-        ['Equal', 'The same amount or value']
-      ],
-      correctFeedback: 'Excellent, King. You’re speaking fraction language like a scholar. 📚',
-      wrongFeedback: 'Not quite. Try matching the math words again.',
+      correctFeedback: 'Yes! 3 finished out of 8 total equal sections = 3/8.',
+      wrongFeedback: 'Remember: finished parts on top, total equal parts on the bottom.',
       xp: 7
     },
     {
-      id: 'egypt-m4-q3',
-      type: 'mcq',
-      prompt: 'Amara ate 2/5 of his bread. Kofi ate 4/5 of his bread. Who ate more?',
-      hint: 'The denominators are the same, so compare the top numbers.',
-      choices: [
-        'Amara, because 2 comes first',
-        'They ate the same amount',
-        'Kofi, because 4/5 is greater than 2/5',
-        'Amara, because smaller fractions taste better'
-      ],
-      answer: 2,
-      correctFeedback: 'Exactly. With the same denominator, the bigger numerator means the bigger fraction. 4/5 is more than 2/5.',
-      wrongFeedback: 'Both fractions have fifths, so only the top numbers need to be compared.',
-      xp: 6
+      id: 'egypt-e4-p2',
+      type: 'true_false',
+      prompt: '4/6 means 4 equal parts out of 6 total parts.',
+      hint: 'Think about what the top and bottom numbers of a fraction mean.',
+      answer: true,
+      correctFeedback: 'Correct! The numerator (4) counts the parts, the denominator (6) is the total.',
+      wrongFeedback: 'That is exactly what 4/6 means — 4 out of 6 equal parts.',
+      xp: 7
     },
     {
-      id: 'egypt-m4-q4',
+      id: 'egypt-e4-p3',
       type: 'mcq',
-      prompt: 'The royal kitchen had 12 jars of honey and used 4. Which fraction shows the honey left before reducing?',
-      hint: 'First find how many jars are left, then write left over total.',
-      choices: [
-        '4/12',
-        '8/12',
-        '2/3',
-        '12/8'
-      ],
+      prompt: 'Amara ate 2/5 of his bread. Kofi ate 4/5 of his bread. Who ate more?',
+      hint: 'The denominators are the same. Compare the numerators — which is bigger?',
+      choices: ['Amara, because 2 comes first', 'They ate the same', 'Kofi, because 4/5 is greater than 2/5', 'Cannot tell'],
+      answer: 2,
+      correctFeedback: 'Right! Same denominator, so 4/5 > 2/5. Kofi ate more.',
+      wrongFeedback: 'Same-size slices, more slices = more food. 4 slices is more than 2 slices.',
+      xp: 7
+    },
+    {
+      id: 'egypt-e4-p4',
+      type: 'input',
+      prompt: 'A royal banner is divided into 6 equal stripes. Gold paint covers 5 stripes. Write the fraction of the banner that is gold.',
+      hint: 'Gold stripes on top, total stripes on the bottom.',
+      answer: '5/6',
+      correctFeedback: 'Perfect — 5 gold stripes out of 6 total = 5/6.',
+      wrongFeedback: 'Count the gold stripes (5) and put that on top. Total stripes (6) go on the bottom.',
+      xp: 8
+    },
+    {
+      id: 'egypt-e4-p5',
+      type: 'mcq',
+      prompt: 'Which fraction is GREATER: 1/4 or 3/4?',
+      hint: 'The denominator is the same — compare the numerators.',
+      choices: ['1/4', '3/4', 'They are equal', 'Cannot tell'],
       answer: 1,
-      correctFeedback: 'Yes. 12 minus 4 equals 8, so 8/12 shows the honey left before reducing.',
-      wrongFeedback: 'Subtract first: 12 - 4. Then place the amount left over the total of 12.',
-      xp: 6
+      correctFeedback: 'Yes! 3/4 > 1/4 because the pieces are the same size and 3 is more than 1.',
+      wrongFeedback: 'Same denominator means same-size pieces. More pieces = bigger fraction.',
+      xp: 7
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'egypt-e4-t1',
+      standard: '3.NF.A.1',
+      type: 'mcq',
+      prompt: 'Workers tiled 5 of the 8 equal sections of a pyramid floor. Which fraction shows how much is tiled?',
+      hint_disabled: true,
+      choices: ['8/5', '5/3', '3/8', '5/8'],
+      answer: 3,
+      correctFeedback: '5 tiled out of 8 total equal sections = 5/8.',
+      wrongFeedback: 'The tiled parts (5) go on top. The total equal sections (8) go on the bottom. That gives 5/8, not the answer you chose.'
+    },
+    {
+      id: 'egypt-e4-t2',
+      standard: '3.NF.A.1',
+      type: 'true_false',
+      prompt: '2/3 is greater than 1/3 because the pieces are the same size and 2 is more than 1.',
+      hint_disabled: true,
+      answer: true,
+      correctFeedback: 'Correct — same denominator means same-size pieces, so more pieces means a greater fraction.',
+      wrongFeedback: '2/3 and 1/3 have the same denominator, so the pieces are equal in size. 2 pieces is more than 1 piece, making 2/3 the greater fraction.'
+    },
+    {
+      id: 'egypt-e4-t3',
+      standard: '3.NF.A.1',
+      type: 'input',
+      prompt: 'A scribe divided a scroll into 4 equal sections. She completed 3 sections. Write the fraction of the scroll she completed.',
+      hint_disabled: true,
+      answer: '3/4',
+      correctFeedback: '3 completed out of 4 total equal sections = 3/4.',
+      wrongFeedback: 'Completed sections go on top, total equal sections go on the bottom. The scribe did 3 out of 4 sections.'
+    },
+    {
+      id: 'egypt-e4-t4',
+      standard: '3.NF.A.1',
+      type: 'mcq',
+      prompt: 'A royal feast had 6 equal portions of roasted grain. Guests ate 4 portions. Which fraction represents what was eaten?',
+      hint_disabled: true,
+      choices: ['6/4', '2/6', '4/2', '4/6'],
+      answer: 3,
+      correctFeedback: '4 portions eaten out of 6 total equal portions = 4/6.',
+      wrongFeedback: 'Portions eaten (4) go on top. Total equal portions (6) go on the bottom. That gives 4/6.'
     }
   ],
 
   wrapUp: {
-    title: 'Fraction King! 👑',
-    text: 'You used fraction power like a royal architect of Egypt. Strong math minds build strong kingdoms.',
-    badge: 'Pyramid Planner'
+    title: 'Quest Complete, King! 👑',
+    text: 'You read, wrote, and compared fractions the way Egyptian architects divided their great pyramids. That is fraction power.',
+    badge: 'Fraction Architect'
   }
 },
 {
@@ -703,108 +775,185 @@ window.KT_LESSONS.egypt = [
   title: 'Trade Route Math',
   subject: 'math',
   grade: '3',
+  standard: '3.OA.A.3',
   xp: 35,
   crownReward: 1,
-  estMinutes: 6,
+  estMinutes: 22,
 
   intro: {
-    kicker: 'Nubia · Mission 2',
-    text: 'King, step into the role of a Nubian merchant. Use multiplication, division, perimeter, and two-step thinking to guide your trade caravan safely and wisely.',
-    sage: 'Great traders use strong math, King. Count carefully, solve step by step, and protect the kingdom’s riches. 🏺'
+    kicker: 'Kingdom of Nubia · Math Quest',
+    text: 'King, Nubian traders traveled thousands of miles carrying gold, iron, and ivory. To run a successful caravan you had to multiply goods, divide supplies, and measure distance. Today you will use the same math that made Nubia one of the wealthiest kingdoms in the ancient world.',
+    sage: 'Every trade deal needs math behind it. Let me show you how the Nubian merchants calculated their profits. ⚖️'
   },
 
-  teach: [
+  phase1_concept: {
+    title: 'Multiplication and Perimeter',
+    definition: 'Multiplication finds the total of equal groups. Perimeter is the total distance around the outside of a shape — add all four sides.',
+    example: {
+      context: 'A Nubian caravan has 6 camels. Each camel carries 8 bags of gold dust.',
+      equation: '6 × 8 = 48 bags of gold dust',
+      visual: 'groups',
+      visual_data: {
+        type: 'equal_groups',
+        groups: 6,
+        per_group: 8,
+        label: '6 groups of 8 = 48'
+      }
+    },
+    sage: 'Equal groups, one multiplication. Now watch me solve a trade problem and a perimeter problem step by step.'
+  },
+
+  phase2_worked: [
     {
-      type: 'text',
-      title: 'Merchant Math',
-      body: 'Nubian traders used math to count goods, measure journeys, and make fair trades. Strong math skills kept caravans moving and kingdoms thriving.'
+      problem: 'Your caravan has 7 camels. Each camel carries 9 bags of gold dust. How many bags in total?',
+      equation: '7 × 9 = ?',
+      steps: [
+        {
+          display: '7 × 9 = ?',
+          explanation: 'This is 7 equal groups with 9 bags each. We multiply to find the total.',
+          visual: '7 groups of 9'
+        },
+        {
+          display: 'Skip-count by 9: 9, 18, 27, 36, 45, 54, 63',
+          explanation: 'Count by 9 seven times. Or use what you know: 7 × 9 = 7 × 10 − 7 = 70 − 7 = 63.',
+          visual: 'number line showing 7 jumps of 9'
+        },
+        {
+          display: '7 × 9 = 63 bags',
+          explanation: 'The caravan carries 63 bags of gold dust in total.',
+          visual: '63 highlighted'
+        }
+      ],
+      sage: 'Any time you see equal groups, think multiplication. Groups × per group = total.'
     },
     {
-      type: 'text',
-      title: 'Solve in Steps',
-      body: 'Some problems take one step. Others take two. Read carefully, decide what to do first, then check your answer.'
+      problem: 'A trading tent is 8 meters long and 5 meters wide. What is the perimeter of the tent?',
+      equation: 'Perimeter = all sides added together',
+      steps: [
+        {
+          display: 'A rectangle has 4 sides: 2 long sides and 2 short sides.',
+          explanation: 'The tent is 8 m long and 5 m wide. A rectangle has two of each.',
+          visual: 'rectangle labeled 8m × 5m'
+        },
+        {
+          display: '8 + 8 + 5 + 5 = ?',
+          explanation: 'Add all four sides: both long sides (8 + 8) and both short sides (5 + 5).',
+          visual: 'each side labeled and highlighted'
+        },
+        {
+          display: '16 + 10 = 26 meters',
+          explanation: '8 + 8 = 16 and 5 + 5 = 10. Together: 26 meters around the tent.',
+          visual: '26 m perimeter shown'
+        }
+      ],
+      sage: 'Perimeter = walk around the outside and add every side. For a rectangle: long + long + short + short.'
     }
   ],
 
-  activities: [
+  phase3_practice: [
     {
-      id: 'nubia-m2-q1',
+      id: 'nubia-n2-p1',
       type: 'mcq',
       prompt: 'Your caravan has 7 camels. Each camel carries 9 bags of gold dust. How many bags are there in all?',
-      hint: 'This is 7 groups of 9.',
-      choices: [
-        '54 bags',
-        '63 bags',
-        '72 bags',
-        '56 bags'
-      ],
+      hint: 'This is 7 equal groups of 9. Multiply.',
+      choices: ['54 bags', '63 bags', '72 bags', '56 bags'],
       answer: 1,
       correctFeedback: 'Excellent. 7 × 9 = 63 bags of gold dust.',
-      wrongFeedback: 'Skip-count by 9 seven times, or use 7 groups of 9.',
-      xp: 8
-    },
-    {
-      id: 'nubia-m2-q2',
-      type: 'mcq',
-      prompt: 'The trade route is 240 miles long. Your caravan travels 40 miles each day. How many days will the journey take?',
-      hint: 'Ask: 40 × what number = 240?',
-      choices: [
-        '4 days',
-        '5 days',
-        '6 days',
-        '8 days'
-      ],
-      answer: 2,
-      correctFeedback: 'Yes. 240 ÷ 40 = 6, so the trip takes 6 days.',
-      wrongFeedback: 'Use division or think of a multiplication fact with 40.',
-      xp: 8
-    },
-    {
-      id: 'nubia-m2-vocab',
-      type: 'match',
-      prompt: 'Match each trade math word to its meaning.',
-      pairs: [
-        ['Perimeter', 'The total distance around the outside of a shape'],
-        ['Product', 'The result of multiplying two numbers'],
-        ['Difference', 'The result of subtracting one number from another'],
-        ['Estimate', 'A careful guess close to the exact answer']
-      ],
-      correctFeedback: 'Strong work, King. A smart trader knows the language of math. 📚',
-      wrongFeedback: 'Not quite. Try matching the math words again.',
+      wrongFeedback: 'Skip-count by 9 seven times: 9, 18, 27, 36, 45, 54, 63.',
       xp: 7
     },
     {
-      id: 'nubia-m2-q3',
-      type: 'input',
-      prompt: 'A trading tent is 8 meters long and 5 meters wide. What is the perimeter?',
-      answer: '26',
-      hint: 'Add all four sides: 8 + 8 + 5 + 5.',
-      correctFeedback: 'Great work. The perimeter is 26 meters.',
-      wrongFeedback: 'Perimeter means the total distance around the outside. Add all four sides.',
-      xp: 6
+      id: 'nubia-n2-p2',
+      type: 'mcq',
+      prompt: 'The trade route is 240 miles long. Your caravan travels 40 miles each day. How many days will the journey take?',
+      hint: 'Ask yourself: 40 × what number = 240?',
+      choices: ['4 days', '5 days', '6 days', '8 days'],
+      answer: 2,
+      correctFeedback: 'Yes. 240 ÷ 40 = 6. The trip takes 6 days.',
+      wrongFeedback: 'Think of it as a missing factor: 40 × ? = 240. Count by 40s until you hit 240.',
+      xp: 7
     },
     {
-      id: 'nubia-m2-q4',
+      id: 'nubia-n2-p3',
+      type: 'true_false',
+      prompt: 'The perimeter of a trading tent that is 6 meters long and 4 meters wide is 20 meters.',
+      hint: 'Add all four sides: 6 + 6 + 4 + 4.',
+      answer: true,
+      correctFeedback: 'Correct! 6 + 6 + 4 + 4 = 20 meters.',
+      wrongFeedback: 'Perimeter adds all four sides: 6 + 6 + 4 + 4 = 20 m. That statement is true.',
+      xp: 7
+    },
+    {
+      id: 'nubia-n2-p4',
+      type: 'input',
+      prompt: 'A trading tent is 8 meters long and 5 meters wide. What is its perimeter?',
+      hint: 'Add all four sides: 8 + 8 + 5 + 5.',
+      answer: '26',
+      correctFeedback: 'Great work. 8 + 8 + 5 + 5 = 26 meters.',
+      wrongFeedback: 'Add both long sides and both short sides: 8 + 8 = 16, 5 + 5 = 10, 16 + 10 = 26.',
+      xp: 8
+    },
+    {
+      id: 'nubia-n2-p5',
+      type: 'input',
+      prompt: 'A merchant packs 5 baskets with 8 items each. How many items does she pack in total?',
+      hint: '5 equal groups of 8 — multiply.',
+      answer: '40',
+      correctFeedback: '5 × 8 = 40 items. Equal groups always mean multiplication.',
+      wrongFeedback: '5 baskets × 8 items each = 5 × 8. What does 5 × 8 equal?',
+      xp: 7
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'nubia-n2-t1',
+      standard: '3.OA.A.3',
       type: 'mcq',
-      prompt: 'You start with 85 ivory pieces. You trade 28 away, then sell 15 more. How many ivory pieces are left?',
-      hint: 'Do it in two steps: subtract 28, then subtract 15.',
-      choices: [
-        '26 pieces',
-        '42 pieces',
-        '38 pieces',
-        '57 pieces'
-      ],
-      answer: 1,
-      correctFeedback: 'KING! 85 - 28 = 57, and 57 - 15 = 42. You have 42 ivory pieces left.',
-      wrongFeedback: 'Subtract 28 first. Then take that new amount and subtract 15 more.',
-      xp: 6
+      prompt: 'A Nubian merchant has 8 baskets. Each basket holds 6 pieces of ivory. How many pieces of ivory in total?',
+      hint_disabled: true,
+      choices: ['42', '46', '48', '54'],
+      answer: 2,
+      correctFeedback: '8 × 6 = 48 pieces of ivory.',
+      wrongFeedback: '8 equal groups of 6: 8 × 6 = 48, not the number you chose. Try skip-counting by 6 eight times.'
+    },
+    {
+      id: 'nubia-n2-t2',
+      standard: '3.OA.A.3',
+      type: 'input',
+      prompt: 'A caravan travels 56 miles total over 7 equal days. How many miles does it travel each day?',
+      hint_disabled: true,
+      answer: '8',
+      correctFeedback: '56 ÷ 7 = 8 miles per day.',
+      wrongFeedback: 'Ask: 7 × ? = 56. Skip-count by 7 until you reach 56 — count how many jumps.'
+    },
+    {
+      id: 'nubia-n2-t3',
+      standard: '3.MD.D.8',
+      type: 'input',
+      prompt: 'A market stall is 9 meters long and 3 meters wide. What is the perimeter of the stall?',
+      hint_disabled: true,
+      answer: '24',
+      correctFeedback: '9 + 9 + 3 + 3 = 24 meters.',
+      wrongFeedback: 'Add all four sides of the rectangle: 9 + 9 + 3 + 3. That is not the number you entered.'
+    },
+    {
+      id: 'nubia-n2-t4',
+      standard: '3.OA.A.3',
+      type: 'mcq',
+      prompt: 'A trader splits 36 gold coins equally among 4 merchants. How many coins does each merchant receive?',
+      hint_disabled: true,
+      choices: ['7 coins', '8 coins', '9 coins', '12 coins'],
+      answer: 2,
+      correctFeedback: '36 ÷ 4 = 9 coins each.',
+      wrongFeedback: 'Ask: 4 × ? = 36. Think of your multiplication facts for 4.'
     }
   ],
 
   wrapUp: {
-    title: 'Master Trader! 👑',
-    text: 'You used merchant math like a true leader of Nubia. Strong counting and strong thinking keep trade routes alive.',
-    badge: 'Caravan Counter'
+    title: 'Quest Complete, King! 👑',
+    text: 'You calculated like a Nubian merchant — multiplying equal groups, dividing supplies, and measuring trade routes. The kingdom\'s economy depended on exactly this skill.',
+    badge: 'Trade Route Master'
   }
 },
 {
@@ -940,108 +1089,189 @@ window.KT_LESSONS.egypt = [
   title: 'Archery Angles',
   subject: 'math',
   grade: '3',
+  standard: '3.G.A.1',
   xp: 35,
   crownReward: 1,
-  estMinutes: 6,
+  estMinutes: 22,
 
   intro: {
-    kicker: 'Nubia · Mission 4',
-    text: 'King, Nubian archers trained with more than strength — they used geometry too. In this quest, you’ll study angles, shapes, and area like a true sharpshooter.',
-    sage: 'A great archer understands space, shape, and aim, King. Let’s train your geometry eye. 🏹'
+    kicker: 'Kingdom of Nubia · Math Quest',
+    text: 'King, Nubian archers were the finest in the ancient world. Their skill depended on understanding angles, shapes, and space. Today you will learn the geometry of the greatest archers who ever lived — and prove your own sharp mind.',
+    sage: 'Angles are everywhere — in your bow, your target, your training field. Let me show you how to read them. 🏹'
   },
 
-  teach: [
+  phase1_concept: {
+    title: 'Angles and Shapes',
+    definition: 'An angle is formed where two lines meet. Acute angles are less than 90°. Right angles are exactly 90°. Obtuse angles are more than 90°. A shape\'s properties — sides, angles, equal lengths — determine what kind of shape it is.',
+    example: {
+      context: 'A Nubian archer holds her bow forming an angle between the string and her arm.',
+      equation: 'Acute < 90° | Right = 90° | Obtuse > 90°',
+      visual: 'angle_types',
+      visual_data: {
+        type: 'angle_comparison',
+        labels: ['Acute (< 90°)', 'Right (= 90°)', 'Obtuse (> 90°)']
+      }
+    },
+    sage: 'Right angle = corner of a square. Smaller than that = acute. Bigger than that = obtuse. Watch how I identify them.'
+  },
+
+  phase2_worked: [
     {
-      type: 'text',
-      title: 'Geometry for Archers',
-      body: 'Archers need to understand direction, shape, and space. Angles help describe how something opens, and area tells how much space is inside a shape.'
+      problem: 'An archer tilts her bow to a small angle to shoot a close target. Is the angle acute, right, or obtuse?',
+      equation: 'Compare to 90° — is it smaller, equal, or larger?',
+      steps: [
+        {
+          display: 'A right angle looks like the corner of a square — exactly 90°.',
+          explanation: 'Use the corner of a square as your reference. Everything is compared to 90°.',
+          visual: 'right angle square corner'
+        },
+        {
+          display: 'The bow angle is smaller than the corner of a square.',
+          explanation: 'It does not open as wide as a right angle. That means it is less than 90°.',
+          visual: 'small bow angle next to right angle'
+        },
+        {
+          display: 'Less than 90° = Acute angle.',
+          explanation: 'Any angle smaller than a right angle is called acute.',
+          visual: 'acute label highlighted'
+        }
+      ],
+      sage: 'When in doubt, picture the corner of a square. Smaller = acute. Bigger = obtuse. Same = right.'
     },
     {
-      type: 'text',
-      title: 'Know Your Angle Types',
-      body: 'A right angle is exactly 90 degrees. An acute angle is smaller than 90 degrees. An obtuse angle is larger than 90 degrees.'
+      problem: 'The archery target is a shape with 4 equal sides and 4 right angles. What shape is it, and what is its area if each side is 5 unit squares long?',
+      equation: 'Identify shape → Area = side × side',
+      steps: [
+        {
+          display: '4 equal sides + 4 right angles = Square',
+          explanation: 'A square is the only quadrilateral with ALL sides equal AND all angles equal to 90°.',
+          visual: 'square with tick marks on sides'
+        },
+        {
+          display: 'Area of a square = side × side',
+          explanation: 'To find the area of the target, multiply the side length by itself.',
+          visual: '5×5 grid of unit squares'
+        },
+        {
+          display: '5 × 5 = 25 square units',
+          explanation: 'Count the rows and columns: 5 rows of 5 unit squares = 25 square units of area.',
+          visual: '25 squares highlighted'
+        }
+      ],
+      sage: 'Area counts the squares inside the shape. For a square: side × side. For a rectangle: length × width.'
     }
   ],
 
-  activities: [
+  phase3_practice: [
     {
-      id: 'nubia-m4-q1',
+      id: 'nubia-n4-p1',
       type: 'mcq',
-      prompt: 'An archer holds her bow at an angle less than 90 degrees. What kind of angle is it?',
-      hint: 'Angles smaller than a right angle are acute.',
-      choices: [
-        'Right angle',
-        'Obtuse angle',
-        'Acute angle',
-        'Straight angle'
-      ],
+      prompt: 'An archer holds her bow at an angle smaller than 90 degrees. What kind of angle is it?',
+      hint: 'Compare it to the corner of a square. Is it smaller than that corner?',
+      choices: ['Right angle', 'Obtuse angle', 'Acute angle', 'Straight angle'],
       answer: 2,
-      correctFeedback: 'Perfect. An angle less than 90 degrees is an acute angle.',
-      wrongFeedback: 'Compare it to a right angle. If it is smaller than 90 degrees, it is acute.',
-      xp: 8
-    },
-    {
-      id: 'nubia-m4-q2',
-      type: 'mcq',
-      prompt: 'The archery target has 4 equal sides and 4 right angles. What shape is it?',
-      hint: 'Look for the shape that has both equal sides and right angles.',
-      choices: [
-        'Rectangle',
-        'Rhombus',
-        'Square',
-        'Trapezoid'
-      ],
-      answer: 2,
-      correctFeedback: 'Yes. A square has 4 equal sides and 4 right angles.',
-      wrongFeedback: 'A rectangle has right angles, but not always equal sides. Which shape has both?',
-      xp: 8
-    },
-    {
-      id: 'nubia-m4-vocab',
-      type: 'match',
-      prompt: 'Match each geometry word to its meaning.',
-      pairs: [
-        ['Acute', 'An angle that measures less than 90 degrees'],
-        ['Obtuse', 'An angle that measures more than 90 degrees'],
-        ['Area', 'The amount of space inside a 2D shape'],
-        ['Perimeter', 'The total distance around the outside of a shape']
-      ],
-      correctFeedback: 'Excellent, King. A sharp mind makes a sharp archer. 📚',
-      wrongFeedback: 'Not quite. Try matching the geometry words again.',
+      correctFeedback: 'Perfect. An angle less than 90° is acute.',
+      wrongFeedback: 'A right angle is exactly 90°. Smaller than 90° is acute. Larger than 90° is obtuse.',
       xp: 7
     },
     {
-      id: 'nubia-m4-q3',
-      type: 'input',
-      prompt: 'A training field has 4 rows of unit squares, with 6 squares in each row. What is the area?',
-      answer: '24',
-      hint: 'Area = rows × squares in each row.',
-      correctFeedback: 'Excellent. 4 × 6 = 24 square units.',
-      wrongFeedback: 'Multiply the number of rows by the number of squares in each row.',
-      xp: 6
+      id: 'nubia-n4-p2',
+      type: 'mcq',
+      prompt: 'The archery target has 4 equal sides and 4 right angles. What shape is it?',
+      hint: 'Which shape has ALL sides equal AND all angles equal to 90°?',
+      choices: ['Rectangle', 'Rhombus', 'Square', 'Trapezoid'],
+      answer: 2,
+      correctFeedback: 'Yes. 4 equal sides + 4 right angles = square.',
+      wrongFeedback: 'A rectangle has right angles but not always equal sides. A rhombus has equal sides but not always right angles. Only a square has both.',
+      xp: 7
     },
     {
-      id: 'nubia-m4-q4',
+      id: 'nubia-n4-p3',
+      type: 'true_false',
+      prompt: 'An obtuse angle is greater than 90 degrees.',
+      hint: 'Think about the three angle types: acute, right, obtuse — in order from smallest to largest.',
+      answer: true,
+      correctFeedback: 'Correct! Obtuse angles are always greater than 90° and less than 180°.',
+      wrongFeedback: 'Obtuse means "wide" — it opens wider than a right angle, so it is always greater than 90°.',
+      xp: 7
+    },
+    {
+      id: 'nubia-n4-p4',
+      type: 'input',
+      prompt: 'A training field has 4 rows of unit squares with 6 squares in each row. What is the area?',
+      hint: 'Area = rows × squares in each row.',
+      answer: '24',
+      correctFeedback: 'Excellent. 4 × 6 = 24 square units.',
+      wrongFeedback: 'Multiply the number of rows (4) by the squares in each row (6). What is 4 × 6?',
+      xp: 8
+    },
+    {
+      id: 'nubia-n4-p5',
       type: 'mcq',
-      prompt: 'A new archery range is 9 meters long and 7 meters wide. What is its area?',
-      hint: 'Area of a rectangle = length × width.',
+      prompt: 'A rectangle has 2 long sides and 2 short sides. All angles are 90°. How is a rectangle DIFFERENT from a square?',
+      hint: 'Think about the side lengths — are they all equal in a rectangle?',
       choices: [
-        '54 square meters',
-        '63 square meters',
-        '32 square meters',
-        '49 square meters'
+        'A rectangle has no right angles',
+        'A rectangle\'s sides are not all the same length',
+        'A rectangle has only 3 sides',
+        'There is no difference'
       ],
       answer: 1,
-      correctFeedback: 'KING! 9 × 7 = 63 square meters.',
-      wrongFeedback: 'Multiply length by width: 9 × 7.',
-      xp: 6
+      correctFeedback: 'Right — a rectangle has right angles like a square, but its sides are not all equal.',
+      wrongFeedback: 'Both shapes have 4 right angles. The difference is that a rectangle\'s long sides and short sides can have different lengths.',
+      xp: 7
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'nubia-n4-t1',
+      standard: '3.G.A.1',
+      type: 'mcq',
+      prompt: 'An archer tilts her bow wider than a right angle to reach a distant target. What type of angle does her bow form?',
+      hint_disabled: true,
+      choices: ['Acute', 'Right', 'Obtuse', 'Straight'],
+      answer: 2,
+      correctFeedback: 'Wider than 90° = obtuse angle.',
+      wrongFeedback: 'Greater than 90° is the definition of an obtuse angle, not acute (less than 90°) or right (exactly 90°).'
+    },
+    {
+      id: 'nubia-n4-t2',
+      standard: '3.G.A.1',
+      type: 'mcq',
+      prompt: 'Which shape has exactly 4 right angles but sides that are NOT all equal?',
+      hint_disabled: true,
+      choices: ['Square', 'Rectangle', 'Rhombus', 'Triangle'],
+      answer: 1,
+      correctFeedback: 'A rectangle has 4 right angles but its length and width can be different.',
+      wrongFeedback: 'A square has 4 right angles AND all equal sides. A rectangle has 4 right angles but the sides don\'t have to be equal.'
+    },
+    {
+      id: 'nubia-n4-t3',
+      standard: '3.MD.C.6',
+      type: 'input',
+      prompt: 'An archery practice mat is 7 unit squares long and 3 unit squares wide. What is the area?',
+      hint_disabled: true,
+      answer: '21',
+      correctFeedback: '7 × 3 = 21 square units.',
+      wrongFeedback: 'Area = length × width for a rectangle. 7 × 3 is not the number you entered.'
+    },
+    {
+      id: 'nubia-n4-t4',
+      standard: '3.G.A.1',
+      type: 'true_false',
+      prompt: 'A square is a special kind of rectangle because it has 4 right angles and 4 equal sides.',
+      hint_disabled: true,
+      answer: true,
+      correctFeedback: 'Correct! A square meets all the requirements of a rectangle plus has equal sides.',
+      wrongFeedback: 'A rectangle needs 4 right angles and opposite sides equal. A square has all that AND all 4 sides equal, so it is a special rectangle.'
     }
   ],
 
   wrapUp: {
-    title: 'Sharpshooter Scholar! 👑',
-    text: 'You trained like a Nubian archer and used geometry to master angles, shapes, and area.',
-    badge: 'Bow Geometry Master'
+    title: 'Quest Complete, King! 👑',
+    text: 'You identified angles, classified shapes, and calculated area like a Nubian geometry master. The archers of Nubia would be proud.',
+    badge: 'Geometry Archer'
   }
 }
 ];
