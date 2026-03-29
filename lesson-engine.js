@@ -590,8 +590,13 @@ window.KTLessonEngine = (function () {
     });
   }
 
+  function isPhase4Activity() {
+    var step = state.steps[state.stepIndex];
+    return step && step.meta && step.meta.section === 'test';
+  }
+
   function renderMCQ(activity) {
-    state.gradableCount += 1;
+    if (isPhase4Activity()) state.gradableCount += 1;
 
     var choices = normalizeChoices(activity.choices);
     var html =
@@ -802,7 +807,7 @@ window.KTLessonEngine = (function () {
   }
 
   function renderInput(activity) {
-    state.gradableCount += 1;
+    if (isPhase4Activity()) state.gradableCount += 1;
 
     var html =
       '<div class="card">' +
