@@ -10,6 +10,7 @@ window.KTLessonEngine = (function () {
     startedAt: Date.now(),
     workedStepIndex: 0,
     streakCount: 0,       // consecutive correct answers in Phase 3
+    reviewMode: false,    // true when student is replaying Phase 3 after low score
     match: {
       selectedWord: null,
       selectedDef: null,
@@ -944,6 +945,41 @@ window.KTLessonEngine = (function () {
     }
   }
 
+  function findPhase3StartIndex() {
+    // Find the 'phase_section' step with section title 'Guided Practice'
+    // which is the header step right before Phase 3 activities begin
+    for (var i = 0; i < state.steps.length; i++) {
+      var s = state.steps[i];
+      if (s.type === 'phase_section' && s.data && s.data.title === 'Guided Practice') {
+        return i;
+      }
+    }
+    // Fallback: find first activity with section 'practice'
+    for (var j = 0; j < state.steps.length; j++) {
+      var s2 = state.steps[j];
+      if (s2.type === 'activity' && s2.meta && s2.meta.section === 'practice') {
+        return j;
+      }
+    }
+    return -1;
+  }
+
+  function enterReviewMode() {
+    var phase3Start = findPhase3StartIndex();
+    if (phase3Start === -1) {
+      // No Phase 3 found — just go to dashboard
+      exitToDashboard();
+      return;
+    }
+    // Reset test-related counters but keep XP already earned
+    state.correctCount  = 0;
+    state.gradableCount = 0;
+    state.streakCount   = 0;
+    state.reviewMode    = true;
+    state.stepIndex     = phase3Start;
+    renderCurrentStep();
+  }
+
   async function renderComplete(data) {
     var accuracy = state.gradableCount
       ? Math.round((state.correctCount / state.gradableCount) * 100)
@@ -959,11 +995,86 @@ window.KTLessonEngine = (function () {
       state.xpEarned = finalLessonXP;
     }
 
+    // ── REVIEW MODE OFFER — shown when accuracy < 75% ─────────
+    var isLowScore = accuracy < 75;
+    var isPhasedLesson = findPhase3StartIndex() !== -1;
+    var offerReview = isLowScore && isPhasedLesson && !state.reviewMode;
+
+    if (offerReview) {
+      renderCard(
+        '<div class="card">' +
+          '<div class="kicker">Quest Complete</div>' +
+          '<div class="title">' + escapeHtml(data.title || 'Good effort, King! 👑') + '</div>' +
+          '<div class="sub">You scored <strong>' + accuracy + '%</strong> on the Quest Test. ' +
+          'A true king always comes back stronger. Want to review the practice round before the kingdom marks this complete?</div>' +
+          '<div class="complete-grid">' +
+            '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
+            '<div class="stat"><div class="stat-num">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>' +
+            '<div class="stat"><div class="stat-num review-icon">🔁</div><div class="stat-label">Review Available</div></div>' +
+          '</div>' +
+          '<div class="review-offer">' +
+            '<div class="review-offer-text">👑 Review Mode unlocked — go back through the practice round, then retake the Quest Test.</div>' +
+          '</div>' +
+          '<div class="btn-row">' +
+            '<button class="btn btn-primary" id="kt-review-btn">🔁 Review &amp; Retry</button>' +
+            '<button class="btn btn-secondary" id="kt-finish-btn">Return to Kingdom →</button>' +
+          '</div>' +
+        '</div>'
+      );
+
+      if ($('kt-review-btn')) {
+        $('kt-review-btn').onclick = function () {
+          if (window.KTAudio) KTAudio.tap();
+          enterReviewMode();
+        };
+      }
+
+      if ($('kt-finish-btn')) {
+        $('kt-finish-btn').onclick = function () {
+          exitToDashboard();
+        };
+      }
+
+      // Save progress now even for low score — student completed the lesson
+      try {
+        var active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+        var code = (typeof window.kt_getActiveCode === 'function')
+          ? window.kt_getActiveCode()
+          : localStorage.getItem('kt_active_code');
+
+        if (active && code && typeof window.db_completeLesson === 'function') {
+          localStorage.setItem('kt_mission_completed', JSON.stringify({
+            missionId: active.missionId,
+            worldId: active.worldId,
+            xp: active.xp || finalLessonXP,
+            accuracy: accuracy,
+            completedAt: Date.now()
+          }));
+          await window.db_completeLesson(code, active.missionId, active.xp || finalLessonXP);
+          localStorage.removeItem('kt_active_mission');
+        }
+      } catch (e) {
+        console.warn('Lesson completion sync failed:', e);
+      }
+
+      playAudio('questComplete');
+      return;
+    }
+
+    // ── STANDARD COMPLETION SCREEN ────────────────────────────
+    var kicker = state.reviewMode ? 'Review Complete! 👑' : 'Quest Complete';
+    var titleText = state.reviewMode
+      ? 'You came back stronger, King! 👑'
+      : escapeHtml(data.title || 'You Did It, King! 👑');
+    var subText = state.reviewMode
+      ? 'That is what kings do — they review, improve, and keep going.'
+      : escapeHtml(data.text || 'You completed the lesson.');
+
     renderCard(
       '<div class="card">' +
-        '<div class="kicker">Quest Complete</div>' +
-        '<div class="title">' + escapeHtml(data.title || 'You Did It, King! 👑') + '</div>' +
-        '<div class="sub">' + escapeHtml(data.text || 'You completed the lesson.') + '</div>' +
+        '<div class="kicker">' + kicker + '</div>' +
+        '<div class="title">' + titleText + '</div>' +
+        '<div class="sub">' + subText + '</div>' +
         '<div class="complete-grid">' +
           '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
           '<div class="stat"><div class="stat-num">' + state.crownsEarned + '</div><div class="stat-label">Crowns</div></div>' +
@@ -977,21 +1088,20 @@ window.KTLessonEngine = (function () {
     );
 
     try {
-      var active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
-      var code = (typeof window.kt_getActiveCode === 'function')
+      var active2 = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+      var code2 = (typeof window.kt_getActiveCode === 'function')
         ? window.kt_getActiveCode()
         : localStorage.getItem('kt_active_code');
 
-      if (active && code && typeof window.db_completeLesson === 'function') {
+      if (active2 && code2 && typeof window.db_completeLesson === 'function') {
         localStorage.setItem('kt_mission_completed', JSON.stringify({
-          missionId: active.missionId,
-          worldId: active.worldId,
-          xp: active.xp || finalLessonXP,
+          missionId: active2.missionId,
+          worldId: active2.worldId,
+          xp: active2.xp || finalLessonXP,
           accuracy: accuracy,
           completedAt: Date.now()
         }));
-
-        await window.db_completeLesson(code, active.missionId, active.xp || finalLessonXP);
+        await window.db_completeLesson(code2, active2.missionId, active2.xp || finalLessonXP);
         localStorage.removeItem('kt_active_mission');
       }
     } catch (e) {
