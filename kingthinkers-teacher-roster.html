@@ -276,10 +276,57 @@ if (!_teacherSession) {
 }
 
 // ── STORAGE ───────────────────────────────────────────────────
-function getRoster(){try{return JSON.parse(localStorage.getItem('kt_roster')||'{}')}catch(e){return{}}}
-function saveRoster(r){localStorage.setItem('kt_roster',JSON.stringify(r))}
-function getStudent(c){try{return JSON.parse(localStorage.getItem('kt_student_'+c)||'null')}catch(e){return null}}
+var rosterState = [];
+function escapeHtml(value){
+  return String(value == null ? '' : value)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+function getRosterCacheKey(){
+  var cls = _teacherSession && _teacherSession.classCode ? _teacherSession.classCode : 'global';
+  var teacher = _teacherSession && (_teacherSession.username || _teacherSession.name) ? (_teacherSession.username || _teacherSession.name) : 'teacher';
+  return 'kt_roster_cache_' + teacher + '_' + cls;
+}
+function getCachedRoster(){
+  try { return JSON.parse(localStorage.getItem(getRosterCacheKey()) || '[]'); } catch(e){ return []; }
+}
+function saveCachedRoster(students){
+  localStorage.setItem(getRosterCacheKey(), JSON.stringify(students || []));
+}
+function getStudent(c){
+  for (var i = 0; i < rosterState.length; i++) {
+    if (rosterState[i].code === c) return rosterState[i];
+  }
+  return null;
+}
 function saveStudentLocal(c,s){localStorage.setItem('kt_student_'+c,JSON.stringify(s))}
+function setRosterState(students){
+  rosterState = (students || []).map(function(s){
+    return {
+      code: String(s.code || ''),
+      name: s.name || '',
+      grade: s.grade || '3',
+      classCode: s.classCode || s.class_code || (_teacherSession ? _teacherSession.classCode : ''),
+      xp: typeof s.xp === 'number' ? s.xp : 0,
+      crowns: typeof s.crowns === 'number' ? s.crowns : 0,
+      profileComplete: !!(s.profileComplete || s.profile_complete),
+      lastActive: s.lastActive || s.last_active || null,
+      createdAt: s.createdAt || Date.now()
+    };
+  }).filter(function(s){ return !!s.code; });
+}
+function persistRosterCache(){
+  saveCachedRoster(rosterState);
+  var legacyRoster = {};
+  rosterState.forEach(function(s){
+    saveStudentLocal(s.code, s);
+    legacyRoster[s.code] = { name: s.name, grade: s.grade };
+  });
+  localStorage.setItem('kt_roster', JSON.stringify(legacyRoster));
+}
 function getSettings(){try{return JSON.parse(localStorage.getItem('kt_settings')||'{}')}catch(e){return{}}}
 function putSetting(k,v){var s=getSettings();s[k]=v;localStorage.setItem('kt_settings',JSON.stringify(s))}
 function getDevProg(c){try{return JSON.parse(localStorage.getItem('kt_quest_progress_'+c)||'{}')}catch(e){return{}}}
@@ -299,7 +346,7 @@ var MISSIONS=[
 ];
 
 function genCode(){
-  var used=Object.keys(getRoster());
+  var used=rosterState.map(function(s){ return s.code; });
   var code;
   do{code=String(Math.floor(1000+Math.random()*9000))}while(used.indexOf(code)>-1);
   return code;
@@ -340,12 +387,11 @@ async function loadSampleStudents() {
       }), classCode);
     }
 
-    var r = getRoster();
     students.forEach(function(s) {
       saveStudentLocal(s.code, s);
-      r[s.code] = { name: s.name, grade: s.grade };
+      rosterState.push(s);
     });
-    saveRoster(r);
+    persistRosterCache();
     toast('✅ Sample class loaded!');
     renderAll();
   } catch (e) {
@@ -370,8 +416,8 @@ async function doAdd(){
       await db_addStudent(code, name, grade, classCode);
     }
     var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
-    saveStudentLocal(code,s);
-    var r=getRoster();r[code]={name:name,grade:grade};saveRoster(r);
+    rosterState.push(s);
+    persistRosterCache();
     nameEl.value='';
     toast('King '+name+' added! Code: '+code);
     renderAll();
@@ -386,7 +432,6 @@ async function doBulk(){
   if(!raw){toast('Paste names first');return}
   var lines=raw.split('\n');
   var students=[];
-  var tempRoster={};
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim();if(!line)continue;
     var parts=line.split(',');
@@ -394,7 +439,6 @@ async function doBulk(){
     if(!name)continue;
     var code=genCode();
     students.push({code:code,name:name,grade:grade});
-    tempRoster[code]={name:name,grade:grade};
   }
   if(!students.length){toast('No valid names found');return;}
 
@@ -404,13 +448,11 @@ async function doBulk(){
     await db_bulkAddStudents(students, _cc);
     // Only update local state after server confirms success
     students.forEach(function(s){
-      saveStudentLocal(s.code,{code:s.code,name:s.name,grade:s.grade,
+      rosterState.push({code:s.code,name:s.name,grade:s.grade,
         classCode:_teacherSession?_teacherSession.classCode:'MY-CLASS',
         xp:0,crowns:0,createdAt:Date.now()});
     });
-    var r=getRoster();
-    Object.assign(r,tempRoster);
-    saveRoster(r);
+    persistRosterCache();
     document.getElementById('bulk-names').value='';
     toast(students.length+' students added!');
     renderAll();
@@ -422,13 +464,21 @@ async function doBulk(){
 
 async function removeStudent(code){
   if(!confirm('Remove '+code+'?'))return;
-  var r=getRoster();delete r[code];saveRoster(r);
-  localStorage.removeItem('kt_student_'+code);
-  // Delete from Supabase
+  if (typeof db_removeStudent !== 'function') {
+    toast('⚠️ Delete service unavailable');
+    return;
+  }
   try {
-    // Use secure Edge Function — no exposed keys
     await db_removeStudent(code);
-  } catch(e){ console.warn('Supabase delete failed',e); }
+  } catch(e){
+    toast('⚠️ Failed to remove: ' + e.message);
+    console.warn('Supabase delete failed',e);
+    return;
+  }
+  rosterState = rosterState.filter(function(s){ return s.code !== code; });
+  localStorage.removeItem('kt_student_'+code);
+  localStorage.removeItem('kt_quest_progress_'+code);
+  persistRosterCache();
   toast('Removed');renderAll();
 }
 
@@ -501,34 +551,32 @@ function skillColor(pct) {
 
 // ── RENDER ROSTER ─────────────────────────────────────────────
 function renderRoster(){
-  var r=getRoster();var codes=Object.keys(r);
   var search=(document.getElementById('search')||{value:''}).value.toLowerCase();
   var totalXP=0,active=0;
-  codes.forEach(function(c){var s=getStudent(c);if(s){totalXP+=(s.xp||0);if(s.xp>0)active++}});
+  rosterState.forEach(function(s){ totalXP += (s.xp||0); if ((s.xp||0) > 0) active++; });
   var stCount=document.getElementById('st-count');
   var stActive=document.getElementById('st-active');
   var stXP=document.getElementById('st-xp');
-  if(stCount) stCount.textContent=codes.length;
+  if(stCount) stCount.textContent=rosterState.length;
   if(stActive) stActive.textContent=active;
   if(stXP) stXP.textContent=totalXP;
 
   var list=document.getElementById('roster-list');
   if(!list) return;
-  if(!codes.length){
+  if(!rosterState.length){
     list.innerHTML='<div class="empty"><div class="empty-i">👥</div><div>No students — use Add Student below</div></div>';
     return;
   }
 
   // Build data array
-  var data = codes.map(function(c){
-    var s=getStudent(c); if(!s) return null;
-    var p=getMerged(c);
+  var data = rosterState.map(function(s){
+    var p=getMerged(s.code);
     var done=MISSIONS.filter(function(m){return!!p[m.id]}).length;
     var xp=s.xp||0;
     var lastActive=s.lastActive||s.last_active||null;
     var risk=getRiskLevel(done, lastActive);
-    return { c:c, s:s, p:p, done:done, xp:xp, lastActive:lastActive, risk:risk };
-  }).filter(function(d){ return d && (!search || d.s.name.toLowerCase().indexOf(search)>-1 || d.c.indexOf(search)>-1); });
+    return { c:s.code, s:s, p:p, done:done, xp:xp, lastActive:lastActive, risk:risk };
+  }).filter(function(d){ return (!search || d.s.name.toLowerCase().indexOf(search)>-1 || d.c.indexOf(search)>-1); });
 
   // Sort
   data.sort(function(a,b){
@@ -545,23 +593,23 @@ function renderRoster(){
     var la = getLastActiveLabel(d.lastActive);
     var skills = getSkillLevels(d.p);
     var stds = getStandards(d.p);
-    var stdHtml = stds.length ? stds.map(function(s){ return '<span class="std-pill">'+s+'</span>'; }).join('') : '<span class="std-pill" style="opacity:.4;">No standards yet</span>';
+    var stdHtml = stds.length ? stds.map(function(s){ return '<span class="std-pill">'+escapeHtml(s)+'</span>'; }).join('') : '<span class="std-pill" style="opacity:.4;">No standards yet</span>';
 
     return '<div class="s-card">'+
 
       // ── TOP ROW: code, risk dot, name, last active, buttons ──
       '<div class="s-card-top">'+
-        '<div class="s-code">'+d.c+'</div>'+
+        '<div class="s-code">'+escapeHtml(d.c)+'</div>'+
         '<div class="risk-dot '+riskClass+'" title="'+
           (d.risk==='green'?'On track':d.risk==='yellow'?'Needs attention':'At risk')+'"></div>'+
         '<div class="s-info" style="flex:1;min-width:0;">'+
-          '<div class="s-name">'+d.s.name+'</div>'+
-          '<div class="s-meta">Gr '+d.s.grade+' · '+getWorld(d.c)+' · '+d.done+'/8 missions · '+d.xp+' XP</div>'+
+          '<div class="s-name">'+escapeHtml(d.s.name)+'</div>'+
+          '<div class="s-meta">Gr '+escapeHtml(d.s.grade)+' · '+escapeHtml(getWorld(d.c))+' · '+d.done+'/8 missions · '+d.xp+' XP</div>'+
         '</div>'+
         '<div class="s-btns">'+
-          '<button class="s-btn grn" data-action="prog" data-code="'+d.c+'">📋</button>'+
-          '<button class="s-btn" data-action="card" data-code="'+d.c+'">🃏</button>'+
-          '<button class="s-btn" data-action="del" data-code="'+d.c+'">🗑️</button>'+
+          '<button class="s-btn grn" data-action="prog" data-code="'+escapeHtml(d.c)+'">📋</button>'+
+          '<button class="s-btn" data-action="card" data-code="'+escapeHtml(d.c)+'">🃏</button>'+
+          '<button class="s-btn" data-action="del" data-code="'+escapeHtml(d.c)+'">🗑️</button>'+
         '</div>'+
       '</div>'+
 
@@ -607,44 +655,41 @@ function renderRoster(){
 }
 
 function renderProgress(){
-  var r=getRoster();var codes=Object.keys(r);
   var el=document.getElementById('prog-list');
-  if(!codes.length){el.innerHTML='<div class="empty"><div class="empty-i">📊</div><div>Add students, then tap 📊 to track progress</div></div>';return}
-  var data=codes.map(function(c){
-    var s=getStudent(c);var p=getMerged(c);
+  if(!rosterState.length){el.innerHTML='<div class="empty"><div class="empty-i">📊</div><div>Add students, then tap 📊 to track progress</div></div>';return}
+  var data=rosterState.map(function(s){
+    var p=getMerged(s.code);
     var done=MISSIONS.filter(function(m){return!!p[m.id]}).length;
     var xp=MISSIONS.filter(function(m){return!!p[m.id]}).reduce(function(sum,m){return sum+m.xp},0);
-    return{c:c,s:s,done:done,xp:xp,p:p};
+    return{c:s.code,s:s,done:done,xp:xp,p:p};
   }).filter(function(d){return d.s}).sort(function(a,b){return b.done-a.done});
   el.innerHTML=data.map(function(d,i){
     var pct=Math.round(d.done/MISSIONS.length*100);
     var medal=(i===0&&d.done>0)?'🥇':(i===1&&d.done>0)?'🥈':(i===2&&d.done>0)?'🥉':'👑';
     var names=MISSIONS.filter(function(m){return!!d.p[m.id]}).map(function(m){return m.name});
-    return'<div class="p-card" data-action="prog" data-code="'+d.c+'">'+
+    return'<div class="p-card" data-action="prog" data-code="'+escapeHtml(d.c)+'">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;">'+
         '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">'+medal+'</span>'+
-          '<div><div style="font-weight:800;font-size:14px;">'+d.s.name+'</div>'+
-          '<div style="font-size:11px;color:var(--muted);">Gr '+d.s.grade+' · '+d.done+'/8 missions</div></div></div>'+
+          '<div><div style="font-weight:800;font-size:14px;">'+escapeHtml(d.s.name)+'</div>'+
+          '<div style="font-size:11px;color:var(--muted);">Gr '+escapeHtml(d.s.grade)+' · '+d.done+'/8 missions</div></div></div>'+
         '<div style="text-align:right;"><div style="font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);">'+d.xp+' XP</div>'+
         '<div style="font-size:10px;color:var(--muted);">'+pct+'%</div></div>'+
       '</div>'+
       '<div class="p-bar-bg"><div class="p-bar-fg" style="width:'+pct+'%"></div></div>'+
-      (names.length?'<div style="font-size:10px;color:var(--green);line-height:1.7;">✅ '+names.join(' · ')+'</div>':'')+
+      (names.length?'<div style="font-size:10px;color:var(--green);line-height:1.7;">✅ '+escapeHtml(names.join(' · '))+'</div>':'')+
     '</div>';
   }).join('');
 }
 
 function renderCodes(){
-  var r=getRoster();var codes=Object.keys(r);
   var g=document.getElementById('codes-grid');
-  if(!codes.length){g.innerHTML='<div class="empty"><div class="empty-i">🔑</div><div>No codes yet</div></div>';return}
-  g.innerHTML=codes.map(function(c){
-    var s=getStudent(c);if(!s)return'';
-    return'<div class="kc" data-action="card" data-code="'+c+'">'+
+  if(!rosterState.length){g.innerHTML='<div class="empty"><div class="empty-i">🔑</div><div>No codes yet</div></div>';return}
+  g.innerHTML=rosterState.map(function(s){
+    return'<div class="kc" data-action="card" data-code="'+escapeHtml(s.code)+'">'+
       '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
-      '<div class="kc-name">King '+s.name+'</div><div class="kc-div"></div>'+
-      '<div class="kc-lbl">King Code</div><div class="kc-code">'+c+'</div>'+
-      '<div class="kc-gr">Grade '+s.grade+'</div></div>';
+      '<div class="kc-name">King '+escapeHtml(s.name)+'</div><div class="kc-div"></div>'+
+      '<div class="kc-lbl">King Code</div><div class="kc-code">'+escapeHtml(s.code)+'</div>'+
+      '<div class="kc-gr">Grade '+escapeHtml(s.grade)+'</div></div>';
   }).join('');
 }
 
@@ -665,9 +710,9 @@ function showCard(code){
   document.getElementById('card-body').innerHTML=
     '<div class="kc" style="max-width:220px;margin:0 auto;">'+
     '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
-    '<div class="kc-name">King '+s.name+'</div><div class="kc-div"></div>'+
-    '<div class="kc-lbl">King Code</div><div class="kc-code">'+code+'</div>'+
-    '<div class="kc-gr">Grade '+s.grade+'</div></div>';
+    '<div class="kc-name">King '+escapeHtml(s.name)+'</div><div class="kc-div"></div>'+
+    '<div class="kc-lbl">King Code</div><div class="kc-code">'+escapeHtml(code)+'</div>'+
+    '<div class="kc-gr">Grade '+escapeHtml(s.grade)+'</div></div>';
   document.getElementById('card-modal').classList.add('open');
 }
 
@@ -684,8 +729,8 @@ function showProg(code){
     worlds[w].forEach(function(m){
       var done=!!p[m.id];
       html+='<label class="m-check">'+
-        '<input type="checkbox" '+(done?'checked':'')+' data-id="'+m.id+'" data-xp="'+m.xp+'">'+
-        '<div class="m-info"><div class="m-name">'+m.name+'</div><div class="m-meta">'+m.type+' · +'+m.xp+' XP</div></div>'+
+        '<input type="checkbox" '+(done?'checked':'')+' data-id="'+escapeHtml(m.id)+'" data-xp="'+m.xp+'">'+
+        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' · +'+m.xp+' XP</div></div>'+
         (done?'<span style="color:var(--green);">✅</span>':'')+
       '</label>';
     });
@@ -785,8 +830,9 @@ function wireButtons() {
 
   on('clear-btn', function(){
     if (!confirm('Delete ALL student data? This cannot be undone.')) return;
-    var r = getRoster();
-    Object.keys(r).forEach(function(c){ localStorage.removeItem('kt_student_' + c); });
+    rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
+    rosterState = [];
+    saveCachedRoster([]);
     localStorage.removeItem('kt_roster');
     toast('🗑️ All data cleared');
     renderAll();
@@ -835,6 +881,7 @@ function wireButtons() {
   } else {
     console.warn('❌ No teacher session found');
   }
+  setRosterState(getCachedRoster());
   renderAll();
   loadSettingsForm();
   wireButtons();
@@ -857,8 +904,9 @@ function loadSampleClass() {
 
 function clearAllData() {
   if (!confirm('Delete ALL student data? This cannot be undone.')) return;
-  var r = getRoster();
-  Object.keys(r).forEach(function(c){ localStorage.removeItem('kt_student_' + c); });
+  rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
+  rosterState = [];
+  saveCachedRoster([]);
   localStorage.removeItem('kt_roster');
   toast('🗑️ All data cleared');
   renderAll();
@@ -885,47 +933,35 @@ async function syncFromSupabase(silent) {
   // silent=true on boot — no toast, no flicker
   if (!silent) toast('🔄 Syncing from cloud…');
 
-  var rosterBackup = null;
-  try { rosterBackup = JSON.parse(JSON.stringify(getRoster())); } catch(e) {}
-
   try {
     var students = await db_getRosterWithProgress();
-
-    if (!students || !students.length) {
-      if (!silent) toast('☁️ No students found in cloud yet');
-      return;
-    }
-
-    // Build new roster from cloud data
-    var newRoster = {};
-    students.forEach(function(s) {
-      saveStudentLocal(s.code, {
-        code:            s.code,
-        name:            s.name,
-        grade:           s.grade,
-        classCode:       s.class_code || s.classCode,
-        xp:              s.xp || 0,
-        crowns:          s.crowns || 0,
-        profileComplete: s.profile_complete || s.profileComplete || false,
-        lastActive:      s.last_active || s.lastActive || null,
-      });
-      if (s.progress && Object.keys(s.progress).length > 0) {
-        localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(s.progress));
-      }
-      newRoster[s.code] = { name: s.name, grade: s.grade };
+    var progressByCode = {};
+    (students || []).forEach(function(s){
+      if (s && s.code && s.progress) progressByCode[s.code] = s.progress;
     });
-
-    saveRoster(newRoster);
-    if (!silent) toast('✅ Synced ' + Object.keys(newRoster).length + ' students from cloud!');
-    // Always re-render after sync so data is fresh
+    setRosterState(students || []);
+    rosterState.forEach(function(s) {
+      saveStudentLocal(s.code, s);
+      if (progressByCode[s.code] && Object.keys(progressByCode[s.code]).length > 0) {
+        localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(progressByCode[s.code]));
+      }
+    });
+    persistRosterCache();
+    if (!silent) {
+      if (!rosterState.length) toast('☁️ No students found in cloud yet');
+      else toast('✅ Synced ' + rosterState.length + ' students from cloud!');
+    }
     renderAll();
 
   } catch(e) {
-    if (rosterBackup) {
-      saveRoster(rosterBackup);
-      console.warn('Sync failed, restored backup roster');
+    var cached = getCachedRoster();
+    if (cached && cached.length) {
+      setRosterState(cached);
+      renderAll();
+      if (!silent) toast('⚠️ Cloud unavailable — using cached roster');
+    } else if (!silent) {
+      toast('⚠️ Sync failed — no cache available');
     }
-    if (!silent) toast('⚠️ Sync failed — your data is safe, check your connection');
     console.warn('syncFromSupabase failed:', e);
   }
 }
