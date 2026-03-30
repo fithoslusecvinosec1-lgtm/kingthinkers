@@ -308,6 +308,7 @@ if (!lastCode && localStorage.getItem('kt_remember_student_code') === '1') {
 } else if (localStorage.getItem('kt_remember_student_code') !== '1') {
   localStorage.removeItem('kt_last_code');
 }
+let lastCode = sessionStorage.getItem('kt_last_code') || localStorage.getItem('kt_last_code') || '';
 
 // ── AUDIO SAFE WRAPPER ────────────────────────────────────────
 function audioTap() {
