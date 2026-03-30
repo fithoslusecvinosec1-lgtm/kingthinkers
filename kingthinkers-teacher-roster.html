@@ -409,14 +409,14 @@ async function doAdd(){
   var name=nameEl.value.trim();
   var grade=gradeEl.value||'3';
   if(!name){toast('Enter a name first');return;}
-  var classCode=_teacherSession?_teacherSession.classCode:'MY-CLASS';
-  var code=genCode();
   try {
-    // Server add first — if it fails, don't update local state
-    if(typeof db_addStudent==='function'){
-      await db_addStudent(code, name, grade, classCode);
-    }
-    var s={code:code,name:name,grade:grade,classCode:classCode,xp:0,crowns:0,createdAt:Date.now()};
+    // Server add first and use the generated student code it returns.
+    var result = (typeof db_addStudent==='function')
+      ? await db_addStudent(name, grade)
+      : { code: genCode() };
+
+    var code = result && result.code ? String(result.code) : genCode();
+    var s={code:code,name:name,grade:grade,classCode:(_teacherSession?_teacherSession.classCode:'MY-CLASS'),xp:0,crowns:0,createdAt:Date.now()};
     rosterState.push(s);
     persistRosterCache();
     nameEl.value='';

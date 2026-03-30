@@ -357,13 +357,11 @@ async function db_getRosterWithProgress() {
   return (data && data.roster) ? data.roster : [];
 }
 
-async function db_addStudent(code, name, grade, classCode) {
+async function db_addStudent(name, grade) {
   try {
     return await kt_api('add-student', {
-      code: code,
       name: name,
-      grade: grade,
-      classCode: classCode || null
+      grade: grade
     }, true);
   } catch (e) {
     console.warn('db_addStudent failed:', e.message);
