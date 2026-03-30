@@ -66,7 +66,16 @@ window.KTLessonEngine = (function () {
   }
 
   function isReadingLesson(lesson) {
-    return !!(lesson && lesson.phase1_strategy);
+    return !!(
+      lesson &&
+      lesson.subject === 'reading' &&
+      lesson.phase1_strategy &&
+      (
+        lesson.phase3_guided ||
+        Array.isArray(lesson.phase2_vocab) ||
+        Array.isArray(lesson.phase4_test)
+      )
+    );
   }
 
   function normalizeChoices(choices) {
@@ -180,8 +189,8 @@ window.KTLessonEngine = (function () {
   function buildReadingSteps(lesson) {
     var steps = [];
     var guided = lesson.phase3_guided || {};
-    var sections = Array.isArray(guided.sections) ? guided.sections.slice(0, 3) : [];
-    var tests = Array.isArray(lesson.phase4_test) ? lesson.phase4_test.slice(0, 4) : [];
+    var sections = Array.isArray(guided.sections) ? guided.sections : [];
+    var tests = Array.isArray(lesson.phase4_test) ? lesson.phase4_test : [];
 
     steps.push({ type: 'intro', data: lesson.intro || {} });
     steps.push({ type: 'phase1_strategy', data: lesson.phase1_strategy || {} });
@@ -756,7 +765,6 @@ window.KTLessonEngine = (function () {
           correct = Number(userAnswer) === Number(answerValue);
         }
         if (correct) {
-          state.correctCount += 1;
           gainXP(question.xp || 8);
           playAudio('correct');
           feedback.className = 'feedback good show';
@@ -999,7 +1007,7 @@ window.KTLessonEngine = (function () {
         var feedback = $('kt-feedback');
 
         if (isCorrect) {
-          state.correctCount += 1;
+          if (isPhase4Activity()) state.correctCount += 1;
           gainXP(activity.xp || activity.xpReward || 0);
           gainCrowns(activity.crownReward || 0);
           playAudio('correct');
@@ -1151,7 +1159,7 @@ window.KTLessonEngine = (function () {
       state.match.selectedDef = null;
 
       if (state.match.matchedCount === (activity.pairs || []).length) {
-        state.correctCount += 1;
+        if (isPhase4Activity()) state.correctCount += 1;
         gainXP(activity.xp || activity.xpReward || 0);
         gainCrowns(activity.crownReward || 0);
         feedback.className = 'feedback good show';
@@ -1220,7 +1228,7 @@ window.KTLessonEngine = (function () {
       submit.disabled = true;
 
       if (userValue === correctValue) {
-        state.correctCount += 1;
+        if (isPhase4Activity()) state.correctCount += 1;
         gainXP(activity.xp || activity.xpReward || 0);
         gainCrowns(activity.crownReward || 0);
         playAudio('correct');
