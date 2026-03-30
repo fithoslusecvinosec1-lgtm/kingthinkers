@@ -303,6 +303,24 @@ function getStudent(c){
   return null;
 }
 function saveStudentLocal(c,s){localStorage.setItem('kt_student_'+c,JSON.stringify(s))}
+function normalizeBulkCreated(result){
+  if (!result) return [];
+  if (Array.isArray(result)) return result;
+  if (Array.isArray(result.students)) return result.students;
+  if (Array.isArray(result.created)) return result.created;
+  if (Array.isArray(result.data)) return result.data;
+  return [];
+}
+function upsertRosterStudent(student){
+  if (!student || !student.code) return;
+  var code = String(student.code);
+  var idx = -1;
+  for (var i = 0; i < rosterState.length; i++) {
+    if (rosterState[i].code === code) { idx = i; break; }
+  }
+  if (idx >= 0) rosterState[idx] = student;
+  else rosterState.push(student);
+}
 function setRosterState(students){
   rosterState = (students || []).map(function(s){
     return {
@@ -377,8 +395,9 @@ async function loadSampleStudents() {
     var created = [];
     if (typeof db_bulkAddStudents === 'function') {
       var result = await db_bulkAddStudents(students, classCode);
-      created = (result && Array.isArray(result.students)) ? result.students : [];
+      created = normalizeBulkCreated(result);
     }
+    if (!created.length) throw new Error('No students were returned from server.');
 
     created.forEach(function(s) {
       var code = s && s.code ? String(s.code) : '';
@@ -393,7 +412,7 @@ async function loadSampleStudents() {
         createdAt: Date.now()
       };
       saveStudentLocal(code, localStudent);
-      rosterState.push(localStudent);
+      upsertRosterStudent(localStudent);
     });
     persistRosterCache();
     toast(created.length + ' sample students added!');
@@ -414,13 +433,11 @@ async function doAdd(){
   if(!name){toast('Enter a name first');return;}
   try {
     // Server add first and use the generated student code it returns.
-    var result = (typeof db_addStudent==='function')
-      ? await db_addStudent(name, grade)
-      : { code: genCode() };
-
-    var code = result && result.code ? String(result.code) : genCode();
+    var result = await db_addStudent(name, grade);
+    var code = result && result.code ? String(result.code) : '';
+    if (!code) throw new Error('No student code returned from server.');
     var s={code:code,name:name,grade:grade,classCode:(_teacherSession?_teacherSession.classCode:'MY-CLASS'),xp:0,crowns:0,createdAt:Date.now()};
-    rosterState.push(s);
+    upsertRosterStudent(s);
     persistRosterCache();
     nameEl.value='';
     toast('King '+name+' added! Code: '+code);
@@ -449,13 +466,13 @@ async function doBulk(){
   try {
     var _cc = _teacherSession ? _teacherSession.classCode : 'MY-CLASS';
     var result = await db_bulkAddStudents(students, _cc);
-    var created = (result && Array.isArray(result.students)) ? result.students : [];
+    var created = normalizeBulkCreated(result);
     if (!created.length) throw new Error('No students were returned from server.');
     // Only update local state after server confirms success
     created.forEach(function(s){
       var code = s && s.code ? String(s.code) : '';
       if (!code) return;
-      rosterState.push({code:code,name:s.name,grade:s.grade,
+      upsertRosterStudent({code:code,name:s.name,grade:s.grade,
         classCode:_teacherSession?_teacherSession.classCode:'MY-CLASS',
         xp:typeof s.xp === 'number' ? s.xp : 0,
         crowns:typeof s.crowns === 'number' ? s.crowns : 0,
