@@ -302,6 +302,12 @@ function getStudent(code) {
 
 // ── STATE ─────────────────────────────────────────────────────
 let newGrade = '3';
+let lastCode = sessionStorage.getItem('kt_last_code') || '';
+if (!lastCode && localStorage.getItem('kt_remember_student_code') === '1') {
+  lastCode = localStorage.getItem('kt_last_code') || '';
+} else if (localStorage.getItem('kt_remember_student_code') !== '1') {
+  localStorage.removeItem('kt_last_code');
+}
 let lastCode = sessionStorage.getItem('kt_last_code') || localStorage.getItem('kt_last_code') || '';
 
 // ── AUDIO SAFE WRAPPER ────────────────────────────────────────

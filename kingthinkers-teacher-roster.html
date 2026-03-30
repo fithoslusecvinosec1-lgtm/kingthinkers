@@ -320,6 +320,7 @@ function setRosterState(students){
 }
 function persistRosterCache(){
   saveCachedRoster(rosterState);
+  rosterState.forEach(function(s){ saveStudentLocal(s.code, s); });
   var legacyRoster = {};
   rosterState.forEach(function(s){
     saveStudentLocal(s.code, s);
@@ -464,6 +465,10 @@ async function doBulk(){
 
 async function removeStudent(code){
   if(!confirm('Remove '+code+'?'))return;
+  if (typeof db_removeStudent !== 'function') {
+    toast('⚠️ Delete service unavailable');
+    return;
+  }
   try {
     await db_removeStudent(code);
   } catch(e){
@@ -792,15 +797,7 @@ function wireButtons() {
   on('bulk-btn', doBulk);
 
   // ── PRINT KING CARDS ──────────────────────────────────────────
-  on('print-cards-btn', function(){
-    // Show only codes section, print, then restore
-    document.body.classList.add('print-cards-only');
-    // Scroll to codes section to make it visible
-    var codesEl = document.getElementById('codes');
-    if (codesEl) codesEl.style.display = 'block';
-    window.print();
-    document.body.classList.remove('print-cards-only');
-  });
+  on('print-cards-btn', printKingCards);
   // Also wire the topbar print button (prints everything)
   var topPrint = document.querySelector('.t-link[onclick*="print"]');
   if (topPrint) topPrint.onclick = function(){ window.print(); };
@@ -810,17 +807,10 @@ function wireButtons() {
   on('prog-close-btn', function(){ document.getElementById('prog-modal').classList.remove('open'); renderAll(); });
 
   // ── SETTINGS ─────────────────────────────────────────────────
-  on('save-settings-btn', function(){
-    var t = document.getElementById('s-teacher');
-    var c = document.getElementById('s-class');
-    var sc = document.getElementById('s-school');
-    if (t)  putSetting('teacherName', t.value);
-    if (c)  putSetting('classCode',   c.value);
-    if (sc) putSetting('schoolName',  sc.value);
-    toast('✅ Settings saved!');
-  });
-
+  on('save-settings-btn', saveSettingsNow);
   on('sync-btn', function(){ syncFromSupabase(); });
+  on('sample-btn', loadSampleClass);
+  on('clear-btn', clearAllData);
 
   on('sample-btn', function(){ loadSampleStudents(); });
 
@@ -840,16 +830,7 @@ function wireButtons() {
     if (nameEl) nameEl.textContent = (_teacherSession.name || _teacherSession.username) + ' · ' + (_teacherSession.classCode || '');
   }
 
-  on('logout-btn', function(){
-    if (confirm('Log out of Teacher Roster?')) {
-      if (typeof kt_clearTeacherSession === 'function') {
-        kt_clearTeacherSession();
-      } else {
-        sessionStorage.removeItem('kt_teacher');
-      }
-      window.location.href = 'kingthinkers-teacher-login.html';
-    }
-  });
+  on('logout-btn', logOut);
 
   // ── EVENT DELEGATION for roster cards ──────────────────────
   // Handles all data-action buttons without inline onclick escaping issues
@@ -900,6 +881,13 @@ function loadSampleClass() {
 
 function clearAllData() {
   if (!confirm('Delete ALL student data? This cannot be undone.')) return;
+  rosterState.forEach(function(s){
+    localStorage.removeItem('kt_student_' + s.code);
+    localStorage.removeItem('kt_quest_progress_' + s.code);
+    localStorage.removeItem('kt_manual_' + s.code);
+  });
+  rosterState = [];
+  saveCachedRoster([]);
   rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
   rosterState = [];
   saveCachedRoster([]);
@@ -910,6 +898,8 @@ function clearAllData() {
 
 function printKingCards() {
   document.body.classList.add('print-cards-only');
+  var codesEl = document.getElementById('codes');
+  if (codesEl) codesEl.style.display = 'block';
   window.print();
   document.body.classList.remove('print-cards-only');
 }
@@ -928,6 +918,22 @@ function logOut() {
 async function syncFromSupabase(silent) {
   // silent=true on boot — no toast, no flicker
   if (!silent) toast('🔄 Syncing from cloud…');
+  if (typeof db_getRosterWithProgress !== 'function') {
+    if (!silent) toast('⚠️ Sync service unavailable');
+    return;
+  }
+
+  try {
+    var students = await db_getRosterWithProgress();
+    var progressByCode = {};
+    (students || []).forEach(function(s){
+      if (s && s.code && s.progress) progressByCode[s.code] = s.progress;
+    });
+    setRosterState(students || []);
+    rosterState.forEach(function(s) {
+      saveStudentLocal(s.code, s);
+      if (progressByCode[s.code] && Object.keys(progressByCode[s.code]).length > 0) {
+        localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(progressByCode[s.code]));
 
   try {
     var students = await db_getRosterWithProgress();
