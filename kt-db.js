@@ -378,12 +378,20 @@ async function db_bulkAddStudents(students, classCode) {
   }).filter(function (s) {
     return !!s.name;
   }) : [];
+  if (!cleaned.length) {
+    throw new Error('No valid students to add.');
+  }
 
   try {
-    return await kt_api('bulk-add', {
+    var data = await kt_api('bulk-add', {
       students: cleaned,
       classCode: classCode || null
     }, true);
+    var created = [];
+    if (data && Array.isArray(data.students)) created = data.students;
+    else if (data && Array.isArray(data.created)) created = data.created;
+    else if (Array.isArray(data)) created = data;
+    return Object.assign({}, data || {}, { students: created });
   } catch (e) {
     console.warn('db_bulkAddStudents failed:', e.message);
     throw e;
