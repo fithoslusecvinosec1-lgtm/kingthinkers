@@ -291,6 +291,7 @@ window.KTLessonEngine = (function () {
   function renderVisualFrame(label, bodyHtml) {
     return (
       '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);overflow-x:auto;">' +
+      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
         (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
         bodyHtml +
       '</div>'
@@ -470,6 +471,7 @@ window.KTLessonEngine = (function () {
     var items = (Array.isArray(steps) ? steps : []).filter(function (step) {
       return step != null && safeText(step).trim() !== '';
     });
+    var items = Array.isArray(steps) ? steps : [];
     if (!items.length) return '';
     return renderVisualFrame(
       label || title,
