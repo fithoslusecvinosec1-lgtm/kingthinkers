@@ -290,6 +290,7 @@ window.KTLessonEngine = (function () {
 
   function renderVisualFrame(label, bodyHtml) {
     return (
+      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);overflow-x:auto;">' +
       '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
         (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
         bodyHtml +
@@ -467,6 +468,9 @@ window.KTLessonEngine = (function () {
   }
 
   function renderStepListVisual(title, steps, label) {
+    var items = (Array.isArray(steps) ? steps : []).filter(function (step) {
+      return step != null && safeText(step).trim() !== '';
+    });
     var items = Array.isArray(steps) ? steps : [];
     if (!items.length) return '';
     return renderVisualFrame(
@@ -559,7 +563,9 @@ window.KTLessonEngine = (function () {
     }
 
     if (visual.type === 'number_line') {
-      return renderNumberLineVisual(visual.current, visual.total, visual.label);
+      var current = visual.current != null ? visual.current : (visual.number != null ? visual.number : visual.value);
+      var total = visual.total != null ? visual.total : (visual.max != null ? visual.max : visual.end);
+      return renderNumberLineVisual(current, total, visual.label);
     }
 
     if (visual.type === 'coins') {
@@ -891,10 +897,12 @@ window.KTLessonEngine = (function () {
     var qType = isTrueFalse ? 'mcq' : (isInput ? 'input' : 'mcq');
     var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(question.choices);
     var answerValue = isTrueFalse ? (question.answer ? 0 : 1) : question.answer;
+    var visualPayload = getVisualPayload(question);
 
     var html =
       '<div class="q-prompt" style="margin-top:14px;">' + escapeHtml(question.prompt || question.question || 'Question') + '</div>' +
       (question.hint ? '<div class="q-hint">💡 Strategy Reminder: ' + escapeHtml(question.hint) + '</div>' : '') +
+      (visualPayload ? renderVisualBlock(visualPayload) : '') +
       (qType === 'input'
         ? '<input id="kt-guided-input" class="choice" style="cursor:text;" type="text" placeholder="Type your answer" />' +
           '<div class="btn-row"><button class="btn btn-primary" id="kt-guided-submit">Check Answer</button></div>'
@@ -1016,11 +1024,13 @@ window.KTLessonEngine = (function () {
     var isTrueFalse = activity.type === 'true_false';
     var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(activity.choices);
     var answerIndex = isTrueFalse ? (activity.answer ? 0 : 1) : Number(activity.answer);
+    var visualPayload = getVisualPayload(activity);
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 4 · Show What You Know</div>' +
         (activity.excerpt ? '<div class="sage" style="margin-top:0;"><strong>Excerpt:</strong> ' + escapeHtml(activity.excerpt) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question || '') + '</div>' +
+        (visualPayload ? renderVisualBlock(visualPayload) : '') +
         (isInput
           ? '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
             '<div class="btn-row"><button class="btn btn-primary" id="kt-submit-btn">Check Answer</button></div>'
