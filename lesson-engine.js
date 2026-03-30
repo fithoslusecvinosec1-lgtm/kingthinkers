@@ -275,6 +275,28 @@ window.KTLessonEngine = (function () {
     return !!value && typeof value === 'object' && !Array.isArray(value);
   }
 
+  function normalizeVisualData(visual, visualData) {
+    if (isVisualObject(visualData)) return visualData;
+    if (isVisualObject(visual)) return visual;
+    if (typeof visualData === 'string' && visualData.trim()) return visualData;
+    if (typeof visual === 'string' && visual.trim()) return visual;
+    return null;
+  }
+
+  function getVisualPayload(source) {
+    if (!source) return null;
+    return normalizeVisualData(source.visual, source.visual_data);
+  }
+
+  function renderVisualFrame(label, bodyHtml) {
+    return (
+      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);overflow-x:auto;">' +
+        (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
+        bodyHtml +
+      '</div>'
+    );
+  }
+
   function renderVisualChips(items) {
     if (!Array.isArray(items) || !items.length) return '';
     return (
@@ -296,12 +318,7 @@ window.KTLessonEngine = (function () {
       cells += '<div style="flex:1;min-width:22px;height:26px;border-radius:8px;border:1px solid var(--border);background:' + (isFilled ? 'linear-gradient(135deg,var(--gold),var(--amber))' : 'rgba(255,255,255,.06)') + ';"></div>';
     }
 
-    return (
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
-        (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
-        '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>' +
-      '</div>'
-    );
+    return renderVisualFrame(label, '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>');
   }
 
   function renderFractionVisual(numerator, denominator, label) {
@@ -314,12 +331,10 @@ window.KTLessonEngine = (function () {
       cells += '<div style="flex:1;min-width:22px;height:32px;border-radius:8px;border:1px solid var(--border);background:' + (isFilled ? 'linear-gradient(135deg,var(--gold),var(--amber))' : 'rgba(255,255,255,.06)') + ';"></div>';
     }
 
-    return (
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
-        (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
-        '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>' +
-        '<div style="margin-top:10px;font-family:var(--f-d);font-size:22px;color:var(--gold);text-align:center;">' + numerator + '/' + denominator + '</div>' +
-      '</div>'
+    return renderVisualFrame(
+      label,
+      '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>' +
+      '<div style="margin-top:10px;font-family:var(--f-d);font-size:22px;color:var(--gold);text-align:center;">' + numerator + '/' + denominator + '</div>'
     );
   }
 
@@ -337,13 +352,11 @@ window.KTLessonEngine = (function () {
         '</div>';
     }
 
-    return (
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
-        (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
-        '<div style="position:relative;padding-top:8px;">' +
-          '<div style="position:absolute;left:0;right:0;top:14px;height:3px;background:rgba(255,255,255,.15);border-radius:999px;"></div>' +
-          '<div style="position:relative;display:flex;gap:0;">' + points + '</div>' +
-        '</div>' +
+    return renderVisualFrame(
+      label,
+      '<div style="position:relative;padding-top:8px;">' +
+        '<div style="position:absolute;left:0;right:0;top:14px;height:3px;background:rgba(255,255,255,.15);border-radius:999px;"></div>' +
+        '<div style="position:relative;display:flex;gap:0;">' + points + '</div>' +
       '</div>'
     );
   }
@@ -352,23 +365,32 @@ window.KTLessonEngine = (function () {
     count = Math.max(0, Number(count || 0));
     var coins = [];
     for (var i = 0; i < count; i++) coins.push('🪙');
-    return (
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
-        (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
-        '<div style="font-size:28px;line-height:1.5;text-align:center;">' + coins.join(' ') + '</div>' +
-      '</div>'
-    );
+    return renderVisualFrame(label, '<div style="font-size:28px;line-height:1.5;text-align:center;">' + coins.join(' ') + '</div>');
   }
 
   function renderPlaceValueColumnsVisual(visual) {
     if (!isVisualObject(visual)) return '';
 
-    var ha = Math.max(0, Number(visual.hundreds_a || 0));
-    var ta = Math.max(0, Number(visual.tens_a || 0));
-    var oa = Math.max(0, Number(visual.ones_a || 0));
-    var hb = Math.max(0, Number(visual.hundreds_b || 0));
-    var tb = Math.max(0, Number(visual.tens_b || 0));
-    var ob = Math.max(0, Number(visual.ones_b || 0));
+    function splitPlaceValues(raw) {
+      var text = safeText(raw).replace(/[^\d-]/g, '');
+      var n = Number(text);
+      if (isNaN(n)) n = 0;
+      var abs = Math.abs(n);
+      return {
+        hundreds: Math.floor((abs % 1000) / 100),
+        tens: Math.floor((abs % 100) / 10),
+        ones: abs % 10
+      };
+    }
+
+    var aValues = splitPlaceValues(visual.a);
+    var bValues = splitPlaceValues(visual.b);
+    var ha = Math.max(0, Number(visual.hundreds_a != null ? visual.hundreds_a : aValues.hundreds));
+    var ta = Math.max(0, Number(visual.tens_a != null ? visual.tens_a : aValues.tens));
+    var oa = Math.max(0, Number(visual.ones_a != null ? visual.ones_a : aValues.ones));
+    var hb = Math.max(0, Number(visual.hundreds_b != null ? visual.hundreds_b : bValues.hundreds));
+    var tb = Math.max(0, Number(visual.tens_b != null ? visual.tens_b : bValues.tens));
+    var ob = Math.max(0, Number(visual.ones_b != null ? visual.ones_b : bValues.ones));
 
     function renderRow(label, h, t, o) {
       return (
@@ -390,8 +412,8 @@ window.KTLessonEngine = (function () {
       : '';
 
     return (
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
-        (visual.label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(visual.label) + '</div>' : '') +
+      renderVisualFrame(
+        visual.label,
         '<div style="display:grid;grid-template-columns:82px repeat(3,minmax(0,1fr));gap:8px;align-items:center;">' +
           '<div></div>' +
           '<div style="font-size:11px;font-weight:900;color:var(--muted);text-align:center;letter-spacing:.06em;">HUNDREDS</div>' +
@@ -400,16 +422,138 @@ window.KTLessonEngine = (function () {
         '</div>' +
         renderRow(visual.label_a || 'Number A', ha, ta, oa) +
         renderRow(visual.label_b || 'Number B', hb, tb, ob) +
-        result +
+        result
+      )
+    );
+  }
+
+  function renderRoundingNumberLineVisual(visual) {
+    if (!isVisualObject(visual)) return '';
+    var n = Number(visual.number || 0);
+    var down10 = Math.floor(n / 10) * 10;
+    var up10 = down10 + 10;
+    var nearest10 = Number(visual.nearest_10 != null ? visual.nearest_10 : (n % 10 >= 5 ? up10 : down10));
+    var nearest100 = Number(visual.nearest_100 != null ? visual.nearest_100 : (Math.round(n / 100) * 100));
+
+    var body =
+      '<div style="display:flex;justify-content:space-between;gap:8px;">' +
+        '<div style="padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-weight:800;">' + down10 + '</div>' +
+        '<div style="padding:8px 10px;border-radius:10px;background:rgba(245,168,0,.18);font-weight:900;color:var(--gold);">' + n + '</div>' +
+        '<div style="padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-weight:800;">' + up10 + '</div>' +
+      '</div>' +
+      '<div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,.9);">Nearest 10: <strong style="color:var(--gold);">' + nearest10 + '</strong> · Nearest 100: <strong style="color:var(--gold);">' + nearest100 + '</strong></div>' +
+      (visual.rule ? '<div style="margin-top:8px;font-size:12px;color:var(--muted);">' + escapeHtml(visual.rule) + '</div>' : '');
+    return renderVisualFrame(visual.label || 'Rounding Number Line', body);
+  }
+
+  function renderRectangleAreaVisual(visual) {
+    if (!isVisualObject(visual)) return '';
+    var length = Math.max(1, Number(visual.length || 1));
+    var width = Math.max(1, Number(visual.width || 1));
+    var area = Number(visual.area != null ? visual.area : (length * width));
+    var maxCols = Math.min(12, length);
+    var maxRows = Math.min(8, width);
+    var cells = '';
+    for (var r = 0; r < maxRows; r++) {
+      for (var c = 0; c < maxCols; c++) {
+        cells += '<div style="aspect-ratio:1;border:1px solid var(--border);background:rgba(245,168,0,.16);border-radius:4px;"></div>';
+      }
+    }
+    return renderVisualFrame(
+      visual.label || 'Rectangle Area',
+      '<div style="display:grid;grid-template-columns:repeat(' + maxCols + ',1fr);gap:3px;max-width:320px;margin:0 auto;">' + cells + '</div>' +
+      '<div style="margin-top:10px;text-align:center;font-size:13px;">Area = <strong style="color:var(--gold);">' + length + ' × ' + width + ' = ' + area + '</strong></div>'
+    );
+  }
+
+  function renderStepListVisual(title, steps, label) {
+    var items = (Array.isArray(steps) ? steps : []).filter(function (step) {
+      return step != null && safeText(step).trim() !== '';
+    });
+    if (!items.length) return '';
+    return renderVisualFrame(
+      label || title,
+      items.map(function (step, idx) {
+        return '<div style="margin-top:' + (idx ? 8 : 0) + 'px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);font-size:13px;"><strong style="color:var(--gold);">Step ' + (idx + 1) + ':</strong> ' + escapeHtml(step) + '</div>';
+      }).join('')
+    );
+  }
+
+  function renderEqualGroupsVisual(visual) {
+    var groups = Math.max(1, Number(visual.groups || 1));
+    var perGroup = Math.max(1, Number(visual.per_group || 1));
+    var rows = '';
+    for (var g = 0; g < groups; g++) {
+      rows += '<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px;">' + new Array(perGroup + 1).join('<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gold);"></span>') + '</div>';
+    }
+    return renderVisualFrame(visual.label || 'Equal Groups', rows + '<div style="margin-top:10px;text-align:center;color:var(--muted);">' + groups + ' groups × ' + perGroup + ' each</div>');
+  }
+
+  function renderAngleComparisonVisual(visual) {
+    var labels = Array.isArray(visual.labels) ? visual.labels : [];
+    return renderVisualFrame(
+      visual.label || 'Angle Comparison',
+      labels.map(function (item) {
+        return '<div style="margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);font-size:13px;">∠ ' + escapeHtml(item) + '</div>';
+      }).join('')
+    );
+  }
+
+  function renderFactFamilyVisual(visual) {
+    var dividend = Number(visual.dividend || 0);
+    var divisor = Number(visual.divisor || 1);
+    var quotient = Number(visual.quotient || 0);
+    return renderVisualFrame(
+      visual.label || 'Fact Family',
+      '<div style="display:grid;gap:8px;text-align:center;font-family:var(--f-d);font-size:24px;color:var(--gold);">' +
+        '<div>' + divisor + ' × ' + quotient + ' = ' + dividend + '</div>' +
+        '<div>' + dividend + ' ÷ ' + divisor + ' = ' + quotient + '</div>' +
       '</div>'
     );
+  }
+
+  function renderBarGraphVisual(visual) {
+    var bars = Array.isArray(visual.bars) ? visual.bars : [];
+    if (!bars.length) return '';
+    var maxVal = 1;
+    bars.forEach(function (b) {
+      var val = Number(b.value != null ? b.value : (b.units != null ? b.units : b.total));
+      if (val > maxVal) maxVal = val;
+    });
+    var body = bars.map(function (bar) {
+      var val = Number(bar.value != null ? bar.value : (bar.units != null ? bar.units : bar.total));
+      var pct = Math.max(8, Math.round((val / maxVal) * 100));
+      var suffix = bar.total != null ? (' = ' + bar.total) : '';
+      return (
+        '<div style="margin-top:8px;">' +
+          '<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);"><span>' + escapeHtml(bar.label || '') + '</span><span>' + val + suffix + '</span></div>' +
+          '<div style="height:16px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;"><div style="height:100%;width:' + pct + '%;background:linear-gradient(135deg,var(--gold),var(--amber));"></div></div>' +
+        '</div>'
+      );
+    }).join('');
+    if (visual.scale) body += '<div style="margin-top:10px;font-size:12px;color:var(--muted);">' + escapeHtml(visual.scale) + '</div>';
+    if (visual.note) body += '<div style="margin-top:6px;font-size:12px;color:rgba(255,255,255,.9);">' + escapeHtml(visual.note) + '</div>';
+    return renderVisualFrame(visual.title || visual.label || 'Graph', body);
+  }
+
+  function renderUnknownVisualObject(visual) {
+    var lines = [];
+    Object.keys(visual).forEach(function (key) {
+      if (key === 'type') return;
+      var value = visual[key];
+      if (value == null || typeof value === 'object') return;
+      lines.push('<div style="font-size:13px;color:rgba(255,255,255,.9);"><strong style="color:var(--muted);">' + escapeHtml(key) + ':</strong> ' + escapeHtml(value) + '</div>');
+    });
+    return lines.length ? renderVisualFrame(visual.label || 'Visual', lines.join('')) : '';
   }
 
   function renderGenericVisualObject(visual) {
     if (!isVisualObject(visual)) return '';
 
     if (visual.type === 'fraction_bar') {
-      return renderFractionVisual(visual.numerator, visual.denominator, visual.label);
+      var numerator = visual.numerator != null ? visual.numerator : visual.filled;
+      var denominator = visual.denominator != null ? visual.denominator : visual.total;
+      return renderFractionVisual(numerator, denominator, visual.label);
     }
 
     if (visual.type === 'bar_model') {
@@ -417,7 +561,9 @@ window.KTLessonEngine = (function () {
     }
 
     if (visual.type === 'number_line') {
-      return renderNumberLineVisual(visual.current, visual.total, visual.label);
+      var current = visual.current != null ? visual.current : (visual.number != null ? visual.number : visual.value);
+      var total = visual.total != null ? visual.total : (visual.max != null ? visual.max : visual.end);
+      return renderNumberLineVisual(current, total, visual.label);
     }
 
     if (visual.type === 'coins') {
@@ -429,19 +575,30 @@ window.KTLessonEngine = (function () {
     }
 
     if (visual.type === 'equation') {
-      return (
-        '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);text-align:center;">' +
-          (visual.label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(visual.label) + '</div>' : '') +
-          '<div style="font-family:var(--f-d);font-size:28px;color:var(--gold);">' + escapeHtml(visual.value || '') + '</div>' +
-        '</div>'
-      );
+      return renderVisualFrame(visual.label, '<div style="font-family:var(--f-d);font-size:28px;color:var(--gold);text-align:center;">' + escapeHtml(visual.value || '') + '</div>');
     }
 
-    if (visual.type === 'columns' || visual.type === 'place_value_columns') {
+    if (visual.type === 'columns' || visual.type === 'place_value_columns' || visual.type === 'four_digit_addition') {
       return renderPlaceValueColumnsVisual(visual);
     }
 
-    return '';
+    if (visual.type === 'rounding_number_line') return renderRoundingNumberLineVisual(visual);
+    if (visual.type === 'rectangle_area') return renderRectangleAreaVisual(visual);
+    if (visual.type === 'equal_groups') return renderEqualGroupsVisual(visual);
+    if (visual.type === 'angle_comparison') return renderAngleComparisonVisual(visual);
+    if (visual.type === 'division_fact_family') return renderFactFamilyVisual(visual);
+    if (visual.type === 'bar_graph_example' || visual.type === 'scaled_bar') return renderBarGraphVisual(visual);
+    if (visual.type === 'operation_choice') {
+      return renderStepListVisual('Operation Choice', [
+        'Step 1: ' + safeText(visual.step1 && visual.step1.operation) + ' — ' + safeText(visual.step1 && visual.step1.equation),
+        'Step 2: ' + safeText(visual.step2 && visual.step2.operation) + ' — ' + safeText(visual.step2 && visual.step2.equation)
+      ], visual.label);
+    }
+    if (visual.type === 'two_step') return renderStepListVisual('Two-Step', [visual.step1, visual.step2], visual.label);
+    if (visual.type === 'multi_step') return renderStepListVisual('Multi-Step', visual.steps, visual.label);
+    if (visual.type === 'distributive') return renderStepListVisual('Distributive', [visual.step1, visual.step2, visual.total], visual.label);
+
+    return renderUnknownVisualObject(visual);
   }
 
   function renderVisualBlock(visual) {
@@ -556,9 +713,7 @@ window.KTLessonEngine = (function () {
   }
 
   function renderPhaseConcept(data) {
-    var conceptVisual = data && data.example
-      ? (data.example.visual_data || data.example.visual)
-      : null;
+    var conceptVisual = data && data.example ? getVisualPayload(data.example) : null;
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 1 · Learn the Idea</div>' +
@@ -621,7 +776,7 @@ window.KTLessonEngine = (function () {
           (step.explanation
             ? '<div class="phase2-step-explanation">' + escapeHtml(step.explanation) + '</div>'
             : '') +
-          renderVisualBlock(step.visual) +
+          renderVisualBlock(getVisualPayload(step)) +
         '</div>';
     });
 
@@ -740,10 +895,12 @@ window.KTLessonEngine = (function () {
     var qType = isTrueFalse ? 'mcq' : (isInput ? 'input' : 'mcq');
     var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(question.choices);
     var answerValue = isTrueFalse ? (question.answer ? 0 : 1) : question.answer;
+    var visualPayload = getVisualPayload(question);
 
     var html =
       '<div class="q-prompt" style="margin-top:14px;">' + escapeHtml(question.prompt || question.question || 'Question') + '</div>' +
       (question.hint ? '<div class="q-hint">💡 Strategy Reminder: ' + escapeHtml(question.hint) + '</div>' : '') +
+      (visualPayload ? renderVisualBlock(visualPayload) : '') +
       (qType === 'input'
         ? '<input id="kt-guided-input" class="choice" style="cursor:text;" type="text" placeholder="Type your answer" />' +
           '<div class="btn-row"><button class="btn btn-primary" id="kt-guided-submit">Check Answer</button></div>'
@@ -865,11 +1022,13 @@ window.KTLessonEngine = (function () {
     var isTrueFalse = activity.type === 'true_false';
     var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(activity.choices);
     var answerIndex = isTrueFalse ? (activity.answer ? 0 : 1) : Number(activity.answer);
+    var visualPayload = getVisualPayload(activity);
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 4 · Show What You Know</div>' +
         (activity.excerpt ? '<div class="sage" style="margin-top:0;"><strong>Excerpt:</strong> ' + escapeHtml(activity.excerpt) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question || '') + '</div>' +
+        (visualPayload ? renderVisualBlock(visualPayload) : '') +
         (isInput
           ? '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
             '<div class="btn-row"><button class="btn btn-primary" id="kt-submit-btn">Check Answer</button></div>'
@@ -978,12 +1137,13 @@ window.KTLessonEngine = (function () {
     if (isPhase4Activity()) state.gradableCount += 1;
 
     var choices = normalizeChoices(activity.choices);
+    var visualPayload = getVisualPayload(activity);
     var html =
       '<div class="card">' +
         (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
         (!activity.hint_disabled && activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
-        (activity.visual ? renderVisualBlock(activity.visual) : '') +
+        (visualPayload ? renderVisualBlock(visualPayload) : '') +
         '<div class="choices" id="kt-choices"></div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
         '<div class="btn-row" id="kt-next-row" style="display:none;">' +
@@ -1050,6 +1210,7 @@ window.KTLessonEngine = (function () {
       hint_disabled: activity.hint_disabled,
       standard: activity.standard,
       visual: activity.visual,
+      visual_data: activity.visual_data,
       choices: ['True', 'False'],
       answer: activity.answer ? 0 : 1,
       correctFeedback: activity.correctFeedback,
@@ -1190,12 +1351,13 @@ window.KTLessonEngine = (function () {
   function renderInput(activity) {
     if (isPhase4Activity()) state.gradableCount += 1;
 
+    var visualPayload = getVisualPayload(activity);
     var html =
       '<div class="card">' +
         (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
         (!activity.hint_disabled && activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
-        (activity.visual ? renderVisualBlock(activity.visual) : '') +
+        (visualPayload ? renderVisualBlock(visualPayload) : '') +
         '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
         '<div class="btn-row">' +
           '<button class="btn btn-primary" id="kt-submit-btn">Check Answer</button>' +
