@@ -444,118 +444,201 @@ window.KT_LESSONS.egypt = [
   intro: {
     kicker: 'Kingdom of Egypt · Mission 3',
     text: "King, today you'll discover why the Nile River was the greatest gift to ancient Egypt. Read closely and uncover how one river helped build an entire civilization.",
-    sage: "The Nile was more than water, King — it was life, food, travel, and power. Read like a scholar. 🌊"
+    sage: "Wise readers track how details build a big idea. Let's read with purpose, King. 🌊"
   },
 
-  reading: {
-    passage: [
-      "Of all the gifts Egypt received, none was greater than the Nile River. While the Sahara Desert around Egypt was harsh and dry, the Nile created a narrow ribbon of green, fertile land where life could grow.",
-      "Every summer, the Nile flooded its banks. This was not a disaster — it was a blessing. When the waters pulled back, they left behind a thick layer of dark, rich soil called silt. Egyptian farmers planted crops in this silt and grew huge harvests of wheat, barley, and vegetables.",
-      "Young Prince Kofi stood by the river, watching the water move past. His teacher, Grandmother Ayana, asked him to look beyond the green fields. Just past them, the land turned to dry yellow desert.",
-      "\"What if the Nile were not here?\" she asked. Kofi thought carefully. \"Then there would only be desert. No farms. No food.\" Grandmother Ayana nodded. \"And no Egypt at all.\"",
-      "The Nile was also Egypt's great highway. Boats carried grain, stone, gold, and people up and down the river. Without the Nile, even the giant stones for the pyramids could not have been moved from the quarries where they were cut.",
-      "As Prince Kofi watched the white sails of the boats, he understood the truth. The Nile was not just a river. It was the backbone of an entire civilization."
+  phase1_strategy: {
+    name: 'Main Idea + Supporting Details',
+    definition: 'The main idea is the biggest message. Supporting details are facts that prove it.',
+    model: 'Model: In a village story, the main idea is that teamwork builds success. Details include neighbors sharing tools, planting together, and celebrating a big harvest.',
+    how_to: [
+      'Ask: what is this part mostly about?',
+      'Circle details that repeat or connect to the same message.',
+      'Say the main idea in one clear sentence using your own words.'
     ],
-    vocab: [
-      { term: 'fertile', definition: 'rich soil that helps plants grow well' },
-      { term: 'silt', definition: 'dark, rich soil left behind by floodwaters' },
-      { term: 'highway', definition: 'a main route used to move people and goods' },
-      { term: 'civilization', definition: 'an organized society with cities, culture, and government' }
-    ]
+    sage: 'Scholars do not guess the main idea — they prove it with details from the text.'
   },
 
-  teach: [
+  phase2_vocab: [
     {
-      type: 'text',
-      title: 'Reading Like a Scholar',
-      body: 'Strong readers look for key details, cause and effect, word meaning, and the big idea the author wants us to understand.'
+      word: 'fertile',
+      definition: 'good for growing many healthy plants',
+      sentence: 'The fertile land near the river helped farmers grow wheat and vegetables.'
+    },
+    {
+      word: 'silt',
+      definition: 'dark, rich soil left behind by floodwater',
+      sentence: 'After the flood, silt covered the fields and made the ground strong for planting.'
+    },
+    {
+      word: 'quarries',
+      definition: 'places where people cut stone from the earth',
+      sentence: 'Workers moved giant blocks from quarries to building sites along the Nile.'
+    },
+    {
+      word: 'civilization',
+      definition: 'a society with organized cities, work, leaders, and culture',
+      sentence: 'Egypt became a strong civilization because the Nile supported farming, trade, and travel.'
     }
   ],
 
-  activities: [
+  phase3_guided: {
+    sections: [
+      {
+        id: 'egypt-e3-s1',
+        title: 'Green Life Beside the Desert',
+        passage: [
+          'The Sahara around Egypt was hot and dry, but the Nile created a ribbon of green land where crops could grow.',
+          'Each summer, floodwater spread over the banks. When it pulled back, it left rich silt that helped farmers plant huge harvests.'
+        ],
+        questions: [
+          {
+            id: 'egypt-e3-s1-q1',
+            type: 'mcq',
+            prompt: 'Which detail best supports the main idea that the Nile gave Egypt life?',
+            hint: 'Pick the detail that shows how people got food.',
+            choices: [
+              'The desert was yellow and dry',
+              'Floodwater left rich silt for planting crops',
+              'The Nile had white sails on boats',
+              'A prince stood near the water'
+            ],
+            answer: 1,
+            correctFeedback: 'Exactly. Rich silt led to strong harvests, which gave people food and stability.',
+            wrongFeedback: 'Look for the detail that explains how the Nile helped people survive and thrive.',
+            explanation: 'The silt detail shows direct support for farming, which is a key part of life.',
+            xp: 8
+          }
+        ]
+      },
+      {
+        id: 'egypt-e3-s2',
+        title: 'A Lesson in Leadership',
+        passage: [
+          'Prince Kofi listened as Grandmother Ayana asked, “What if the Nile were not here?”',
+          'He answered, “Then there would be no farms and no food.” Her question helped him see how one river supported a whole nation.'
+        ],
+        questions: [
+          {
+            id: 'egypt-e3-s2-q1',
+            type: 'true_false',
+            prompt: 'Kofi learns that Egypt depended on the Nile for more than water alone.',
+            hint: 'Think about what would disappear without the river.',
+            answer: true,
+            correctFeedback: 'Correct. The dialogue shows the Nile supported food, land use, and the nation’s future.',
+            wrongFeedback: 'The passage says no farms and no food without the Nile, showing total dependence.',
+            explanation: 'The question from Ayana leads Kofi to the main idea: the Nile sustained Egypt.',
+            xp: 8
+          }
+        ]
+      },
+      {
+        id: 'egypt-e3-s3',
+        title: 'Egypt’s River Highway',
+        passage: [
+          'The Nile was Egypt’s highway. Boats carried grain, gold, and stone from place to place.',
+          'Even pyramid stones were moved from quarries by river travel, linking workers, leaders, and builders across the kingdom.'
+        ],
+        questions: [
+          {
+            id: 'egypt-e3-s3-q1',
+            type: 'input',
+            prompt: 'In 3–5 words, name one big job the Nile did besides helping crops grow.',
+            hint: 'Think transportation.',
+            answer: 'moved people and goods',
+            correctFeedback: 'Strong reading. The Nile connected Egypt through travel and trade.',
+            wrongFeedback: 'Use a short phrase from the passage idea about boats, travel, or transport.',
+            explanation: 'The text calls the Nile a highway because it moved people and goods efficiently.',
+            xp: 9
+          }
+        ]
+      }
+    ],
+    close_reading: {
+      title: 'Close Reading: The Backbone Line',
+      excerpt: 'The Nile was not just a river. It was the backbone of an entire civilization.',
+      question: {
+        id: 'egypt-e3-close-q1',
+        type: 'mcq',
+        prompt: 'What does the word “backbone” mean in this sentence?',
+        hint: 'Think about what a backbone does for a body.',
+        choices: [
+          'A river shaped like a spine',
+          'The main support that keeps civilization strong',
+          'A famous Egyptian fish',
+          'A tool used by farmers'
+        ],
+        answer: 1,
+        correctFeedback: 'Yes. “Backbone” is a metaphor for core support that holds everything together.',
+        wrongFeedback: 'The sentence is figurative language: backbone means essential support, not a literal spine.',
+        explanation: 'The author uses “backbone” to show Egypt relied on the Nile for many systems of life.',
+        xp: 8
+      }
+    }
+  },
+
+  phase4_test: [
     {
-      id: 'egypt-e3-q1',
+      id: 'egypt-e3-t1',
       type: 'mcq',
-      prompt: 'According to the passage, what did the Nile leave behind after its summer floods?',
-      hint: 'Look in the second paragraph for the special soil left after the water pulled back.',
+      excerpt: 'Every summer, the Nile flooded its banks. When the water pulled back, it left rich silt where farmers planted crops.',
+      prompt: 'Which main idea is best supported by this excerpt?',
       choices: [
-        'Sand and rocks from the desert',
-        'A thick layer of dark, rich soil called silt',
-        'Large stones for building pyramids',
-        'Fresh water pools that stayed all year'
+        'Floods only destroyed Egyptian farms',
+        'The Nile helped Egypt grow food',
+        'Egyptian farmers avoided the Nile',
+        'Silt made the desert spread faster'
       ],
       answer: 1,
-      correctFeedback: "Yes! The passage says the Nile left behind 'a thick layer of dark, rich soil called silt.'",
-      wrongFeedback: 'Go back to paragraph two. Look for the exact word that names the rich soil.',
+      hint_disabled: true,
+      correctFeedback: 'Correct. The excerpt explains how flooding and silt supported farming and food supply.',
+      wrongFeedback: 'The excerpt says farmers planted in rich silt after floods, which shows the Nile supported food production.',
       xp: 10
     },
     {
-      id: 'egypt-e3-q2',
+      id: 'egypt-e3-t2',
+      type: 'true_false',
+      excerpt: '“What if the Nile were not here?” Ayana asked. Kofi replied, “Then there would be no farms. No food.”',
+      prompt: 'This dialogue supports the idea that Egypt depended on the Nile to survive.',
+      answer: true,
+      hint_disabled: true,
+      correctFeedback: 'Exactly. The characters explain that without the Nile, food systems would collapse.',
+      wrongFeedback: 'Kofi says no Nile means no farms and no food, which directly shows dependence for survival.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-t3',
       type: 'mcq',
-      prompt: 'Why were Egyptian farmers able to grow such large harvests?',
-      hint: 'Think about cause and effect. What did the Nile do that helped crops grow?',
+      excerpt: 'The Nile was Egypt’s great highway. Boats carried grain, stone, gold, and people up and down the river.',
+      prompt: 'Why does the author call the Nile a “highway”?',
       choices: [
-        'Egypt received heavy rain every year',
-        'Farmers had better tools than other people',
-        'The Nile floods left rich silt that made the soil great for crops',
-        'The Pharaoh ordered everyone to work harder'
-      ],
-      answer: 2,
-      correctFeedback: 'Exactly. The Nile left rich silt behind, and that made farming possible.',
-      wrongFeedback: 'The passage does not mention heavy rain or better tools. Focus on what the Nile left behind.',
-      xp: 10
-    },
-    {
-      id: 'egypt-e3-vocab',
-      type: 'match',
-      prompt: 'Match each vocabulary word to its meaning.',
-      pairs: [
-        ['silt', 'dark, rich soil left behind by floodwaters'],
-        ['fertile', 'able to produce large amounts of crops'],
-        ['civilization', 'an organized society with cities and culture'],
-        ['highway', 'a main route used to move people and goods']
-      ],
-      correctFeedback: 'Excellent work, King. Your word power is growing strong. 📚',
-      wrongFeedback: 'Not quite. Try another match, King.',
-      xp: 10
-    },
-    {
-      id: 'egypt-e3-q3',
-      type: 'mcq',
-      prompt: 'In the passage, the Nile is called Egypt’s great “highway.” What does that comparison mean?',
-      hint: 'Think about what a highway does. How did the Nile do the same job?',
-      choices: [
-        'The Nile was a paved road built by the Pharaoh',
-        'The Nile was the main route for moving people and goods across Egypt',
-        'The Nile was the fastest river in Africa',
-        'The Nile looked like a road from above'
+        'It was paved with stones',
+        'It was the main route for transportation and trade',
+        'It was only used by soldiers',
+        'It flowed in straight lines like roads'
       ],
       answer: 1,
-      correctFeedback: 'Perfect. Like a highway, the Nile helped move people and goods from place to place.',
-      wrongFeedback: 'This is a comparison, not a real road. Think about what highways and rivers can both do.',
+      hint_disabled: true,
+      correctFeedback: 'Right. The river functioned like a transportation network that connected cities and resources.',
+      wrongFeedback: 'The excerpt lists boats moving people and goods, showing “highway” means major travel and trade route.',
       xp: 10
     },
     {
-      id: 'egypt-e3-q4',
-      type: 'mcq',
-      prompt: 'At the end, the author says the Nile was “the backbone of an entire civilization.” What is the main message?',
-      hint: 'A backbone supports the whole body. What did the Nile support in Egypt?',
-      choices: [
-        'The Nile looked like a backbone',
-        'The Nile was only important for farmers',
-        'Egypt depended on the Nile for life, farming, travel, and growth',
-        'The Nile was the most beautiful river in the world'
-      ],
-      answer: 2,
-      correctFeedback: 'KING! 👑 That is the big idea. Egypt depended on the Nile for almost everything.',
-      wrongFeedback: 'Think bigger than farming. What would Egypt have been without the Nile?',
+      id: 'egypt-e3-t4',
+      type: 'input',
+      excerpt: 'The Nile was not just a river. It was the backbone of an entire civilization.',
+      prompt: 'Type one word that describes the Nile’s role in this excerpt.',
+      answer: 'essential',
+      hint_disabled: true,
+      correctFeedback: 'Excellent. “Essential” matches the idea of backbone as vital support.',
+      wrongFeedback: '“Backbone” means the most important support, so your word should show that vital role.',
       xp: 10
     }
   ],
 
   wrapUp: {
     title: 'The Nile’s Secret Revealed! 🌊',
-    text: 'You discovered that the Nile was not just a river — it was the force that helped Egypt live, grow, travel, and thrive.',
+    text: 'You proved that the Nile powered Egypt through food, travel, and leadership. That is how civilizations rise and endure.',
     badge: 'River Scholar'
   }
 },

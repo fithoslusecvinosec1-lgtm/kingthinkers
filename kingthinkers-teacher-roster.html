@@ -370,30 +370,33 @@ async function loadSampleStudents() {
   var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
   var classCode = _teacherSession ? _teacherSession.classCode : 'DEMO';
   var students = names.map(function(n) {
-    return {
-      code: genCode(),
-      name: n[0],
-      grade: n[1],
-      classCode: classCode,
-      xp: 0,
-      crowns: 0,
-      createdAt: Date.now()
-    };
+    return { name: n[0], grade: n[1] };
   });
 
   try {
+    var created = [];
     if (typeof db_bulkAddStudents === 'function') {
-      await db_bulkAddStudents(students.map(function(s) {
-        return { code: s.code, name: s.name, grade: s.grade };
-      }), classCode);
+      var result = await db_bulkAddStudents(students, classCode);
+      created = (result && Array.isArray(result.students)) ? result.students : [];
     }
 
-    students.forEach(function(s) {
-      saveStudentLocal(s.code, s);
-      rosterState.push(s);
+    created.forEach(function(s) {
+      var code = s && s.code ? String(s.code) : '';
+      if (!code) return;
+      var localStudent = {
+        code: code,
+        name: s.name || '',
+        grade: s.grade || '3',
+        classCode: classCode,
+        xp: typeof s.xp === 'number' ? s.xp : 0,
+        crowns: typeof s.crowns === 'number' ? s.crowns : 0,
+        createdAt: Date.now()
+      };
+      saveStudentLocal(code, localStudent);
+      rosterState.push(localStudent);
     });
     persistRosterCache();
-    toast('✅ Sample class loaded!');
+    toast(created.length + ' sample students added!');
     renderAll();
   } catch (e) {
     toast('⚠️ Sample class failed: ' + e.message);
@@ -438,27 +441,32 @@ async function doBulk(){
     var parts=line.split(',');
     var name=parts[0].trim();var grade=parts[1]?parts[1].trim():'3';
     if(!name)continue;
-    var code=genCode();
-    students.push({code:code,name:name,grade:grade});
+    students.push({name:name,grade:grade});
   }
   if(!students.length){toast('No valid names found');return;}
 
   // Atomic API call — all succeed or all fail (no partial state)
   try {
     var _cc = _teacherSession ? _teacherSession.classCode : 'MY-CLASS';
-    await db_bulkAddStudents(students, _cc);
+    var result = await db_bulkAddStudents(students, _cc);
+    var created = (result && Array.isArray(result.students)) ? result.students : [];
+    if (!created.length) throw new Error('No students were returned from server.');
     // Only update local state after server confirms success
-    students.forEach(function(s){
-      rosterState.push({code:s.code,name:s.name,grade:s.grade,
+    created.forEach(function(s){
+      var code = s && s.code ? String(s.code) : '';
+      if (!code) return;
+      rosterState.push({code:code,name:s.name,grade:s.grade,
         classCode:_teacherSession?_teacherSession.classCode:'MY-CLASS',
-        xp:0,crowns:0,createdAt:Date.now()});
+        xp:typeof s.xp === 'number' ? s.xp : 0,
+        crowns:typeof s.crowns === 'number' ? s.crowns : 0,
+        createdAt:Date.now()});
     });
     persistRosterCache();
     document.getElementById('bulk-names').value='';
-    toast(students.length+' students added!');
+    toast(created.length+' students added!');
     renderAll();
   } catch(e) {
-    toast('⚠️ Bulk add failed: '+e.message);
+    toast('⚠️ Bulk add failed. ' + (e && e.message ? e.message : 'Please try again.'));
     console.warn('Bulk add failed:', e);
   }
 }
