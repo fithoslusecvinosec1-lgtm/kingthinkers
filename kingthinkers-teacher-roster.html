@@ -320,12 +320,7 @@ function setRosterState(students){
 }
 function persistRosterCache(){
   saveCachedRoster(rosterState);
-  var legacyRoster = {};
-  rosterState.forEach(function(s){
-    saveStudentLocal(s.code, s);
-    legacyRoster[s.code] = { name: s.name, grade: s.grade };
-  });
-  localStorage.setItem('kt_roster', JSON.stringify(legacyRoster));
+  rosterState.forEach(function(s){ saveStudentLocal(s.code, s); });
 }
 function getSettings(){try{return JSON.parse(localStorage.getItem('kt_settings')||'{}')}catch(e){return{}}}
 function putSetting(k,v){var s=getSettings();s[k]=v;localStorage.setItem('kt_settings',JSON.stringify(s))}
@@ -830,10 +825,13 @@ function wireButtons() {
 
   on('clear-btn', function(){
     if (!confirm('Delete ALL student data? This cannot be undone.')) return;
-    rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
+    rosterState.forEach(function(s){
+      localStorage.removeItem('kt_student_' + s.code);
+      localStorage.removeItem('kt_quest_progress_' + s.code);
+      localStorage.removeItem('kt_manual_' + s.code);
+    });
     rosterState = [];
     saveCachedRoster([]);
-    localStorage.removeItem('kt_roster');
     toast('🗑️ All data cleared');
     renderAll();
   });
@@ -904,10 +902,13 @@ function loadSampleClass() {
 
 function clearAllData() {
   if (!confirm('Delete ALL student data? This cannot be undone.')) return;
-  rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
+  rosterState.forEach(function(s){
+    localStorage.removeItem('kt_student_' + s.code);
+    localStorage.removeItem('kt_quest_progress_' + s.code);
+    localStorage.removeItem('kt_manual_' + s.code);
+  });
   rosterState = [];
   saveCachedRoster([]);
-  localStorage.removeItem('kt_roster');
   toast('🗑️ All data cleared');
   renderAll();
 }
@@ -932,6 +933,10 @@ function logOut() {
 async function syncFromSupabase(silent) {
   // silent=true on boot — no toast, no flicker
   if (!silent) toast('🔄 Syncing from cloud…');
+  if (typeof db_getRosterWithProgress !== 'function') {
+    if (!silent) toast('⚠️ Sync service unavailable');
+    return;
+  }
 
   try {
     var students = await db_getRosterWithProgress();
