@@ -17,85 +17,191 @@ window.KT_LESSONS.egypt = [
       sage: "The strongest leaders don't just speak — they listen. Read closely, King. 👑"
     },
 
-    reading: {
-      passage: [
-        "Long ago in ancient Egypt, a pharaoh named Amara ruled with wisdom and calm strength. His people respected him because he listened before he acted.",
-        "Each morning, Amara left the palace in simple clothes and walked through the marketplace. No crown. No throne. No royal guards around him.",
-        "He listened to the farmers talk about dry fields. He heard merchants complain about broken roads. He noticed children who needed books and schools.",
-        "When he returned to the palace, he gave orders that solved the real problems of the people. Because he listened closely, he ruled wisely.",
-        "Some people whispered that Amara had magic. But his true secret was simple: he paid attention to his people and learned from what they said."
+    phase1_strategy: {
+      name: 'Cause and Effect',
+      definition: 'A cause is why something happens. An effect is what happens because of it.',
+      model: 'Model: A captain listens to river workers (cause), so he fixes weak boats before storms (effect).',
+      how_to: [
+        'Find an action in the text.',
+        'Ask: what happened because of that action?',
+        'Connect the action and result using because, so, or as a result.'
       ],
-      vocab: [
-        { term: 'wisdom', definition: 'good judgment and smart decisions' },
-        { term: 'marketplace', definition: 'a place where people buy, sell, and trade' },
-        { term: 'merchants', definition: 'people who sell goods' },
-        { term: 'whispered', definition: 'spoke very softly' }
-      ]
+      sage: 'Wise kings trace the chain: action, then outcome. Follow the chain and the meaning becomes clear.'
     },
 
-    teach: [
+    phase2_vocab: [
       {
-        type: 'text',
-        title: 'Reading Like a King',
-        body: 'Strong readers pay attention to key details, character actions, and the lesson the author wants us to learn.'
+        word: 'wisdom',
+        definition: 'good judgment used to make strong decisions',
+        sentence: 'Amara led with wisdom, so his choices helped the whole kingdom.'
+      },
+      {
+        word: 'marketplace',
+        definition: 'a busy place where people buy, sell, and share news',
+        sentence: 'In the marketplace, Amara heard what families needed most.'
+      },
+      {
+        word: 'merchants',
+        definition: 'people who sell goods in shops or markets',
+        sentence: 'The merchants explained how broken roads slowed trade.'
+      },
+      {
+        word: 'whispered',
+        definition: 'spoke very softly',
+        sentence: 'Some people whispered that the pharaoh had secret magic.'
       }
     ],
 
-    activities: [
+    phase3_guided: {
+      sections: [
+        {
+          id: 'egypt-e1-s1',
+          title: 'A Leader Who Listens',
+          passage: [
+            'Long ago in ancient Egypt, Pharaoh Amara ruled with calm strength. People trusted him because he listened before acting.',
+            'Each morning he walked through the marketplace in simple clothes, without royal guards around him.'
+          ],
+          questions: [
+            {
+              id: 'egypt-e1-s1-q1',
+              type: 'mcq',
+              prompt: 'What effect came from Amara walking among the people?',
+              hint: 'Use cause and effect: his action was walking among them.',
+              choices: [
+                'He could hear real problems directly from the people',
+                'He wanted to leave Egypt forever',
+                'He forgot he was pharaoh',
+                'He only wanted to buy fruit'
+              ],
+              answer: 0,
+              correctFeedback: 'Yes. His choice to walk among the people let him hear the truth.',
+              wrongFeedback: 'Look at what his walking allowed him to learn.',
+              explanation: 'Cause: he walked among the people. Effect: he heard their real needs.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'egypt-e1-s2',
+          title: 'From Listening to Leadership',
+          passage: [
+            'Amara heard farmers talk about dry fields, merchants discuss broken roads, and families ask for better schools.',
+            'Back at the palace, he gave orders that solved those exact problems. Egypt grew stronger because he acted on what he learned.'
+          ],
+          questions: [
+            {
+              id: 'egypt-e1-s2-q1',
+              type: 'true_false',
+              prompt: 'Amara gave better orders because he listened first.',
+              hint: 'Find the cause (listening) and the effect (better orders).',
+              answer: true,
+              correctFeedback: 'Correct. His listening caused wiser decisions.',
+              wrongFeedback: 'Trace the chain: listening came first, better leadership followed.',
+              explanation: 'The passage states that he solved real problems after hearing the people.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'egypt-e1-s3',
+          title: 'The Real Secret',
+          passage: [
+            'Some people whispered that Amara had magic. But the story reveals a different truth.',
+            'His true secret was focused attention: he listened, learned, and then served his people with wisdom.'
+          ],
+          questions: [
+            {
+              id: 'egypt-e1-s3-q1',
+              type: 'input',
+              prompt: 'Type the pharaoh’s real secret in a short phrase.',
+              hint: 'It was not magic. It was a leadership habit.',
+              answer: 'listening carefully',
+              correctFeedback: 'Strong work. Listening carefully was his true source of power.',
+              wrongFeedback: 'Try one more time using the cause-and-effect idea.',
+              explanation: 'His listening led to wise action. That is the text-based answer.',
+              xp: 9
+            }
+          ]
+        }
+      ],
+      close_reading: {
+        title: 'Close Reading: Leadership and Legacy',
+        excerpt: 'Because he listened closely, he ruled wisely.',
+        question: {
+          id: 'egypt-e1-close-q1',
+          type: 'mcq',
+          prompt: 'Which statement best explains this sentence?',
+          hint: 'Focus on how one action creates an outcome.',
+          choices: [
+            'Listening was the cause, and wise ruling was the effect.',
+            'Wise ruling happened first, then listening came later.',
+            'The sentence says he ruled by magic only.',
+            'The sentence has no cause-and-effect relationship.'
+          ],
+          answer: 0,
+          correctFeedback: 'Exactly. The sentence is a clear cause-and-effect chain.',
+          wrongFeedback: 'Re-read the sentence and identify what happened because he listened.',
+          explanation: 'The word “because” directly connects cause (listening) to effect (wise ruling).',
+          xp: 8
+        }
+      }
+    },
+
+    phase4_test: [
       {
-        id: 'egypt-e1-q1',
+        id: 'egypt-e1-t1',
         type: 'mcq',
-        prompt: 'Why did Pharaoh Amara walk through the marketplace in simple clothes?',
-        hint: 'Think about what he wanted to learn from the people.',
+        excerpt: 'Amara listened to farmers, merchants, and families before giving orders.',
+        prompt: 'What is the best cause in this excerpt?',
         choices: [
-          'He wanted to hide forever',
-          'He wanted to understand the people’s real problems',
-          'He forgot his crown at home',
-          'He wanted to become a merchant'
+          'He gave orders',
+          'He listened to the people first',
+          'People whispered about magic',
+          'The roads were broken'
         ],
         answer: 1,
-        correctFeedback: 'Exactly. Amara wanted to understand his people so he could lead wisely.',
-        wrongFeedback: 'Not quite. Look at what he learned by walking among the people.',
+        hint_disabled: true,
+        correctFeedback: 'Correct. Listening first is the cause that leads to stronger leadership.',
+        wrongFeedback: 'The cause is the action that happened first: he listened before making decisions.',
         xp: 10
       },
       {
-        id: 'egypt-e1-q2',
+        id: 'egypt-e1-t2',
         type: 'true_false',
-        prompt: 'Amara ruled wisely because he listened before making decisions.',
-        hint: 'Think about what happened after he returned to the palace.',
+        excerpt: 'Because he listened closely, he ruled wisely.',
+        prompt: 'This excerpt shows cause and effect.',
         answer: true,
-        correctFeedback: 'Right. Listening helped him solve real problems.',
-        wrongFeedback: 'Look again at what he did after hearing the people.',
+        hint_disabled: true,
+        correctFeedback: 'Correct. “Because” signals a cause-and-effect relationship.',
+        wrongFeedback: 'The word “because” directly links cause (listening) to effect (ruling wisely).',
         xp: 10
       },
       {
-        id: 'egypt-e1-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['wisdom', 'good judgment and smart decisions'],
-          ['marketplace', 'a place where people buy, sell, and trade'],
-          ['merchants', 'people who sell goods'],
-          ['whispered', 'spoke very softly']
-        ],
-        correctFeedback: 'Strong work, King. Your vocabulary power is growing. 📚',
-        wrongFeedback: 'Not that one. Take another look, King.',
-        xp: 10
-      },
-      {
-        id: 'egypt-e1-q3',
+        id: 'egypt-e1-t3',
         type: 'mcq',
-        prompt: "What was the pharaoh’s real 'secret'?",
-        hint: 'It was not magic. It was something he chose to do every day.',
+        excerpt: 'He returned to the palace and solved the real problems of the people.',
+        prompt: 'Which effect is named in the excerpt?',
         choices: [
-          'He had hidden treasure',
-          'He used powerful spells',
-          'He listened carefully to his people',
-          'He never left the palace'
+          'He left Egypt forever',
+          'He solved the people’s real problems',
+          'He forgot what he heard',
+          'He avoided the marketplace'
         ],
-        answer: 2,
-        correctFeedback: "Yes! The pharaoh's real secret was listening carefully to his people.",
-        wrongFeedback: "Not quite. The story makes it clear his power wasn't magic.",
+        answer: 1,
+        hint_disabled: true,
+        correctFeedback: 'Yes. The effect was that real problems were solved.',
+        wrongFeedback: 'The effect is what happened after his leadership action: real problems were solved.',
+        xp: 10
+      },
+      {
+        id: 'egypt-e1-t4',
+        type: 'input',
+        excerpt: 'Amara listened, learned, and then led.',
+        prompt: 'Type one word that describes Amara’s leadership based on this excerpt.',
+        answer: 'wise',
+        hint_disabled: true,
+        correctFeedback: 'Great evidence-based answer. The excerpt shows wise leadership.',
+        wrongFeedback: 'The sequence “listened, learned, led” shows thoughtful leadership — describe that quality.',
         xp: 10
       }
     ],
@@ -105,7 +211,7 @@ window.KT_LESSONS.egypt = [
       text: 'You discovered that great leaders gain power by listening, learning, and serving others wisely.',
       badge: 'Seeker of Secrets'
     }
-  },,
+  },
 
   {
     id: 'egypt-e2',
@@ -324,7 +430,7 @@ window.KT_LESSONS.egypt = [
     badge: 'Royal Scribe'
   }
 },
-    {,
+  {
 
   id: 'egypt-e3',
   worldId: 'egypt',
