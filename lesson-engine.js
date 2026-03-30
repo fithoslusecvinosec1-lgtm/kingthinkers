@@ -290,9 +290,8 @@ window.KTLessonEngine = (function () {
 
   function renderVisualFrame(label, bodyHtml) {
     return (
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);overflow-x:auto;">' +
-      '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
-        (label ? '<div style="font-size:12px;font-weight:900;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">' + escapeHtml(label) + '</div>' : '') +
+      '<div class="visual-frame">' +
+        (label ? '<div class="visual-label">' + escapeHtml(label) + '</div>' : '') +
         bodyHtml +
       '</div>'
     );
@@ -303,7 +302,7 @@ window.KTLessonEngine = (function () {
     return (
       '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">' +
       items.map(function (item) {
-        return '<div style="padding:8px 10px;border-radius:10px;background:rgba(245,168,0,.12);border:1px solid rgba(245,168,0,.2);font-weight:800;font-size:13px;">' + escapeHtml(item) + '</div>';
+        return '<div class="visual-chip">' + escapeHtml(item) + '</div>';
       }).join('') +
       '</div>'
     );
@@ -319,7 +318,7 @@ window.KTLessonEngine = (function () {
       cells += '<div style="flex:1;min-width:22px;height:26px;border-radius:8px;border:1px solid var(--border);background:' + (isFilled ? 'linear-gradient(135deg,var(--gold),var(--amber))' : 'rgba(255,255,255,.06)') + ';"></div>';
     }
 
-    return renderVisualFrame(label, '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>');
+    return renderVisualFrame(label, '<div style="display:grid;grid-template-columns:repeat(' + total + ', minmax(14px,1fr));gap:6px;">' + cells + '</div>');
   }
 
   function renderFractionVisual(numerator, denominator, label) {
@@ -334,8 +333,8 @@ window.KTLessonEngine = (function () {
 
     return renderVisualFrame(
       label,
-      '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>' +
-      '<div style="margin-top:10px;font-family:var(--f-d);font-size:22px;color:var(--gold);text-align:center;">' + numerator + '/' + denominator + '</div>'
+      '<div style="display:grid;grid-template-columns:repeat(' + denominator + ', minmax(14px,1fr));gap:6px;">' + cells + '</div>' +
+      '<div class="visual-eq" style="font-size:24px;margin-top:10px;">' + numerator + '/' + denominator + '</div>'
     );
   }
 
@@ -357,7 +356,7 @@ window.KTLessonEngine = (function () {
       label,
       '<div style="position:relative;padding-top:8px;">' +
         '<div style="position:absolute;left:0;right:0;top:14px;height:3px;background:rgba(255,255,255,.15);border-radius:999px;"></div>' +
-        '<div style="position:relative;display:flex;gap:0;">' + points + '</div>' +
+        '<div style="position:relative;display:flex;gap:2px;">' + points + '</div>' +
       '</div>'
     );
   }
@@ -577,7 +576,7 @@ window.KTLessonEngine = (function () {
     }
 
     if (visual.type === 'equation') {
-      return renderVisualFrame(visual.label, '<div style="font-family:var(--f-d);font-size:28px;color:var(--gold);text-align:center;">' + escapeHtml(visual.value || '') + '</div>');
+      return renderVisualFrame(visual.label, '<div class="visual-eq">' + escapeHtml(visual.value || '') + '</div>');
     }
 
     if (visual.type === 'columns' || visual.type === 'place_value_columns' || visual.type === 'four_digit_addition') {
@@ -608,7 +607,7 @@ window.KTLessonEngine = (function () {
 
     if (typeof visual === 'string') {
       return (
-        '<div style="margin-top:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
+        '<div class="visual-frame">' +
           '<div style="font-size:14px;line-height:1.6;color:rgba(255,255,255,.92);">' + escapeHtml(visual) + '</div>' +
         '</div>'
       );
