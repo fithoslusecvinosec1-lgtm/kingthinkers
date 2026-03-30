@@ -15,108 +15,30 @@ window.KT_LESSONS.songhai = [
     xp: 50,
     crownReward: 1,
     estMinutes: 8,
-
-    intro: {
-      kicker: 'Songhai Empire · Quest 1',
-      text: "King, after the Mali Empire weakened, a new power rose along the Niger River. The Songhai Empire grew to become the largest empire in African history — stretching across 1.4 million square miles and controlling the most important trade routes in the world. Read closely to understand how a river kingdom became a continental superpower.",
-      sage: "Size does not make an empire great — strategy does. Find out how Songhai used the river and trade to rise above all others. ⚔️"
-    },
-
-    reading: {
-      passage: [
-        "The Songhai people had lived along the Niger River in West Africa for centuries. The river gave them fish for food, water for crops, and a highway for trade. Because they controlled this vital waterway, they were always important — but they were not yet dominant.",
-        "In 1464, a powerful leader named Sunni Ali took the throne of Songhai. He was a brilliant military commander who understood that controlling the river meant controlling trade. He built a powerful navy and used it to expand Songhai's territory up and down the Niger River. Within his lifetime, Songhai absorbed the great trading cities of Timbuktu and Djenné.",
-        "Because Timbuktu and Djenné were the wealthiest trading centers in West Africa, gaining control of them dramatically increased Songhai's power and revenue. Gold, salt, kola nuts, and enslaved people all passed through these cities, and now all those profits went to Songhai.",
-        "As Songhai's wealth grew, so did its military strength. A stronger army allowed Songhai to expand even further, taking over territories that had once belonged to the Mali Empire. By the late 1400s, the Songhai Empire was larger than all of Western Europe.",
-        "The Niger River, which had always sustained the Songhai people, had become the spine of the largest empire Africa had ever seen."
+    intro: { kicker: 'Songhai Empire · Quest 1', text: 'King, read how Songhai used the Niger River to build one of Africa’s largest empires.', sage: 'Follow the cause-and-effect chain from river control to imperial strength. ⚔️' },
+    phase1_strategy: { name: 'Cause and Effect', definition: 'Cause tells why. Effect tells what happened next.', model: 'Model: A town improves its docks (cause), so more ships arrive and trade grows (effect).', how_to: ['Spot the starting action or condition.', 'Find the result that followed.', 'Connect links in order to build the full chain.'], sage: 'In empires, one effect often becomes the next cause.' },
+    phase2_vocab: [
+      { word: 'dominant', definition: 'more powerful than others', sentence: 'Songhai became the dominant empire in the region.' },
+      { word: 'territory', definition: 'land controlled by a ruler', sentence: 'The empire expanded its territory along the river.' },
+      { word: 'revenue', definition: 'money collected from trade or taxes', sentence: 'Control of trade cities increased state revenue.' },
+      { word: 'sustained', definition: 'supported over time', sentence: 'The Niger River sustained farming and transport.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'songhai-s1-s1', title: 'River Advantage', passage: ['Songhai controlled key parts of the Niger River, a major trade route.', 'Because of that control, Songhai could influence trade movement and profits.'], questions: [{ id: 'songhai-s1-s1-q1', type: 'mcq', prompt: 'What effect came from river control?', hint: 'Look for the result named in sentence two.', choices: ['Trade influence and profits increased', 'River water disappeared', 'Cities were abandoned', 'No one traveled'], answer: 0, correctFeedback: 'Correct. River control led to stronger trade power.', wrongFeedback: 'The second sentence explains the effect directly.', explanation: 'Cause: river control. Effect: trade influence and profits.', xp: 8 }]},
+        { id: 'songhai-s1-s2', title: 'Cities, Wealth, and Army', passage: ['Songhai gained Timbuktu and Djenné, wealthy trade centers.', 'As revenue grew, the empire strengthened its army and expanded further.'], questions: [{ id: 'songhai-s1-s2-q1', type: 'true_false', prompt: 'Growing revenue helped Songhai expand military power.', hint: 'Connect money growth to army strength.', answer: true, correctFeedback: 'Yes. More revenue funded a stronger military.', wrongFeedback: 'The passage shows revenue growth leading to military expansion.', explanation: 'Cause: increased revenue. Effect: stronger military and expansion.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'dominant', definition: 'more powerful or important than all others' },
-        { term: 'territory', definition: 'land that is controlled by a ruler or government' },
-        { term: 'revenue', definition: 'money that a government or business receives' },
-        { term: 'sustained', definition: 'kept alive or supported over time' }
-      ]
+      close_reading: { title: 'Close Reading: Chain Logic', excerpt: 'River control led to trade power, which led to military expansion.', question: { id: 'songhai-s1-close-q1', type: 'mcq', prompt: 'Why is this sentence a cause-and-effect chain?', hint: 'Notice one result becoming the next cause.', choices: ['It lists unrelated facts', 'It links events in sequence where each step drives the next', 'It is only a definition', 'It has no historical evidence'], answer: 1, correctFeedback: 'Exactly. The sentence shows a multi-step chain of effects and causes.', wrongFeedback: 'Read the order carefully: each new result pushes the next event.', explanation: 'Cause-and-effect chains explain historical growth clearly.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Cause and Effect Chains',
-        body: "Sometimes one cause leads to an effect, which then becomes the cause of another effect. This is called a cause-and-effect chain. Signal words like 'because,' 'as a result,' 'which led to,' and 'therefore' help you follow the chain. In history, one event often triggers a whole series of effects."
-      }
+    phase4_test: [
+      { id: 'songhai-s1-t1', type: 'mcq', excerpt: 'Songhai controlled the Niger River, so merchants paid taxes through its ports.', prompt: 'What is the cause?', choices: ['Merchants paid taxes', 'Songhai controlled the river', 'Ports closed', 'Armies marched south'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. River control starts the chain.', wrongFeedback: 'Find the first event that made the tax result possible.', xp: 10 },
+      { id: 'songhai-s1-t2', type: 'true_false', excerpt: 'Because revenue increased, Songhai strengthened its army.', prompt: 'This excerpt shows cause and effect.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Increased revenue caused military growth.', wrongFeedback: 'The cause is revenue growth; the effect is army strength.', xp: 10 },
+      { id: 'songhai-s1-t3', type: 'mcq', excerpt: 'After gaining major trade cities, the empire expanded its territory.', prompt: 'Which effect is stated?', choices: ['Gaining cities', 'Territory expanded', 'The river moved', 'Gold vanished'], answer: 1, hint_disabled: true, correctFeedback: 'Right. Expansion is the result named in the excerpt.', wrongFeedback: 'The effect is what happened after city control was gained.', xp: 10 },
+      { id: 'songhai-s1-t4', type: 'input', excerpt: 'One step caused the next across Songhai’s rise.', prompt: 'Type the strategy skill used in this test.', answer: 'cause and effect', hint_disabled: true, correctFeedback: 'Great work. You tracked cause-and-effect accurately.', wrongFeedback: 'You identified why events happened and their results. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'songhai-s1-q1',
-        type: 'mcq',
-        prompt: 'What was the most important reason the Niger River gave Songhai an advantage?',
-        hint: 'Think about what the river provided beyond just water. What did it allow them to control?',
-        choices: [
-          'It gave them fish to eat',
-          'It gave them control of the most important trade route in West Africa',
-          'It made their crops grow faster',
-          'It protected them from enemy armies'
-        ],
-        answer: 1,
-        correctFeedback: "Exactly. Controlling the river meant controlling trade — that was the strategic advantage.",
-        wrongFeedback: "Fish and water were benefits, but the passage focuses on what the river gave them in terms of power. What did controlling the waterway really mean?",
-        xp: 12
-      },
-      {
-        id: 'songhai-s1-q2',
-        type: 'mcq',
-        prompt: 'According to the passage, what caused Songhai to become the largest empire Africa had ever seen?',
-        hint: 'Follow the cause-and-effect chain: river control → trading cities → wealth → military → expansion.',
-        choices: [
-          'Sunni Ali was the greatest warrior in history',
-          'Songhai controlled the Niger River, which led to controlling trade cities, growing wealthy, strengthening the military, and expanding the territory',
-          'Mali gave its territory to Songhai peacefully',
-          'Songhai had the largest population in Africa'
-        ],
-        answer: 1,
-        correctFeedback: "Correct! That is a full cause-and-effect chain. Each effect became the cause of the next step.",
-        wrongFeedback: "Follow the chain in the passage. One advantage led to another — what was the whole sequence?",
-        xp: 12
-      },
-      {
-        id: 'songhai-s1-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['dominant', 'more powerful or important than all others'],
-          ['territory', 'land that is controlled by a ruler or government'],
-          ['revenue', 'money that a government or business receives'],
-          ['sustained', 'kept alive or supported over time']
-        ],
-        correctFeedback: "Strong work, King. These are the vocabulary words of empires and history. 📚",
-        wrongFeedback: "Not that one. Read the definitions carefully and try again.",
-        xp: 10
-      },
-      {
-        id: 'songhai-s1-q3',
-        type: 'true_false',
-        prompt: "Taking control of Timbuktu and Djenné had no effect on Songhai's military power.",
-        hint: 'Read paragraphs 3 and 4. What happened AFTER Songhai gained those cities?',
-        answer: false,
-        correctFeedback: "Correct — gaining those cities increased Songhai's wealth, which directly led to a stronger military. Everything was connected.",
-        wrongFeedback: "Follow the chain in paragraphs 3 and 4. Gaining the trading cities increased revenue, and greater revenue led directly to military strength.",
-        xp: 10
-      }
-    ],
-
-    wrapUp: {
-      title: 'Quest Complete, King! 👑',
-      text: "You followed a cause-and-effect chain across an entire empire's rise — from a river to the largest empire Africa ever produced. That is the power of reading closely.",
-      badge: 'River Kingdom Scholar'
-    }
+    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You mapped the cause-and-effect chain that turned a river kingdom into a vast empire.', badge: 'River Kingdom Scholar' }
   },
-
-  // ════════════════════════════════════════════════════════════
-  // songhai-s2 — Empire Division (Math, 3.OA.B.6 / 3.NBT.A.3)
-  // Four-phase: Division as unknown factor + multiply by 10/100
-  // ════════════════════════════════════════════════════════════
-  {
+{
     id: 'songhai-s2',
     worldId: 'songhai',
     title: 'Empire Division',
@@ -322,108 +244,30 @@ window.KT_LESSONS.songhai = [
     xp: 50,
     crownReward: 1,
     estMinutes: 8,
-
-    intro: {
-      kicker: 'Songhai Empire · Quest 3',
-      text: "King, after the mighty Sunni Ali died, a new kind of leader transformed the Songhai Empire. Askia Muhammad — known as Askia the Great — was not just a conqueror. He was a builder of systems, a protector of scholars, and the man who turned Songhai into the most organized government in African history. Read closely and think about what the author most wants you to understand.",
-      sage: "Authors write for a reason. By the end of this passage, you will be able to say exactly what this author's purpose was. 📜"
-    },
-
-    reading: {
-      passage: [
-        "When Askia Muhammad took the throne of the Songhai Empire in 1493, he inherited one of the most powerful kingdoms in the world. But power alone was not enough for Askia. He wanted to build a government that would last.",
-        "Askia reorganized the entire empire into provinces, each with its own governor. He created a professional army, a navy, a treasury, and a system of weights and measures so that trade could be conducted fairly across all of Songhai's territories. These were not ideas he invented — he studied the best systems from other great civilizations and adapted them.",
-        "Askia was also a devoted supporter of Islamic scholarship. He invited scholars, judges, and teachers from across the Muslim world to Timbuktu. Under his rule, Timbuktu's university, the Sankore Madrasah, became one of the most important centers of learning in the world — some say it had up to 25,000 students at its peak.",
-        "Unlike many rulers of his era, Askia governed not just through military force but through law. He established courts and legal codes, so that citizens knew what was expected of them and had a place to resolve disputes fairly.",
-        "Historians call him Askia the Great not because he conquered the most land — other rulers did that — but because he built systems that outlasted him. The government structures, the trade networks, and the educational institutions he created continued to shape West Africa long after his death."
+    intro: { kicker: 'Songhai Empire · Quest 3', text: 'King, read how Askia Muhammad built systems that made Songhai stronger and more organized.', sage: 'Your mission is author’s purpose: why did the writer include these details? 📜' },
+    phase1_strategy: { name: "Author's Purpose", definition: 'Author’s purpose is the reason a text is written and what the author wants readers to understand.', model: 'Model: A writer describes a principal’s new school rules, data, and results to show why organized systems improve learning.', how_to: ['Notice repeated emphasis words and comparisons.', 'Ask what claim the author seems to build.', 'Choose the purpose statement that fits most details.'], sage: 'Purpose is the author’s goal, not just the topic.' },
+    phase2_vocab: [
+      { word: 'province', definition: 'a region within a larger empire', sentence: 'Askia divided Songhai into provinces with governors.' },
+      { word: 'treasury', definition: 'government office that manages money', sentence: 'A strong treasury helped fund imperial projects.' },
+      { word: 'scholarship', definition: 'serious learning and study', sentence: 'Askia supported scholarship in Timbuktu’s schools.' },
+      { word: 'institution', definition: 'an organized system or establishment', sentence: 'Courts and schools became lasting institutions.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'songhai-s3-s1', title: 'Systems Over Force', passage: ['Askia built provinces, governors, and fair trade systems across the empire.', 'The author highlights these systems as reasons his rule lasted.'], questions: [{ id: 'songhai-s3-s1-q1', type: 'mcq', prompt: 'What purpose do these details mostly support?', hint: 'Think about what makes Askia “great” in this passage.', choices: ['To entertain with battle stories', 'To show that organized systems were central to Askia’s greatness', 'To describe weather', 'To list random facts'], answer: 1, correctFeedback: 'Correct. The details support a purpose of explaining lasting leadership systems.', wrongFeedback: 'The details focus on organization, not action scenes.', explanation: 'Repeated system details reveal the author’s aim.', xp: 8 }]},
+        { id: 'songhai-s3-s2', title: 'Learning and Law', passage: ['He invited scholars to Timbuktu and strengthened courts and legal codes.', 'The author uses these details to show leadership through knowledge and justice.'], questions: [{ id: 'songhai-s3-s2-q1', type: 'true_false', prompt: 'These details help the author argue that Askia built more than a military empire.', hint: 'Check for education and legal evidence.', answer: true, correctFeedback: 'Yes. The author emphasizes institutions, not just conquest.', wrongFeedback: 'Scholars and courts are evidence of broad governance, not only military power.', explanation: 'The details support a purposeful argument about lasting systems.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'province', definition: 'a region or territory that is part of a larger country or empire' },
-        { term: 'treasury', definition: 'the department that manages a government\'s money' },
-        { term: 'scholarship', definition: 'advanced learning and academic study' },
-        { term: 'institution', definition: 'an organization or system established for a specific purpose' }
-      ]
+      close_reading: { title: 'Close Reading: Purpose Signal', excerpt: 'Not because he conquered the most land, but because he built systems that outlasted him.', question: { id: 'songhai-s3-close-q1', type: 'mcq', prompt: 'What does this sentence reveal about author’s purpose?', hint: 'Notice the contrast: not this, but that.', choices: ['The author wants to focus only on wars', 'The author wants readers to value Askia’s lasting institutions', 'The author avoids making a point', 'The author argues Songhai was small'], answer: 1, correctFeedback: 'Exactly. The contrast shows the author’s clear purpose.', wrongFeedback: 'The phrase “not...but...” usually signals the main claim.', explanation: 'Contrast language reveals the writer’s intended takeaway.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: "Author's Purpose",
-        body: "Authors write to inform, persuade, or entertain — and often a mix of all three. Ask yourself: why did the author write this? What do they most want me to think or believe after reading? Look for the language the author uses — strong words like 'unlike,' 'not just,' and 'because' often signal the author's main point."
-      }
+    phase4_test: [
+      { id: 'songhai-s3-t1', type: 'mcq', excerpt: 'The passage emphasizes provinces, courts, trade systems, and schools.', prompt: 'What is the author’s purpose?', choices: ['To explain why Askia is remembered for lasting governance', 'To tell a myth', 'To compare rivers', 'To list unrelated cities'], answer: 0, hint_disabled: true, correctFeedback: 'Correct. The details support a purpose of explaining lasting institutional leadership.', wrongFeedback: 'Choose the option that matches repeated focus on systems and institutions.', xp: 10 },
+      { id: 'songhai-s3-t2', type: 'true_false', excerpt: 'The author says Askia’s greatness came from building systems, not conquering the most land.', prompt: 'This excerpt directly states author’s purpose.', answer: true, hint_disabled: true, correctFeedback: 'Yes. It gives the author’s central claim directly.', wrongFeedback: 'The excerpt itself contrasts conquest with lasting systems to show purpose.', xp: 10 },
+      { id: 'songhai-s3-t3', type: 'mcq', excerpt: 'Specific details like courts and scholarship make the argument stronger.', prompt: 'Why include those specifics?', choices: ['To confuse readers', 'To provide evidence for the author’s claim', 'To avoid a main point', 'To shorten the passage'], answer: 1, hint_disabled: true, correctFeedback: 'Right. Specific evidence supports and clarifies the author’s purpose.', wrongFeedback: 'Authors use details as proof for their central purpose.', xp: 10 },
+      { id: 'songhai-s3-t4', type: 'input', excerpt: 'The test asked why the writer included details and contrasts.', prompt: 'Type the strategy skill used in this test.', answer: "author's purpose", hint_disabled: true, correctFeedback: 'Excellent. You identified author’s purpose.', wrongFeedback: 'You analyzed the writer’s reason for presenting evidence. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'songhai-s3-q1',
-        type: 'mcq',
-        prompt: "What is the author's main purpose in writing this passage about Askia Muhammad?",
-        hint: "Look at the final paragraph. What does the author say made Askia 'great'?",
-        choices: [
-          'To entertain readers with exciting battle stories',
-          'To argue that Askia deserves to be called great because he built lasting systems, not just conquered land',
-          'To explain how Islamic scholarship reached West Africa',
-          'To describe the geography of the Songhai Empire'
-        ],
-        answer: 1,
-        correctFeedback: "Exactly. The author's purpose is to make the case for WHY Askia deserves the title 'the Great' — and the answer is his systems, not his conquests.",
-        wrongFeedback: "Look at the author's final paragraph. What does the author say makes Askia 'great' — and why does the author emphasize that?",
-        xp: 12
-      },
-      {
-        id: 'songhai-s3-q2',
-        type: 'true_false',
-        prompt: "The author believes Askia the Great was more impressive as a conqueror than as a builder of government systems.",
-        hint: "Read the last paragraph carefully. How does the author compare him to other rulers?",
-        answer: false,
-        correctFeedback: "Correct — the author explicitly says other rulers conquered more land. Askia's greatness, in the author's view, was his lasting systems.",
-        wrongFeedback: "The author says 'not because he conquered the most land — other rulers did that.' The author's purpose is to make the opposite argument.",
-        xp: 10
-      },
-      {
-        id: 'songhai-s3-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['province', 'a region or territory that is part of a larger country or empire'],
-          ['treasury', "the department that manages a government's money"],
-          ['scholarship', 'advanced learning and academic study'],
-          ['institution', 'an organization or system established for a specific purpose']
-        ],
-        correctFeedback: "Excellent. These are the words of governments and great civilizations. 📚",
-        wrongFeedback: "Not that one. Re-read the definitions and try the match again.",
-        xp: 10
-      },
-      {
-        id: 'songhai-s3-q3',
-        type: 'mcq',
-        prompt: "Why does the author include the detail about the Sankore Madrasah having up to 25,000 students?",
-        hint: "Why would an author include a specific number like that? What point does it support?",
-        choices: [
-          'To show that Timbuktu was a crowded city',
-          'To prove that Askia supported education and that it was internationally significant',
-          'To compare Songhai to modern universities',
-          'To explain where Askia got his ideas'
-        ],
-        answer: 1,
-        correctFeedback: "Right — specific numbers like 25,000 students make the author's argument more convincing. They show the scale of what Askia built.",
-        wrongFeedback: "Authors use specific numbers to support a point. What argument does this number help make about Askia?",
-        xp: 10
-      }
-    ],
-
-    wrapUp: {
-      title: 'Quest Complete, King! 👑',
-      text: "You identified the author's purpose — not just what they said, but WHY they said it. That is one of the most powerful reading skills you can develop.",
-      badge: 'Sankore Scholar'
-    }
+    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You identified the author’s purpose: Askia’s greatness came from systems, learning, and just governance.', badge: 'Sankore Scholar' }
   },
-
-  // ════════════════════════════════════════════════════════════
-  // songhai-s4 — West African Trade Routes (Math, 3.MD.B.3 / 3.OA)
-  // Four-phase: Reading bar graphs + multiplication
-  // ════════════════════════════════════════════════════════════
-  {
+{
     id: 'songhai-s4',
     worldId: 'songhai',
     title: 'West African Trade Routes',
