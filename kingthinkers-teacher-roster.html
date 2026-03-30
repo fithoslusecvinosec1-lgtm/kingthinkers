@@ -321,6 +321,12 @@ function setRosterState(students){
 function persistRosterCache(){
   saveCachedRoster(rosterState);
   rosterState.forEach(function(s){ saveStudentLocal(s.code, s); });
+  var legacyRoster = {};
+  rosterState.forEach(function(s){
+    saveStudentLocal(s.code, s);
+    legacyRoster[s.code] = { name: s.name, grade: s.grade };
+  });
+  localStorage.setItem('kt_roster', JSON.stringify(legacyRoster));
 }
 function getSettings(){try{return JSON.parse(localStorage.getItem('kt_settings')||'{}')}catch(e){return{}}}
 function putSetting(k,v){var s=getSettings();s[k]=v;localStorage.setItem('kt_settings',JSON.stringify(s))}
@@ -806,6 +812,18 @@ function wireButtons() {
   on('sample-btn', loadSampleClass);
   on('clear-btn', clearAllData);
 
+  on('sample-btn', function(){ loadSampleStudents(); });
+
+  on('clear-btn', function(){
+    if (!confirm('Delete ALL student data? This cannot be undone.')) return;
+    rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
+    rosterState = [];
+    saveCachedRoster([]);
+    localStorage.removeItem('kt_roster');
+    toast('🗑️ All data cleared');
+    renderAll();
+  });
+
   // ── TEACHER INFO + LOGOUT ─────────────────────────────────────
   if (_teacherSession) {
     var nameEl = document.getElementById('teacher-name-display');
@@ -870,6 +888,10 @@ function clearAllData() {
   });
   rosterState = [];
   saveCachedRoster([]);
+  rosterState.forEach(function(s){ localStorage.removeItem('kt_student_' + s.code); });
+  rosterState = [];
+  saveCachedRoster([]);
+  localStorage.removeItem('kt_roster');
   toast('🗑️ All data cleared');
   renderAll();
 }
@@ -912,6 +934,15 @@ async function syncFromSupabase(silent) {
       saveStudentLocal(s.code, s);
       if (progressByCode[s.code] && Object.keys(progressByCode[s.code]).length > 0) {
         localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(progressByCode[s.code]));
+
+  try {
+    var students = await db_getRosterWithProgress();
+    setRosterState(students || []);
+    rosterState.forEach(function(s, idx) {
+      var src = students && students[idx] ? students[idx] : {};
+      saveStudentLocal(s.code, s);
+      if (src.progress && Object.keys(src.progress).length > 0) {
+        localStorage.setItem('kt_quest_progress_' + s.code, JSON.stringify(src.progress));
       }
     });
     persistRosterCache();
