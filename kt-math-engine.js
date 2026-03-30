@@ -247,7 +247,9 @@ var KTTS = (function() {
 
   function speak(text, containerId) {
     if (!isSupported()) {
-      showToast('🔊', 'Read Aloud', 'Audio not supported on this device');
+      if (typeof showToast === 'function') {
+        showToast('🔊', 'Read Aloud', 'Audio not supported on this device');
+      }
       return;
     }
     if (_speaking) { stop(); return; }
