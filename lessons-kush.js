@@ -9,106 +9,31 @@ window.KT_LESSONS.kush = [
     grade: '3',
     xp: 45,
     crownReward: 1,
-    estMinutes: 6,
-
-    intro: {
-      kicker: 'Kush · Mission 1',
-      text: 'King, travel into the Kingdom of Kush, where blacksmiths turned fire and iron into power. Read closely to learn how iron helped Kush become strong.',
-      sage: 'Iron changed kingdoms, King. Read carefully and discover why Kush became famous for its forges. ⚒️'
-    },
-
-    reading: {
-      passage: [
-        'The Kingdom of Kush grew strong south of Egypt in the lands near the Nile. One of its greatest strengths was iron. While many kingdoms still depended on bronze, Kush learned how to heat rock and metal in hot furnaces to make iron tools and iron weapons.',
-        'This was not easy work. Blacksmiths had to build hot fires, shape the glowing metal, and hammer it again and again. The work took patience, strength, and skill.',
-        'Young Baraka stood beside his mother, who was one of the finest metalworkers in the city. He watched sparks leap through the air as she struck a glowing piece of iron. “Why is iron so important?” he asked.',
-        'His mother lifted the hammer and smiled. “Iron helps farmers cut the soil. It helps builders shape wood and stone. And it helps warriors defend the kingdom. A strong metal makes a strong nation.”',
-        'Because Kush mastered iron-working, it became famous across the region. Traders came to buy tools, hunters used iron spear points, and armies trusted iron blades. The fires of Kush helped build its wealth and its power.',
-        'Baraka looked at the workshop with new respect. The hammers, the furnaces, and the sparks were not just noise and heat. They were the sound of a kingdom growing stronger.'
+    estMinutes: 8,
+    intro: { kicker: 'Kush · Mission 1', text: 'King, read how Kush used ironworking to strengthen farming, trade, and defense.', sage: 'Track each cause and effect from the forge to the kingdom. ⚒️' },
+    phase1_strategy: { name: 'Cause and Effect', definition: 'Cause explains why something happens; effect explains what happens because of it.', model: 'Model: A city trains engineers (cause), so bridges become safer and trade grows (effect).', how_to: ['Find the first action.', 'Find what happened afterward.', 'Connect action and result clearly.'], sage: 'In history, tools and ideas create powerful effects.' },
+    phase2_vocab: [
+      { word: 'furnaces', definition: 'very hot ovens used to heat metal', sentence: 'Blacksmiths used furnaces to heat iron before shaping it.' },
+      { word: 'glowing', definition: 'shining with heat or light', sentence: 'The glowing metal showed it was ready for the hammer.' },
+      { word: 'blacksmiths', definition: 'workers who shape metal', sentence: 'Kushite blacksmiths made tools and weapons for the kingdom.' },
+      { word: 'region', definition: 'a large area', sentence: 'Kush became respected across the region for ironworking skill.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'k1-s1', title: 'Hard Work at the Forge', passage: ['Blacksmiths used intense heat and repeated hammering to shape iron.', 'Because the work required skill and patience, strong tools could be produced.'], questions: [{ id: 'k1-s1-q1', type: 'mcq', prompt: 'What effect came from skilled forge work?', hint: 'Look at the result in sentence two.', choices: ['Tools became strong and useful', 'Iron turned to water', 'Work became effortless', 'Trade ended'], answer: 0, correctFeedback: 'Correct. Skilled work produced strong tools.', wrongFeedback: 'The effect is the result: strong tools created through careful labor.', explanation: 'Cause: skilled forge work. Effect: strong iron tools.', xp: 8 }]},
+        { id: 'k1-s2', title: 'Iron and Kingdom Strength', passage: ['Iron tools helped farmers and builders work better.', 'As a result, Kush grew wealthier and stronger across the region.'], questions: [{ id: 'k1-s2-q1', type: 'true_false', prompt: 'Ironworking helped Kush become stronger as a kingdom.', hint: 'Connect better tools to bigger outcomes.', answer: true, correctFeedback: 'Yes. Better tools supported growth in many parts of society.', wrongFeedback: 'The passage links iron tools to stronger farming, building, and wealth.', explanation: 'Cause: iron tools. Effect: stronger kingdom.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'furnaces', definition: 'very hot ovens used to heat metal' },
-        { term: 'glowing', definition: 'shining with heat or light' },
-        { term: 'blacksmiths', definition: 'workers who shape iron and metal' },
-        { term: 'region', definition: 'a large area or part of a country or world' }
-      ]
+      close_reading: { title: 'Close Reading: Forge to Future', excerpt: 'Kush mastered iron, so traders and armies trusted its tools.', question: { id: 'k1-close-q1', type: 'mcq', prompt: 'Which statement best explains this sentence?', hint: 'Identify what happened first and what followed.', choices: ['Trust came first, then iron skill', 'Mastering iron caused trust and wider use', 'There is no relationship', 'The sentence is only about weather'], answer: 1, correctFeedback: 'Exactly. Iron mastery caused trust and demand.', wrongFeedback: 'The sentence starts with mastery and ends with results.', explanation: 'Cause-and-effect shows how skill became influence.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Read for Cause and Effect',
-        body: 'Strong readers notice how one thing leads to another. In this story, iron-working helped farmers, builders, traders, and warriors.'
-      }
+    phase4_test: [
+      { id: 'k1-t1', type: 'mcq', excerpt: 'Blacksmiths improved iron tools, so farmers could cut soil more easily.', prompt: 'What is the cause?', choices: ['Farmers cut soil', 'Blacksmiths improved iron tools', 'Soil changed color', 'Markets closed'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. Tool improvement caused easier farming work.', wrongFeedback: 'Find the first action that made the farming result possible.', xp: 10 },
+      { id: 'k1-t2', type: 'true_false', excerpt: 'Because iron tools spread, trade and defense grew stronger.', prompt: 'This excerpt shows cause and effect.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Tool spread is the cause and stronger systems are effects.', wrongFeedback: 'The word “because” links cause directly to results.', xp: 10 },
+      { id: 'k1-t3', type: 'mcq', excerpt: 'Kush became famous across the region after mastering iron-working.', prompt: 'Which effect is stated?', choices: ['Mastering iron-working', 'Kush became famous across the region', 'Furnaces were hot', 'Sparks flew'], answer: 1, hint_disabled: true, correctFeedback: 'Right. Fame is the effect named in the excerpt.', wrongFeedback: 'The effect is what happened after mastery.', xp: 10 },
+      { id: 'k1-t4', type: 'input', excerpt: 'Actions in the forge led to results across the kingdom.', prompt: 'Type the strategy skill used in this test.', answer: 'cause and effect', hint_disabled: true, correctFeedback: 'Great. You applied cause-and-effect reasoning.', wrongFeedback: 'You connected why events happened and their results. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'k1-q1',
-        type: 'mcq',
-        prompt: 'Why was iron so important to the Kingdom of Kush?',
-        hint: 'Look for the part where Baraka’s mother explains how iron helped many people.',
-        choices: [
-          'It was only used to make jewelry',
-          'It helped farmers, builders, and warriors',
-          'It made the Nile River deeper',
-          'It replaced the need for trade'
-        ],
-        answer: 1,
-        correctFeedback: 'Exactly. Iron helped many parts of Kush’s society, including farming, building, and defense.',
-        wrongFeedback: 'Go back to the paragraph where Baraka’s mother explains why iron matters.',
-        xp: 10
-      },
-      {
-        id: 'k1-q2',
-        type: 'true_false',
-        prompt: 'Blacksmiths in Kush had easy jobs that needed very little skill.',
-        hint: 'Think about how the passage describes the work with furnaces, fire, and hammers.',
-        answer: false,
-        correctFeedback: 'Correct. The passage says the work needed patience, strength, and skill.',
-        wrongFeedback: 'The story describes iron-working as hard and skilled work.',
-        xp: 10
-      },
-      {
-        id: 'k1-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['furnaces', 'very hot ovens used to heat metal'],
-          ['glowing', 'shining with heat or light'],
-          ['blacksmiths', 'workers who shape iron and metal'],
-          ['region', 'a large area or part of a country or world']
-        ],
-        correctFeedback: 'Strong work, King. Your forge vocabulary is heating up. 📚',
-        wrongFeedback: 'Not quite. Try the word meanings again.',
-        xp: 10
-      },
-      {
-        id: 'k1-q3',
-        type: 'mcq',
-        prompt: 'What is the main idea of the passage?',
-        hint: 'Think about what the author wants you to understand about iron in Kush.',
-        choices: [
-          'Iron-working helped make Kush powerful and successful',
-          'Children in Kush disliked blacksmith workshops',
-          'Bronze was stronger than iron',
-          'Only warriors used iron'
-        ],
-        answer: 0,
-        correctFeedback: 'Yes. The main idea is that iron-working helped Kush grow strong, wealthy, and respected.',
-        wrongFeedback: 'Think about the whole passage, not just one detail.',
-        xp: 15
-      }
-    ],
-
-    wrapUp: {
-      title: 'Iron Master! 👑',
-      text: 'You discovered how Kush used iron to build power, wealth, and strength across the kingdom.',
-      badge: 'Forge Reader'
-    }
+    wrapUp: { title: 'Iron Master! 👑', text: 'You traced how ironworking powered Kush through clear cause-and-effect chains.', badge: 'Forge Reader' }
   },
-
-  {
+{
     id: 'k2',
     worldId: 'kush',
     title: 'The Royal Market',
@@ -217,112 +142,31 @@ window.KT_LESSONS.kush = [
     grade: '3',
     xp: 45,
     crownReward: 1,
-    estMinutes: 6,
-
-    intro: {
-      kicker: 'Kush · Mission 3',
-      text: 'King, read the story of how Kush grew so strong that it conquered Egypt. Discover what made Kush powerful and what kind of leadership followed.',
-      sage: 'Conquering land is one thing, King. Ruling wisely is another. Read closely. 👑'
-    },
-
-    reading: {
-      passage: [
-        'As the Kingdom of Kush grew stronger, its rulers looked north toward Egypt. Egypt had long been powerful, but it was divided and weakened. The kings of Kush saw a chance to bring order to the land.',
-        'One Kushite king led his army north and conquered Egypt. This was an enormous achievement. It showed that Kush was no longer a small neighbor. It was now a great power in its own right.',
-        'But the rulers of Kush did not only fight. They also governed. They respected Egyptian temples, supported religion, and restored important buildings. They ruled not only with strength, but with care.',
-        'Young Lena listened as her teacher explained this history. “So they were warriors and rulers?” she asked. Her teacher nodded. “Yes. Strong enough to win, but wise enough to build.”',
-        'Under Kushite rule, Egypt became more stable again. Trade continued, temples were honored, and the rulers tried to strengthen what had been damaged. Their story became one of both conquest and leadership.',
-        'Lena looked at the map and smiled. The Kingdom of Kush had done more than defend itself. It had changed history.'
+    estMinutes: 8,
+    intro: { kicker: 'Kush · Mission 3', text: 'King, read how Kush rose to conquer Egypt and then rule with strength and care.', sage: 'Our strategy is main idea: what big message do these details support? 👑' },
+    phase1_strategy: { name: 'Main Idea', definition: 'Main idea is the central message supported by key details.', model: 'Model: A mayor repairs roads, funds schools, and opens clinics. Main idea: leadership should improve daily life for everyone.', how_to: ['Gather major details from beginning, middle, and end.', 'Ask what message connects those details.', 'Choose one broad statement that fits them all.'], sage: 'Do not confuse one detail with the whole message.' },
+    phase2_vocab: [
+      { word: 'divided', definition: 'split and not united', sentence: 'Egypt was divided, making it easier to conquer.' },
+      { word: 'governed', definition: 'ruled and managed', sentence: 'Kushite rulers governed with planning and care.' },
+      { word: 'stable', definition: 'steady and secure', sentence: 'Under their rule, Egypt became more stable.' },
+      { word: 'conquest', definition: 'taking control by force', sentence: 'The conquest was only the beginning of leadership.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'k3-s1', title: 'Winning and Ruling', passage: ['Kush conquered Egypt when Egypt was divided and weak.', 'Afterward, Kushite rulers protected temples and restored important places.'], questions: [{ id: 'k3-s1-q1', type: 'mcq', prompt: 'Which detail best supports a main idea about balanced leadership?', hint: 'Look for detail showing more than military victory.', choices: ['Egypt was weak', 'Rulers restored temples and governed with care', 'Maps were drawn', 'Cities had markets'], answer: 1, correctFeedback: 'Correct. That detail supports leadership beyond conquest.', wrongFeedback: 'Main-idea evidence here should show both power and responsible rule.', explanation: 'Restoration detail supports the broader leadership message.', xp: 8 }]},
+        { id: 'k3-s2', title: 'Strength with Wisdom', passage: ['Teachers described Kushite rulers as “strong enough to win, wise enough to build.”', 'This phrase summarizes how they used power and responsibility together.'], questions: [{ id: 'k3-s2-q1', type: 'true_false', prompt: 'These details support a main idea that great leadership combines strength and wisdom.', hint: 'Read the quote closely.', answer: true, correctFeedback: 'Yes. The quote directly states the central message.', wrongFeedback: 'The phrase itself links two leadership qualities into one big idea.', explanation: 'The detail is a clear summary clue for main idea.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'divided', definition: 'broken into parts and not united' },
-        { term: 'governed', definition: 'ruled or led a place' },
-        { term: 'stable', definition: 'firm, steady, and not likely to fall apart' },
-        { term: 'conquest', definition: 'taking control by force' }
-      ]
+      close_reading: { title: 'Close Reading: Big Message', excerpt: 'They did not only conquer; they governed with care.', question: { id: 'k3-close-q1', type: 'mcq', prompt: 'What main idea fits this line?', hint: 'Choose the message that includes both parts of the sentence.', choices: ['Conquest alone is enough', 'True leadership includes power and responsible governance', 'Ruling means avoiding temples', 'Care weakens leaders'], answer: 1, correctFeedback: 'Exactly. The line emphasizes balanced leadership.', wrongFeedback: 'The sentence contrasts “only conquer” with “govern with care.”', explanation: 'Contrast helps reveal the passage’s central idea.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Read for the Big Message',
-        body: 'Authors often show that leaders need more than strength. Notice how this passage connects power with wisdom.'
-      }
+    phase4_test: [
+      { id: 'k3-t1', type: 'mcq', excerpt: 'Kush won battles and then restored temples, trade, and order.', prompt: 'Which is the best main idea?', choices: ['Kush only wanted war', 'Great rulers combine military success with rebuilding and care', 'Trade never mattered', 'History has no leaders'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. This captures the central message in the excerpt.', wrongFeedback: 'Choose the option that includes both victory and rebuilding leadership.', xp: 10 },
+      { id: 'k3-t2', type: 'true_false', excerpt: 'The phrase “strong enough to win, wise enough to build” supports a main idea of balanced leadership.', prompt: 'This statement is true.', answer: true, hint_disabled: true, correctFeedback: 'Yes. The phrase directly states the central theme.', wrongFeedback: 'That quote is a summary clue pointing to the main idea.', xp: 10 },
+      { id: 'k3-t3', type: 'mcq', excerpt: 'Under Kushite rule, Egypt became more stable and organized.', prompt: 'Why is this detail important?', choices: ['It supports the central message that governance mattered', 'It is unrelated', 'It only describes weather', 'It proves conquest failed'], answer: 0, hint_disabled: true, correctFeedback: 'Right. Stability evidence supports the main idea of wise rule.', wrongFeedback: 'The detail shows outcomes of governance, which support the central message.', xp: 10 },
+      { id: 'k3-t4', type: 'input', excerpt: 'You combined details to find one central message.', prompt: 'Type the strategy skill used in this test.', answer: 'main idea', hint_disabled: true, correctFeedback: 'Excellent. You used main-idea analysis.', wrongFeedback: 'You identified the passage’s central message from details. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'k3-q1',
-        type: 'mcq',
-        prompt: 'Why were the kings of Kush able to conquer Egypt?',
-        hint: 'Look at how the passage describes Egypt before Kush attacked.',
-        choices: [
-          'Egypt was divided and weakened',
-          'Egypt invited Kush to rule',
-          'Kush had more pyramids',
-          'The Nile River disappeared'
-        ],
-        answer: 0,
-        correctFeedback: 'Correct. The passage says Egypt was divided and weakened.',
-        wrongFeedback: 'Look back at the first paragraph for the reason.',
-        xp: 10
-      },
-      {
-        id: 'k3-q2',
-        type: 'mcq',
-        prompt: 'What did the Kushite rulers do after conquering Egypt?',
-        hint: 'Look for details that show they did more than fight.',
-        choices: [
-          'They destroyed temples and stopped trade',
-          'They ruled with care, respected temples, and restored buildings',
-          'They left immediately and returned home',
-          'They made everyone become blacksmiths'
-        ],
-        answer: 1,
-        correctFeedback: 'Exactly. They ruled with both strength and care.',
-        wrongFeedback: 'The passage says they governed, respected temples, and restored important places.',
-        xp: 10
-      },
-      {
-        id: 'k3-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['divided', 'broken into parts and not united'],
-          ['governed', 'ruled or led a place'],
-          ['stable', 'firm and steady'],
-          ['conquest', 'taking control by force']
-        ],
-        correctFeedback: 'Great work, King. Your history words are strong. 📚',
-        wrongFeedback: 'Not quite. Try the vocabulary again.',
-        xp: 10
-      },
-      {
-        id: 'k3-q3',
-        type: 'mcq',
-        prompt: 'What is the main lesson of the passage?',
-        hint: 'Think about what Lena’s teacher says: “Strong enough to win, but wise enough to build.”',
-        choices: [
-          'A great ruler only needs a strong army',
-          'True leadership requires both strength and wisdom',
-          'History is only about battles',
-          'Kush only cared about Egypt’s gold'
-        ],
-        answer: 1,
-        correctFeedback: 'Yes. The passage teaches that real leadership needs both strength and wisdom.',
-        wrongFeedback: 'Think about the difference between winning a battle and ruling well.',
-        xp: 15
-      }
-    ],
-
-    wrapUp: {
-      title: 'Conqueror Scholar! 👑',
-      text: 'You learned how Kush conquered Egypt and showed that true leadership combines power with wisdom.',
-      badge: 'History Crown Bearer'
-    }
+    wrapUp: { title: 'Conqueror Scholar! 👑', text: 'You identified the main idea: Kush showed that real leadership is power guided by wisdom and care.', badge: 'History Crown Bearer' }
   },
-
-  {
+{
     id: 'k4',
     worldId: 'kush',
     title: 'Fortress Geometry',
@@ -425,108 +269,28 @@ window.KT_LESSONS.kush = [
     grade: '3',
     xp: 50,
     crownReward: 1,
-    estMinutes: 7,
-
-    intro: {
-      kicker: 'Kush · Mission 5',
-      text: 'King, your final Kush quest is about leadership. Read carefully to learn what makes a ruler worthy of the crown.',
-      sage: 'A crown is not earned by power alone, King. It is earned by wisdom, courage, and service. 👑'
-    },
-
-    reading: {
-      passage: [
-        'In the Kingdom of Kush, a crown was more than a sign of power. It was a sign of responsibility. A ruler was expected to defend the kingdom, guide the people, and make wise decisions even in difficult times.',
-        'Prince Taban had trained for years, but he still wondered if he was ready. He could ride horses, speak before crowds, and study maps. But his mother, Queen Nadira, reminded him that these skills alone were not enough.',
-        '“A king must be brave,” she told him, “but bravery without wisdom can lead people into danger. A king must be strong, but strength without kindness can become cruelty.”',
-        'The next day, Taban walked through the city. He saw merchants in the market, workers at the forge, and children carrying water. He realized that every choice a ruler made touched the lives of many others.',
-        'That evening, Queen Nadira placed the royal crown in his hands. “Do not ask if you are powerful enough to wear it,” she said. “Ask if you are willing to serve.”',
-        'Taban looked at the crown and understood. To rule well was not to stand above the people. It was to carry their hopes, protect their future, and lead with both courage and care.'
+    estMinutes: 8,
+    intro: { kicker: 'Kush · Mission 5', text: 'King, in this final Kush reading, discover what qualities make a ruler worthy of the crown.', sage: 'Find the main idea about leadership, service, and responsibility. 👑' },
+    phase1_strategy: { name: 'Main Idea', definition: 'Main idea is the author’s biggest message, supported by important details.', model: 'Model: A team captain listens, plans, and helps others improve. Main idea: strong leadership means serving the team.', how_to: ['Collect details about character actions and lessons.', 'Find the message those details repeat.', 'Write one central idea that fits the whole passage.'], sage: 'A crown’s value comes from service, not decoration.' },
+    phase2_vocab: [
+      { word: 'responsibility', definition: 'a duty you must carry out', sentence: 'A crown represents responsibility, not just status.' },
+      { word: 'bravery', definition: 'courage even when afraid', sentence: 'Taban learned that bravery must be guided by wisdom.' },
+      { word: 'cruelty', definition: 'mean and harmful behavior', sentence: 'The queen warned that strength without kindness can become cruelty.' },
+      { word: 'serve', definition: 'to help and work for others', sentence: 'A great king chooses to serve the people.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'k5-s1', title: 'What a Crown Means', passage: ['Queen Nadira told Taban that bravery and strength alone are not enough.', 'She taught that wisdom and kindness are necessary for just leadership.'], questions: [{ id: 'k5-s1-q1', type: 'mcq', prompt: 'Which detail best supports the main idea about good leadership?', hint: 'Pick the detail that shows the full value set.', choices: ['A crown is heavy', 'Leadership needs bravery, wisdom, and kindness together', 'Markets were busy', 'Horses were fast'], answer: 1, correctFeedback: 'Correct. This detail supports the central message of balanced character.', wrongFeedback: 'Main-idea detail should describe what makes leadership truly good.', explanation: 'The detail combines power with ethical guidance.', xp: 8 }]},
+        { id: 'k5-s2', title: 'Learning to Serve', passage: ['Taban walked through the city and saw how royal choices affect families, workers, and children.', 'He realized the crown means carrying people’s hopes through service.'], questions: [{ id: 'k5-s2-q1', type: 'true_false', prompt: 'These details support a main idea that leadership is service to others.', hint: 'Focus on what Taban learned from the city walk.', answer: true, correctFeedback: 'Yes. He learned leadership is responsibility toward people.', wrongFeedback: 'The city walk taught him that decisions affect many lives, so service matters.', explanation: 'This is central evidence for the passage’s message.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'responsibility', definition: 'a duty or job that you must handle' },
-        { term: 'bravery', definition: 'courage in the face of fear' },
-        { term: 'cruelty', definition: 'mean or harmful behavior' },
-        { term: 'serve', definition: 'to help or work for others' }
-      ]
+      close_reading: { title: 'Close Reading: Crown Wisdom', excerpt: 'Do not ask if you are powerful enough to wear it. Ask if you are willing to serve.', question: { id: 'k5-close-q1', type: 'mcq', prompt: 'What main idea does this quote support?', hint: 'Choose the message the quote directly teaches.', choices: ['Power alone makes a king', 'True leadership is measured by service and responsibility', 'Only princes can lead', 'Kindness weakens rulers'], answer: 1, correctFeedback: 'Exactly. The quote centers leadership on service.', wrongFeedback: 'The quote contrasts raw power with willingness to serve others.', explanation: 'Contrast reveals the main message clearly.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Read for Character and Theme',
-        body: 'Readers should pay attention to what a character learns. That lesson often reveals the theme, or big message, of the story.'
-      }
+    phase4_test: [
+      { id: 'k5-t1', type: 'mcq', excerpt: 'A ruler must be brave, wise, kind, and willing to serve.', prompt: 'Which is the best main idea?', choices: ['Leadership is only power', 'Great leadership combines character and service', 'Crowns are mostly jewelry', 'Only soldiers should rule'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. This choice captures the full central message.', wrongFeedback: 'Pick the option that includes both inner character and service to people.', xp: 10 },
+      { id: 'k5-t2', type: 'true_false', excerpt: 'Taban learned that royal decisions affect many lives in the city.', prompt: 'This supports a main idea of leadership responsibility.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Seeing real people helped him understand responsibility.', wrongFeedback: 'The excerpt shows why leadership must be thoughtful and people-centered.', xp: 10 },
+      { id: 'k5-t3', type: 'mcq', excerpt: '“Ask if you are willing to serve.”', prompt: 'Why is this detail central?', choices: ['It states the passage’s leadership message directly', 'It describes clothing', 'It gives a map direction', 'It removes the need for wisdom'], answer: 0, hint_disabled: true, correctFeedback: 'Right. This line directly states the central idea.', wrongFeedback: 'The quote is a core lesson, not a side detail.', xp: 10 },
+      { id: 'k5-t4', type: 'input', excerpt: 'You used details to identify one central leadership message.', prompt: 'Type the strategy skill used in this test.', answer: 'main idea', hint_disabled: true, correctFeedback: 'Excellent. You identified the main idea clearly.', wrongFeedback: 'You found the central message from details. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'k5-q1',
-        type: 'mcq',
-        prompt: 'According to Queen Nadira, what is not enough by itself for a good king?',
-        hint: 'Look for the part where she talks about bravery and strength.',
-        choices: [
-          'Bravery and strength alone',
-          'Reading and writing',
-          'Traveling and trading',
-          'Owning gold and iron'
-        ],
-        answer: 0,
-        correctFeedback: 'Exactly. Queen Nadira says bravery and strength alone are not enough without wisdom and kindness.',
-        wrongFeedback: 'Go back to Queen Nadira’s advice about bravery and strength.',
-        xp: 10
-      },
-      {
-        id: 'k5-q2',
-        type: 'mcq',
-        prompt: 'Why did Taban walk through the city before receiving the crown?',
-        hint: 'Think about what he realized when he saw the people.',
-        choices: [
-          'He wanted to escape the palace',
-          'He wanted to see how a ruler’s choices affect many lives',
-          'He forgot where the crown ceremony was',
-          'He wanted to buy gifts in the market'
-        ],
-        answer: 1,
-        correctFeedback: 'Correct. He realized that every choice a ruler makes affects many people.',
-        wrongFeedback: 'The walk helped him understand something important about leadership.',
-        xp: 10
-      },
-      {
-        id: 'k5-vocab',
-        type: 'match',
-        prompt: 'Match each leadership word to its meaning.',
-        pairs: [
-          ['responsibility', 'a duty or job you must handle'],
-          ['bravery', 'courage in the face of fear'],
-          ['cruelty', 'mean or harmful behavior'],
-          ['serve', 'to help or work for others']
-        ],
-        correctFeedback: 'Excellent, King. Your leadership vocabulary is worthy of a crown. 📚',
-        wrongFeedback: 'Not quite. Try the word meanings again.',
-        xp: 10
-      },
-      {
-        id: 'k5-q3',
-        type: 'mcq',
-        prompt: 'What is the main message of the story?',
-        hint: 'Think about Queen Nadira’s final words about being willing to serve.',
-        choices: [
-          'A real king is the richest person in the kingdom',
-          'A crown is mainly a symbol of power and wealth',
-          'Great leadership means serving people with courage, wisdom, and care',
-          'Only princes can understand responsibility'
-        ],
-        answer: 2,
-        correctFeedback: 'KING! 👑 That is the heart of the story. Great leadership is about serving others with wisdom and courage.',
-        wrongFeedback: 'Think about what Taban learns by the end of the story.',
-        xp: 20
-      }
-    ],
-
-    wrapUp: {
-      title: 'Crowned in Wisdom! 👑',
-      text: 'You completed the Kingdom of Kush and learned that the greatest rulers lead by serving others with courage, wisdom, and care.',
-      badge: 'Crown Bearer of Kush'
-    }
+    wrapUp: { title: 'Crowned in Wisdom! 👑', text: 'You completed Kush by identifying the main idea of true leadership: serve with courage, wisdom, and care.', badge: 'Crown Bearer of Kush' }
   }
 ];

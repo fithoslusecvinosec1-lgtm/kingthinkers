@@ -15,108 +15,30 @@ window.KT_LESSONS.timbuktu = [
     xp: 55,
     crownReward: 1,
     estMinutes: 8,
-
-    intro: {
-      kicker: 'Timbuktu · Quest 1',
-      text: "King, at a time when Europe was in the Dark Ages, the city of Timbuktu in West Africa was one of the most advanced centers of learning in the world. Scholars came from Arabia, Egypt, and across Africa to study at its great university. Read closely to discover what made Timbuktu remarkable.",
-      sage: "The greatest weapon a king can have is knowledge. Timbuktu understood this better than anyone. 📜"
-    },
-
-    reading: {
-      passage: [
-        "Timbuktu was founded around 1100 CE as a trading camp near the Niger River. Because it sat at the crossroads of major trade routes, it quickly grew into one of the wealthiest cities in Africa. Gold and salt passed through its markets daily.",
-        "By the 1300s, Timbuktu had become something even more valuable than a trading city — it had become a city of scholars. The Sankore Madrasah, its great university, attracted students and teachers from across the Islamic world. At its height, the city had over 150 schools and between 25,000 and 80,000 students.",
-        "The scholars of Timbuktu wrote and collected hundreds of thousands of manuscripts — handwritten books on mathematics, astronomy, medicine, law, and philosophy. These manuscripts were so valuable that wealthy families kept private libraries, and some were passed down for generations.",
-        "Timbuktu's location made it a meeting point for ideas as much as for goods. When Arab traders arrived with new mathematical concepts, Timbuktu's scholars studied and improved on them. When questions about medicine arose, Timbuktu's physicians wrote detailed treatments that were used across Africa.",
-        "The manuscripts of Timbuktu were not just books — they were proof that African civilization had been producing advanced knowledge for centuries. Many were hidden during later invasions and only rediscovered in modern times."
+    intro: { kicker: 'Timbuktu · Quest 1', text: 'King, read how Timbuktu became a center of scholarship, manuscripts, and world knowledge.', sage: 'We will gather details and find the main idea that ties them together. 📜' },
+    phase1_strategy: { name: 'Main Idea', definition: 'Main idea is the most important message supported by details in the passage.', model: 'Model: A town opens science labs, teacher training, and book fairs. Main idea: the town is investing in education excellence.', how_to: ['Identify repeated details across sections.', 'Ask what larger message those details support.', 'Write one central statement broad enough for the whole passage.'], sage: 'The best main idea feels like a summary crown over all details.' },
+    phase2_vocab: [
+      { word: 'manuscripts', definition: 'handwritten books or documents', sentence: 'Families preserved manuscripts for generations in Timbuktu.' },
+      { word: 'scholars', definition: 'people with deep learning in a subject', sentence: 'Scholars came to study law, math, and medicine.' },
+      { word: 'crossroads', definition: 'a place where important routes or ideas meet', sentence: 'The city stood at a crossroads of trade and knowledge.' },
+      { word: 'physicians', definition: 'doctors', sentence: 'Physicians wrote treatments in scholarly texts.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'timbuktu-t1-s1', title: 'From Trade to Learning', passage: ['Timbuktu grew rich through trade routes and then expanded into a center of scholarship.', 'Its schools attracted students from many regions.'], questions: [{ id: 'timbuktu-t1-s1-q1', type: 'mcq', prompt: 'Which detail best supports a main idea about learning leadership?', hint: 'Pick the detail showing broad educational influence.', choices: ['One market opened', 'Schools attracted students from many regions', 'A river flowed nearby', 'One trader visited'], answer: 1, correctFeedback: 'Correct. That detail supports a major educational role.', wrongFeedback: 'Main-idea support should show wide importance, not one small fact.', explanation: 'Regional student attraction signals big educational impact.', xp: 8 }]},
+        { id: 'timbuktu-t1-s2', title: 'Knowledge Across Subjects', passage: ['Manuscripts covered astronomy, medicine, law, and philosophy.', 'These texts showed advanced African scholarship over centuries.'], questions: [{ id: 'timbuktu-t1-s2-q1', type: 'true_false', prompt: 'These details support a main idea that Timbuktu produced advanced knowledge.', hint: 'Look at the range of subjects and the long time span.', answer: true, correctFeedback: 'Yes. Multiple advanced subjects support that central idea.', wrongFeedback: 'A broad subject range and long history are evidence of deep scholarship.', explanation: 'Varied fields strengthen the central message.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'manuscripts', definition: 'handwritten books or documents, especially old or valuable ones' },
-        { term: 'scholars', definition: 'people who have studied a subject deeply and are very knowledgeable' },
-        { term: 'crossroads', definition: 'a place where two or more important routes or ideas meet' },
-        { term: 'physicians', definition: 'doctors trained to treat illness and injury' }
-      ]
+      close_reading: { title: 'Close Reading: Main Message', excerpt: 'Timbuktu was a meeting point for goods, ideas, and scholars.', question: { id: 'timbuktu-t1-close-q1', type: 'mcq', prompt: 'What main idea fits this sentence best?', hint: 'Choose the big message combining trade and learning.', choices: ['Timbuktu was only a marketplace', 'Timbuktu was a major center of knowledge and exchange', 'No scholars lived there', 'Only one subject was studied'], answer: 1, correctFeedback: 'Exactly. The sentence supports Timbuktu’s role as a global learning center.', wrongFeedback: 'Look for the option that includes both exchange and scholarship.', explanation: 'The line joins economic and intellectual influence.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Main Idea and Supporting Details',
-        body: "The main idea is the most important point the author makes. Supporting details are facts, examples, or reasons that back up the main idea. Every paragraph in a well-written passage supports the same main idea — even if it uses different examples."
-      }
+    phase4_test: [
+      { id: 'timbuktu-t1-t1', type: 'mcq', excerpt: 'The city had many schools and scholars from across the Islamic world.', prompt: 'Which is the best main idea?', choices: ['Timbuktu had one small school', 'Timbuktu became a major center of learning', 'Only trade mattered', 'Students avoided the city'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. This captures the central educational message.', wrongFeedback: 'Choose the idea that matches both scale and scholarship details.', xp: 10 },
+      { id: 'timbuktu-t1-t2', type: 'true_false', excerpt: 'Manuscripts on medicine, astronomy, and law were preserved for generations.', prompt: 'This supports a main idea of lasting scholarly excellence.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Lasting preservation across subjects supports that main idea.', wrongFeedback: 'Long-term preservation of advanced texts is strong central evidence.', xp: 10 },
+      { id: 'timbuktu-t1-t3', type: 'mcq', excerpt: 'Timbuktu connected trade routes and the exchange of ideas.', prompt: 'Why is this detail important?', choices: ['It shows a broad role in economy and knowledge', 'It proves learning was absent', 'It is only a weather detail', 'It describes one person only'], answer: 0, hint_disabled: true, correctFeedback: 'Right. The detail supports a big, integrated main idea.', wrongFeedback: 'This detail is broad and central, not narrow or personal.', xp: 10 },
+      { id: 'timbuktu-t1-t4', type: 'input', excerpt: 'Several details point to one central message about Timbuktu.', prompt: 'Type the strategy skill used in this test.', answer: 'main idea', hint_disabled: true, correctFeedback: 'Great work. You identified the main idea with evidence.', wrongFeedback: 'You found the central message from multiple details. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'timbuktu-t1-q1',
-        type: 'mcq',
-        prompt: 'What is the main idea of this passage about Timbuktu?',
-        hint: 'What does the author say about Timbuktu in almost every paragraph?',
-        choices: [
-          'Timbuktu was founded as a trading camp near a river',
-          'Timbuktu was one of the world\'s greatest centers of learning and knowledge production',
-          'Timbuktu had 150 schools and 80,000 students',
-          'The manuscripts of Timbuktu were hidden during invasions'
-        ],
-        answer: 1,
-        correctFeedback: "Exactly. Every paragraph supports the idea that Timbuktu was a world-class center of knowledge — not just trade.",
-        wrongFeedback: "That is a detail, not the main idea. The main idea is what the whole passage is mostly about.",
-        xp: 14
-      },
-      {
-        id: 'timbuktu-t1-q2',
-        type: 'true_false',
-        prompt: "According to the passage, the manuscripts of Timbuktu only covered trade and economics.",
-        hint: 'Paragraph 3 lists what the manuscripts were actually about.',
-        answer: false,
-        correctFeedback: "Correct — the manuscripts covered mathematics, astronomy, medicine, law, and philosophy. Trade is not even mentioned.",
-        wrongFeedback: "Read paragraph 3 again. The manuscripts covered a wide range of subjects — far beyond trade.",
-        xp: 12
-      },
-      {
-        id: 'timbuktu-t1-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['manuscripts', 'handwritten books or documents, especially old or valuable ones'],
-          ['scholars', 'people who have studied a subject deeply and are very knowledgeable'],
-          ['crossroads', 'a place where two or more important routes or ideas meet'],
-          ['physicians', 'doctors trained to treat illness and injury']
-        ],
-        correctFeedback: "Excellent vocabulary, King. These are the words of civilization and scholarship. 📚",
-        wrongFeedback: "Not that one. Re-read the definitions carefully.",
-        xp: 12
-      },
-      {
-        id: 'timbuktu-t1-q3',
-        type: 'mcq',
-        prompt: "Why does the author mention that Timbuktu flourished while Europe was in the Dark Ages?",
-        hint: "Why would an author include that comparison? What point does it support?",
-        choices: [
-          'To show that Europe was unimportant',
-          'To emphasize how advanced Timbuktu was at a time when many people assume Africa was behind',
-          'To explain why traders traveled from Europe to Timbuktu',
-          'To describe the weather conditions in both places'
-        ],
-        answer: 1,
-        correctFeedback: "Right — the comparison challenges the assumption that Africa was behind. It supports the main idea by showing just how remarkable Timbuktu's achievement was.",
-        wrongFeedback: "Authors make comparisons for a reason. What does this comparison tell you about Timbuktu's place in world history?",
-        xp: 12
-      }
-    ],
-
-    wrapUp: {
-      title: 'Quest Complete, King! 👑',
-      text: "You discovered that while other parts of the world struggled, Timbuktu was producing knowledge that shaped mathematics, medicine, and law. That history belongs to you.",
-      badge: 'Sankore Scholar'
-    }
+    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You discovered Timbuktu’s central story: a city of trade, scholarship, and enduring knowledge.', badge: 'Sankore Scholar' }
   },
-
-  // ════════════════════════════════════════════════════════
-  // timbuktu-t2 — Scholar's Math (Math, 3.MD.B.3 / 3.OA)
-  // Four-phase: Data, graphs, and multi-step problems
-  // ════════════════════════════════════════════════════════
-  {
+{
     id: 'timbuktu-t2',
     worldId: 'timbuktu',
     title: "Scholar's Math",
@@ -298,108 +220,30 @@ window.KT_LESSONS.timbuktu = [
     xp: 55,
     crownReward: 1,
     estMinutes: 8,
-
-    intro: {
-      kicker: 'Timbuktu · Quest 3',
-      text: "King, the manuscripts of Timbuktu were hidden for centuries to protect them from invasion. Today, scholars are working to restore and translate hundreds of thousands of these ancient texts. Read closely — and use context clues to figure out the meaning of words you may not know.",
-      sage: "A strong reader never skips a word they don't know. They use what's around it to figure it out. Let me show you how. 📖"
-    },
-
-    reading: {
-      passage: [
-        "For centuries, the manuscripts of Timbuktu were kept secret. When the Moroccan army invaded in 1591, scholars hid thousands of texts in underground vaults, buried them in the desert, or carried them south by camel caravan. Families became the unofficial guardians of knowledge, passing manuscripts from generation to generation.",
-        "The manuscripts covered subjects that scholars today find astonishing — not just religion and law, but detailed astronomical observations, surgical procedures, and diplomatic correspondence between African rulers. One manuscript described the correct way to treat cataracts, a procedure that was not practiced in Europe until much later.",
-        "In the 1990s and 2000s, international scholars began working with Malian families to catalog and preserve these texts. The Mamma Haidara Commemorative Library alone contained over 45,000 manuscripts. The process of restoration requires painstaking care — damaged pages must be treated with special solutions, dried slowly, and kept in climate-controlled conditions.",
-        "When extremists threatened Timbuktu in 2012, librarians organized a secret mission. Over several months, they transported approximately 377,000 manuscripts out of the city, hidden in rice sacks and vegetable crates, to safety in the capital city of Bamako.",
-        "The manuscripts of Timbuktu remind the world of what Africa has always known — that its people were scholars, scientists, and record-keepers of the highest order, long before the modern age."
+    intro: { kicker: 'Timbuktu · Quest 3', text: 'King, read about how families and librarians protected Timbuktu’s manuscripts across centuries of danger.', sage: 'Today’s strategy is cause and effect: what actions led to preservation? 📖' },
+    phase1_strategy: { name: 'Cause and Effect', definition: 'Cause is why an event happens. Effect is what happens because of it.', model: 'Model: A museum installs climate control (cause), so fragile paintings survive longer (effect).', how_to: ['Find key actions in order.', 'Ask what happened because of each action.', 'Describe the chain clearly from start to result.'], sage: 'Preservation stories are full of cause-and-effect decisions.' },
+    phase2_vocab: [
+      { word: 'vaults', definition: 'secure underground storage spaces', sentence: 'Families hid manuscripts in vaults to keep them safe.' },
+      { word: 'astronomical', definition: 'related to stars and space', sentence: 'Some texts included astronomical observations.' },
+      { word: 'painstaking', definition: 'very careful and patient', sentence: 'Restoring old pages required painstaking work.' },
+      { word: 'extremists', definition: 'people using extreme harmful actions', sentence: 'When extremists threatened the city, librarians moved texts to safety.' }
+    ],
+    phase3_guided: {
+      sections: [
+        { id: 'timbuktu-t3-s1', title: 'Hiding Knowledge', passage: ['When invasion threatened Timbuktu, scholars hid manuscripts in vaults and caravans.', 'Because they acted quickly, many texts survived for future generations.'], questions: [{ id: 'timbuktu-t3-s1-q1', type: 'mcq', prompt: 'What effect came from hiding the manuscripts?', hint: 'Look for what happened because of the protection action.', choices: ['Texts were lost immediately', 'Many texts survived', 'All scholars left writing', 'The city stopped learning'], answer: 1, correctFeedback: 'Correct. Quick action led to survival.', wrongFeedback: 'The second sentence states the result directly: survival of texts.', explanation: 'Cause: hiding texts. Effect: preservation.', xp: 8 }]},
+        { id: 'timbuktu-t3-s2', title: 'Modern Rescue Effort', passage: ['In 2012, librarians secretly moved hundreds of thousands of manuscripts to Bamako.', 'As a result, extremists could not destroy most of the collections.'], questions: [{ id: 'timbuktu-t3-s2-q1', type: 'true_false', prompt: 'The secret transport mission protected the manuscripts.', hint: 'Connect the mission to the result sentence.', answer: true, correctFeedback: 'Yes. The transport effort caused large-scale preservation.', wrongFeedback: 'The passage links the rescue mission directly to manuscript safety.', explanation: 'Cause: secret transport. Effect: texts protected.', xp: 8 }]}
       ],
-      vocab: [
-        { term: 'vaults', definition: 'secure, underground rooms used for storage' },
-        { term: 'astronomical', definition: 'relating to the study of stars, planets, and outer space' },
-        { term: 'painstaking', definition: 'requiring very careful, thorough, and patient effort' },
-        { term: 'extremists', definition: 'people who hold radical beliefs and are willing to use harmful actions to enforce them' }
-      ]
+      close_reading: { title: 'Close Reading: Preservation Chain', excerpt: 'They packed manuscripts in crates, so the texts reached safety.', question: { id: 'timbuktu-t3-close-q1', type: 'mcq', prompt: 'Which cause-and-effect pair matches this line?', hint: 'Identify the first action and the result.', choices: ['Cause: reached safety; Effect: packed crates', 'Cause: packed manuscripts; Effect: reached safety', 'Cause: weather changed; Effect: no travel', 'Cause: readers arrived; Effect: wars ended'], answer: 1, correctFeedback: 'Exactly. Packing and moving caused safe arrival.', wrongFeedback: 'The cause is the deliberate action; the effect is safe transport.', explanation: 'Ordered actions reveal causality.', xp: 8 } }
     },
-
-    teach: [
-      {
-        type: 'text',
-        title: 'Using Context Clues',
-        body: "When you encounter an unfamiliar word, don't skip it — use context clues. Look at the words before and after it. Look for definitions nearby, examples, or contrast words like 'but' and 'unlike.' Ask yourself: what meaning makes sense given everything else in the sentence?"
-      }
+    phase4_test: [
+      { id: 'timbuktu-t3-t1', type: 'mcq', excerpt: 'Families hid manuscripts during invasions, and many texts survived.', prompt: 'What is the cause?', choices: ['Many texts survived', 'Families hid manuscripts', 'Invasions ended', 'Libraries expanded'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. Hiding the texts was the protective cause.', wrongFeedback: 'Find the first action that produced the survival result.', xp: 10 },
+      { id: 'timbuktu-t3-t2', type: 'true_false', excerpt: 'Because librarians moved manuscripts in secret, most collections were preserved.', prompt: 'This excerpt shows cause and effect.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Secret movement caused preservation.', wrongFeedback: 'The word “because” links protective action to outcome.', xp: 10 },
+      { id: 'timbuktu-t3-t3', type: 'mcq', excerpt: 'Restorers used painstaking methods, so damaged pages could be saved.', prompt: 'Which effect is named?', choices: ['Painstaking methods', 'Damaged pages could be saved', 'New invasions began', 'Caravans stopped'], answer: 1, hint_disabled: true, correctFeedback: 'Right. Saved pages are the result of careful restoration.', wrongFeedback: 'The effect is what happened because of painstaking care.', xp: 10 },
+      { id: 'timbuktu-t3-t4', type: 'input', excerpt: 'The passage links protection actions to survival results.', prompt: 'Type the strategy skill used in this test.', answer: 'cause and effect', hint_disabled: true, correctFeedback: 'Great work. You used cause-and-effect analysis well.', wrongFeedback: 'You tracked why events happened and what followed. Name that skill.', xp: 10 }
     ],
-
-    activities: [
-      {
-        id: 'timbuktu-t3-q1',
-        type: 'mcq',
-        prompt: 'In paragraph 2, the word "astonishing" most likely means:',
-        hint: 'Look at what kinds of things the manuscripts covered. How does the author seem to feel about this?',
-        choices: [
-          'Boring and ordinary',
-          'Surprisingly impressive or remarkable',
-          'Difficult to understand',
-          'Ancient and outdated'
-        ],
-        answer: 1,
-        correctFeedback: "Correct. The author describes detailed astronomical observations and surgical procedures — things that would surprise and impress modern readers. 'Astonishing' means surprisingly impressive.",
-        wrongFeedback: "Look at the context: the author lists impressive, unexpected knowledge. What feeling does this create?",
-        xp: 14
-      },
-      {
-        id: 'timbuktu-t3-q2',
-        type: 'mcq',
-        prompt: 'In paragraph 3, "catalog" most likely means:',
-        hint: 'Look at what scholars were doing with the manuscripts. What would be a logical first step in preserving them?',
-        choices: [
-          'Destroy and replace them',
-          'Translate them into French',
-          'Create an organized list and record of them',
-          'Display them in museums'
-        ],
-        answer: 2,
-        correctFeedback: "Right — before you can preserve something, you need to know what you have. 'Catalog' means to create a systematic record.",
-        wrongFeedback: "Think about the logical process of preservation. What would scholars need to do first before they could restore the manuscripts?",
-        xp: 12
-      },
-      {
-        id: 'timbuktu-t3-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['vaults', 'secure, underground rooms used for storage'],
-          ['astronomical', 'relating to the study of stars, planets, and outer space'],
-          ['painstaking', 'requiring very careful, thorough, and patient effort'],
-          ['extremists', 'people who hold radical beliefs and are willing to use harmful actions to enforce them']
-        ],
-        correctFeedback: "Excellent. These are powerful vocabulary words from a powerful story. 📚",
-        wrongFeedback: "Not quite. Try using the context from the passage to help you.",
-        xp: 12
-      },
-      {
-        id: 'timbuktu-t3-q3',
-        type: 'true_false',
-        prompt: 'The word "unofficial" in paragraph 1 suggests that families had a formal, government-approved role as manuscript guardians.',
-        hint: 'What does the prefix "un-" mean? How does that change the word "official"?',
-        answer: false,
-        correctFeedback: "Correct — 'unofficial' means NOT official. Families took on this role informally, out of love and duty, not because any government told them to.",
-        wrongFeedback: "The prefix 'un-' means 'not.' Unofficial = not official. Their role was informal and self-appointed, not government-approved.",
-        xp: 12
-      }
-    ],
-
-    wrapUp: {
-      title: 'Quest Complete, King! 👑',
-      text: "You used context clues to unlock the meaning of challenging words — a skill that makes every difficult text accessible. And you learned about some of the bravest librarians in history.",
-      badge: 'Context Clue Master'
-    }
+    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You traced the cause-and-effect choices that protected one of the world’s greatest knowledge treasures.', badge: 'Context Clue Master' }
   },
-
-  // ════════════════════════════════════════════════════════
-  // timbuktu-t4 — Astronomy Numbers (Math, 3.NBT.A.2 / 3.OA)
-  // Four-phase: Large number addition/subtraction + patterns
-  // ════════════════════════════════════════════════════════
-  {
+{
     id: 'timbuktu-t4',
     worldId: 'timbuktu',
     title: 'Astronomy Numbers',

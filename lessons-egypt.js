@@ -836,125 +836,162 @@ window.KT_LESSONS.egypt = [
   title: 'Warriors of the South',
   subject: 'reading',
   grade: '3',
+  standard: 'RI.3.3',
   xp: 40,
   crownReward: 1,
-  estMinutes: 6,
+  estMinutes: 8,
 
   intro: {
     kicker: 'Nubia · Mission 1',
-    text: 'King, travel south into mighty Nubia, the Land of the Bow. Read closely to learn how Nubian warriors trained their minds as well as their weapons.',
-    sage: 'Real warriors prepare before the battle begins, King. Read like a scholar and uncover Queen Tiwa’s lesson. ⚔️'
+    text: 'King, travel into mighty Nubia, the Land of the Bow. In this quest, you will trace how daily training shaped strong leadership and protection.',
+    sage: 'Wise warriors train before danger comes. Follow each cause-and-effect chain, King. ⚔️'
   },
 
-  reading: {
-    passage: [
-      'South of Egypt, along the upper Nile River, stood the powerful kingdom of Nubia. For many years, Nubians and Egyptians traded, fought, and sometimes ruled each other. But the Nubians were never weak in spirit. They were known as some of the most skilled warriors and traders in the ancient world.',
-      'Nubia’s greatest strength was its archers. Ancient Egyptians even called Nubia “Ta-Seti,” which means “Land of the Bow.” Nubian archers were so respected that Egyptian pharaohs hired them as elite soldiers to guard the royal palace.',
-      'Each morning before breakfast, young Amara practiced with his bow. His grandmother, Queen Tiwa, watched him from the courtyard. “Your arrow must know the target before it flies,” she told him. “A warrior who shoots in anger misses. A warrior who shoots with patience never misses.”',
-      'Amara lowered his bow and asked, “But grandmother, what if the enemy attacks fast?” Queen Tiwa smiled. “Then your preparation today is your protection tomorrow. Every morning you practice, you are building a wall that no arrow can break.”',
-      'The Nubians were not only powerful fighters. They were also master traders. Gold, ivory, ebony wood, and exotic animals traveled north from Nubia into Egypt and beyond. Their merchants traveled dangerous roads and made the kingdom prosperous for centuries.',
-      'Amara released three arrows in quick succession. All three struck the center of the target. Queen Tiwa nodded. “Now you understand,” she said softly. “Strength is built before the battle begins.”'
+  phase1_strategy: {
+    name: 'Cause and Effect',
+    definition: 'A cause is why something happens. An effect is what happens next because of that cause.',
+    model: 'Model: A village stores grain early (cause), so families have food during a drought (effect).',
+    how_to: [
+      'Find an action or event in the text.',
+      'Ask what happened because of that action.',
+      'Connect the two parts using because, so, or as a result.'
     ],
-    vocab: [
-      { term: 'archers', definition: 'skilled fighters who use bows and arrows' },
-      { term: 'patience', definition: 'the ability to stay calm and wait for the right moment' },
-      { term: 'prosperous', definition: 'wealthy and successful' },
-      { term: 'succession', definition: 'one right after another' }
-    ]
+    sage: 'Great readers do what great archers do: they track the path from start to result.'
   },
 
-  teach: [
-    {
-      type: 'text',
-      title: 'Read for the Big Lesson',
-      body: 'Strong readers notice details, causes, word meanings, and the big idea the author wants us to learn.'
-    }
+  phase2_vocab: [
+    { word: 'archers', definition: 'fighters who use bows and arrows', sentence: 'Nubian archers trained with focus every morning.' },
+    { word: 'patience', definition: 'calm waiting and self-control', sentence: 'Queen Tiwa taught that patience made each shot stronger.' },
+    { word: 'prosperous', definition: 'successful and wealthy', sentence: 'Nubia became prosperous through skilled trade and planning.' },
+    { word: 'succession', definition: 'one after another', sentence: 'Amara released three arrows in quick succession.' }
   ],
 
-  activities: [
+  phase3_guided: {
+    sections: [
+      {
+        id: 'nubia-n1-s1',
+        title: 'Land of the Bow',
+        passage: [
+          'Nubia was known as Ta-Seti, the Land of the Bow, because its archers were highly skilled.',
+          'Egyptian rulers often hired Nubian archers to guard important places.'
+        ],
+        questions: [
+          {
+            id: 'nubia-n1-s1-q1',
+            type: 'mcq',
+            prompt: 'What effect came from Nubia having skilled archers?',
+            hint: 'Look for what happened because of their skill.',
+            choices: [
+              'Other kingdoms asked them to protect royal places',
+              'Nubia stopped using bows',
+              'The Nile River disappeared',
+              'No one traded with Nubia'
+            ],
+            answer: 0,
+            correctFeedback: 'Correct. Their skill caused other rulers to trust and hire them.',
+            wrongFeedback: 'The effect is in the second sentence: their reputation led to important jobs.',
+            explanation: 'Cause: skilled archers. Effect: they were hired to protect key places.',
+            xp: 8
+          }
+        ]
+      },
+      {
+        id: 'nubia-n1-s2',
+        title: 'Queen Tiwa’s Teaching',
+        passage: [
+          'Queen Tiwa told Amara, “Preparation today is protection tomorrow.”',
+          'Amara practiced daily, and in time his arrows struck the center of the target in quick succession.'
+        ],
+        questions: [
+          {
+            id: 'nubia-n1-s2-q1',
+            type: 'true_false',
+            prompt: 'Amara’s daily practice helped him become more accurate.',
+            hint: 'Connect his repeated action to the result in the second sentence.',
+            answer: true,
+            correctFeedback: 'Yes. Daily practice caused stronger, more accurate shooting.',
+            wrongFeedback: 'Practice was the cause, and accurate shots were the effect.',
+            explanation: 'The passage shows a direct chain: practice first, accuracy after.',
+            xp: 8
+          }
+        ]
+      }
+    ],
+    close_reading: {
+      title: 'Close Reading: One Sentence, One Chain',
+      excerpt: 'Preparation today is protection tomorrow.',
+      question: {
+        id: 'nubia-n1-close-q1',
+        type: 'mcq',
+        prompt: 'Which choice best explains this sentence?',
+        hint: 'Find the cause and effect inside the sentence.',
+        choices: [
+          'Preparing now causes safety later.',
+          'Safety comes first, then preparation.',
+          'The sentence is only about weather.',
+          'There is no relationship between actions and results.'
+        ],
+        answer: 0,
+        correctFeedback: 'Exactly. The sentence teaches a clear cause-and-effect idea.',
+        wrongFeedback: 'Look at the order: first preparation, then later protection.',
+        explanation: 'Cause: preparation today. Effect: protection tomorrow.',
+        xp: 8
+      }
+    }
+  },
+
+  phase4_test: [
     {
-      id: 'nubia-e1-q1',
+      id: 'nubia-n1-t1',
       type: 'mcq',
-      prompt: 'What did ancient Egyptians call Nubia, and what did that name mean?',
-      hint: 'Look in the second paragraph for both the name and its meaning.',
-      choices: [
-        '"Land of the Bow" — because of Nubia’s famous archers',
-        '"Land of Gold" — because Nubia had giant gold mines',
-        '"Land of the Pharaoh" — because Egypt fully ruled Nubia',
-        '"Land of Arrows" — because Nubians invented arrows'
-      ],
-      answer: 0,
-      correctFeedback: 'Exactly. Egyptians called Nubia “Ta-Seti,” which meant “Land of the Bow.”',
-      wrongFeedback: 'Go back to paragraph two. The passage gives both the name and the meaning together.',
+      excerpt: 'Nubian archers trained daily, so rulers trusted them to guard royal roads.',
+      prompt: 'What is the cause in this excerpt?',
+      choices: ['Rulers trusted them', 'They trained daily', 'Royal roads existed', 'Trade moved north'],
+      answer: 1,
+      hint_disabled: true,
+      correctFeedback: 'Correct. Daily training is the first action that leads to trust.',
+      wrongFeedback: 'The cause is the starting action. Here, training comes before trust.',
       xp: 10
     },
     {
-      id: 'nubia-e1-q2',
+      id: 'nubia-n1-t2',
+      type: 'true_false',
+      excerpt: 'Because Amara practiced each morning, his shots became steady.',
+      prompt: 'This excerpt shows cause and effect.',
+      answer: true,
+      hint_disabled: true,
+      correctFeedback: 'Correct. “Because” directly links the cause to the effect.',
+      wrongFeedback: 'The word “because” signals that practice caused the steady shots.',
+      xp: 10
+    },
+    {
+      id: 'nubia-n1-t3',
       type: 'mcq',
-      prompt: 'According to Queen Tiwa, why is daily practice so important for a warrior?',
-      hint: 'Focus on what she says about preparation today and protection tomorrow.',
-      choices: [
-        'Because the enemy might attack at any second',
-        'Because lazy warriors are punished by the Pharaoh',
-        'Because preparation today becomes protection tomorrow',
-        'Because practice makes arrows fly faster than others'
-      ],
+      excerpt: 'Merchants traveled safely after trained guards protected the roads.',
+      prompt: 'Which effect is stated in the excerpt?',
+      choices: ['Guards were trained', 'Roads crossed the desert', 'Merchants traveled safely', 'Arrows were wooden'],
       answer: 2,
-      correctFeedback: 'Outstanding. Queen Tiwa teaches that practice now protects you later.',
-      wrongFeedback: 'Look closely at Queen Tiwa’s exact words about preparation and protection.',
+      hint_disabled: true,
+      correctFeedback: 'Yes. Safe travel happened because protection improved.',
+      wrongFeedback: 'The effect is what happened afterward: safer merchant travel.',
       xp: 10
     },
     {
-      id: 'nubia-e1-vocab',
-      type: 'match',
-      prompt: 'Match each Nubian warrior word to its meaning.',
-      pairs: [
-        ['Archer', 'A skilled fighter who uses a bow and arrow'],
-        ['Patience', 'The ability to stay calm and wait for the right moment'],
-        ['Prosperous', 'Very wealthy and successful'],
-        ['Succession', 'Things happening one right after another']
-      ],
-      correctFeedback: 'Excellent work, King. Your warrior vocabulary is strong. 📚',
-      wrongFeedback: 'Not quite. Try matching the words again.',
+      id: 'nubia-n1-t4',
+      type: 'input',
+      excerpt: 'Practice built skill, and skill built confidence.',
+      prompt: 'Type one word that names the reading skill used in this excerpt.',
+      answer: 'cause and effect',
+      hint_disabled: true,
+      correctFeedback: 'Strong work. You identified the exact strategy: cause and effect.',
+      wrongFeedback: 'The excerpt links one result to the next in a chain. Name that strategy.',
       xp: 10
-    },
-    {
-      id: 'nubia-e1-q3',
-      type: 'mcq',
-      prompt: 'In the passage, what does the word “succession” most likely mean?',
-      hint: 'Think about the sentence: Amara shot three arrows in quick succession.',
-      choices: [
-        'With great force and power',
-        'One right after another without stopping',
-        'Very slowly and carefully',
-        'Spinning around in a circle'
-      ],
-      answer: 1,
-      correctFeedback: 'Yes. “Succession” means one thing following another quickly.',
-      wrongFeedback: 'The word “quick” is a clue. Think about the timing of the arrows.',
-      xp: 5
-    },
-    {
-      id: 'nubia-e1-q4',
-      type: 'mcq',
-      prompt: 'What is the main lesson Queen Tiwa is teaching Amara?',
-      hint: 'Think about patience, practice, and her final message at the end.',
-      choices: [
-        'Arrows are stronger than swords in every battle',
-        'True strength comes from patient preparation before challenges arrive',
-        'Grandmothers always know more than warriors',
-        'Nubian archers never miss from any distance'
-      ],
-      answer: 1,
-      correctFeedback: 'KING! 👑 That is the heart of the story. Real strength is built through calm, steady preparation.',
-      wrongFeedback: 'Look at all of Queen Tiwa’s advice together. What big idea connects patience, practice, and protection?',
-      xp: 5
     }
   ],
 
   wrapUp: {
     title: 'Warrior Scholar! 👑',
-    text: 'You conquered Nubia’s first challenge and learned a true warrior’s lesson: strength is built before the battle begins.',
+    text: 'You traced how Nubia turned preparation into power. That is wise reading and wise leadership.',
     badge: 'Land of the Bow Reader'
   }
 },
@@ -1151,124 +1188,172 @@ window.KT_LESSONS.egypt = [
   title: 'The Black Pharaohs',
   subject: 'reading',
   grade: '3',
+  standard: 'RI.3.2',
   xp: 40,
   crownReward: 1,
-  estMinutes: 6,
+  estMinutes: 8,
 
   intro: {
     kicker: 'Nubia · Mission 3',
-    text: 'King, this quest tells the powerful story of Nubian rulers who conquered Egypt and then led it with wisdom and respect. Read closely and uncover what true leadership looks like.',
-    sage: 'Power can win a battle, King — but respect wins hearts. Let’s learn from the Black Pharaohs. 👑'
+    text: 'King, read how Nubian rulers led Egypt with strength and respect. Your mission is to find the main idea across the whole text.',
+    sage: 'Main idea is the crown of a passage. Gather the details and find the big message. 👑'
   },
 
-  reading: {
-    passage: [
-      'One of history’s most remarkable stories is the rise of the Nubian pharaohs. Around 750 BCE, a Nubian king named Piye marched north and conquered Egypt, one of the most powerful kingdoms in the ancient world.',
-      'Piye and the rulers after him became Egypt’s 25th Dynasty. These kings are often called the Black Pharaohs. They ruled Egypt for nearly 100 years. But Piye was different from many conquerors. He gave strict orders that Egyptian temples must not be harmed, and he followed Egyptian religious ceremonies very carefully.',
-      'Young Zara once asked her grandfather, a royal scribe, why a Nubian king would respect Egyptian customs after winning. Her grandfather smiled and answered, “Conquest can take a city. Only respect can keep it.”',
-      'The Nubian pharaohs built pyramids, expanded trade, and restored temples that had fallen into disrepair. They did not see themselves as outsiders. They saw themselves as guardians of Egyptian civilization, responsible for protecting and strengthening it.',
-      'Under Nubian rule, Egypt experienced a cultural revival. Art, architecture, and religion all grew stronger. The Nubians showed that leadership is not only about military power. It is also about wisdom, respect, and lifting up what has been placed in your care.'
+  phase1_strategy: {
+    name: 'Main Idea',
+    definition: 'The main idea is the most important message the author wants readers to understand.',
+    model: 'Model: A school starts a garden, a reading club, and a science fair. The main idea is that students are building a stronger learning community.',
+    how_to: [
+      'Notice details that repeat across the passage.',
+      'Ask what those details say together.',
+      'State one big message that fits all key details.'
     ],
-    vocab: [
-      { term: 'devout', definition: 'deeply respectful of religion and sacred practices' },
-      { term: 'conquest', definition: 'taking control by force or war' },
-      { term: 'guardian', definition: 'a protector who keeps something safe' },
-      { term: 'revival', definition: 'a return to strength, activity, or success' }
-    ]
+    sage: 'Do not pick one small fact. Pick the idea that holds the whole passage together.'
   },
 
-  teach: [
-    {
-      type: 'text',
-      title: 'Leadership and Respect',
-      body: 'Strong readers look for the author’s big message. In this passage, the author wants us to think about what makes a leader truly great.'
-    }
+  phase2_vocab: [
+    { word: 'conquest', definition: 'taking control of a place by force', sentence: 'Piye’s conquest gave him power, but his next choices showed leadership.' },
+    { word: 'guardian', definition: 'someone who protects something valuable', sentence: 'The rulers saw themselves as guardians of Egypt’s temples and culture.' },
+    { word: 'revival', definition: 'a return to strength', sentence: 'Under their rule, Egypt experienced a cultural revival in art and learning.' },
+    { word: 'customs', definition: 'the traditions of a people', sentence: 'Piye respected local customs after winning the war.' }
   ],
 
-  activities: [
+  phase3_guided: {
+    sections: [
+      {
+        id: 'nubia-n3-s1',
+        title: 'Power with Respect',
+        passage: [
+          'Piye conquered Egypt around 750 BCE, but he ordered that temples be protected.',
+          'He followed local ceremonies, showing respect after victory.'
+        ],
+        questions: [
+          {
+            id: 'nubia-n3-s1-q1',
+            type: 'mcq',
+            prompt: 'Which detail best supports a main idea of respectful leadership?',
+            hint: 'Choose the detail that shows how he ruled, not just that he won.',
+            choices: [
+              'He protected temples and followed ceremonies',
+              'He marched north',
+              'He wore royal clothing',
+              'He lived near the Nile'
+            ],
+            answer: 0,
+            correctFeedback: 'Right. That detail supports the idea that leadership included respect.',
+            wrongFeedback: 'Find the detail that shows values, not just military action.',
+            explanation: 'Protecting temples supports a broader message about respectful rule.',
+            xp: 8
+          }
+        ]
+      },
+      {
+        id: 'nubia-n3-s2',
+        title: 'What Lasted',
+        passage: [
+          'The Nubian pharaohs restored temples, expanded trade, and supported art and religion.',
+          'People remembered them as leaders who protected and strengthened civilization.'
+        ],
+        questions: [
+          {
+            id: 'nubia-n3-s2-q1',
+            type: 'input',
+            prompt: 'Type a short main-idea phrase for these two sentences.',
+            hint: 'Use one big message that includes protection and growth.',
+            answer: 'they led with strength and care',
+            correctFeedback: 'Excellent. That phrase captures the larger message of the details.',
+            wrongFeedback: 'Try a bigger idea that includes both building and protecting.',
+            explanation: 'Main idea should include multiple details, not one fact.',
+            xp: 8
+          }
+        ]
+      }
+    ],
+    close_reading: {
+      title: 'Close Reading: Main Idea Check',
+      excerpt: 'Conquest can take a city. Only respect can keep it.',
+      question: {
+        id: 'nubia-n3-close-q1',
+        type: 'mcq',
+        prompt: 'What main idea does this quote support?',
+        hint: 'Think about what kind of leadership lasts.',
+        choices: [
+          'Lasting leadership needs respect, not force alone.',
+          'Only cities near rivers can survive.',
+          'Leaders should avoid all traditions.',
+          'Winning one battle ends all problems.'
+        ],
+        answer: 0,
+        correctFeedback: 'Yes. The quote supports a main idea about respectful leadership.',
+        wrongFeedback: 'The sentence compares conquest with respect to show what lasts.',
+        explanation: 'Force can begin control, but respect sustains leadership.',
+        xp: 8
+      }
+    }
+  },
+
+  phase4_test: [
     {
-      id: 'nubia-e3-q1',
+      id: 'nubia-n3-t1',
       type: 'mcq',
-      prompt: 'What did Pharaoh Piye do differently from many conquerors when he took over Egypt?',
-      hint: 'Look in the second paragraph for the actions that showed respect.',
+      excerpt: 'Piye won Egypt, protected temples, and honored local customs.',
+      prompt: 'Which main idea best fits this excerpt?',
       choices: [
-        'He burned Egyptian temples to show his power',
-        'He protected Egyptian temples and followed Egyptian religious customs carefully',
-        'He made Nubian the only language in Egypt',
-        'He refused to call himself a pharaoh'
+        'Leaders only need military power.',
+        'Great rulers combine strength with respect.',
+        'Temples are only for decoration.',
+        'All rulers avoid local traditions.'
       ],
       answer: 1,
-      correctFeedback: 'Exactly. Piye protected temples and respected Egyptian religious traditions.',
-      wrongFeedback: 'Go back to paragraph two and find the details that show Piye acted with respect.',
+      hint_disabled: true,
+      correctFeedback: 'Correct. The details point to leadership that uses both power and respect.',
+      wrongFeedback: 'Use all details together: victory plus protection plus respect.',
       xp: 10
     },
     {
-      id: 'nubia-e3-q2',
+      id: 'nubia-n3-t2',
+      type: 'true_false',
+      excerpt: 'The rulers restored temples, supported trade, and encouraged learning.',
+      prompt: 'These details support the main idea that they strengthened civilization.',
+      answer: true,
+      hint_disabled: true,
+      correctFeedback: 'Correct. All three details point to building and strengthening society.',
+      wrongFeedback: 'Main idea comes from grouped details. These details all show growth and care.',
+      xp: 10
+    },
+    {
+      id: 'nubia-n3-t3',
       type: 'mcq',
-      prompt: 'According to Zara’s grandfather, why did Piye respect Egyptian customs after conquering Egypt?',
-      hint: 'Focus on the line about conquest and respect.',
+      excerpt: 'They saw themselves as guardians, not outsiders.',
+      prompt: 'What does this line mostly suggest?',
       choices: [
-        'He was afraid Egyptian soldiers would rebel',
-        'Egyptian customs were proven to be the best',
-        'Respect wins people’s loyalty in a way conquest alone cannot',
-        'He was born in Egypt'
-      ],
-      answer: 2,
-      correctFeedback: 'Outstanding. The grandfather teaches that conquest can take control, but respect helps keep people loyal.',
-      wrongFeedback: 'Read the grandfather’s words again. He compares what conquest can do and what respect can do.',
-      xp: 10
-    },
-    {
-      id: 'nubia-e3-vocab',
-      type: 'match',
-      prompt: 'Match each royal word to its meaning.',
-      pairs: [
-        ['Devout', 'Deeply religious or showing strong reverence'],
-        ['Conquest', 'The act of taking control by force or war'],
-        ['Guardian', 'A protector responsible for keeping something safe'],
-        ['Revival', 'A return to strength, activity, or popularity']
-      ],
-      correctFeedback: 'Excellent, King. Your royal vocabulary is growing strong. 📚',
-      wrongFeedback: 'Not quite. Try matching the words again.',
-      xp: 10
-    },
-    {
-      id: 'nubia-e3-q3',
-      type: 'mcq',
-      prompt: 'In the passage, the Nubian pharaohs are called “guardians” of Egyptian civilization. What does that mean?',
-      hint: 'Think about what a guardian does.',
-      choices: [
-        'They were hired guards for the Egyptian king',
-        'They saw themselves as protectors of what they had inherited',
-        'They built giant walls around Egypt',
-        'They hid all Egyptian treasures underground'
+        'They ignored Egypt’s future.',
+        'They felt responsible to protect what they ruled.',
+        'They planned to leave quickly.',
+        'They refused to govern.'
       ],
       answer: 1,
-      correctFeedback: 'Yes. They believed it was their duty to protect and strengthen Egyptian civilization.',
-      wrongFeedback: 'The passage explains that they felt responsible for keeping Egyptian civilization safe and strong.',
-      xp: 5
+      hint_disabled: true,
+      correctFeedback: 'Yes. “Guardians” supports a main idea of responsible leadership.',
+      wrongFeedback: 'Focus on the word “guardians.” It points to protection and responsibility.',
+      xp: 10
     },
     {
-      id: 'nubia-e3-q4',
-      type: 'mcq',
-      prompt: 'What is the main message of this passage about great leadership?',
-      hint: 'Look closely at the final paragraph.',
-      choices: [
-        'Great leaders must be the strongest fighters',
-        'Great leaders force their own culture on others',
-        'True leadership combines strength with wisdom, respect, and lifting others up',
-        'Only people born into royalty can be great leaders'
-      ],
-      answer: 2,
-      correctFeedback: 'KING! 👑 That is the big idea. Real leadership is not just power — it is wisdom, respect, and care for others.',
-      wrongFeedback: 'The last paragraph tells you directly what leadership is and is not about.',
-      xp: 5
+      id: 'nubia-n3-t4',
+      type: 'input',
+      excerpt: 'Power can win a battle, but respect wins hearts.',
+      prompt: 'Type the strategy skill you used to answer these questions.',
+      answer: 'main idea',
+      hint_disabled: true,
+      correctFeedback: 'Great work. You used the main idea strategy to read deeply.',
+      wrongFeedback: 'You had to choose the big message across details. Name that skill.',
+      xp: 10
     }
   ],
 
   wrapUp: {
     title: 'Royal Scholar! 👑',
-    text: 'You uncovered the story of the Black Pharaohs and learned a powerful truth: the greatest leaders protect, respect, and uplift.',
+    text: 'You identified the main idea of the Black Pharaohs: strong leadership protects, restores, and uplifts.',
     badge: 'Dynasty Reader'
   }
 },
