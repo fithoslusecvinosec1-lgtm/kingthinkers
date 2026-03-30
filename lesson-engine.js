@@ -65,6 +65,10 @@ window.KTLessonEngine = (function () {
     );
   }
 
+  function isReadingLesson(lesson) {
+    return !!(lesson && lesson.phase1_strategy);
+  }
+
   function normalizeChoices(choices) {
     if (!Array.isArray(choices)) return [];
     return choices.map(function (choice) {
@@ -173,10 +177,47 @@ window.KTLessonEngine = (function () {
     return steps;
   }
 
+  function buildReadingSteps(lesson) {
+    var steps = [];
+    var guided = lesson.phase3_guided || {};
+    var sections = Array.isArray(guided.sections) ? guided.sections.slice(0, 3) : [];
+    var tests = Array.isArray(lesson.phase4_test) ? lesson.phase4_test.slice(0, 4) : [];
+
+    steps.push({ type: 'intro', data: lesson.intro || {} });
+    steps.push({ type: 'phase1_strategy', data: lesson.phase1_strategy || {} });
+    steps.push({ type: 'phase2_vocab_preview', data: lesson.phase2_vocab || [] });
+    steps.push({ type: 'phase2_vocab_match', data: lesson.phase2_vocab || [] });
+
+    sections.forEach(function (section, index) {
+      steps.push({
+        type: 'phase3_guided_section',
+        data: section,
+        meta: { section: 'practice', index: index, total: sections.length }
+      });
+    });
+
+    steps.push({
+      type: 'phase3_close_reading',
+      data: guided.close_reading || {},
+      meta: { section: 'practice_close' }
+    });
+
+    tests.forEach(function (item, index) {
+      steps.push({
+        type: 'phase4_reading_test',
+        data: item,
+        meta: { section: 'test', index: index, total: tests.length }
+      });
+    });
+
+    steps.push({ type: 'complete', data: lesson.wrapUp || {} });
+    return steps;
+  }
+
   function buildSteps(lesson) {
-    return isPhasedLesson(lesson)
-      ? buildPhasedSteps(lesson)
-      : buildLegacySteps(lesson);
+    if (isReadingLesson(lesson)) return buildReadingSteps(lesson);
+    if (isPhasedLesson(lesson)) return buildPhasedSteps(lesson);
+    return buildLegacySteps(lesson);
   }
 
   function updateTopStats() {
@@ -618,6 +659,276 @@ window.KTLessonEngine = (function () {
     }
   }
 
+  function renderStrategyLesson(phase1Data) {
+    phase1Data = phase1Data || {};
+    var howTo = Array.isArray(phase1Data.how_to) ? phase1Data.how_to : [];
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 1 · Strategy Power</div>' +
+        '<div class="section-title">' + escapeHtml(phase1Data.name || 'Reading Strategy') + '</div>' +
+        '<div class="sub">' + escapeHtml(phase1Data.definition || '') + '</div>' +
+        (phase1Data.model ? '<div class="sage" style="margin-top:12px;"><strong>Model:</strong> ' + escapeHtml(phase1Data.model) + '</div>' : '') +
+        (howTo.length
+          ? '<div class="section-title" style="margin-top:14px;">How to Use It</div><ol style="margin:8px 0 0 20px;line-height:1.8;">' +
+              howTo.map(function (step) { return '<li>' + escapeHtml(step) + '</li>'; }).join('') +
+            '</ol>'
+          : '') +
+        (phase1Data.sage ? '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(phase1Data.sage) + '</div>' : '') +
+        '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Use this strategy →</button></div>' +
+      '</div>';
+    renderCard(html);
+    if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
+  }
+
+  function renderVocabPreview(vocabArray) {
+    var vocab = Array.isArray(vocabArray) ? vocabArray.slice(0, 5) : [];
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 2 · Vocabulary Preview</div>' +
+        '<div class="section-title">Words of Power</div>' +
+        '<div class="sub">Read each word before you begin matching.</div>' +
+        '<div class="vocab-list">';
+    vocab.forEach(function (item) {
+      html +=
+        '<div class="vocab-item">' +
+          '<div><strong>' + escapeHtml(item.word) + '</strong> — ' + escapeHtml(item.definition) + '</div>' +
+          (item.sentence ? '<div style="margin-top:6px;color:var(--muted);font-size:12px;">' + escapeHtml(item.sentence) + '</div>' : '') +
+        '</div>';
+    });
+    html += '</div><div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Match the words →</button></div></div>';
+    renderCard(html);
+    if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
+  }
+
+  function renderVocabMatch(vocabArray) {
+    var vocab = Array.isArray(vocabArray) ? vocabArray.slice(0, 5) : [];
+    var pairs = vocab.map(function (item) { return [safeText(item.word), safeText(item.definition)]; });
+    renderMatch({
+      type: 'match',
+      prompt: 'Match each vocabulary word to its definition.',
+      pairs: pairs,
+      correctFeedback: 'Vocabulary mastery unlocked, King! 📚',
+      wrongFeedback: 'Try again. Use the strategy words carefully.',
+      xp: 8
+    });
+  }
+
+  function getQuestionCorrectAnswerText(question) {
+    if (!question) return '';
+    if (question.type === 'true_false') return question.answer ? 'True' : 'False';
+    if (question.type === 'input') return safeText(question.answer);
+    var choices = normalizeChoices(question.choices);
+    var idx = Number(question.answer);
+    return choices[idx] != null ? choices[idx] : '';
+  }
+
+  function renderGuidedQuestion(question, stepLabel) {
+    question = question || {};
+    var attempts = 0;
+    var answered = false;
+    var isInput = question.type === 'input';
+    var isTrueFalse = question.type === 'true_false';
+    var qType = isTrueFalse ? 'mcq' : (isInput ? 'input' : 'mcq');
+    var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(question.choices);
+    var answerValue = isTrueFalse ? (question.answer ? 0 : 1) : question.answer;
+
+    var html =
+      '<div class="q-prompt" style="margin-top:14px;">' + escapeHtml(question.prompt || question.question || 'Question') + '</div>' +
+      (question.hint ? '<div class="q-hint">💡 Strategy Reminder: ' + escapeHtml(question.hint) + '</div>' : '') +
+      (qType === 'input'
+        ? '<input id="kt-guided-input" class="choice" style="cursor:text;" type="text" placeholder="Type your answer" />' +
+          '<div class="btn-row"><button class="btn btn-primary" id="kt-guided-submit">Check Answer</button></div>'
+        : '<div class="choices" id="kt-guided-choices"></div>') +
+      '<div class="feedback" id="kt-feedback"></div>' +
+      '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Continue →</button></div>';
+
+    return { html: html, mount: function () {
+      var feedback = $('kt-feedback');
+      function finish() {
+        if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
+      }
+      function evaluate(userAnswer, disableUI) {
+        if (answered) return;
+        var correct = false;
+        if (qType === 'input') {
+          correct = normalizeInputAnswer(userAnswer) === normalizeInputAnswer(answerValue);
+        } else {
+          correct = Number(userAnswer) === Number(answerValue);
+        }
+        if (correct) {
+          state.correctCount += 1;
+          gainXP(question.xp || 8);
+          playAudio('correct');
+          feedback.className = 'feedback good show';
+          feedback.textContent = safeText(question.correctFeedback || 'Great reading, King!');
+          answered = true;
+          finish();
+          return;
+        }
+        attempts += 1;
+        playAudio('wrong');
+        if (attempts === 1) {
+          feedback.className = 'feedback bad show';
+          feedback.textContent = safeText(question.wrongFeedback || 'Not yet. Use your strategy and try once more.');
+          if (disableUI) disableUI(false);
+          return;
+        }
+        var reveal = getQuestionCorrectAnswerText(question);
+        feedback.className = 'feedback bad show';
+        feedback.innerHTML = escapeHtml(safeText(question.wrongFeedback || 'Good effort.')) +
+          '<br><strong>Answer:</strong> ' + escapeHtml(reveal) +
+          (question.explanation ? '<br>' + escapeHtml(question.explanation) : '');
+        answered = true;
+        if (disableUI) disableUI(true);
+        finish();
+      }
+
+      if (qType === 'input') {
+        var input = $('kt-guided-input');
+        var submit = $('kt-guided-submit');
+        if (submit) submit.onclick = function () {
+          if (!input || !safeText(input.value).trim()) return;
+          evaluate(input.value, function (lock) {
+            if (!input || !submit) return;
+            input.disabled = lock;
+            submit.disabled = lock;
+          });
+        };
+      } else {
+        var wrap = $('kt-guided-choices');
+        choices.forEach(function (choice, index) {
+          var btn = document.createElement('button');
+          btn.className = 'choice';
+          btn.textContent = safeText(choice);
+          btn.onclick = function () {
+            if (answered) return;
+            evaluate(index, function (lock) {
+              if (!lock) return;
+              document.querySelectorAll('#kt-guided-choices .choice').forEach(function (node) { node.disabled = true; });
+            });
+          };
+          if (wrap) wrap.appendChild(btn);
+        });
+      }
+
+      if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
+    }};
+  }
+
+  function renderGuidedSection(sectionData, index, total) {
+    sectionData = sectionData || {};
+    var questions = Array.isArray(sectionData.questions) ? sectionData.questions : [];
+    var question = questions[0] || null;
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 3 · Guided Reading ' + (index + 1) + ' of ' + total + '</div>' +
+        '<div class="section-title">' + escapeHtml(sectionData.title || 'Read this section') + '</div>' +
+        '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>';
+    if (question) {
+      var rendered = renderGuidedQuestion(question);
+      html += rendered.html;
+      html += '</div>';
+      renderCard(html);
+      rendered.mount();
+      return;
+    }
+    html += '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Continue →</button></div></div>';
+    renderCard(html);
+    if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
+  }
+
+  function renderCloseReading(closeData) {
+    closeData = closeData || {};
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 3 · Close Reading</div>' +
+        '<div class="section-title">' + escapeHtml(closeData.title || 'Read Deeply') + '</div>' +
+        '<div class="sage" style="margin-top:0;"><strong>Highlighted Excerpt:</strong><br>' + escapeHtml(closeData.excerpt || '') + '</div>';
+    var rendered = renderGuidedQuestion(closeData.question || { prompt: 'What do you notice?', type: 'input', answer: '' });
+    html += rendered.html + '</div>';
+    renderCard(html);
+    rendered.mount();
+  }
+
+  function renderReadingTest(testData) {
+    if (isPhase4Activity()) state.gradableCount += 1;
+    var activity = Object.assign({}, testData || {});
+    var isInput = activity.type === 'input';
+    var isTrueFalse = activity.type === 'true_false';
+    var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(activity.choices);
+    var answerIndex = isTrueFalse ? (activity.answer ? 0 : 1) : Number(activity.answer);
+    var html =
+      '<div class="card">' +
+        '<div class="kicker">Phase 4 · Show What You Know</div>' +
+        (activity.excerpt ? '<div class="sage" style="margin-top:0;"><strong>Excerpt:</strong> ' + escapeHtml(activity.excerpt) + '</div>' : '') +
+        '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question || '') + '</div>' +
+        (isInput
+          ? '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
+            '<div class="btn-row"><button class="btn btn-primary" id="kt-submit-btn">Check Answer</button></div>'
+          : '<div class="choices" id="kt-choices"></div>') +
+        '<div class="feedback" id="kt-feedback"></div>' +
+        '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Next →</button></div>' +
+      '</div>';
+    renderCard(html);
+
+    function done() {
+      if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
+    }
+
+    if (isInput) {
+      var input = $('kt-input-answer');
+      var submit = $('kt-submit-btn');
+      if (submit) submit.onclick = function () {
+        if (!input) return;
+        var correct = normalizeInputAnswer(input.value) === normalizeInputAnswer(activity.answer);
+        input.disabled = true;
+        submit.disabled = true;
+        if (correct) {
+          state.correctCount += 1;
+          gainXP(activity.xp || 10);
+          playAudio('correct');
+          $('kt-feedback').className = 'feedback good show';
+          $('kt-feedback').textContent = safeText(activity.correctFeedback || 'Correct!');
+        } else {
+          playAudio('wrong');
+          $('kt-feedback').className = 'feedback bad show';
+          $('kt-feedback').textContent = safeText(activity.wrongFeedback || 'Review the excerpt and reasoning.');
+        }
+        done();
+      };
+    } else {
+      var wrap = $('kt-choices');
+      choices.forEach(function (choice, index) {
+        var btn = document.createElement('button');
+        btn.className = 'choice';
+        btn.textContent = safeText(choice);
+        btn.onclick = function () {
+          disableChoices();
+          var correct = index === answerIndex;
+          if (correct) {
+            state.correctCount += 1;
+            gainXP(activity.xp || 10);
+            playAudio('correct');
+            btn.classList.add('correct');
+            $('kt-feedback').className = 'feedback good show';
+            $('kt-feedback').textContent = safeText(activity.correctFeedback || 'Correct!');
+          } else {
+            playAudio('wrong');
+            btn.classList.add('wrong');
+            var all = document.querySelectorAll('.choice');
+            if (all[answerIndex]) all[answerIndex].classList.add('correct');
+            $('kt-feedback').className = 'feedback bad show';
+            $('kt-feedback').textContent = safeText(activity.wrongFeedback || 'Review the excerpt and reasoning.');
+          }
+          done();
+        };
+        if (wrap) wrap.appendChild(btn);
+      });
+    }
+
+    if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
+  }
+
   function disableChoices() {
     var nodes = document.querySelectorAll('.choice');
     nodes.forEach(function (btn) {
@@ -741,7 +1052,7 @@ window.KTLessonEngine = (function () {
   }
 
   function renderMatch(activity) {
-    state.gradableCount += 1;
+    if (isPhase4Activity()) state.gradableCount += 1;
     state.match = { selectedWord: null, selectedDef: null, matchedCount: 0 };
 
     var pairs = Array.isArray(activity.pairs) ? activity.pairs.slice() : [];
@@ -946,6 +1257,9 @@ window.KTLessonEngine = (function () {
   }
 
   function findPhase3StartIndex() {
+    for (var r = 0; r < state.steps.length; r++) {
+      if (state.steps[r].type === 'phase3_guided_section') return r;
+    }
     // Find the 'phase_section' step with section title 'Guided Practice'
     // which is the header step right before Phase 3 activities begin
     for (var i = 0; i < state.steps.length; i++) {
@@ -1156,6 +1470,12 @@ window.KTLessonEngine = (function () {
     if (step.type === 'reading') return renderReading(step.data);
     if (step.type === 'teach') return renderTeach(step.data);
     if (step.type === 'phase_concept') return renderPhaseConcept(step.data);
+    if (step.type === 'phase1_strategy') return renderStrategyLesson(step.data);
+    if (step.type === 'phase2_vocab_preview') return renderVocabPreview(step.data);
+    if (step.type === 'phase2_vocab_match') return renderVocabMatch(step.data);
+    if (step.type === 'phase3_guided_section') return renderGuidedSection(step.data, step.meta.index, step.meta.total);
+    if (step.type === 'phase3_close_reading') return renderCloseReading(step.data);
+    if (step.type === 'phase4_reading_test') return renderReadingTest(step.data);
     if (step.type === 'phase_worked') return renderPhaseWorked(step.data, step.meta);
     if (step.type === 'phase_section') return renderPhaseSection(step.data);
     if (step.type === 'activity') return renderActivity(step.data);

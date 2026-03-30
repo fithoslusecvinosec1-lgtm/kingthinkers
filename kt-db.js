@@ -23,7 +23,12 @@ function kt_getActiveCode() {
 
 function kt_setActiveCode(code) {
   localStorage.setItem('kt_active_code', code);
-  localStorage.setItem('kt_last_code', code);
+  sessionStorage.setItem('kt_last_code', code);
+  if (localStorage.getItem('kt_remember_student_code') === '1') {
+    localStorage.setItem('kt_last_code', code);
+  } else {
+    localStorage.removeItem('kt_last_code');
+  }
   try {
     var s = _ls_getStudent(code);
     if (s) {
@@ -41,8 +46,8 @@ function kt_clearSession() {
   localStorage.removeItem('kt_active_code');
   localStorage.removeItem('kt_active_mission');
   localStorage.removeItem('kt_mission_completed');
-  // Keep kt_last_code for welcome-back UX
-  // localStorage.removeItem('kt_last_code');
+  sessionStorage.removeItem('kt_last_code');
+  localStorage.removeItem('kt_last_code');
 }
 
 // ── TEACHER SESSION ───────────────────────────────────────────
