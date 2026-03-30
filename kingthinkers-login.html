@@ -195,8 +195,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="KingThinkers">
 <meta name="theme-color" content="#F5A800">
-<script src="/kingthinkers/kt-db.js"></script>
-<script src="/kingthinkers/kt-audio.js"></script>
+<script src="kt-db.js"></script>
+<script src="kt-audio.js"></script>
 </head>
 <body>
 
@@ -308,7 +308,7 @@ if (!lastCode && localStorage.getItem('kt_remember_student_code') === '1') {
 } else if (localStorage.getItem('kt_remember_student_code') !== '1') {
   localStorage.removeItem('kt_last_code');
 }
-let lastCode = sessionStorage.getItem('kt_last_code') || localStorage.getItem('kt_last_code') || '';
+let isLoginSubmitting = false;
 
 // ── AUDIO SAFE WRAPPER ────────────────────────────────────────
 function audioTap() {
@@ -396,7 +396,7 @@ function onCodeKey(e, idx) {
 
 function checkCodeComplete() {
   const code = getEnteredCode();
-  document.getElementById('btn-login').disabled = code.length < 4;
+  document.getElementById('btn-login').disabled = isLoginSubmitting || code.length < 4;
 }
 
 function getEnteredCode() {
@@ -424,13 +424,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ── LOGIN ─────────────────────────────────────────────────────
 async function doLogin() {
+  if (isLoginSubmitting) return;
+
   audioTap();
   const code = getEnteredCode();
   if (code.length < 4) return;
+  isLoginSubmitting = true;
+  const loginBtn = document.getElementById('btn-login');
+  loginBtn.disabled = true;
 
   if (typeof db_getStudent !== 'function') {
     document.getElementById('login-error').textContent = 'Login service is unavailable right now.';
     document.getElementById('login-error').classList.add('show');
+    isLoginSubmitting = false;
+    checkCodeComplete();
     return;
   }
 
@@ -440,6 +447,8 @@ async function doLogin() {
   } catch(e) {
     document.getElementById('login-error').textContent = e && e.message ? e.message : 'Could not open your kingdom right now.';
     document.getElementById('login-error').classList.add('show');
+    isLoginSubmitting = false;
+    checkCodeComplete();
     return;
   }
 
@@ -448,6 +457,8 @@ async function doLogin() {
     document.getElementById('login-error').textContent = "That code isn't in the roster. Ask your teacher for help!";
     document.getElementById('login-error').classList.add('show');
     setTimeout(() => [0,1,2,3].forEach(i => document.getElementById('c'+i).classList.remove('error')), 500);
+    isLoginSubmitting = false;
+    checkCodeComplete();
     return;
   }
 
