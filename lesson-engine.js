@@ -318,7 +318,7 @@ window.KTLessonEngine = (function () {
       cells += '<div style="flex:1;min-width:22px;height:26px;border-radius:8px;border:1px solid var(--border);background:' + (isFilled ? 'linear-gradient(135deg,var(--gold),var(--amber))' : 'rgba(255,255,255,.06)') + ';"></div>';
     }
 
-    return renderVisualFrame(label, '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>');
+    return renderVisualFrame(label, '<div style="display:grid;grid-template-columns:repeat(' + total + ', minmax(14px,1fr));gap:6px;">' + cells + '</div>');
   }
 
   function renderFractionVisual(numerator, denominator, label) {
@@ -333,6 +333,7 @@ window.KTLessonEngine = (function () {
 
     return renderVisualFrame(
       label,
+      '<div style="display:grid;grid-template-columns:repeat(' + denominator + ', minmax(14px,1fr));gap:6px;">' + cells + '</div>' +
       '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>' +
       '<div class="visual-eq" style="font-size:24px;margin-top:10px;">' + numerator + '/' + denominator + '</div>'
     );
@@ -356,7 +357,7 @@ window.KTLessonEngine = (function () {
       label,
       '<div style="position:relative;padding-top:8px;">' +
         '<div style="position:absolute;left:0;right:0;top:14px;height:3px;background:rgba(255,255,255,.15);border-radius:999px;"></div>' +
-        '<div style="position:relative;display:flex;gap:0;">' + points + '</div>' +
+        '<div style="position:relative;display:flex;gap:2px;">' + points + '</div>' +
       '</div>'
     );
   }
