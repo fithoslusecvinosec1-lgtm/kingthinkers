@@ -370,9 +370,18 @@ async function db_addStudent(name, grade) {
 }
 
 async function db_bulkAddStudents(students, classCode) {
+  var cleaned = Array.isArray(students) ? students.map(function (s) {
+    return {
+      name: s && s.name ? String(s.name).trim() : '',
+      grade: s && s.grade ? String(s.grade).trim() : '3'
+    };
+  }).filter(function (s) {
+    return !!s.name;
+  }) : [];
+
   try {
     return await kt_api('bulk-add', {
-      students: students,
+      students: cleaned,
       classCode: classCode || null
     }, true);
   } catch (e) {
