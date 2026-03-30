@@ -334,6 +334,7 @@ window.KTLessonEngine = (function () {
     return renderVisualFrame(
       label,
       '<div style="display:grid;grid-template-columns:repeat(' + denominator + ', minmax(14px,1fr));gap:6px;">' + cells + '</div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:nowrap;">' + cells + '</div>' +
       '<div class="visual-eq" style="font-size:24px;margin-top:10px;">' + numerator + '/' + denominator + '</div>'
     );
   }
