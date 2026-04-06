@@ -44,8 +44,9 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   gap:12px;
 }
 #topbar-title{font-family:var(--f-d);font-size:16px;font-weight:800;color:var(--gold);}
-#topbar-xp{font-size:12px;font-weight:800;color:var(--gold);background:rgba(245,168,0,.12);border:1px solid rgba(245,168,0,.25);border-radius:100px;padding:4px 12px;}
-#topbar-crowns{font-size:12px;font-weight:800;color:var(--white);}
+.topbar-pill{font-size:12px;font-weight:800;border-radius:100px;padding:4px 12px;border:1px solid var(--border);}
+#topbar-xp{color:var(--gold);background:rgba(245,168,0,.12);border-color:rgba(245,168,0,.25);}
+#topbar-crowns{color:var(--white);background:rgba(255,255,255,.06);}
 .topbar-btn{
   background:rgba(255,255,255,.06);border:1px solid var(--border);
   color:var(--muted);border-radius:10px;padding:6px 11px;
@@ -257,7 +258,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   .page{padding:14px 12px 18px;}
   #topbar{padding:10px 12px;gap:8px;}
   #topbar-title{font-size:15px;}
-  #topbar-xp,#topbar-crowns{font-size:11px;}
+  .topbar-pill{font-size:11px;}
   .topbar-btn{padding:5px 8px;}
   .hero-card{padding:16px;border-radius:16px;}
   .next-mission-title{font-size:18px;}
@@ -274,8 +275,8 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   <div id="topbar">
     <div id="topbar-title">👑 KingThinkers</div>
     <div style="display:flex;align-items:center;gap:8px;">
-      <div id="topbar-xp">60 XP</div>
-      <div id="topbar-crowns">👑 0</div>
+      <div id="topbar-xp" class="topbar-pill">60 XP</div>
+      <div id="topbar-crowns" class="topbar-pill">👑 0</div>
 
       <button class="topbar-btn" onclick="logOut()">🚪 Log Out</button>
     </div>
