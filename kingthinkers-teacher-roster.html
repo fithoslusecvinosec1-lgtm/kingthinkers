@@ -303,24 +303,6 @@ function getStudent(c){
   return null;
 }
 function saveStudentLocal(c,s){localStorage.setItem('kt_student_'+c,JSON.stringify(s))}
-function normalizeBulkCreated(result){
-  if (!result) return [];
-  if (Array.isArray(result)) return result;
-  if (Array.isArray(result.students)) return result.students;
-  if (Array.isArray(result.created)) return result.created;
-  if (Array.isArray(result.data)) return result.data;
-  return [];
-}
-function upsertRosterStudent(student){
-  if (!student || !student.code) return;
-  var code = String(student.code);
-  var idx = -1;
-  for (var i = 0; i < rosterState.length; i++) {
-    if (rosterState[i].code === code) { idx = i; break; }
-  }
-  if (idx >= 0) rosterState[idx] = student;
-  else rosterState.push(student);
-}
 function setRosterState(students){
   rosterState = (students || []).map(function(s){
     return {
@@ -386,39 +368,38 @@ function getWorld(c){
 async function loadSampleStudents() {
   if (!confirm('Load 5 sample students? This adds to your existing roster.')) return;
   var names = [['Marcus','3'],['Jaylen','4'],['Kofi','3'],['Amari','2'],['Zion','5']];
-  var classCode = _teacherSession ? _teacherSession.classCode : 'DEMO';
   var students = names.map(function(n) {
-    return { name: n[0], grade: n[1] };
+    return {
+      name: n[0],
+      grade: n[1]
+    };
   });
 
   try {
-    var created = [];
-    if (typeof db_bulkAddStudents === 'function') {
-      var result = await db_bulkAddStudents(students, classCode);
-      created = normalizeBulkCreated(result);
-    }
-    if (!created.length) throw new Error('No students were returned from server.');
+    var result = (typeof db_bulkAddStudents === 'function')
+      ? await db_bulkAddStudents(students)
+      : { students: students.map(function(s){ return { code: genCode(), name: s.name, grade: s.grade, xp: 0, crowns: 0, profile_complete: false }; }) };
+
+    var created = result && Array.isArray(result.students) ? result.students : [];
+    if (!created.length) throw new Error('No students were returned by the server');
 
     created.forEach(function(s) {
-      var code = s && s.code ? String(s.code) : '';
-      if (!code) return;
-      var localStudent = {
-        code: code,
-        name: s.name || '',
+      rosterState.push({
+        code: String(s.code || ''),
+        name: s.name,
         grade: s.grade || '3',
-        classCode: classCode,
+        classCode: _teacherSession ? _teacherSession.classCode : 'DEMO',
         xp: typeof s.xp === 'number' ? s.xp : 0,
         crowns: typeof s.crowns === 'number' ? s.crowns : 0,
+        profile_complete: !!s.profile_complete,
         createdAt: Date.now()
-      };
-      saveStudentLocal(code, localStudent);
-      upsertRosterStudent(localStudent);
+      });
     });
     persistRosterCache();
-    toast(created.length + ' sample students added!');
+    toast('✅ Sample class loaded!');
     renderAll();
   } catch (e) {
-    toast('⚠️ Sample class failed: ' + e.message);
+    toast('⚠️ Failed to load sample class: ' + e.message);
     console.warn('loadSampleStudents failed:', e);
   }
 }
@@ -433,11 +414,13 @@ async function doAdd(){
   if(!name){toast('Enter a name first');return;}
   try {
     // Server add first and use the generated student code it returns.
-    var result = await db_addStudent(name, grade);
-    var code = result && result.code ? String(result.code) : '';
-    if (!code) throw new Error('No student code returned from server.');
+    var result = (typeof db_addStudent==='function')
+      ? await db_addStudent(name, grade)
+      : { code: genCode() };
+
+    var code = result && result.code ? String(result.code) : genCode();
     var s={code:code,name:name,grade:grade,classCode:(_teacherSession?_teacherSession.classCode:'MY-CLASS'),xp:0,crowns:0,createdAt:Date.now()};
-    upsertRosterStudent(s);
+    rosterState.push(s);
     persistRosterCache();
     nameEl.value='';
     toast('King '+name+' added! Code: '+code);
@@ -449,7 +432,8 @@ async function doAdd(){
 }
 
 async function doBulk(){
-  var raw=document.getElementById('bulk-names').value.trim();
+  var bulkEl=document.getElementById('bulk-names');
+  var raw=bulkEl ? bulkEl.value.trim() : '';
   if(!raw){toast('Paste names first');return}
   var lines=raw.split('\n');
   var students=[];
@@ -462,31 +446,33 @@ async function doBulk(){
   }
   if(!students.length){toast('No valid names found');return;}
 
-  // Atomic API call — all succeed or all fail (no partial state)
   try {
-    var _cc = _teacherSession ? _teacherSession.classCode : 'MY-CLASS';
-    var result = await db_bulkAddStudents(students, _cc);
-    var created = normalizeBulkCreated(result);
-    if (!created.length) throw new Error('No students were returned from server.');
-    // Only update local state after server confirms success
+    var result = await db_bulkAddStudents(students);
+    var created = result && Array.isArray(result.students) ? result.students : [];
+    if(!created.length){throw new Error('No students were returned by the server');}
+
     created.forEach(function(s){
-      var code = s && s.code ? String(s.code) : '';
-      if (!code) return;
-      upsertRosterStudent({code:code,name:s.name,grade:s.grade,
+      rosterState.push({
+        code:String(s.code || ''),
+        name:s.name,
+        grade:s.grade || '3',
         classCode:_teacherSession?_teacherSession.classCode:'MY-CLASS',
-        xp:typeof s.xp === 'number' ? s.xp : 0,
-        crowns:typeof s.crowns === 'number' ? s.crowns : 0,
-        createdAt:Date.now()});
+        xp:typeof s.xp==='number'?s.xp:0,
+        crowns:typeof s.crowns==='number'?s.crowns:0,
+        profile_complete:!!s.profile_complete,
+        createdAt:Date.now()
+      });
     });
     persistRosterCache();
-    document.getElementById('bulk-names').value='';
+    if(bulkEl) bulkEl.value='';
     toast(created.length+' students added!');
     renderAll();
   } catch(e) {
-    toast('⚠️ Bulk add failed. ' + (e && e.message ? e.message : 'Please try again.'));
+    toast('⚠️ Bulk add failed: '+e.message);
     console.warn('Bulk add failed:', e);
   }
 }
+
 
 async function removeStudent(code){
   if(!confirm('Remove '+code+'?'))return;

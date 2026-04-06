@@ -15,30 +15,108 @@ window.KT_LESSONS.mali = [
     xp: 48,
     crownReward: 1,
     estMinutes: 8,
-    intro: { kicker: 'Kingdom of Mali · Quest 1', text: 'King, read how Mansa Musa used extraordinary wealth to shape learning and cities across Mali.', sage: 'Today we hunt the main idea, not just shiny details. 👑' },
-    phase1_strategy: { name: 'Main Idea', definition: 'Main idea is the central point the author wants you to remember.', model: 'Model: A leader builds schools, clinics, and roads in many towns. Main idea: the leader invests wealth to strengthen the people.', how_to: ['Find repeated details across paragraphs.', 'Group details that connect.', 'State one big idea that fits all key evidence.'], sage: 'Big idea first, details second.' },
-    phase2_vocab: [
-      { word: 'caravan', definition: 'a large traveling group of people and animals', sentence: 'Mansa Musa traveled with a huge caravan to Mecca.' },
-      { word: 'hajj', definition: 'a religious journey to Mecca', sentence: 'His hajj made people across regions learn about Mali.' },
-      { word: 'generosity', definition: 'giving freely to others', sentence: 'His generosity in Egypt changed the local gold market.' },
-      { word: 'legacy', definition: 'lasting impact left behind', sentence: 'His legacy included schools, libraries, and learning centers.' }
-    ],
-    phase3_guided: {
-      sections: [
-        { id: 'mali-m1-s1', title: 'A Famous Journey', passage: ['Mansa Musa traveled with a large caravan and great amounts of gold.', 'People across many lands heard about Mali during his journey.'], questions: [{ id: 'mali-m1-s1-q1', type: 'mcq', prompt: 'Which detail best supports a main idea about global impact?', hint: 'Pick the detail showing influence beyond one city.', choices: ['He rode one camel', 'Many lands learned about Mali during his journey', 'He wore royal clothing', 'He slept in tents'], answer: 1, correctFeedback: 'Correct. That detail shows wide influence, not a small event.', wrongFeedback: 'Look for the detail that shows a broad effect across regions.', explanation: 'Main ideas are supported by high-impact details.', xp: 8 }]},
-        { id: 'mali-m1-s2', title: 'Wealth with Purpose', passage: ['After returning, he used wealth to build mosques, schools, and libraries.', 'Timbuktu grew as a center of scholarship and learning.'], questions: [{ id: 'mali-m1-s2-q1', type: 'true_false', prompt: 'These details support a main idea that Mansa Musa invested in people and knowledge.', hint: 'Check what he built and why it mattered.', answer: true, correctFeedback: 'Yes. The details show wealth used to grow learning and society.', wrongFeedback: 'Building schools and libraries is evidence of purposeful investment.', explanation: 'These details point beyond wealth to legacy.', xp: 8 }]}
-      ],
-      close_reading: { title: 'Close Reading: Central Message', excerpt: 'His true legacy was what he built with his wealth.', question: { id: 'mali-m1-close-q1', type: 'mcq', prompt: 'What main idea does this line support?', hint: 'Focus on how wealth was used.', choices: ['Gold alone makes greatness', 'Great leadership uses resources to build lasting good', 'Travel was unimportant', 'Libraries weaken kingdoms'], answer: 1, correctFeedback: 'Exactly. The line points to wise use of wealth for lasting growth.', wrongFeedback: 'The sentence emphasizes action and legacy, not just possession of gold.', explanation: 'Main idea centers on purposeful leadership.', xp: 8 } }
+
+    intro: {
+      kicker: 'Kingdom of Mali · Quest 1',
+      text: "King, in 1324 the ruler of Mali made a journey that shocked the entire world. Mansa Musa traveled to Mecca with so much gold that he changed the economies of Egypt and Arabia. Read carefully and discover what made this king the wealthiest person who ever lived.",
+      sage: "The richest man in history was a Black king, King. Read and find out why. 👑"
     },
-    phase4_test: [
-      { id: 'mali-m1-t1', type: 'mcq', excerpt: 'Mansa Musa returned from hajj and funded schools, mosques, and libraries.', prompt: 'Which is the best main idea?', choices: ['He liked long travel', 'He used wealth to strengthen learning and society', 'He only counted gold', 'He avoided cities'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. This choice captures the central message of the excerpt.', wrongFeedback: 'Choose the option that includes both wealth and purposeful investment.', xp: 10 },
-      { id: 'mali-m1-t2', type: 'true_false', excerpt: 'His generosity and building projects shaped Mali’s future.', prompt: 'This supports a main idea of lasting legacy.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Lasting change is key evidence for the main idea.', wrongFeedback: 'Legacy means long-term impact; this excerpt gives that evidence.', xp: 10 },
-      { id: 'mali-m1-t3', type: 'mcq', excerpt: 'People remembered not only his riches, but what he did with them.', prompt: 'Why is this detail important?', choices: ['It narrows the focus to one camel', 'It supports the central idea that actions mattered more than wealth alone', 'It removes all evidence', 'It describes weather'], answer: 1, hint_disabled: true, correctFeedback: 'Right. The excerpt highlights purpose over possession.', wrongFeedback: 'Main idea here compares having wealth with using wealth wisely.', xp: 10 },
-      { id: 'mali-m1-t4', type: 'input', excerpt: 'Multiple details point to one central point.', prompt: 'Type one word that names this central point.', answer: 'theme', hint_disabled: true, correctFeedback: 'Great work. You identified the central theme.', wrongFeedback: 'Use one word for central meaning, such as theme.', xp: 10 }
+
+    reading: {
+      passage: [
+        "Mansa Musa ruled the Mali Empire from 1312 to 1337. At the time, Mali controlled more gold and salt than any other kingdom on Earth. Historians believe Mansa Musa was the wealthiest person who has ever lived.",
+        "In 1324, Mansa Musa made a religious journey called a hajj to the holy city of Mecca. He did not travel alone. He brought a caravan of 60,000 people including soldiers, servants, and scholars. He also brought 80 camels, each carrying 300 pounds of gold dust.",
+        "As Mansa Musa traveled through Egypt, he gave away so much gold to the poor that the price of gold in Egypt fell for twelve years. His generosity was so great that it changed the economy of an entire country.",
+        "When Mansa Musa returned home, he brought back architects and scholars from across the Islamic world. He used his wealth to build mosques, libraries, and schools throughout Mali. The city of Timbuktu became one of the greatest centers of learning in the world.",
+        "Mansa Musa's legacy was not just his gold. It was what he did with it — he invested in his people, his cities, and the minds of the next generation."
+      ],
+      vocab: [
+        { term: 'caravan', definition: 'a large group of people and animals traveling together' },
+        { term: 'hajj', definition: 'a religious journey to the holy city of Mecca' },
+        { term: 'generosity', definition: 'the quality of giving freely and abundantly' },
+        { term: 'legacy', definition: 'what a person leaves behind that continues after them' }
+      ]
+    },
+
+    teach: [
+      {
+        type: 'text',
+        title: 'Finding the Main Idea',
+        body: "The main idea is the most important point the author wants you to understand. Details support the main idea — they don't replace it. Ask yourself: what is the author saying about this person in almost every paragraph?"
+      }
     ],
-    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You found the main idea of Mansa Musa’s story: true wealth builds people, knowledge, and future generations.', badge: 'Scholar of Mali' }
+
+    activities: [
+      {
+        id: 'mali-m1-q1',
+        type: 'mcq',
+        prompt: 'What is the main idea of this passage about Mansa Musa?',
+        hint: 'Look for what the author says about Mansa Musa in almost every paragraph.',
+        choices: [
+          'Mansa Musa traveled with 60,000 people',
+          'Mansa Musa was a wealthy king who used his riches to benefit his people and the world',
+          'Mansa Musa gave away too much gold in Egypt',
+          'Mansa Musa built mosques in Timbuktu'
+        ],
+        answer: 1,
+        correctFeedback: "Exactly. The passage is about how Mansa Musa used his wealth wisely — that is the main idea.",
+        wrongFeedback: "That is a detail, not the main idea. The main idea covers what the whole passage is about.",
+        xp: 12
+      },
+      {
+        id: 'mali-m1-q2',
+        type: 'true_false',
+        prompt: "Mansa Musa's generosity in Egypt helped Egypt's economy grow stronger.",
+        hint: 'What happened to the price of gold in Egypt after his visit?',
+        answer: false,
+        correctFeedback: "Correct. He gave away so much gold that the price of gold dropped for twelve years — which actually hurt Egypt's economy.",
+        wrongFeedback: "Read paragraph 3 again. When gold floods the market, prices fall — that weakens an economy, not strengthens it.",
+        xp: 10
+      },
+      {
+        id: 'mali-m1-vocab',
+        type: 'match',
+        prompt: 'Match each word to its meaning.',
+        pairs: [
+          ['caravan', 'a large group of people and animals traveling together'],
+          ['hajj', 'a religious journey to the holy city of Mecca'],
+          ['generosity', 'the quality of giving freely and abundantly'],
+          ['legacy', 'what a person leaves behind that continues after them']
+        ],
+        correctFeedback: "Strong vocabulary work, King. These are words used by scholars who study great empires. 📚",
+        wrongFeedback: "Not that one. Read the definitions carefully and try again.",
+        xp: 10
+      },
+      {
+        id: 'mali-m1-q3',
+        type: 'mcq',
+        prompt: "According to the passage, what was Mansa Musa's greatest legacy?",
+        hint: "Check the last paragraph. What does the author say his legacy really was?",
+        choices: [
+          'Having the most gold in history',
+          'His journey to Mecca',
+          'Investing in his people, cities, and future generations',
+          'Defeating other kingdoms in battle'
+        ],
+        answer: 2,
+        correctFeedback: "Yes — the author's point is that what Mansa Musa did with his wealth was more important than having it.",
+        wrongFeedback: "Look at the final paragraph. The author draws a clear distinction between the gold and what he did with it.",
+        xp: 10
+      }
+    ],
+
+    wrapUp: {
+      title: 'Quest Complete, King! 👑',
+      text: "You learned about the wealthiest person in history — a Black king who used his power to build schools, libraries, and cities. That is what true wealth looks like.",
+      badge: 'Scholar of Mali'
+    }
   },
-{
+
+  // ════════════════════════════════════════════════════════════
+  // mali-m2 — The Golden Trade (Math, 3.NBT.A.2 / 3.OA.D.8)
+  // Four-phase: Multi-step word problems + place value addition
+  // ════════════════════════════════════════════════════════════
+  {
     id: 'mali-m2',
     worldId: 'mali',
     title: 'The Golden Trade',
@@ -258,30 +336,108 @@ window.KT_LESSONS.mali = [
     xp: 48,
     crownReward: 1,
     estMinutes: 8,
-    intro: { kicker: 'Kingdom of Mali · Quest 3', text: 'King, trace how events in Sundiata’s life led step by step to the rise of the Mali Empire.', sage: 'Follow each cause and effect like links in a chain. 🦁' },
-    phase1_strategy: { name: 'Cause and Effect', definition: 'Cause is why something happens. Effect is what happens next.', model: 'Model: A student practices speeches each week (cause), so she leads the school debate team (effect).', how_to: ['Find what happened first.', 'Find what happened because of it.', 'Say the chain clearly in order.'], sage: 'History is full of chains. Read for the links.' },
-    phase2_vocab: [
-      { word: 'exile', definition: 'being forced to live away from home', sentence: 'Sundiata spent years in exile with his mother.' },
-      { word: 'prophecy', definition: 'a prediction about the future', sentence: 'People remembered the prophecy about Sundiata becoming a great ruler.' },
-      { word: 'warlord', definition: 'a military leader who controls by force', sentence: 'A warlord’s brutal rule pushed many people to seek change.' },
-      { word: 'united', definition: 'brought together as one', sentence: 'Sundiata united many chiefs before the battle.' }
-    ],
-    phase3_guided: {
-      sections: [
-        { id: 'mali-m3-s1', title: 'From Exile to Strength', passage: ['After being forced into exile, Sundiata learned from many peoples and grew stronger.', 'Those years prepared him for future leadership.'], questions: [{ id: 'mali-m3-s1-q1', type: 'mcq', prompt: 'What effect did exile have on Sundiata?', hint: 'Look for what changed because of exile.', choices: ['He forgot leadership', 'He gained strength and knowledge', 'He lost all allies', 'He ended all travel'], answer: 1, correctFeedback: 'Correct. Exile unexpectedly prepared him.', wrongFeedback: 'The passage shows exile as preparation, not defeat.', explanation: 'Cause: exile. Effect: growth and readiness.', xp: 8 }]},
-        { id: 'mali-m3-s2', title: 'People Call Him Back', passage: ['A brutal warlord conquered the region and people suffered.', 'Because of this, leaders called Sundiata back to unite forces.'], questions: [{ id: 'mali-m3-s2-q1', type: 'true_false', prompt: 'The warlord’s conquest helped cause Sundiata’s return.', hint: 'Connect suffering to the decision to call him back.', answer: true, correctFeedback: 'Yes. Crisis caused people to seek his leadership.', wrongFeedback: 'The text directly links the conquest to the call for Sundiata.', explanation: 'Cause: warlord rule. Effect: Sundiata’s return.', xp: 8 }]}
-      ],
-      close_reading: { title: 'Close Reading: Victory Chain', excerpt: 'Sundiata united the chiefs, so his army defeated Sumanguru.', question: { id: 'mali-m3-close-q1', type: 'mcq', prompt: 'Which statement best explains this sentence?', hint: 'Find the action that led to victory.', choices: ['Victory happened with no cause', 'Uniting leaders helped create military success', 'Defeat came first', 'The sentence is about weather'], answer: 1, correctFeedback: 'Exactly. Unity was a cause of victory.', wrongFeedback: 'The sentence links unity first, victory second.', explanation: 'Cause-and-effect is explicit in the sentence.', xp: 8 } }
+
+    intro: {
+      kicker: 'Kingdom of Mali · Quest 3',
+      text: "King, before Mansa Musa there was Sundiata — the Lion King of Mali who rose from a child who could not walk to become one of the greatest rulers in African history. His story is about overcoming impossible odds. Read closely and discover how one man's determination changed the course of a kingdom.",
+      sage: "Every great empire starts with one person who refuses to give up. This is that story. 🦁"
     },
-    phase4_test: [
-      { id: 'mali-m3-t1', type: 'mcq', excerpt: 'Sundiata spent years in exile, where he learned and became stronger.', prompt: 'What is the effect in this excerpt?', choices: ['He went into exile', 'He learned and became stronger', 'He was born', 'A warlord attacked'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. Growth was the result of exile.', wrongFeedback: 'The effect is what happened because of exile.', xp: 10 },
-      { id: 'mali-m3-t2', type: 'true_false', excerpt: 'Because people suffered under a warlord, they called Sundiata to return.', prompt: 'This excerpt shows cause and effect.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Suffering caused the call for leadership.', wrongFeedback: 'The word “because” shows cause leading to effect.', xp: 10 },
-      { id: 'mali-m3-t3', type: 'mcq', excerpt: 'He united the chiefs, and his forces won at Kirina.', prompt: 'Which cause is stated?', choices: ['Forces won at Kirina', 'He united the chiefs', 'The empire fell', 'The river flooded'], answer: 1, hint_disabled: true, correctFeedback: 'Right. Unity is the cause that leads to victory.', wrongFeedback: 'Choose the event that happens first and leads to the result.', xp: 10 },
-      { id: 'mali-m3-t4', type: 'input', excerpt: 'One event led to another throughout Sundiata’s story.', prompt: 'Type one word that describes this event chain.', answer: 'sequence', hint_disabled: true, correctFeedback: 'Great. The excerpt shows a clear sequence of linked events.', wrongFeedback: 'Use a word about ordered events; this excerpt is an event sequence.', xp: 10 }
+
+    reading: {
+      passage: [
+        "Sundiata Keita was born around 1217 in the kingdom of Kangaba in West Africa. As a young child, he could not walk — his legs were weak and he spent years unable to stand. The other children teased him and many adults believed he would never amount to anything.",
+        "Because of his disability, Sundiata was overlooked when his father, the king, died. His older brothers took the throne. Sundiata and his mother were forced to leave their home and live in exile in neighboring kingdoms. It was during these years away that Sundiata grew strong and learned the ways of many peoples.",
+        "While Sundiata was in exile, a powerful warlord named Sumanguru Kante conquered the kingdoms of West Africa, including Kangaba. His rule was brutal and the people suffered greatly. They remembered the prophecy that Sundiata would one day become a great king and they sent for him.",
+        "Sundiata returned and united the chiefs and warriors of the region. At the Battle of Kirina in 1235, his forces defeated Sumanguru. The victory was so complete that it broke Sumanguru's power forever.",
+        "Sundiata went on to build the Mali Empire, one of the largest and wealthiest empires in world history. The child who could not walk became the king whose empire stretched across all of West Africa."
+      ],
+      vocab: [
+        { term: 'exile', definition: 'being forced to leave your home or country' },
+        { term: 'prophecy', definition: 'a prediction about what will happen in the future' },
+        { term: 'warlord', definition: 'a military leader who uses force to control an area' },
+        { term: 'united', definition: 'brought together as one group' }
+      ]
+    },
+
+    teach: [
+      {
+        type: 'text',
+        title: 'Cause and Effect',
+        body: "A cause is WHY something happened. An effect is WHAT happened as a result. Signal words like 'because,' 'so,' 'as a result,' and 'therefore' often connect causes and effects. Ask yourself: what happened, and why did it happen?"
+      }
     ],
-    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You followed the full cause-and-effect chain of Sundiata’s rise and Mali’s founding.', badge: 'Lion Scholar' }
+
+    activities: [
+      {
+        id: 'mali-m3-q1',
+        type: 'mcq',
+        prompt: "What was one effect of Sundiata's disability as a child?",
+        hint: "Think about what happened TO Sundiata because of his disability — what changed in his life?",
+        choices: [
+          'He became a stronger fighter',
+          'He was overlooked when his father died and lost his place in line for the throne',
+          'He learned to walk faster than others',
+          'He was made king immediately'
+        ],
+        answer: 1,
+        correctFeedback: "Correct. Because he was seen as weak, he was passed over when his father died — that is the effect of his disability on his life.",
+        wrongFeedback: "Look for the cause-and-effect connection. His disability caused people to overlook him. What happened as a result?",
+        xp: 12
+      },
+      {
+        id: 'mali-m3-q2',
+        type: 'mcq',
+        prompt: "Why did the people of West Africa send for Sundiata while he was in exile?",
+        hint: "Read paragraph 3. What happened while he was away, and what did the people remember?",
+        choices: [
+          'They wanted him to return to be a farmer',
+          'A warlord had conquered their lands and they remembered the prophecy about Sundiata',
+          'His brothers invited him back',
+          'He had finished his studies'
+        ],
+        answer: 1,
+        correctFeedback: "Yes — Sumanguru's brutal conquest caused the people to seek out Sundiata because of the prophecy. That is a clear cause and effect.",
+        wrongFeedback: "Paragraph 3 explains exactly why they sent for him. A cause led to that decision — what was it?",
+        xp: 10
+      },
+      {
+        id: 'mali-m3-vocab',
+        type: 'match',
+        prompt: 'Match each word to its meaning.',
+        pairs: [
+          ['exile', 'being forced to leave your home or country'],
+          ['prophecy', 'a prediction about what will happen in the future'],
+          ['warlord', 'a military leader who uses force to control an area'],
+          ['united', 'brought together as one group']
+        ],
+        correctFeedback: "Excellent vocabulary work, King. These are the words of history and leadership. 📚",
+        wrongFeedback: "Not that one. Re-read the definitions and try again.",
+        xp: 10
+      },
+      {
+        id: 'mali-m3-q3',
+        type: 'true_false',
+        prompt: "Sundiata's years in exile weakened him and made it harder to build the Mali Empire.",
+        hint: "Read paragraph 2. What did Sundiata gain during his time away?",
+        answer: false,
+        correctFeedback: "Correct — the passage says he grew strong and learned the ways of many peoples during exile. It actually made him better prepared.",
+        wrongFeedback: "Read paragraph 2 carefully. The cause (exile) had a surprising effect — it actually helped him grow stronger and wiser.",
+        xp: 10
+      }
+    ],
+
+    wrapUp: {
+      title: 'Quest Complete, King! 👑',
+      text: "You followed the cause-and-effect chain of Sundiata's rise from a child who could not walk to the founder of one of history's greatest empires. Every obstacle had a reason, and every reason had a result.",
+      badge: 'Lion Scholar'
+    }
   },
-{
+
+  // ════════════════════════════════════════════════════════════
+  // mali-m4 — Camel Caravan Math (Math, 3.OA.A.3 / 3.MD.D.8)
+  // Four-phase: Multiplication, division, perimeter
+  // ════════════════════════════════════════════════════════════
+  {
     id: 'mali-m4',
     worldId: 'mali',
     title: 'Camel Caravan Math',

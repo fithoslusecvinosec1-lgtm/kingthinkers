@@ -18,82 +18,105 @@ window.KT_LESSONS.diaspora = [
 
     intro: {
       kicker: 'The Diaspora · Quest 1',
-      text: 'King, explore how Black artists and thinkers in Harlem transformed American culture. Your mission is to identify the main idea across the text.',
-      sage: 'Many details, one crown idea. Let’s find the main idea together. ✊'
+      text: "King, the journey through the ancient kingdoms of Africa ends here — where your ancestors brought their brilliance into a new world. In the 1920s, Black artists, writers, and musicians flooded into Harlem, New York City, and created a cultural explosion that changed America and the world forever. Read closely and discover the power of what Black people built when they were given just a little space to create.",
+      sage: "You have traveled from Egypt to Nubia to Kush to Mali to Songhai to Timbuktu to Axum. Now see what your people did when they brought that fire to America. ✊"
     },
 
-    phase1_strategy: {
-      name: 'Main Idea',
-      definition: 'Main idea is the most important message that the whole passage supports.',
-      model: 'Model: A community opens a music program, art club, and writing lab. Main idea: the community is building creative opportunities for youth.',
-      how_to: [
-        'Collect key details from several parts of the passage.',
-        'Ask what those details all have in common.',
-        'Say one big idea that fits all major details.'
+    reading: {
+      passage: [
+        "Between 1910 and 1970, approximately six million Black Americans moved from the rural South to cities in the North and West. This movement, known as the Great Migration, was driven by the brutal racism of the South — Jim Crow laws, sharecropping, and racial violence — and by the promise of better jobs and greater freedom in northern cities.",
+        "Harlem, a neighborhood in northern Manhattan, New York City, became the heart of Black American life in the 1920s. As Black families arrived and settled, Harlem transformed into a thriving cultural center unlike anything that had ever existed before. The concentration of brilliant, ambitious, creative Black people in one place sparked an extraordinary explosion of art, music, and literature.",
+        "The period from roughly 1920 to 1940, known as the Harlem Renaissance, produced some of the most important work in American history. Langston Hughes wrote poetry that captured the beauty and pain of Black life. Zora Neale Hurston wrote novels that celebrated Black Southern culture. Duke Ellington and Louis Armstrong invented jazz and became world-famous musicians. Aaron Douglas created bold, powerful art that drew on African imagery.",
+        "The Harlem Renaissance was not just about individual artists — it was about a community declaring that Black life, Black thought, and Black creativity were worthy of celebration. The writers, musicians, and artists of the Renaissance argued through their work that Black Americans were not defined by oppression, but by their own culture, history, and imagination.",
+        "The legacy of the Harlem Renaissance extends to today. Nearly every genre of American music — jazz, blues, hip-hop, R&B — traces its roots to the creative explosion that Black artists ignited in Harlem in the 1920s."
       ],
-      sage: 'A main idea should be broad enough to hold the whole passage, not one paragraph.'
+      vocab: [
+        { term: 'migration', definition: 'the movement of people from one place to another to live' },
+        { term: 'Renaissance', definition: 'a period of great creativity and cultural rebirth' },
+        { term: 'oppression', definition: 'cruel or unfair treatment of a group of people' },
+        { term: 'legacy', definition: 'something from the past that continues to have an effect today' }
+      ]
     },
 
-    phase2_vocab: [
-      { word: 'migration', definition: 'movement of people to a new place to live', sentence: 'The Great Migration brought many Black families to northern cities.' },
-      { word: 'renaissance', definition: 'a time of renewed creativity and growth', sentence: 'Harlem experienced a renaissance in music, writing, and art.' },
-      { word: 'oppression', definition: 'unfair and harmful treatment of a group', sentence: 'Artists used their work to push back against oppression.' },
-      { word: 'legacy', definition: 'something valuable from the past that still matters now', sentence: 'The movement’s legacy can still be heard in modern music.' }
+    teach: [
+      {
+        type: 'text',
+        title: 'Main Idea in Complex Texts',
+        body: "In longer, more complex texts, the main idea is not always stated directly — sometimes you have to infer it from what the author emphasizes across multiple paragraphs. Ask yourself: what is the author saying over and over, even if in different ways? That recurring theme is likely the main idea."
+      }
     ],
 
-    phase3_guided: {
-      sections: [
-        {
-          id: 'diaspora-d1-s1',
-          title: 'A Creative Center',
-          passage: [
-            'Harlem became a gathering place for Black writers, musicians, and artists in the 1920s.',
-            'Their creative work spread new ideas about identity, pride, and freedom.'
-          ],
-          questions: [{
-            id: 'diaspora-d1-s1-q1', type: 'mcq', prompt: 'Which detail best supports a main idea about cultural growth?', hint: 'Pick the detail that shows broad impact.',
-            choices: ['One poet lived in Harlem', 'Many artists gathered and created new ideas', 'A single club opened', 'One song became popular'], answer: 1,
-            correctFeedback: 'Correct. That detail supports a wide cultural movement.', wrongFeedback: 'Main-idea details should show broad change, not one small event.', explanation: 'Many creators and new ideas point to a major cultural shift.', xp: 8
-          }]
-        },
-        {
-          id: 'diaspora-d1-s2',
-          title: 'Impact Beyond Harlem',
-          passage: [
-            'The movement influenced literature, jazz, and future music forms across America.',
-            'Its message declared that Black life and creativity deserved celebration.'
-          ],
-          questions: [{
-            id: 'diaspora-d1-s2-q1', type: 'true_false', prompt: 'These details support a main idea of lasting influence.', hint: 'Check if the effects continue beyond one place and time.', answer: true,
-            correctFeedback: 'Yes. The details show impact that lasted and spread widely.', wrongFeedback: 'Look at the words about future music and broad influence.', explanation: 'Lasting effects are strong evidence for main idea.', xp: 8
-          }]
-        }
-      ],
-      close_reading: {
-        title: 'Close Reading: Big Message',
-        excerpt: 'Black artists were not defined by limits; they defined a new cultural voice.',
-        question: {
-          id: 'diaspora-d1-close-q1', type: 'mcq', prompt: 'What main idea does this sentence best support?', hint: 'Find the larger message, not a tiny fact.',
-          choices: ['Only one artist mattered', 'Black creativity reshaped culture with power and self-definition', 'Harlem had perfect weather', 'Music replaced writing'], answer: 1,
-          correctFeedback: 'Exactly. The sentence supports a powerful main idea of cultural transformation.', wrongFeedback: 'Look for the broad message about identity and cultural impact.', explanation: 'The line emphasizes agency, pride, and large influence.', xp: 8
-        }
+    activities: [
+      {
+        id: 'diaspora-d1-q1',
+        type: 'mcq',
+        prompt: 'What is the main idea of this passage?',
+        hint: 'What does the author say about the Harlem Renaissance in nearly every paragraph?',
+        choices: [
+          'Langston Hughes was the most important poet of the 1920s',
+          'The Harlem Renaissance was an extraordinary explosion of Black creativity that changed American culture and left a lasting legacy',
+          'Black Americans moved north because of job opportunities',
+          'Harlem is a neighborhood in New York City'
+        ],
+        answer: 1,
+        correctFeedback: "Correct. Every paragraph supports the idea that the Harlem Renaissance was an extraordinary cultural achievement with lasting impact.",
+        wrongFeedback: "Those are supporting details. The main idea is what every paragraph ultimately supports — what is that bigger point?",
+        xp: 16
+      },
+      {
+        id: 'diaspora-d1-q2',
+        type: 'mcq',
+        prompt: "According to the passage, what was the Harlem Renaissance really declaring?",
+        hint: 'Read paragraph 4. What does the author say the movement was about beyond individual artists?',
+        choices: [
+          'That Black Americans wanted to move back to Africa',
+          'That Black life, thought, and creativity were worthy of celebration — not defined by oppression',
+          'That jazz was better than classical music',
+          'That Harlem was the best city in America'
+        ],
+        answer: 1,
+        correctFeedback: "Exactly. The author is making the point that the Renaissance was an act of cultural self-definition — Black people claiming their own narrative.",
+        wrongFeedback: "Paragraph 4 uses the phrase 'declaring that...' — read it closely. What was the community declaring?",
+        xp: 14
+      },
+      {
+        id: 'diaspora-d1-vocab',
+        type: 'match',
+        prompt: 'Match each word to its meaning.',
+        pairs: [
+          ['migration', 'the movement of people from one place to another to live'],
+          ['Renaissance', 'a period of great creativity and cultural rebirth'],
+          ['oppression', 'cruel or unfair treatment of a group of people'],
+          ['legacy', 'something from the past that continues to have an effect today']
+        ],
+        correctFeedback: "Outstanding vocabulary work, King. These are the words of history and liberation. 📚",
+        wrongFeedback: "Not quite. Try using the context of the passage to find each match.",
+        xp: 14
+      },
+      {
+        id: 'diaspora-d1-q3',
+        type: 'true_false',
+        prompt: "The author suggests that the Harlem Renaissance only mattered to the people who lived in Harlem at the time.",
+        hint: 'Read the first and last paragraphs. What does the author say about the Renaissance\'s reach?',
+        answer: false,
+        correctFeedback: "Correct — the author says its legacy extends to today and that nearly every genre of American music traces its roots to the Harlem Renaissance. Its impact was global and permanent.",
+        wrongFeedback: "The last paragraph talks about the Renaissance's lasting effect on all of American music. The author clearly argues it mattered far beyond Harlem.",
+        xp: 14
       }
-    },
-
-    phase4_test: [
-      { id: 'diaspora-d1-t1', type: 'mcq', excerpt: 'Writers, musicians, and artists in Harlem created work that changed American culture.', prompt: 'Which is the best main idea?', choices: ['Harlem had busy streets', 'The Harlem Renaissance was a major Black cultural movement with national impact', 'Only jazz mattered', 'Artists worked alone'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. That choice captures the broad message of the excerpt.', wrongFeedback: 'Main idea should include both who acted and the large impact.', xp: 10 },
-      { id: 'diaspora-d1-t2', type: 'true_false', excerpt: 'Its legacy can be seen in later genres like R&B and hip-hop.', prompt: 'This detail supports a main idea of lasting influence.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Legacy across genres shows long-term cultural effect.', wrongFeedback: 'A continuing legacy is evidence that the movement had wide, lasting impact.', xp: 10 },
-      { id: 'diaspora-d1-t3', type: 'mcq', excerpt: 'The movement celebrated Black life, thought, and imagination.', prompt: 'What does this detail most support?', choices: ['A minor event', 'A main idea about Black cultural pride and self-definition', 'A weather report', 'A transportation issue'], answer: 1, hint_disabled: true, correctFeedback: 'Right. This is a central supporting detail for the passage’s main idea.', wrongFeedback: 'Choose the option that expresses a big message about identity and culture.', xp: 10 },
-      { id: 'diaspora-d1-t4', type: 'input', excerpt: 'Many details connect to one central message.', prompt: 'Type one word that names this kind of message.', answer: 'theme', hint_disabled: true, correctFeedback: 'Great. You recognized that the excerpt points to a theme-level message.', wrongFeedback: 'The excerpt is about a central message, so use a word like theme or message.', xp: 10 }
     ],
 
     wrapUp: {
       title: 'Quest Complete, King! 👑',
-      text: 'You identified the main idea of the Harlem Renaissance: Black creativity transformed culture and continues to inspire the world.',
+      text: "You have completed the journey from ancient Egypt to the Harlem Renaissance. From pharaohs to poets, from iron masters to jazz musicians — one thread of brilliance runs through all of it. That thread is you.",
       badge: 'Renaissance Scholar'
     }
   },
-{
+
+  // ════════════════════════════════════════════════════════
+  // diaspora-d2 — Civil Rights Math (Math, 3.OA / 3.NBT / 3.MD)
+  // Four-phase: Mixed operations, multi-step, data
+  // ════════════════════════════════════════════════════════
+  {
     id: 'diaspora-d2',
     worldId: 'diaspora',
     title: 'Civil Rights Math',
@@ -267,32 +290,105 @@ window.KT_LESSONS.diaspora = [
 
     intro: {
       kicker: 'The Diaspora · Quest 3',
-      text: 'King, read how Black inventors solved major problems and changed daily life around the world.',
-      sage: 'You will gather details about several inventors and identify one strong main idea. ✊'
+      text: "King, despite facing laws that limited their rights and institutions that ignored their work, Black inventors changed the world. From the traffic light to the blood bank, from the gas mask to the home security system — Black innovators created inventions that billions of people use today. Read closely and discover who built the modern world.",
+      sage: "They told Black people they couldn't. They invented it anyway. Read this, King — and remember who you are. ✊"
     },
-    phase1_strategy: { name: 'Main Idea', definition: 'Main idea is the central message that connects all important details.', model: 'Model: Three scientists create tools for clean water, clean air, and safer homes. Main idea: innovation can protect communities.', how_to: ['List key details from each section.', 'Look for a shared message across all examples.', 'Write one central statement that includes them all.'], sage: 'When many people are discussed, ask: what truth connects them all?' },
-    phase2_vocab: [
-      { word: 'patented', definition: 'officially registered an invention', sentence: 'Garrett Morgan patented a safer traffic signal design.' },
-      { word: 'filament', definition: 'the thin part inside a light bulb that glows', sentence: 'Latimer improved the filament so bulbs lasted longer.' },
-      { word: 'plasma', definition: 'the liquid part of blood', sentence: 'Dr. Drew developed ways to store plasma for patients.' },
-      { word: 'segregated', definition: 'separated by race through rules or laws', sentence: 'Some institutions were segregated even while using Black inventions.' }
-    ],
-    phase3_guided: {
-      sections: [
-        { id: 'diaspora-d3-s1', title: 'Inventing Through Barriers', passage: ['Garrett Morgan created safety tools that saved lives.', 'Lewis Latimer improved electric lighting for everyday use.'], questions: [{ id: 'diaspora-d3-s1-q1', type: 'mcq', prompt: 'What shared detail supports a main idea about impact?', hint: 'Look for what both inventors did for society.', choices: ['They both avoided technology', 'Their inventions solved real problems for many people', 'They both worked in one city only', 'They both stopped inventing early'], answer: 1, correctFeedback: 'Correct. Both examples show practical inventions with broad benefits.', wrongFeedback: 'Choose the detail that connects both inventors’ impact.', explanation: 'Main-idea details should connect multiple examples.', xp: 8 }]},
-        { id: 'diaspora-d3-s2', title: 'Science and Courage', passage: ['Dr. Charles Drew improved blood storage and helped save thousands of lives.', 'All three inventors worked despite unfair barriers and exclusion.'], questions: [{ id: 'diaspora-d3-s2-q1', type: 'true_false', prompt: 'These details support a main idea of Black innovation and perseverance.', hint: 'Check whether both achievement and obstacles appear.', answer: true, correctFeedback: 'Yes. The passage links world-changing work with determination.', wrongFeedback: 'Look at both sentences: major innovation plus persistence through injustice.', explanation: 'Strong main ideas can include both achievement and challenge.', xp: 8 }]}
+
+    reading: {
+      passage: [
+        "Garrett Morgan was born in 1877 in Kentucky to parents who had been enslaved. He moved to Cleveland as a teenager with less than a sixth-grade education. Over the next decades, he taught himself how to repair sewing machines, started a tailoring business, and eventually became an inventor. In 1914, he patented a safety hood — an early version of the gas mask — and personally used it to rescue workers trapped in a tunnel filled with toxic smoke.",
+        "Morgan's second major invention came in 1923: the three-position traffic signal. Before this, intersections only had two signals — stop and go — which led to dangerous accidents as drivers tried to figure out who had the right of way. Morgan's third position, a warning signal, gave drivers time to clear the intersection before traffic from the other direction started. He sold the patent to General Electric for $40,000.",
+        "Lewis Howard Latimer was born in 1848 to parents who had escaped slavery. He taught himself drafting and engineering and eventually worked alongside both Alexander Graham Bell and Thomas Edison. When Edison's team invented the light bulb, it was Latimer who figured out how to make the carbon filament that allowed the bulb to burn for more than a few hours. Without Latimer's contribution, the incandescent light bulb would not have been practical.",
+        "Dr. Charles Drew was a surgeon and scientist who transformed medicine in the 1940s. He developed the methods for processing and storing blood plasma in blood banks — a technique that saved hundreds of thousands of lives during World War II. His work made it possible to ship blood across distances and to store it for weeks at a time.",
+        "These inventors worked in a country that denied them equal rights. Morgan could not stay in many hotels on his own invention's routes. Drew resigned from the American Red Cross when it enforced racially segregated blood banks. Their achievements came not despite these obstacles — but partly because of a fierce determination to prove what Black excellence could do."
       ],
-      close_reading: { title: 'Close Reading: Central Claim', excerpt: 'They changed the world while the world tried to limit them.', question: { id: 'diaspora-d3-close-q1', type: 'mcq', prompt: 'Which main idea matches this line?', hint: 'Find a big idea that includes impact and resilience.', choices: ['Inventions were accidental', 'Black inventors made lasting contributions despite injustice', 'Only one invention mattered', 'History has no barriers'], answer: 1, correctFeedback: 'Exactly. The line combines achievement with resilience.', wrongFeedback: 'The sentence has two parts: global impact and resistance to barriers.', explanation: 'Main idea must include both key ideas in the line.', xp: 8 } }
+      vocab: [
+        { term: 'patented', definition: 'officially registered an invention to protect the right to make and sell it' },
+        { term: 'filament', definition: 'a thin wire inside a light bulb that glows when electricity passes through it' },
+        { term: 'plasma', definition: 'the liquid part of blood, separate from blood cells' },
+        { term: 'segregated', definition: 'separated by race under official rules or laws' }
+      ]
     },
-    phase4_test: [
-      { id: 'diaspora-d3-t1', type: 'mcq', excerpt: 'Morgan improved traffic safety, Latimer improved light bulbs, and Drew improved blood storage.', prompt: 'What is the best main idea?', choices: ['They worked in the same job', 'Black inventors created major innovations that improved daily life', 'Only medicine mattered', 'All inventions were for war'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. This choice connects all three examples into one central message.', wrongFeedback: 'The best main idea includes all three inventors and their broad impact.', xp: 10 },
-      { id: 'diaspora-d3-t2', type: 'true_false', excerpt: 'The passage notes discrimination and still highlights world-changing achievements.', prompt: 'This supports a main idea of excellence through perseverance.', answer: true, hint_disabled: true, correctFeedback: 'Yes. The detail supports a central message about innovation and determination.', wrongFeedback: 'A main idea can include both obstacles and achievements when both are emphasized.', xp: 10 },
-      { id: 'diaspora-d3-t3', type: 'mcq', excerpt: 'Their inventions are still used in modern life.', prompt: 'Why is this detail important to the main idea?', choices: ['It proves their work had lasting influence', 'It describes their childhood', 'It shows they disliked science', 'It removes the need for evidence'], answer: 0, hint_disabled: true, correctFeedback: 'Right. Lasting use today shows powerful and enduring impact.', wrongFeedback: 'Think about what continuing use tells us about importance.', xp: 10 },
-      { id: 'diaspora-d3-t4', type: 'input', excerpt: 'Many examples support one central message.', prompt: 'Type one word that describes this central-message focus.', answer: 'theme', hint_disabled: true, correctFeedback: 'Excellent. You identified the excerpt as focusing on a theme-level message.', wrongFeedback: 'Use a word tied to central meaning, such as theme or message.', xp: 10 }
+
+    teach: [
+      {
+        type: 'text',
+        title: 'Main Idea Across Multiple Subjects',
+        body: "When a passage discusses multiple people or topics, look for the main idea that connects them all. Each person or example is a supporting detail. The main idea is the bigger point the author is making about all of them together."
+      }
     ],
-    wrapUp: { title: 'Quest Complete, King! 👑', text: 'You identified the main idea behind Black invention: brilliance, courage, and lasting global impact.', badge: 'Innovation Scholar' }
+
+    activities: [
+      {
+        id: 'diaspora-d3-q1',
+        type: 'mcq',
+        prompt: 'What is the main idea that connects all three inventors in this passage?',
+        hint: 'What do Garrett Morgan, Lewis Latimer, and Charles Drew all have in common beyond being Black inventors?',
+        choices: [
+          'All three inventors worked for Thomas Edison',
+          'Despite facing discrimination, Black inventors made contributions that changed the world for everyone',
+          'Black inventors worked only in medicine and transportation',
+          'The government helped Black inventors get their patents'
+        ],
+        answer: 1,
+        correctFeedback: "Exactly. Each inventor faced systemic barriers — and each made world-changing contributions anyway. That is the main idea unifying all three.",
+        wrongFeedback: "Each person is a supporting detail. What bigger idea connects all three of them?",
+        xp: 16
+      },
+      {
+        id: 'diaspora-d3-q2',
+        type: 'true_false',
+        prompt: "Lewis Latimer is mentioned in the passage primarily because he worked with Thomas Edison.",
+        hint: "What is the most important thing the passage says Latimer contributed?",
+        answer: false,
+        correctFeedback: "Correct — Latimer is mentioned because HE figured out the carbon filament that made the light bulb practical. His contribution was the key invention, not just his connection to Edison.",
+        wrongFeedback: "The passage says Latimer worked with Edison, but the main point is what Latimer himself invented — the filament. That is why he matters.",
+        xp: 14
+      },
+      {
+        id: 'diaspora-d3-vocab',
+        type: 'match',
+        prompt: 'Match each word to its meaning.',
+        pairs: [
+          ['patented', 'officially registered an invention to protect the right to make and sell it'],
+          ['filament', 'a thin wire inside a light bulb that glows when electricity passes through it'],
+          ['plasma', 'the liquid part of blood, separate from blood cells'],
+          ['segregated', 'separated by race under official rules or laws']
+        ],
+        correctFeedback: "Excellent vocabulary, King. These are the words of science, law, and history. 📚",
+        wrongFeedback: "Not that one. Use the passage to help you match each word.",
+        xp: 14
+      },
+      {
+        id: 'diaspora-d3-q3',
+        type: 'mcq',
+        prompt: "Why does the author end the passage by noting the discrimination each inventor faced?",
+        hint: "What point does the author make in the final paragraph about the relationship between obstacles and achievement?",
+        choices: [
+          'To suggest that their inventions were less impressive because of the obstacles',
+          'To argue that their achievements were made possible partly by a fierce determination to prove what Black excellence could do',
+          'To show that racism no longer exists in America',
+          'To explain why their inventions took longer to be recognized'
+        ],
+        answer: 1,
+        correctFeedback: "Right — the author is making the point that the obstacles did not stop them. In fact, they fueled a determination that made the achievements even more significant.",
+        wrongFeedback: "Read the final sentence closely. The author says their achievements came 'partly because of' the obstacles — not despite them alone. What does that mean?",
+        xp: 14
+      }
+    ],
+
+    wrapUp: {
+      title: 'Quest Complete, King! 👑',
+      text: "You identified the main idea that connected three different inventors across different fields and eras — and you discovered that every modern convenience you use has Black hands in its history.",
+      badge: 'Innovation Scholar'
+    }
   },
-{
+
+  // ════════════════════════════════════════════════════════
+  // diaspora-d4 — Legacy Numbers (Math, 3.OA / 3.NBT / 3.MD)
+  // Four-phase: Review of all major operations + real data
+  // ════════════════════════════════════════════════════════
+  {
     id: 'diaspora-d4',
     worldId: 'diaspora',
     title: 'Legacy Numbers',

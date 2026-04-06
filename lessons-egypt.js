@@ -444,201 +444,118 @@ window.KT_LESSONS.egypt = [
   intro: {
     kicker: 'Kingdom of Egypt · Mission 3',
     text: "King, today you'll discover why the Nile River was the greatest gift to ancient Egypt. Read closely and uncover how one river helped build an entire civilization.",
-    sage: "Wise readers track how details build a big idea. Let's read with purpose, King. 🌊"
+    sage: "The Nile was more than water, King — it was life, food, travel, and power. Read like a scholar. 🌊"
   },
 
-  phase1_strategy: {
-    name: 'Main Idea + Supporting Details',
-    definition: 'The main idea is the biggest message. Supporting details are facts that prove it.',
-    model: 'Model: In a village story, the main idea is that teamwork builds success. Details include neighbors sharing tools, planting together, and celebrating a big harvest.',
-    how_to: [
-      'Ask: what is this part mostly about?',
-      'Circle details that repeat or connect to the same message.',
-      'Say the main idea in one clear sentence using your own words.'
+  reading: {
+    passage: [
+      "Of all the gifts Egypt received, none was greater than the Nile River. While the Sahara Desert around Egypt was harsh and dry, the Nile created a narrow ribbon of green, fertile land where life could grow.",
+      "Every summer, the Nile flooded its banks. This was not a disaster — it was a blessing. When the waters pulled back, they left behind a thick layer of dark, rich soil called silt. Egyptian farmers planted crops in this silt and grew huge harvests of wheat, barley, and vegetables.",
+      "Young Prince Kofi stood by the river, watching the water move past. His teacher, Grandmother Ayana, asked him to look beyond the green fields. Just past them, the land turned to dry yellow desert.",
+      "\"What if the Nile were not here?\" she asked. Kofi thought carefully. \"Then there would only be desert. No farms. No food.\" Grandmother Ayana nodded. \"And no Egypt at all.\"",
+      "The Nile was also Egypt's great highway. Boats carried grain, stone, gold, and people up and down the river. Without the Nile, even the giant stones for the pyramids could not have been moved from the quarries where they were cut.",
+      "As Prince Kofi watched the white sails of the boats, he understood the truth. The Nile was not just a river. It was the backbone of an entire civilization."
     ],
-    sage: 'Scholars do not guess the main idea — they prove it with details from the text.'
+    vocab: [
+      { term: 'fertile', definition: 'rich soil that helps plants grow well' },
+      { term: 'silt', definition: 'dark, rich soil left behind by floodwaters' },
+      { term: 'highway', definition: 'a main route used to move people and goods' },
+      { term: 'civilization', definition: 'an organized society with cities, culture, and government' }
+    ]
   },
 
-  phase2_vocab: [
+  teach: [
     {
-      word: 'fertile',
-      definition: 'good for growing many healthy plants',
-      sentence: 'The fertile land near the river helped farmers grow wheat and vegetables.'
-    },
-    {
-      word: 'silt',
-      definition: 'dark, rich soil left behind by floodwater',
-      sentence: 'After the flood, silt covered the fields and made the ground strong for planting.'
-    },
-    {
-      word: 'quarries',
-      definition: 'places where people cut stone from the earth',
-      sentence: 'Workers moved giant blocks from quarries to building sites along the Nile.'
-    },
-    {
-      word: 'civilization',
-      definition: 'a society with organized cities, work, leaders, and culture',
-      sentence: 'Egypt became a strong civilization because the Nile supported farming, trade, and travel.'
+      type: 'text',
+      title: 'Reading Like a Scholar',
+      body: 'Strong readers look for key details, cause and effect, word meaning, and the big idea the author wants us to understand.'
     }
   ],
 
-  phase3_guided: {
-    sections: [
-      {
-        id: 'egypt-e3-s1',
-        title: 'Green Life Beside the Desert',
-        passage: [
-          'The Sahara around Egypt was hot and dry, but the Nile created a ribbon of green land where crops could grow.',
-          'Each summer, floodwater spread over the banks. When it pulled back, it left rich silt that helped farmers plant huge harvests.'
-        ],
-        questions: [
-          {
-            id: 'egypt-e3-s1-q1',
-            type: 'mcq',
-            prompt: 'Which detail best supports the main idea that the Nile gave Egypt life?',
-            hint: 'Pick the detail that shows how people got food.',
-            choices: [
-              'The desert was yellow and dry',
-              'Floodwater left rich silt for planting crops',
-              'The Nile had white sails on boats',
-              'A prince stood near the water'
-            ],
-            answer: 1,
-            correctFeedback: 'Exactly. Rich silt led to strong harvests, which gave people food and stability.',
-            wrongFeedback: 'Look for the detail that explains how the Nile helped people survive and thrive.',
-            explanation: 'The silt detail shows direct support for farming, which is a key part of life.',
-            xp: 8
-          }
-        ]
-      },
-      {
-        id: 'egypt-e3-s2',
-        title: 'A Lesson in Leadership',
-        passage: [
-          'Prince Kofi listened as Grandmother Ayana asked, “What if the Nile were not here?”',
-          'He answered, “Then there would be no farms and no food.” Her question helped him see how one river supported a whole nation.'
-        ],
-        questions: [
-          {
-            id: 'egypt-e3-s2-q1',
-            type: 'true_false',
-            prompt: 'Kofi learns that Egypt depended on the Nile for more than water alone.',
-            hint: 'Think about what would disappear without the river.',
-            answer: true,
-            correctFeedback: 'Correct. The dialogue shows the Nile supported food, land use, and the nation’s future.',
-            wrongFeedback: 'The passage says no farms and no food without the Nile, showing total dependence.',
-            explanation: 'The question from Ayana leads Kofi to the main idea: the Nile sustained Egypt.',
-            xp: 8
-          }
-        ]
-      },
-      {
-        id: 'egypt-e3-s3',
-        title: 'Egypt’s River Highway',
-        passage: [
-          'The Nile was Egypt’s highway. Boats carried grain, gold, and stone from place to place.',
-          'Even pyramid stones were moved from quarries by river travel, linking workers, leaders, and builders across the kingdom.'
-        ],
-        questions: [
-          {
-            id: 'egypt-e3-s3-q1',
-            type: 'input',
-            prompt: 'In 3–5 words, name one big job the Nile did besides helping crops grow.',
-            hint: 'Think transportation.',
-            answer: 'moved people and goods',
-            correctFeedback: 'Strong reading. The Nile connected Egypt through travel and trade.',
-            wrongFeedback: 'Use a short phrase from the passage idea about boats, travel, or transport.',
-            explanation: 'The text calls the Nile a highway because it moved people and goods efficiently.',
-            xp: 9
-          }
-        ]
-      }
-    ],
-    close_reading: {
-      title: 'Close Reading: The Backbone Line',
-      excerpt: 'The Nile was not just a river. It was the backbone of an entire civilization.',
-      question: {
-        id: 'egypt-e3-close-q1',
-        type: 'mcq',
-        prompt: 'What does the word “backbone” mean in this sentence?',
-        hint: 'Think about what a backbone does for a body.',
-        choices: [
-          'A river shaped like a spine',
-          'The main support that keeps civilization strong',
-          'A famous Egyptian fish',
-          'A tool used by farmers'
-        ],
-        answer: 1,
-        correctFeedback: 'Yes. “Backbone” is a metaphor for core support that holds everything together.',
-        wrongFeedback: 'The sentence is figurative language: backbone means essential support, not a literal spine.',
-        explanation: 'The author uses “backbone” to show Egypt relied on the Nile for many systems of life.',
-        xp: 8
-      }
-    }
-  },
-
-  phase4_test: [
+  activities: [
     {
-      id: 'egypt-e3-t1',
+      id: 'egypt-e3-q1',
       type: 'mcq',
-      excerpt: 'Every summer, the Nile flooded its banks. When the water pulled back, it left rich silt where farmers planted crops.',
-      prompt: 'Which main idea is best supported by this excerpt?',
+      prompt: 'According to the passage, what did the Nile leave behind after its summer floods?',
+      hint: 'Look in the second paragraph for the special soil left after the water pulled back.',
       choices: [
-        'Floods only destroyed Egyptian farms',
-        'The Nile helped Egypt grow food',
-        'Egyptian farmers avoided the Nile',
-        'Silt made the desert spread faster'
+        'Sand and rocks from the desert',
+        'A thick layer of dark, rich soil called silt',
+        'Large stones for building pyramids',
+        'Fresh water pools that stayed all year'
       ],
       answer: 1,
-      hint_disabled: true,
-      correctFeedback: 'Correct. The excerpt explains how flooding and silt supported farming and food supply.',
-      wrongFeedback: 'The excerpt says farmers planted in rich silt after floods, which shows the Nile supported food production.',
+      correctFeedback: "Yes! The passage says the Nile left behind 'a thick layer of dark, rich soil called silt.'",
+      wrongFeedback: 'Go back to paragraph two. Look for the exact word that names the rich soil.',
       xp: 10
     },
     {
-      id: 'egypt-e3-t2',
-      type: 'true_false',
-      excerpt: '“What if the Nile were not here?” Ayana asked. Kofi replied, “Then there would be no farms. No food.”',
-      prompt: 'This dialogue supports the idea that Egypt depended on the Nile to survive.',
-      answer: true,
-      hint_disabled: true,
-      correctFeedback: 'Exactly. The characters explain that without the Nile, food systems would collapse.',
-      wrongFeedback: 'Kofi says no Nile means no farms and no food, which directly shows dependence for survival.',
-      xp: 10
-    },
-    {
-      id: 'egypt-e3-t3',
+      id: 'egypt-e3-q2',
       type: 'mcq',
-      excerpt: 'The Nile was Egypt’s great highway. Boats carried grain, stone, gold, and people up and down the river.',
-      prompt: 'Why does the author call the Nile a “highway”?',
+      prompt: 'Why were Egyptian farmers able to grow such large harvests?',
+      hint: 'Think about cause and effect. What did the Nile do that helped crops grow?',
       choices: [
-        'It was paved with stones',
-        'It was the main route for transportation and trade',
-        'It was only used by soldiers',
-        'It flowed in straight lines like roads'
+        'Egypt received heavy rain every year',
+        'Farmers had better tools than other people',
+        'The Nile floods left rich silt that made the soil great for crops',
+        'The Pharaoh ordered everyone to work harder'
+      ],
+      answer: 2,
+      correctFeedback: 'Exactly. The Nile left rich silt behind, and that made farming possible.',
+      wrongFeedback: 'The passage does not mention heavy rain or better tools. Focus on what the Nile left behind.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-vocab',
+      type: 'match',
+      prompt: 'Match each vocabulary word to its meaning.',
+      pairs: [
+        ['silt', 'dark, rich soil left behind by floodwaters'],
+        ['fertile', 'able to produce large amounts of crops'],
+        ['civilization', 'an organized society with cities and culture'],
+        ['highway', 'a main route used to move people and goods']
+      ],
+      correctFeedback: 'Excellent work, King. Your word power is growing strong. 📚',
+      wrongFeedback: 'Not quite. Try another match, King.',
+      xp: 10
+    },
+    {
+      id: 'egypt-e3-q3',
+      type: 'mcq',
+      prompt: 'In the passage, the Nile is called Egypt’s great “highway.” What does that comparison mean?',
+      hint: 'Think about what a highway does. How did the Nile do the same job?',
+      choices: [
+        'The Nile was a paved road built by the Pharaoh',
+        'The Nile was the main route for moving people and goods across Egypt',
+        'The Nile was the fastest river in Africa',
+        'The Nile looked like a road from above'
       ],
       answer: 1,
-      hint_disabled: true,
-      correctFeedback: 'Right. The river functioned like a transportation network that connected cities and resources.',
-      wrongFeedback: 'The excerpt lists boats moving people and goods, showing “highway” means major travel and trade route.',
+      correctFeedback: 'Perfect. Like a highway, the Nile helped move people and goods from place to place.',
+      wrongFeedback: 'This is a comparison, not a real road. Think about what highways and rivers can both do.',
       xp: 10
     },
     {
-      id: 'egypt-e3-t4',
-      type: 'input',
-      excerpt: 'The Nile was not just a river. It was the backbone of an entire civilization.',
-      prompt: 'Type one word that describes the Nile’s role in this excerpt.',
-      answer: 'essential',
-      hint_disabled: true,
-      correctFeedback: 'Excellent. “Essential” matches the idea of backbone as vital support.',
-      wrongFeedback: '“Backbone” means the most important support, so your word should show that vital role.',
+      id: 'egypt-e3-q4',
+      type: 'mcq',
+      prompt: 'At the end, the author says the Nile was “the backbone of an entire civilization.” What is the main message?',
+      hint: 'A backbone supports the whole body. What did the Nile support in Egypt?',
+      choices: [
+        'The Nile looked like a backbone',
+        'The Nile was only important for farmers',
+        'Egypt depended on the Nile for life, farming, travel, and growth',
+        'The Nile was the most beautiful river in the world'
+      ],
+      answer: 2,
+      correctFeedback: 'KING! 👑 That is the big idea. Egypt depended on the Nile for almost everything.',
+      wrongFeedback: 'Think bigger than farming. What would Egypt have been without the Nile?',
       xp: 10
     }
   ],
 
   wrapUp: {
     title: 'The Nile’s Secret Revealed! 🌊',
-    text: 'You proved that the Nile powered Egypt through food, travel, and leadership. That is how civilizations rise and endure.',
+    text: 'You discovered that the Nile was not just a river — it was the force that helped Egypt live, grow, travel, and thrive.',
     badge: 'River Scholar'
   }
 },
@@ -836,162 +753,125 @@ window.KT_LESSONS.egypt = [
   title: 'Warriors of the South',
   subject: 'reading',
   grade: '3',
-  standard: 'RI.3.3',
   xp: 40,
   crownReward: 1,
-  estMinutes: 8,
+  estMinutes: 6,
 
   intro: {
     kicker: 'Nubia · Mission 1',
-    text: 'King, travel into mighty Nubia, the Land of the Bow. In this quest, you will trace how daily training shaped strong leadership and protection.',
-    sage: 'Wise warriors train before danger comes. Follow each cause-and-effect chain, King. ⚔️'
+    text: 'King, travel south into mighty Nubia, the Land of the Bow. Read closely to learn how Nubian warriors trained their minds as well as their weapons.',
+    sage: 'Real warriors prepare before the battle begins, King. Read like a scholar and uncover Queen Tiwa’s lesson. ⚔️'
   },
 
-  phase1_strategy: {
-    name: 'Cause and Effect',
-    definition: 'A cause is why something happens. An effect is what happens next because of that cause.',
-    model: 'Model: A village stores grain early (cause), so families have food during a drought (effect).',
-    how_to: [
-      'Find an action or event in the text.',
-      'Ask what happened because of that action.',
-      'Connect the two parts using because, so, or as a result.'
+  reading: {
+    passage: [
+      'South of Egypt, along the upper Nile River, stood the powerful kingdom of Nubia. For many years, Nubians and Egyptians traded, fought, and sometimes ruled each other. But the Nubians were never weak in spirit. They were known as some of the most skilled warriors and traders in the ancient world.',
+      'Nubia’s greatest strength was its archers. Ancient Egyptians even called Nubia “Ta-Seti,” which means “Land of the Bow.” Nubian archers were so respected that Egyptian pharaohs hired them as elite soldiers to guard the royal palace.',
+      'Each morning before breakfast, young Amara practiced with his bow. His grandmother, Queen Tiwa, watched him from the courtyard. “Your arrow must know the target before it flies,” she told him. “A warrior who shoots in anger misses. A warrior who shoots with patience never misses.”',
+      'Amara lowered his bow and asked, “But grandmother, what if the enemy attacks fast?” Queen Tiwa smiled. “Then your preparation today is your protection tomorrow. Every morning you practice, you are building a wall that no arrow can break.”',
+      'The Nubians were not only powerful fighters. They were also master traders. Gold, ivory, ebony wood, and exotic animals traveled north from Nubia into Egypt and beyond. Their merchants traveled dangerous roads and made the kingdom prosperous for centuries.',
+      'Amara released three arrows in quick succession. All three struck the center of the target. Queen Tiwa nodded. “Now you understand,” she said softly. “Strength is built before the battle begins.”'
     ],
-    sage: 'Great readers do what great archers do: they track the path from start to result.'
+    vocab: [
+      { term: 'archers', definition: 'skilled fighters who use bows and arrows' },
+      { term: 'patience', definition: 'the ability to stay calm and wait for the right moment' },
+      { term: 'prosperous', definition: 'wealthy and successful' },
+      { term: 'succession', definition: 'one right after another' }
+    ]
   },
 
-  phase2_vocab: [
-    { word: 'archers', definition: 'fighters who use bows and arrows', sentence: 'Nubian archers trained with focus every morning.' },
-    { word: 'patience', definition: 'calm waiting and self-control', sentence: 'Queen Tiwa taught that patience made each shot stronger.' },
-    { word: 'prosperous', definition: 'successful and wealthy', sentence: 'Nubia became prosperous through skilled trade and planning.' },
-    { word: 'succession', definition: 'one after another', sentence: 'Amara released three arrows in quick succession.' }
+  teach: [
+    {
+      type: 'text',
+      title: 'Read for the Big Lesson',
+      body: 'Strong readers notice details, causes, word meanings, and the big idea the author wants us to learn.'
+    }
   ],
 
-  phase3_guided: {
-    sections: [
-      {
-        id: 'nubia-n1-s1',
-        title: 'Land of the Bow',
-        passage: [
-          'Nubia was known as Ta-Seti, the Land of the Bow, because its archers were highly skilled.',
-          'Egyptian rulers often hired Nubian archers to guard important places.'
-        ],
-        questions: [
-          {
-            id: 'nubia-n1-s1-q1',
-            type: 'mcq',
-            prompt: 'What effect came from Nubia having skilled archers?',
-            hint: 'Look for what happened because of their skill.',
-            choices: [
-              'Other kingdoms asked them to protect royal places',
-              'Nubia stopped using bows',
-              'The Nile River disappeared',
-              'No one traded with Nubia'
-            ],
-            answer: 0,
-            correctFeedback: 'Correct. Their skill caused other rulers to trust and hire them.',
-            wrongFeedback: 'The effect is in the second sentence: their reputation led to important jobs.',
-            explanation: 'Cause: skilled archers. Effect: they were hired to protect key places.',
-            xp: 8
-          }
-        ]
-      },
-      {
-        id: 'nubia-n1-s2',
-        title: 'Queen Tiwa’s Teaching',
-        passage: [
-          'Queen Tiwa told Amara, “Preparation today is protection tomorrow.”',
-          'Amara practiced daily, and in time his arrows struck the center of the target in quick succession.'
-        ],
-        questions: [
-          {
-            id: 'nubia-n1-s2-q1',
-            type: 'true_false',
-            prompt: 'Amara’s daily practice helped him become more accurate.',
-            hint: 'Connect his repeated action to the result in the second sentence.',
-            answer: true,
-            correctFeedback: 'Yes. Daily practice caused stronger, more accurate shooting.',
-            wrongFeedback: 'Practice was the cause, and accurate shots were the effect.',
-            explanation: 'The passage shows a direct chain: practice first, accuracy after.',
-            xp: 8
-          }
-        ]
-      }
-    ],
-    close_reading: {
-      title: 'Close Reading: One Sentence, One Chain',
-      excerpt: 'Preparation today is protection tomorrow.',
-      question: {
-        id: 'nubia-n1-close-q1',
-        type: 'mcq',
-        prompt: 'Which choice best explains this sentence?',
-        hint: 'Find the cause and effect inside the sentence.',
-        choices: [
-          'Preparing now causes safety later.',
-          'Safety comes first, then preparation.',
-          'The sentence is only about weather.',
-          'There is no relationship between actions and results.'
-        ],
-        answer: 0,
-        correctFeedback: 'Exactly. The sentence teaches a clear cause-and-effect idea.',
-        wrongFeedback: 'Look at the order: first preparation, then later protection.',
-        explanation: 'Cause: preparation today. Effect: protection tomorrow.',
-        xp: 8
-      }
-    }
-  },
-
-  phase4_test: [
+  activities: [
     {
-      id: 'nubia-n1-t1',
+      id: 'nubia-e1-q1',
       type: 'mcq',
-      excerpt: 'Nubian archers trained daily, so rulers trusted them to guard royal roads.',
-      prompt: 'What is the cause in this excerpt?',
-      choices: ['Rulers trusted them', 'They trained daily', 'Royal roads existed', 'Trade moved north'],
-      answer: 1,
-      hint_disabled: true,
-      correctFeedback: 'Correct. Daily training is the first action that leads to trust.',
-      wrongFeedback: 'The cause is the starting action. Here, training comes before trust.',
+      prompt: 'What did ancient Egyptians call Nubia, and what did that name mean?',
+      hint: 'Look in the second paragraph for both the name and its meaning.',
+      choices: [
+        '"Land of the Bow" — because of Nubia’s famous archers',
+        '"Land of Gold" — because Nubia had giant gold mines',
+        '"Land of the Pharaoh" — because Egypt fully ruled Nubia',
+        '"Land of Arrows" — because Nubians invented arrows'
+      ],
+      answer: 0,
+      correctFeedback: 'Exactly. Egyptians called Nubia “Ta-Seti,” which meant “Land of the Bow.”',
+      wrongFeedback: 'Go back to paragraph two. The passage gives both the name and the meaning together.',
       xp: 10
     },
     {
-      id: 'nubia-n1-t2',
-      type: 'true_false',
-      excerpt: 'Because Amara practiced each morning, his shots became steady.',
-      prompt: 'This excerpt shows cause and effect.',
-      answer: true,
-      hint_disabled: true,
-      correctFeedback: 'Correct. “Because” directly links the cause to the effect.',
-      wrongFeedback: 'The word “because” signals that practice caused the steady shots.',
-      xp: 10
-    },
-    {
-      id: 'nubia-n1-t3',
+      id: 'nubia-e1-q2',
       type: 'mcq',
-      excerpt: 'Merchants traveled safely after trained guards protected the roads.',
-      prompt: 'Which effect is stated in the excerpt?',
-      choices: ['Guards were trained', 'Roads crossed the desert', 'Merchants traveled safely', 'Arrows were wooden'],
+      prompt: 'According to Queen Tiwa, why is daily practice so important for a warrior?',
+      hint: 'Focus on what she says about preparation today and protection tomorrow.',
+      choices: [
+        'Because the enemy might attack at any second',
+        'Because lazy warriors are punished by the Pharaoh',
+        'Because preparation today becomes protection tomorrow',
+        'Because practice makes arrows fly faster than others'
+      ],
       answer: 2,
-      hint_disabled: true,
-      correctFeedback: 'Yes. Safe travel happened because protection improved.',
-      wrongFeedback: 'The effect is what happened afterward: safer merchant travel.',
+      correctFeedback: 'Outstanding. Queen Tiwa teaches that practice now protects you later.',
+      wrongFeedback: 'Look closely at Queen Tiwa’s exact words about preparation and protection.',
       xp: 10
     },
     {
-      id: 'nubia-n1-t4',
-      type: 'input',
-      excerpt: 'Practice built skill, and skill built confidence.',
-      prompt: 'Type one word that names the reading skill used in this excerpt.',
-      answer: 'cause and effect',
-      hint_disabled: true,
-      correctFeedback: 'Strong work. You identified the exact strategy: cause and effect.',
-      wrongFeedback: 'The excerpt links one result to the next in a chain. Name that strategy.',
+      id: 'nubia-e1-vocab',
+      type: 'match',
+      prompt: 'Match each Nubian warrior word to its meaning.',
+      pairs: [
+        ['Archer', 'A skilled fighter who uses a bow and arrow'],
+        ['Patience', 'The ability to stay calm and wait for the right moment'],
+        ['Prosperous', 'Very wealthy and successful'],
+        ['Succession', 'Things happening one right after another']
+      ],
+      correctFeedback: 'Excellent work, King. Your warrior vocabulary is strong. 📚',
+      wrongFeedback: 'Not quite. Try matching the words again.',
       xp: 10
+    },
+    {
+      id: 'nubia-e1-q3',
+      type: 'mcq',
+      prompt: 'In the passage, what does the word “succession” most likely mean?',
+      hint: 'Think about the sentence: Amara shot three arrows in quick succession.',
+      choices: [
+        'With great force and power',
+        'One right after another without stopping',
+        'Very slowly and carefully',
+        'Spinning around in a circle'
+      ],
+      answer: 1,
+      correctFeedback: 'Yes. “Succession” means one thing following another quickly.',
+      wrongFeedback: 'The word “quick” is a clue. Think about the timing of the arrows.',
+      xp: 5
+    },
+    {
+      id: 'nubia-e1-q4',
+      type: 'mcq',
+      prompt: 'What is the main lesson Queen Tiwa is teaching Amara?',
+      hint: 'Think about patience, practice, and her final message at the end.',
+      choices: [
+        'Arrows are stronger than swords in every battle',
+        'True strength comes from patient preparation before challenges arrive',
+        'Grandmothers always know more than warriors',
+        'Nubian archers never miss from any distance'
+      ],
+      answer: 1,
+      correctFeedback: 'KING! 👑 That is the heart of the story. Real strength is built through calm, steady preparation.',
+      wrongFeedback: 'Look at all of Queen Tiwa’s advice together. What big idea connects patience, practice, and protection?',
+      xp: 5
     }
   ],
 
   wrapUp: {
     title: 'Warrior Scholar! 👑',
-    text: 'You traced how Nubia turned preparation into power. That is wise reading and wise leadership.',
+    text: 'You conquered Nubia’s first challenge and learned a true warrior’s lesson: strength is built before the battle begins.',
     badge: 'Land of the Bow Reader'
   }
 },
@@ -1188,172 +1068,124 @@ window.KT_LESSONS.egypt = [
   title: 'The Black Pharaohs',
   subject: 'reading',
   grade: '3',
-  standard: 'RI.3.2',
   xp: 40,
   crownReward: 1,
-  estMinutes: 8,
+  estMinutes: 6,
 
   intro: {
     kicker: 'Nubia · Mission 3',
-    text: 'King, read how Nubian rulers led Egypt with strength and respect. Your mission is to find the main idea across the whole text.',
-    sage: 'Main idea is the crown of a passage. Gather the details and find the big message. 👑'
+    text: 'King, this quest tells the powerful story of Nubian rulers who conquered Egypt and then led it with wisdom and respect. Read closely and uncover what true leadership looks like.',
+    sage: 'Power can win a battle, King — but respect wins hearts. Let’s learn from the Black Pharaohs. 👑'
   },
 
-  phase1_strategy: {
-    name: 'Main Idea',
-    definition: 'The main idea is the most important message the author wants readers to understand.',
-    model: 'Model: A school starts a garden, a reading club, and a science fair. The main idea is that students are building a stronger learning community.',
-    how_to: [
-      'Notice details that repeat across the passage.',
-      'Ask what those details say together.',
-      'State one big message that fits all key details.'
+  reading: {
+    passage: [
+      'One of history’s most remarkable stories is the rise of the Nubian pharaohs. Around 750 BCE, a Nubian king named Piye marched north and conquered Egypt, one of the most powerful kingdoms in the ancient world.',
+      'Piye and the rulers after him became Egypt’s 25th Dynasty. These kings are often called the Black Pharaohs. They ruled Egypt for nearly 100 years. But Piye was different from many conquerors. He gave strict orders that Egyptian temples must not be harmed, and he followed Egyptian religious ceremonies very carefully.',
+      'Young Zara once asked her grandfather, a royal scribe, why a Nubian king would respect Egyptian customs after winning. Her grandfather smiled and answered, “Conquest can take a city. Only respect can keep it.”',
+      'The Nubian pharaohs built pyramids, expanded trade, and restored temples that had fallen into disrepair. They did not see themselves as outsiders. They saw themselves as guardians of Egyptian civilization, responsible for protecting and strengthening it.',
+      'Under Nubian rule, Egypt experienced a cultural revival. Art, architecture, and religion all grew stronger. The Nubians showed that leadership is not only about military power. It is also about wisdom, respect, and lifting up what has been placed in your care.'
     ],
-    sage: 'Do not pick one small fact. Pick the idea that holds the whole passage together.'
+    vocab: [
+      { term: 'devout', definition: 'deeply respectful of religion and sacred practices' },
+      { term: 'conquest', definition: 'taking control by force or war' },
+      { term: 'guardian', definition: 'a protector who keeps something safe' },
+      { term: 'revival', definition: 'a return to strength, activity, or success' }
+    ]
   },
 
-  phase2_vocab: [
-    { word: 'conquest', definition: 'taking control of a place by force', sentence: 'Piye’s conquest gave him power, but his next choices showed leadership.' },
-    { word: 'guardian', definition: 'someone who protects something valuable', sentence: 'The rulers saw themselves as guardians of Egypt’s temples and culture.' },
-    { word: 'revival', definition: 'a return to strength', sentence: 'Under their rule, Egypt experienced a cultural revival in art and learning.' },
-    { word: 'customs', definition: 'the traditions of a people', sentence: 'Piye respected local customs after winning the war.' }
+  teach: [
+    {
+      type: 'text',
+      title: 'Leadership and Respect',
+      body: 'Strong readers look for the author’s big message. In this passage, the author wants us to think about what makes a leader truly great.'
+    }
   ],
 
-  phase3_guided: {
-    sections: [
-      {
-        id: 'nubia-n3-s1',
-        title: 'Power with Respect',
-        passage: [
-          'Piye conquered Egypt around 750 BCE, but he ordered that temples be protected.',
-          'He followed local ceremonies, showing respect after victory.'
-        ],
-        questions: [
-          {
-            id: 'nubia-n3-s1-q1',
-            type: 'mcq',
-            prompt: 'Which detail best supports a main idea of respectful leadership?',
-            hint: 'Choose the detail that shows how he ruled, not just that he won.',
-            choices: [
-              'He protected temples and followed ceremonies',
-              'He marched north',
-              'He wore royal clothing',
-              'He lived near the Nile'
-            ],
-            answer: 0,
-            correctFeedback: 'Right. That detail supports the idea that leadership included respect.',
-            wrongFeedback: 'Find the detail that shows values, not just military action.',
-            explanation: 'Protecting temples supports a broader message about respectful rule.',
-            xp: 8
-          }
-        ]
-      },
-      {
-        id: 'nubia-n3-s2',
-        title: 'What Lasted',
-        passage: [
-          'The Nubian pharaohs restored temples, expanded trade, and supported art and religion.',
-          'People remembered them as leaders who protected and strengthened civilization.'
-        ],
-        questions: [
-          {
-            id: 'nubia-n3-s2-q1',
-            type: 'input',
-            prompt: 'Type a short main-idea phrase for these two sentences.',
-            hint: 'Use one big message that includes protection and growth.',
-            answer: 'they led with strength and care',
-            correctFeedback: 'Excellent. That phrase captures the larger message of the details.',
-            wrongFeedback: 'Try a bigger idea that includes both building and protecting.',
-            explanation: 'Main idea should include multiple details, not one fact.',
-            xp: 8
-          }
-        ]
-      }
-    ],
-    close_reading: {
-      title: 'Close Reading: Main Idea Check',
-      excerpt: 'Conquest can take a city. Only respect can keep it.',
-      question: {
-        id: 'nubia-n3-close-q1',
-        type: 'mcq',
-        prompt: 'What main idea does this quote support?',
-        hint: 'Think about what kind of leadership lasts.',
-        choices: [
-          'Lasting leadership needs respect, not force alone.',
-          'Only cities near rivers can survive.',
-          'Leaders should avoid all traditions.',
-          'Winning one battle ends all problems.'
-        ],
-        answer: 0,
-        correctFeedback: 'Yes. The quote supports a main idea about respectful leadership.',
-        wrongFeedback: 'The sentence compares conquest with respect to show what lasts.',
-        explanation: 'Force can begin control, but respect sustains leadership.',
-        xp: 8
-      }
-    }
-  },
-
-  phase4_test: [
+  activities: [
     {
-      id: 'nubia-n3-t1',
+      id: 'nubia-e3-q1',
       type: 'mcq',
-      excerpt: 'Piye won Egypt, protected temples, and honored local customs.',
-      prompt: 'Which main idea best fits this excerpt?',
+      prompt: 'What did Pharaoh Piye do differently from many conquerors when he took over Egypt?',
+      hint: 'Look in the second paragraph for the actions that showed respect.',
       choices: [
-        'Leaders only need military power.',
-        'Great rulers combine strength with respect.',
-        'Temples are only for decoration.',
-        'All rulers avoid local traditions.'
+        'He burned Egyptian temples to show his power',
+        'He protected Egyptian temples and followed Egyptian religious customs carefully',
+        'He made Nubian the only language in Egypt',
+        'He refused to call himself a pharaoh'
       ],
       answer: 1,
-      hint_disabled: true,
-      correctFeedback: 'Correct. The details point to leadership that uses both power and respect.',
-      wrongFeedback: 'Use all details together: victory plus protection plus respect.',
+      correctFeedback: 'Exactly. Piye protected temples and respected Egyptian religious traditions.',
+      wrongFeedback: 'Go back to paragraph two and find the details that show Piye acted with respect.',
       xp: 10
     },
     {
-      id: 'nubia-n3-t2',
-      type: 'true_false',
-      excerpt: 'The rulers restored temples, supported trade, and encouraged learning.',
-      prompt: 'These details support the main idea that they strengthened civilization.',
-      answer: true,
-      hint_disabled: true,
-      correctFeedback: 'Correct. All three details point to building and strengthening society.',
-      wrongFeedback: 'Main idea comes from grouped details. These details all show growth and care.',
-      xp: 10
-    },
-    {
-      id: 'nubia-n3-t3',
+      id: 'nubia-e3-q2',
       type: 'mcq',
-      excerpt: 'They saw themselves as guardians, not outsiders.',
-      prompt: 'What does this line mostly suggest?',
+      prompt: 'According to Zara’s grandfather, why did Piye respect Egyptian customs after conquering Egypt?',
+      hint: 'Focus on the line about conquest and respect.',
       choices: [
-        'They ignored Egypt’s future.',
-        'They felt responsible to protect what they ruled.',
-        'They planned to leave quickly.',
-        'They refused to govern.'
+        'He was afraid Egyptian soldiers would rebel',
+        'Egyptian customs were proven to be the best',
+        'Respect wins people’s loyalty in a way conquest alone cannot',
+        'He was born in Egypt'
+      ],
+      answer: 2,
+      correctFeedback: 'Outstanding. The grandfather teaches that conquest can take control, but respect helps keep people loyal.',
+      wrongFeedback: 'Read the grandfather’s words again. He compares what conquest can do and what respect can do.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e3-vocab',
+      type: 'match',
+      prompt: 'Match each royal word to its meaning.',
+      pairs: [
+        ['Devout', 'Deeply religious or showing strong reverence'],
+        ['Conquest', 'The act of taking control by force or war'],
+        ['Guardian', 'A protector responsible for keeping something safe'],
+        ['Revival', 'A return to strength, activity, or popularity']
+      ],
+      correctFeedback: 'Excellent, King. Your royal vocabulary is growing strong. 📚',
+      wrongFeedback: 'Not quite. Try matching the words again.',
+      xp: 10
+    },
+    {
+      id: 'nubia-e3-q3',
+      type: 'mcq',
+      prompt: 'In the passage, the Nubian pharaohs are called “guardians” of Egyptian civilization. What does that mean?',
+      hint: 'Think about what a guardian does.',
+      choices: [
+        'They were hired guards for the Egyptian king',
+        'They saw themselves as protectors of what they had inherited',
+        'They built giant walls around Egypt',
+        'They hid all Egyptian treasures underground'
       ],
       answer: 1,
-      hint_disabled: true,
-      correctFeedback: 'Yes. “Guardians” supports a main idea of responsible leadership.',
-      wrongFeedback: 'Focus on the word “guardians.” It points to protection and responsibility.',
-      xp: 10
+      correctFeedback: 'Yes. They believed it was their duty to protect and strengthen Egyptian civilization.',
+      wrongFeedback: 'The passage explains that they felt responsible for keeping Egyptian civilization safe and strong.',
+      xp: 5
     },
     {
-      id: 'nubia-n3-t4',
-      type: 'input',
-      excerpt: 'Power can win a battle, but respect wins hearts.',
-      prompt: 'Type the strategy skill you used to answer these questions.',
-      answer: 'main idea',
-      hint_disabled: true,
-      correctFeedback: 'Great work. You used the main idea strategy to read deeply.',
-      wrongFeedback: 'You had to choose the big message across details. Name that skill.',
-      xp: 10
+      id: 'nubia-e3-q4',
+      type: 'mcq',
+      prompt: 'What is the main message of this passage about great leadership?',
+      hint: 'Look closely at the final paragraph.',
+      choices: [
+        'Great leaders must be the strongest fighters',
+        'Great leaders force their own culture on others',
+        'True leadership combines strength with wisdom, respect, and lifting others up',
+        'Only people born into royalty can be great leaders'
+      ],
+      answer: 2,
+      correctFeedback: 'KING! 👑 That is the big idea. Real leadership is not just power — it is wisdom, respect, and care for others.',
+      wrongFeedback: 'The last paragraph tells you directly what leadership is and is not about.',
+      xp: 5
     }
   ],
 
   wrapUp: {
     title: 'Royal Scholar! 👑',
-    text: 'You identified the main idea of the Black Pharaohs: strong leadership protects, restores, and uplifts.',
+    text: 'You uncovered the story of the Black Pharaohs and learned a powerful truth: the greatest leaders protect, respect, and uplift.',
     badge: 'Dynasty Reader'
   }
 },

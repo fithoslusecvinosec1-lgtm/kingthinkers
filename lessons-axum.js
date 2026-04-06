@@ -18,82 +18,105 @@ window.KT_LESSONS.axum = [
 
     intro: {
       kicker: 'Kingdom of Axum · Quest 1',
-      text: 'King, discover how Axum used trade, planning, and engineering to raise giant stone obelisks.',
-      sage: 'Track how one action led to the next. That is how empires are built. 🗿'
+      text: "King, the Kingdom of Axum rose in what is now Ethiopia and Eritrea around 100 CE, and it became one of the most powerful empires in the ancient world. The Aksumites built towering stone obelisks that still stand today — some over 80 feet tall — carved from single blocks of granite. Read closely to discover how and why they built these incredible structures.",
+      sage: "The obelisks of Axum have stood for nearly two thousand years. Find out what it took to build them. 🗿"
     },
 
-    phase1_strategy: {
-      name: 'Cause and Effect',
-      definition: 'A cause explains why something happened. An effect explains what happened as a result.',
-      model: 'Model: A town builds canals (cause), so fields receive water and crops grow (effect).',
-      how_to: [
-        'Find the first action or condition.',
-        'Find the result that followed.',
-        'Link them in order using because, so, or as a result.'
+    reading: {
+      passage: [
+        "The Kingdom of Axum was located at the crossroads of trade routes between Africa, Arabia, and the Mediterranean world. Because of this position, Axum became fabulously wealthy — its merchants traded gold, ivory, and incense with Rome, Persia, India, and Arabia. By the third century CE, Axum had become one of the most powerful kingdoms on Earth.",
+        "The Aksumite kings used their wealth to build towering stone obelisks called stelae. The largest stele ever erected stood 108 feet tall and weighed an estimated 500 tons — making it one of the largest structures ever built from a single stone. The builders carved the rock into the shape of a multi-story building and engraved detailed windows and doors into the stone.",
+        "Quarrying, carving, and transporting these massive stones required extraordinary organization. Workers had to cut the stone from a quarry miles away, carve intricate designs into it, and then transport it using wooden sledges, ropes, and the coordinated labor of thousands of people. The engineering required to erect the obelisks was just as impressive — large ramps of earth and timber were used to raise the stones to vertical position.",
+        "The stelae served as monuments to Axum's power and as markers for underground royal tombs. Each obelisk announced to the world: this kingdom is mighty, organized, and capable of extraordinary things.",
+        "The largest stele fell at some unknown point in history, but many others still stand in the ancient city. One of the smaller obelisks was taken to Rome in 1937 and was only returned to Ethiopia in 2005 — where it was re-erected near its original position."
       ],
-      sage: 'In history, effects often become new causes. Follow the full chain.'
+      vocab: [
+        { term: 'obelisks', definition: 'tall, four-sided pillars that taper to a point at the top' },
+        { term: 'quarrying', definition: 'cutting stone or other materials from a natural rock formation' },
+        { term: 'intricate', definition: 'very detailed and complicated' },
+        { term: 'erected', definition: 'built and set upright' }
+      ]
     },
 
-    phase2_vocab: [
-      { word: 'obelisk', definition: 'a tall stone monument that narrows toward the top', sentence: 'Axum carved each obelisk from one huge stone block.' },
-      { word: 'quarry', definition: 'a place where stone is cut from the earth', sentence: 'Workers pulled granite from the quarry before carving began.' },
-      { word: 'intricate', definition: 'very detailed and carefully made', sentence: 'Builders carved intricate window patterns into stone.' },
-      { word: 'erected', definition: 'raised and set upright', sentence: 'Ramps and teamwork helped workers erect the monument.' }
+    teach: [
+      {
+        type: 'text',
+        title: 'Cause and Effect in Informational Text',
+        body: "In informational text, causes and effects explain how and why things happened. A cause answers 'why' — an effect answers 'what happened as a result.' Look for signal words: 'because,' 'as a result,' 'therefore,' 'which led to,' and 'so that.'"
+      }
     ],
 
-    phase3_guided: {
-      sections: [
-        {
-          id: 'axum-ax1-s1',
-          title: 'Trade Built Wealth',
-          passage: [
-            'Axum sat at major trade crossroads between Africa, Arabia, and the Mediterranean.',
-            'Because merchants passed through these routes, Axum gained great wealth.'
-          ],
-          questions: [{
-            id: 'axum-ax1-s1-q1', type: 'mcq', prompt: 'What effect came from Axum’s location?', hint: 'Look for what happened because of the crossroads.',
-            choices: ['Axum became isolated', 'Axum grew wealthy through trade', 'Axum stopped trading', 'Axum lost all merchants'], answer: 1,
-            correctFeedback: 'Yes. Crossroads location caused trade wealth.', wrongFeedback: 'The passage links location to growing wealth directly.', explanation: 'Cause: trade crossroads. Effect: rising wealth.', xp: 8
-          }]
-        },
-        {
-          id: 'axum-ax1-s2',
-          title: 'Wealth to Monuments',
-          passage: [
-            'Aksumite rulers used wealth to fund huge stone projects.',
-            'As a result, workers carved and erected towering obelisks that showed national power.'
-          ],
-          questions: [{
-            id: 'axum-ax1-s2-q1', type: 'true_false', prompt: 'Axum’s wealth helped make large stone monuments possible.', hint: 'Connect resources to construction.', answer: true,
-            correctFeedback: 'Correct. Money and organization made monumental building possible.', wrongFeedback: 'The text says rulers used wealth to create giant monuments.', explanation: 'Cause: wealth and planning. Effect: obelisk construction.', xp: 8
-          }]
-        }
-      ],
-      close_reading: {
-        title: 'Close Reading: Engineering Chain',
-        excerpt: 'Workers cut stone, carved designs, and then raised the obelisk upright.',
-        question: {
-          id: 'axum-ax1-close-q1', type: 'mcq', prompt: 'Why is this sentence useful for cause and effect?', hint: 'Notice the sequence of actions.',
-          choices: ['It lists random facts', 'It shows ordered actions where each step enables the next', 'It only describes weather', 'It has no sequence'], answer: 1,
-          correctFeedback: 'Exactly. Each step causes the next step to be possible.', wrongFeedback: 'The sentence is a chain: cutting leads to carving, then raising.', explanation: 'Sequence reveals causal structure in informational text.', xp: 8
-        }
+    activities: [
+      {
+        id: 'axum-ax1-q1',
+        type: 'mcq',
+        prompt: "What was the main cause of Axum's great wealth?",
+        hint: 'Paragraph 1 explains why Axum became wealthy. Look for the key reason.',
+        choices: [
+          'The Aksumite kings were very smart',
+          'Axum was located at the crossroads of major trade routes between three continents',
+          'Axum had the largest army in Africa',
+          'Axum built the tallest obelisks in the world'
+        ],
+        answer: 1,
+        correctFeedback: "Correct. The location at a trade crossroads was the cause — and wealth was the effect.",
+        wrongFeedback: "The cause of Axum's wealth is explained in paragraph 1. Look for what gave them their trading advantage.",
+        xp: 14
+      },
+      {
+        id: 'axum-ax1-q2',
+        type: 'mcq',
+        prompt: 'What was one effect of Axum\'s wealth on its architecture?',
+        hint: 'What did the Aksumite kings DO with their wealth?',
+        choices: [
+          'They built a navy to control the sea',
+          'They used it to build massive stone obelisks as monuments of power',
+          'They invested it in schools and libraries',
+          'They sent it to Rome as tribute'
+        ],
+        answer: 1,
+        correctFeedback: "Right — wealth was the cause, and the obelisks were the effect. The kings used their resources to demonstrate their power.",
+        wrongFeedback: "Paragraph 2 tells us what the Aksumite kings did with their wealth. What did they build?",
+        xp: 12
+      },
+      {
+        id: 'axum-ax1-vocab',
+        type: 'match',
+        prompt: 'Match each word to its meaning.',
+        pairs: [
+          ['obelisks', 'tall, four-sided pillars that taper to a point at the top'],
+          ['quarrying', 'cutting stone or other materials from a natural rock formation'],
+          ['intricate', 'very detailed and complicated'],
+          ['erected', 'built and set upright']
+        ],
+        correctFeedback: "Strong work, King. These are the words of builders and engineers. 📚",
+        wrongFeedback: "Not quite. Use the passage context to help you match.",
+        xp: 12
+      },
+      {
+        id: 'axum-ax1-q3',
+        type: 'true_false',
+        prompt: "The return of the stolen obelisk to Ethiopia in 2005 had no cause-and-effect relationship with historical events.",
+        hint: 'Paragraph 5 mentions the obelisk was taken in 1937. What caused it to be away, and what caused its return?',
+        answer: false,
+        correctFeedback: "Correct — the obelisk was taken (cause) during the 1937 Italian occupation, and international pressure eventually caused its return in 2005. History always has cause-and-effect chains.",
+        wrongFeedback: "The obelisk was taken to Rome — that was an effect of an event in 1937. Its return was the effect of decades of diplomatic effort. Everything in history has causes and effects.",
+        xp: 12
       }
-    },
-
-    phase4_test: [
-      { id: 'axum-ax1-t1', type: 'mcq', excerpt: 'Axum controlled trade routes, so merchants brought wealth to the kingdom.', prompt: 'What is the cause?', choices: ['Merchants brought wealth', 'Axum controlled trade routes', 'The kingdom carved stone', 'Ramps were built'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. Control of routes came first and caused wealth growth.', wrongFeedback: 'Find the first event that made the result possible.', xp: 10 },
-      { id: 'axum-ax1-t2', type: 'true_false', excerpt: 'Because rulers funded the project, workers could carve giant obelisks.', prompt: 'This excerpt shows cause and effect.', answer: true, hint_disabled: true, correctFeedback: 'Yes. Funding is the cause, carving is the effect.', wrongFeedback: '“Because” links the action and result directly.', xp: 10 },
-      { id: 'axum-ax1-t3', type: 'mcq', excerpt: 'Engineers built ramps, and the stone was lifted upright.', prompt: 'Which effect is named?', choices: ['Engineers planned', 'Stone was lifted upright', 'Granite came from quarries', 'Merchants traded'], answer: 1, hint_disabled: true, correctFeedback: 'Right. The lifting is the effect of the engineering work.', wrongFeedback: 'The effect is what happened after ramps were built.', xp: 10 },
-      { id: 'axum-ax1-t4', type: 'input', excerpt: 'Trade wealth led to building power.', prompt: 'Type one word describing Axum’s growth in this excerpt.', answer: 'powerful', hint_disabled: true, correctFeedback: 'Great evidence-based word choice. The excerpt shows Axum becoming powerful.', wrongFeedback: 'Use a word from the excerpt’s meaning: trade wealth increased Axum’s strength.', xp: 10 }
     ],
 
     wrapUp: {
       title: 'Quest Complete, King! 👑',
-      text: 'You traced how Axum turned trade into engineering greatness through cause-and-effect steps.',
+      text: "You traced cause-and-effect relationships across nearly 2,000 years of Aksumite history — from trade routes to obelisks to international diplomacy. That is the power of reading informational text closely.",
       badge: 'Obelisk Scholar'
     }
   },
-{
+
+  // ════════════════════════════════════════════════════════
+  // axum-ax2 — Red Sea Trade Math (Math, 3.OA / 3.NBT)
+  // Four-phase: Multi-step problems + rounding
+  // ════════════════════════════════════════════════════════
+  {
     id: 'axum-ax2',
     worldId: 'axum',
     title: 'Red Sea Trade Math',
@@ -274,82 +297,105 @@ window.KT_LESSONS.axum = [
 
     intro: {
       kicker: 'Kingdom of Axum · Quest 3',
-      text: 'King, this passage explains Axum’s conversion to Christianity and presents more than one view of why it happened.',
-      sage: 'Today you will focus on author’s purpose: why did the author include these details? 📖'
+      text: "King, around 330 CE, the Kingdom of Axum became one of the first nations in the world to adopt Christianity as its official religion. This decision transformed the kingdom's art, architecture, and identity for centuries. Read closely — and think carefully about what the author most wants you to understand about this moment in history.",
+      sage: "Great changes in history always have a point of view. Find out what this author's perspective is. 📖"
     },
 
-    phase1_strategy: {
-      name: "Author's Purpose",
-      definition: 'Author’s purpose is the reason an author writes a text: to inform, explain, persuade, or a mix of these.',
-      model: 'Model: A writer describes a city’s clean-water project with numbers and interviews to show readers why the project matters.',
-      how_to: [
-        'Notice what the author spends the most time explaining.',
-        'Look for words that compare ideas like some, others, or however.',
-        'State what the author wants readers to understand when they finish reading.'
+    reading: {
+      passage: [
+        "In the early fourth century, a young man named Frumentius was shipwrecked on the coast of Axum. He was taken in by the royal court, where he eventually rose to become an advisor to the king. Frumentius was a Christian, and over time he introduced the faith to the Aksumite royal family.",
+        "Around 330 CE, King Ezana officially converted to Christianity and made it the state religion of Axum. This made Axum one of the first kingdoms in the world — and the first in Africa — to adopt Christianity at the national level. The decision came just years after the Roman Emperor Constantine had done the same for the Roman Empire.",
+        "The adoption of Christianity had profound effects on Aksumite culture. Churches were built across the kingdom, replacing earlier temples. The Ge'ez alphabet, already used to write Aksumite texts, was now used to translate the Bible. Art and architecture began to reflect Christian symbols and stories.",
+        "Some historians argue that Ezana's conversion was as much a political decision as a religious one — aligning Axum with the powerful Roman Empire strengthened trade relationships and gave Axum international credibility. Others believe the conversion was a genuine expression of personal and national faith.",
+        "Whatever the motivations, the effects were lasting. Christianity has remained central to Ethiopian identity for seventeen centuries. The Ethiopian Orthodox Church, which traces its origins to this moment, is one of the oldest Christian churches in the world."
       ],
-      sage: 'Purpose is not just topic. It is the author’s intention with that topic.'
+      vocab: [
+        { term: 'converted', definition: 'changed from one religion or belief to another' },
+        { term: 'profound', definition: 'very deep or significant in effect' },
+        { term: 'credibility', definition: 'the quality of being trusted and believed' },
+        { term: 'motivations', definition: 'the reasons behind a person\'s actions or decisions' }
+      ]
     },
 
-    phase2_vocab: [
-      { word: 'converted', definition: 'changed from one belief or religion to another', sentence: 'King Ezana converted and made Christianity the state religion.' },
-      { word: 'profound', definition: 'very deep and important', sentence: 'The decision had profound effects on art and learning.' },
-      { word: 'credibility', definition: 'being trusted and believed', sentence: 'Alliances gave Axum more credibility in world politics.' },
-      { word: 'motivations', definition: 'reasons for choosing an action', sentence: 'Historians discuss different motivations for Ezana’s decision.' }
+    teach: [
+      {
+        type: 'text',
+        title: "Author's Purpose and Point of View",
+        body: "Authors of informational texts have a purpose — they want you to understand something specific. They also sometimes present different perspectives on an event. Look for language like 'some argue' or 'others believe' — these signal that the author is presenting multiple viewpoints rather than claiming a single truth."
+      }
     ],
 
-    phase3_guided: {
-      sections: [
-        {
-          id: 'axum-ax3-s1',
-          title: 'A Historic Shift',
-          passage: [
-            'Around 330 CE, Ezana made Christianity the official religion of Axum.',
-            'The author explains this as a major historical turning point.'
-          ],
-          questions: [{
-            id: 'axum-ax3-s1-q1', type: 'mcq', prompt: 'Why does the author include the date and decision?', hint: 'Think about purpose, not just facts.',
-            choices: ['To entertain with a legend', 'To inform readers about an important historical change', 'To prove Axum copied others', 'To describe weather patterns'], answer: 1,
-            correctFeedback: 'Correct. The purpose here is to inform readers about a significant event.', wrongFeedback: 'The date supports a historical explanation, not a story for fun.', explanation: 'Specific time details strengthen informational purpose.', xp: 8
-          }]
-        },
-        {
-          id: 'axum-ax3-s2',
-          title: 'More Than One View',
-          passage: [
-            'Some historians say the conversion was political. Others say it came from sincere faith.',
-            'The author presents both views before describing lasting effects.'
-          ],
-          questions: [{
-            id: 'axum-ax3-s2-q1', type: 'true_false', prompt: 'Presenting two views helps the author sound balanced and informative.', hint: 'Why include both “some” and “others”?', answer: true,
-            correctFeedback: 'Yes. Including multiple views supports a balanced informational purpose.', wrongFeedback: 'The two-view structure shows the author wants readers to consider evidence fairly.', explanation: 'Multiple perspectives are used to inform with balance.', xp: 8
-          }]
-        }
-      ],
-      close_reading: {
-        title: 'Close Reading: Purpose Signal',
-        excerpt: 'Some historians argue... Others believe...',
-        question: {
-          id: 'axum-ax3-close-q1', type: 'mcq', prompt: 'What does this phrase suggest about author’s purpose?', hint: 'Think about why both views appear.',
-          choices: ['The author hides information', 'The author presents multiple perspectives to inform readers', 'The author wants to write fiction', 'The author only praises one side'], answer: 1,
-          correctFeedback: 'Exactly. The phrase signals a balanced, informative purpose.', wrongFeedback: 'Those signal words usually mean the author is comparing viewpoints for readers.', explanation: 'Signal language reveals intent to inform fairly.', xp: 8
-        }
+    activities: [
+      {
+        id: 'axum-ax3-q1',
+        type: 'mcq',
+        prompt: "What is the author's main purpose in writing this passage?",
+        hint: 'What does the author most want you to understand about Axum\'s conversion to Christianity?',
+        choices: [
+          'To argue that Ezana\'s conversion was only political, not religious',
+          'To inform readers about a historically significant moment and present multiple perspectives on its causes',
+          'To entertain readers with the story of Frumentius\'s shipwreck',
+          'To prove that Ethiopia invented Christianity'
+        ],
+        answer: 1,
+        correctFeedback: "Exactly. The author informs about a historically significant event and honestly presents both the religious and political interpretations — that is balanced informational writing.",
+        wrongFeedback: "What does the author do with both perspectives — religious and political? Why include both?",
+        xp: 14
+      },
+      {
+        id: 'axum-ax3-q2',
+        type: 'true_false',
+        prompt: 'The author presents only one explanation for why King Ezana converted to Christianity.',
+        hint: 'Read paragraph 4 carefully. How many explanations does the author present?',
+        answer: false,
+        correctFeedback: "Correct — the author presents two perspectives: political alignment with Rome AND genuine religious faith. Presenting both is a sign of balanced, honest writing.",
+        wrongFeedback: "Paragraph 4 begins with 'Some historians argue' and then 'Others believe.' That signals two different explanations — not one.",
+        xp: 12
+      },
+      {
+        id: 'axum-ax3-vocab',
+        type: 'match',
+        prompt: 'Match each word to its meaning.',
+        pairs: [
+          ['converted', 'changed from one religion or belief to another'],
+          ['profound', 'very deep or significant in effect'],
+          ['credibility', 'the quality of being trusted and believed'],
+          ['motivations', 'the reasons behind a person\'s actions or decisions']
+        ],
+        correctFeedback: "Excellent work, King. These words appear in history and political writing around the world. 📚",
+        wrongFeedback: "Not quite. Use the passage to help you find the right match.",
+        xp: 12
+      },
+      {
+        id: 'axum-ax3-q3',
+        type: 'mcq',
+        prompt: 'Why does the author mention that Axum\'s conversion happened "just years after" Roman Emperor Constantine did the same?',
+        hint: 'Why would the author include that specific timing detail? What does it suggest?',
+        choices: [
+          'To suggest that Axum copied Rome',
+          'To show the reader that Axum was part of the same world-historical moment — not behind or isolated',
+          'To prove that Rome and Axum were the same empire',
+          'To explain why Frumentius went to Axum'
+        ],
+        answer: 1,
+        correctFeedback: "Right — the comparison places Axum in the same league as Rome at the same moment in history. It challenges the idea that Africa was peripheral to world events.",
+        wrongFeedback: "Why does the author include that timing detail? What impression does it create about Axum's place in world history?",
+        xp: 12
       }
-    },
-
-    phase4_test: [
-      { id: 'axum-ax3-t1', type: 'mcq', excerpt: 'The passage explains Ezana’s conversion and gives two different reasons historians discuss.', prompt: 'What is the best statement of author’s purpose?', choices: ['To entertain with adventure', 'To inform readers about a major event and present multiple perspectives', 'To persuade readers to choose one religion', 'To describe Axum’s geography only'], answer: 1, hint_disabled: true, correctFeedback: 'Correct. The author informs and compares explanations.', wrongFeedback: 'Look at the structure: historical facts plus more than one interpretation.', xp: 10 },
-      { id: 'axum-ax3-t2', type: 'true_false', excerpt: 'The author includes both political and faith motivations.', prompt: 'Including both motivations supports a balanced purpose.', answer: true, hint_disabled: true, correctFeedback: 'Yes. That choice helps the author inform without oversimplifying.', wrongFeedback: 'Balanced purpose often includes more than one explanation.', xp: 10 },
-      { id: 'axum-ax3-t3', type: 'mcq', excerpt: 'Christianity remained central to Ethiopian identity for centuries.', prompt: 'Why would the author include this result?', choices: ['To show long-term importance of the event', 'To make the passage shorter', 'To avoid historical evidence', 'To describe a single person only'], answer: 0, hint_disabled: true, correctFeedback: 'Right. The long-term effect supports the author’s purpose of showing significance.', wrongFeedback: 'Authors include lasting effects to show why an event matters.', xp: 10 },
-      { id: 'axum-ax3-t4', type: 'input', excerpt: 'Some argued politics; others believed faith. The author showed both.', prompt: 'Type one word that describes how the author presents these viewpoints.', answer: 'balanced', hint_disabled: true, correctFeedback: 'Excellent. The excerpt presents a balanced view of multiple viewpoints.', wrongFeedback: 'The author includes both sides, so your word should show fairness or balance.', xp: 10 }
     ],
 
     wrapUp: {
       title: 'Quest Complete, King! 👑',
-      text: 'You identified how the author informed readers by presenting key facts and multiple perspectives.',
+      text: "You identified an author's purpose and recognized how they presented multiple perspectives — that is sophisticated reading. And you learned that one of the world's oldest Christian traditions began in Africa.",
       badge: 'Kingdom Reader'
     }
   },
-{
+
+  // ════════════════════════════════════════════════════════
+  // axum-ax4 — Stone Tower Geometry (Math, 3.G.A.1 / 3.MD.C.7)
+  // Four-phase: Area, perimeter, shape attributes
+  // ════════════════════════════════════════════════════════
+  {
     id: 'axum-ax4',
     worldId: 'axum',
     title: 'Stone Tower Geometry',
