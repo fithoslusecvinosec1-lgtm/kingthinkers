@@ -173,22 +173,45 @@ async function db_getStudent(code) {
 // Persist the core student record.
 // Profile/avatar fields belong in db_saveProfile().
 async function db_saveStudent(code, student) {
-  if (!code || !student) return;
+  if (!student) return null;
 
-  localStorage.setItem('kt_student_' + code, JSON.stringify(student));
+  var localCode = code || student.code || null;
+  var studentRecord = Object.assign({}, student);
+
+  if (localCode) {
+    studentRecord.code = localCode;
+    localStorage.setItem('kt_student_' + localCode, JSON.stringify(studentRecord));
+  }
 
   try {
-    await kt_api('register-student', {
-      code: code,
+    var payload = {
       name: student.name || null,
       grade: student.grade || '3',
       classCode: student.classCode || student.class_code || null,
       xp: typeof student.xp === 'number' ? student.xp : 0,
       crowns: typeof student.crowns === 'number' ? student.crowns : 0,
-      profileComplete: typeof student.profileComplete === 'boolean' ? student.profileComplete : undefined
-    });
+      profileComplete: typeof student.profileComplete === 'boolean' ? student.profileComplete : undefined,
+      skinId: student.skinId !== undefined ? student.skinId : student.skin_id,
+      hairId: student.hairId !== undefined ? student.hairId : student.hair_id,
+      outfitId: student.outfitId !== undefined ? student.outfitId : student.outfit_id
+    };
+
+    if (localCode) payload.code = localCode;
+
+    var data = await kt_api('register-student', payload);
+    var finalCode = (data && data.code) ? data.code : localCode;
+
+    if (!finalCode) throw new Error('Student code was not assigned.');
+
+    studentRecord.code = finalCode;
+    localStorage.setItem('kt_student_' + finalCode, JSON.stringify(studentRecord));
+    return studentRecord;
   } catch (e) {
-    console.warn('db_saveStudent failed, localStorage only:', e.message);
+    if (localCode) {
+      console.warn('db_saveStudent failed, localStorage only:', e.message);
+      return studentRecord;
+    }
+    throw e;
   }
 }
 
