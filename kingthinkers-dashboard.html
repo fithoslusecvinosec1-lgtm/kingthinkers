@@ -34,9 +34,10 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 /* ── TOPBAR ── */
 #topbar{
   flex-shrink:0;
-  background:var(--panel);
+  background:linear-gradient(180deg, rgba(22,22,40,.98), rgba(22,22,40,.9));
   border-bottom:1px solid var(--border);
-  padding:10px 16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.28);
+  padding:11px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -45,6 +46,12 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 #topbar-title{font-family:var(--f-d);font-size:16px;font-weight:800;color:var(--gold);}
 #topbar-xp{font-size:12px;font-weight:800;color:var(--gold);background:rgba(245,168,0,.12);border:1px solid rgba(245,168,0,.25);border-radius:100px;padding:4px 12px;}
 #topbar-crowns{font-size:12px;font-weight:800;color:var(--white);}
+.topbar-btn{
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  color:var(--muted);border-radius:10px;padding:6px 11px;
+  font-size:11px;font-weight:800;font-family:var(--f-b);white-space:nowrap;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
 
 /* ── PAGES ── */
 #pages{
@@ -195,7 +202,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 @keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
 .next-mission-title{font-family:var(--f-d);font-size:20px;font-weight:900;color:var(--white);margin-bottom:4px;}
 .next-mission-meta{font-size:12px;color:var(--muted);margin-bottom:16px;}
-.primary-action-btn{display:block;width:100%;background:linear-gradient(135deg,var(--green),#00a87a);border:none;border-radius:14px;padding:16px;font-family:var(--f-d);font-size:17px;font-weight:900;color:#000;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;z-index:1;box-shadow:0 4px 20px rgba(0,196,140,.4);}
+.primary-action-btn{display:block;width:100%;background:linear-gradient(135deg,var(--gold),var(--amber));border:none;border-radius:12px;padding:15px;font-family:var(--f-d);font-size:17px;font-weight:900;color:#000;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;z-index:1;box-shadow:0 8px 24px rgba(245,168,0,.3);}
 .primary-action-btn:active{transform:scale(.97);}
 .streak-row{display:flex;gap:8px;margin-bottom:14px;}
 .streak-box{flex:1;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px;text-align:center;}
@@ -246,6 +253,16 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 .section-title{font-family:var(--f-d);font-size:16px;font-weight:800;margin-bottom:12px;color:var(--white);}
 .coming-soon{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;}
 .coming-soon .cs-icon{font-size:48px;margin-bottom:12px;}
+@media (max-width: 640px){
+  .page{padding:14px 12px 18px;}
+  #topbar{padding:10px 12px;gap:8px;}
+  #topbar-title{font-size:15px;}
+  #topbar-xp,#topbar-crowns{font-size:11px;}
+  .topbar-btn{padding:5px 8px;}
+  .hero-card{padding:16px;border-radius:16px;}
+  .next-mission-title{font-size:18px;}
+  .streak-row{gap:6px;}
+}
 </style>
 <script src="./kt-db.js"></script>
 <script src="./kt-audio.js"></script>
@@ -260,12 +277,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
       <div id="topbar-xp">60 XP</div>
       <div id="topbar-crowns">👑 0</div>
 
-      <button onclick="logOut()" style="
-        background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
-        color:rgba(255,255,255,.5);border-radius:8px;padding:5px 10px;
-        font-size:11px;font-weight:800;font-family:var(--f-b);white-space:nowrap;
-        cursor:pointer;-webkit-tap-highlight-color:transparent;
-      ">🚪 Log Out</button>
+      <button class="topbar-btn" onclick="logOut()">🚪 Log Out</button>
     </div>
   </div>
 
@@ -290,11 +302,11 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 
       <!-- Next Mission / Primary Action -->
       <div class="hero-card" id="next-mission-card">
-        <div class="next-mission-label">⭐ Recommended for You</div>
+        <div class="next-mission-label">⭐ Next Lesson</div>
         <div class="next-mission-title" id="next-mission-title">Loading your next quest…</div>
         <div class="next-mission-meta" id="next-mission-meta"></div>
         <button class="primary-action-btn" id="next-mission-btn" onclick="launchNextMission()">
-          ⚔️ Start Quest
+          ⚔️ Start Lesson
         </button>
       </div>
 
