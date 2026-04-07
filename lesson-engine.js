@@ -1690,11 +1690,44 @@ window.KTLessonEngine = (function () {
     window.location.href = 'kingthinkers-dashboard.html';
   }
 
+  function normalizeWorldId(worldId) {
+    return safeText(worldId).trim().toLowerCase().replace(/[^a-z0-9_-]+/g, '');
+  }
+
+  function applyLessonAtmosphere() {
+    if (!document || !document.body) return;
+
+    var activeMission = null;
+    try {
+      activeMission = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+    } catch (e) {}
+
+    var worldId = normalizeWorldId(
+      (state.lesson && state.lesson.worldId) ||
+      (activeMission && activeMission.worldId) ||
+      ''
+    );
+    var subject = safeText(state.lesson && state.lesson.subject).trim().toLowerCase();
+
+    if (worldId) {
+      document.body.setAttribute('data-world', worldId);
+    } else {
+      document.body.removeAttribute('data-world');
+    }
+
+    if (subject) {
+      document.body.setAttribute('data-subject', subject);
+    } else {
+      document.body.removeAttribute('data-subject');
+    }
+  }
+
   function init() {
     var lessonId = getLessonIdFromUrl();
     state.lesson = findLessonById(lessonId);
     state.steps = state.lesson ? buildSteps(state.lesson) : [];
     state.startedAt = Date.now();
+    applyLessonAtmosphere();
 
     if (window.KTAudio) {
       document.addEventListener('click', function bootAudio() {
