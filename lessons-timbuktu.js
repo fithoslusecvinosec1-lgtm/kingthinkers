@@ -46,7 +46,7 @@ window.KT_LESSONS.timbuktu = [
       }
     ],
 
-    activities: [
+    legacy_activities: [
       {
         id: 'timbuktu-t1-q1',
         type: 'mcq',
@@ -103,6 +103,115 @@ window.KT_LESSONS.timbuktu = [
         wrongFeedback: "Authors make comparisons for a reason. What does this comparison tell you about Timbuktu's place in world history?",
         xp: 12
       }
+    ],
+
+    phase1_strategy: {
+      title: 'Strategy Lesson: Main Idea and Supporting Details',
+      explain: 'The main idea is the biggest point the whole passage makes. Supporting details are the facts and examples that prove that big point.',
+      model: {
+        text: 'A city built schools, trained doctors, and copied important books for families to use. Those details support one main idea: the city valued learning and shared knowledge with its people.',
+        think_aloud: 'I collect several details first. Then I ask what one idea they all help prove.'
+      },
+      sage: 'Do not mistake one bright detail for the whole treasure, King. Gather the details, then name the biggest point they support.'
+    },
+
+    phase2_vocab: [
+      { word: 'manuscripts', definition: 'handwritten books or documents', sentence: 'Timbuktu\'s manuscripts carried knowledge across generations.' },
+      { word: 'scholars', definition: 'people who have studied deeply', sentence: 'Scholars traveled to Timbuktu to teach and learn.' },
+      { word: 'crossroads', definition: 'a place where important routes meet', sentence: 'Timbuktu stood at a crossroads of trade and ideas.' },
+      { word: 'physicians', definition: 'doctors trained to heal people', sentence: 'Physicians in Timbuktu wrote down treatments for illness.' }
+    ],
+
+    phase3_guided: {
+      sections: [
+        {
+          id: 'timbuktu-t1-s1',
+          title: 'From Trade City to Learning City',
+          passage: [
+            'Timbuktu began as a trading camp near the Niger River, but later it became a city of scholars. Sankore drew students and teachers from across the Islamic world.',
+            'These details show the passage is about more than trade alone.'
+          ],
+          questions: [
+            {
+              id: 'timbuktu-t1-s1-q1',
+              type: 'mcq',
+              prompt: 'Which detail best supports the main idea that Timbuktu became a center of learning?',
+              hint: 'Choose the detail that points most clearly to teaching and study.',
+              choices: ['It stood near the Niger River', 'Students and teachers came to Sankore from many places', 'Gold passed through its markets', 'It began as a camp'],
+              answer: 1,
+              correctFeedback: 'Correct. Students and teachers coming to Sankore strongly supports the main idea about learning.',
+              wrongFeedback: 'Look for the detail that most clearly points to education, not trade or geography alone.',
+              explanation: 'Supporting details should connect directly to the main idea, not just any fact in the passage.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'timbuktu-t1-s2',
+          title: 'Books Full of Knowledge',
+          passage: [
+            'The scholars of Timbuktu wrote and collected hundreds of thousands of manuscripts on mathematics, astronomy, medicine, law, and philosophy. Wealthy families kept private libraries and passed some books down for generations.',
+            'These details support the idea that Timbuktu produced and protected deep knowledge.'
+          ],
+          questions: [
+            {
+              id: 'timbuktu-t1-s2-q1',
+              type: 'true_false',
+              prompt: 'This section supports the main idea that Timbuktu was known for knowledge, not only trade.',
+              hint: 'Think about what the manuscripts were about and why families kept them.',
+              answer: true,
+              correctFeedback: 'Yes. The many subjects and libraries support a main idea about rich learning and knowledge.',
+              wrongFeedback: 'The section focuses on books, subjects, and libraries, which all support the larger main idea about knowledge.',
+              explanation: 'When many details point toward books, study, and libraries, they strengthen a main idea about learning.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'timbuktu-t1-s3',
+          title: 'Proof of an Advanced Civilization',
+          passage: [
+            'The manuscripts of Timbuktu were proof that African civilization had been producing advanced knowledge for centuries. Many were hidden during later invasions and rediscovered much later.',
+            'This ending helps readers understand why Timbuktu matters in world history.'
+          ],
+          questions: [
+            {
+              id: 'timbuktu-t1-s3-q1',
+              type: 'input',
+              prompt: 'Type one word from the passage that names the handwritten books that proved this knowledge.',
+              hint: 'Use the exact word for the handwritten books in the passage.',
+              answer: 'manuscripts',
+              correctFeedback: 'Strong answer. Manuscripts is the word that names the books carrying this knowledge.',
+              wrongFeedback: 'Look for the exact word in the passage that names the handwritten books and documents.',
+              explanation: 'That word helps support the main idea that Timbuktu created and preserved advanced knowledge.',
+              xp: 9
+            }
+          ]
+        }
+      ],
+      close_reading: {
+        title: 'Close Reading: The Main Point',
+        excerpt: 'Timbuktu was not just a trading city. It became a city of scholars, manuscripts, and advanced learning.',
+        question: {
+          id: 'timbuktu-t1-close-q1',
+          type: 'mcq',
+          prompt: 'Which main idea is best supported by this excerpt?',
+          hint: 'Turn the details into one bigger idea about Timbuktu.',
+          choices: ['Timbuktu was only important for trade', 'Timbuktu became a great center of learning and knowledge', 'Timbuktu had no students', 'Books were unimportant in West Africa'],
+          answer: 1,
+          correctFeedback: 'Exactly. The excerpt supports the main idea that Timbuktu became a major center of learning.',
+          wrongFeedback: 'The excerpt points away from trade alone and toward scholars, manuscripts, and advanced learning. Those details support a bigger main idea about knowledge.',
+          explanation: 'Main idea questions ask for the broad truth that the details build together.',
+          xp: 8
+        }
+      }
+    },
+
+    phase4_test: [
+      { id: 'timbuktu-t1-t1', type: 'mcq', excerpt: 'Timbuktu became a city of scholars. Sankore drew students and teachers from across the Islamic world.', prompt: 'What main idea does this excerpt support?', choices: ['Timbuktu became a great center of learning', 'Timbuktu had no schools', 'Only trade mattered in Timbuktu', 'Students never traveled to study'], answer: 0, hint_disabled: true, correctFeedback: 'Correct. The students, teachers, and Sankore all support the main idea that Timbuktu became a center of learning.', wrongFeedback: 'The excerpt focuses on scholars, students, and teachers. Those details support a main idea about learning, not trade alone.', xp: 10 },
+      { id: 'timbuktu-t1-t2', type: 'mcq', excerpt: 'The scholars of Timbuktu wrote manuscripts on mathematics, astronomy, medicine, law, and philosophy.', prompt: 'Why does the author include these details?', choices: ['To show that Timbuktu produced knowledge in many subjects', 'To say scholars wrote about only one topic', 'To prove trade was unimportant everywhere', 'To explain that books were rare in every city'], answer: 0, hint_disabled: true, correctFeedback: 'Yes. The list of subjects supports the main idea that Timbuktu was rich in learning and knowledge.', wrongFeedback: 'The many subjects in the excerpt are included to support a broad point about the range of knowledge in Timbuktu.', xp: 10 },
+      { id: 'timbuktu-t1-t3', type: 'true_false', excerpt: 'The manuscripts of Timbuktu were proof that African civilization had been producing advanced knowledge for centuries.', prompt: 'This excerpt supports the main idea that Timbuktu matters because it shows a long history of African scholarship.', answer: true, hint_disabled: true, correctFeedback: 'Correct. The excerpt directly says the manuscripts proved centuries of advanced knowledge.', wrongFeedback: 'The excerpt connects Timbuktu\'s manuscripts with centuries of advanced knowledge, which supports the main idea of lasting African scholarship.', xp: 10 },
+      { id: 'timbuktu-t1-t4', type: 'input', excerpt: 'The scholars of Timbuktu wrote and collected many manuscripts.', prompt: 'Type one word from the excerpt that names the handwritten books.', answer: 'manuscripts', hint_disabled: true, correctFeedback: 'Great answer. Manuscripts is the exact word the excerpt uses for the handwritten books.', wrongFeedback: 'Use the exact word from the excerpt that means handwritten books or documents.', xp: 10 }
     ],
 
     wrapUp: {
@@ -329,7 +438,7 @@ window.KT_LESSONS.timbuktu = [
       }
     ],
 
-    activities: [
+    legacy_activities: [
       {
         id: 'timbuktu-t3-q1',
         type: 'mcq',
@@ -386,6 +495,115 @@ window.KT_LESSONS.timbuktu = [
         wrongFeedback: "The prefix 'un-' means 'not.' Unofficial = not official. Their role was informal and self-appointed, not government-approved.",
         xp: 12
       }
+    ],
+
+    phase1_strategy: {
+      title: 'Strategy Lesson: Use Context Clues',
+      explain: 'When you meet an unfamiliar word, look at the words and ideas around it. Nearby examples, contrasts, and descriptions help you infer the meaning.',
+      model: {
+        text: 'The healer used a careful, delicate touch while fixing the cracked bowl. She moved slowly so the bowl would not break again.',
+        think_aloud: 'The words careful, delicate, and slowly help me infer that delicate means gentle and easy to damage.'
+      },
+      sage: 'An unknown word is not a wall, King. It is a puzzle. Use the nearby clues and the passage will open for you.'
+    },
+
+    phase2_vocab: [
+      { word: 'vaults', definition: 'secure rooms used for storage', sentence: 'Families hid precious books in vaults to keep them safe.' },
+      { word: 'astronomical', definition: 'related to stars and space', sentence: 'Some manuscripts included astronomical observations.' },
+      { word: 'painstaking', definition: 'done with very careful effort', sentence: 'Restoring old pages required painstaking work.' },
+      { word: 'extremists', definition: 'people with harsh beliefs who may use harm', sentence: 'Librarians moved the manuscripts when extremists threatened the city.' }
+    ],
+
+    phase3_guided: {
+      sections: [
+        {
+          id: 'timbuktu-t3-s1',
+          title: 'Hidden in Secret Places',
+          passage: [
+            'When invaders came, scholars hid books in underground vaults and carried them away in caravans. Families became the unofficial guardians of the manuscripts.',
+            'The nearby details help readers infer the meaning of difficult words.'
+          ],
+          questions: [
+            {
+              id: 'timbuktu-t3-s1-q1',
+              type: 'mcq',
+              prompt: 'What does the word "vaults" most likely mean in this section?',
+              hint: 'Think about what kind of place would keep precious books safe underground.',
+              choices: ['Open markets', 'Secure storage rooms', 'Tall towers', 'River boats'],
+              answer: 1,
+              correctFeedback: 'Correct. The context shows vaults are secure places used to protect the books.',
+              wrongFeedback: 'The books were being hidden for safety underground, so vaults must mean secure storage places, not open public spaces.',
+              explanation: 'Context clues come from what the word is doing in the sentence and what nearby details suggest.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'timbuktu-t3-s2',
+          title: 'Knowledge That Surprised the World',
+          passage: [
+            'The manuscripts described astronomical observations, surgical procedures, and messages between rulers. These examples help readers understand that the books held advanced knowledge.',
+            'The examples around the word give strong clues about meaning.'
+          ],
+          questions: [
+            {
+              id: 'timbuktu-t3-s2-q1',
+              type: 'true_false',
+              prompt: 'The examples in this section help readers infer that "astronomical" is connected to the study of stars.',
+              hint: 'Ask what kind of observations scholars would make if they were studying the sky.',
+              answer: true,
+              correctFeedback: 'Yes. The word astronomical fits the context of careful observations about the sky and stars.',
+              wrongFeedback: 'The section is about advanced knowledge and observations. In that context, astronomical connects to the sky and stars, not to farming or trade.',
+              explanation: 'Examples near a word often narrow down its meaning.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'timbuktu-t3-s3',
+          title: 'Saving the Texts',
+          passage: [
+            'Restoring damaged pages required painstaking care. Workers treated pages with special solutions, dried them slowly, and stored them in safe conditions.',
+            'The surrounding clues show that painstaking describes work done with great care and patience.'
+          ],
+          questions: [
+            {
+              id: 'timbuktu-t3-s3-q1',
+              type: 'input',
+              prompt: 'Type one word from the passage that means very careful effort.',
+              hint: 'Use the exact describing word the passage gives.',
+              answer: 'painstaking',
+              correctFeedback: 'Strong answer. Painstaking is the exact word that means careful, patient effort.',
+              wrongFeedback: 'Look for the exact word in the passage that describes careful, slow, patient work.',
+              explanation: 'The surrounding actions - treating, drying slowly, storing carefully - reveal the meaning of the word.',
+              xp: 9
+            }
+          ]
+        }
+      ],
+      close_reading: {
+        title: 'Close Reading: Clues Around a Word',
+        excerpt: 'Restoring damaged pages required painstaking care - workers treated pages with special solutions, dried them slowly, and stored them in safe conditions.',
+        question: {
+          id: 'timbuktu-t3-close-q1',
+          type: 'mcq',
+          prompt: 'What does the context show the word "painstaking" means here?',
+          hint: 'Use the nearby actions to infer the word.',
+          choices: ['Quick and careless', 'Very careful and patient', 'Loud and public', 'Easy and simple'],
+          answer: 1,
+          correctFeedback: 'Exactly. The nearby details show work that is very careful and patient.',
+          wrongFeedback: 'The clues say workers treated the pages carefully, dried them slowly, and stored them safely. Those clues point to work that is careful and patient.',
+          explanation: 'Context clues often come from the actions and descriptions that surround a word.',
+          xp: 8
+        }
+      }
+    },
+
+    phase4_test: [
+      { id: 'timbuktu-t3-t1', type: 'mcq', excerpt: 'When invaders came, scholars hid books in underground vaults and carried them away to keep them safe.', prompt: 'What does the word "vaults" most likely mean in this excerpt?', choices: ['Secure storage rooms', 'Open markets', 'River crossings', 'Festival tents'], answer: 0, hint_disabled: true, correctFeedback: 'Correct. The books were hidden there for safety, so vaults means secure storage rooms.', wrongFeedback: 'The excerpt says the books were hidden underground to keep them safe. That context points to secure storage rooms.', xp: 10 },
+      { id: 'timbuktu-t3-t2', type: 'mcq', excerpt: 'The manuscripts described astronomical observations and other advanced knowledge.', prompt: 'What does "astronomical" most likely mean in this excerpt?', choices: ['Related to stars and space', 'Related to cooking', 'Related to farming tools', 'Related to river trade'], answer: 0, hint_disabled: true, correctFeedback: 'Yes. In this context, astronomical means related to the study of stars and space.', wrongFeedback: 'The excerpt connects astronomical with observations and advanced knowledge. That context points to studying the sky and stars.', xp: 10 },
+      { id: 'timbuktu-t3-t3', type: 'true_false', excerpt: 'Restoring damaged pages required painstaking care - workers treated pages with special solutions, dried them slowly, and stored them in safe conditions.', prompt: 'This excerpt shows that "painstaking" means very careful and patient.', answer: true, hint_disabled: true, correctFeedback: 'Correct. The nearby details show careful, slow, patient work.', wrongFeedback: 'The clues in the excerpt describe slow, careful treatment of the pages, so painstaking must mean very careful and patient.', xp: 10 },
+      { id: 'timbuktu-t3-t4', type: 'input', excerpt: 'Restoring damaged pages required painstaking care.', prompt: 'Type one word from the excerpt that means very careful effort.', answer: 'painstaking', hint_disabled: true, correctFeedback: 'Great answer. Painstaking is the exact word from the excerpt.', wrongFeedback: 'Use the exact word from the excerpt that means very careful effort.', xp: 10 }
     ],
 
     wrapUp: {
