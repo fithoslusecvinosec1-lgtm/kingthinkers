@@ -26,6 +26,14 @@ window.KTLessonEngine = (function () {
     return value == null ? '' : String(value);
   }
 
+  function stripLeadingLabel(value, label) {
+    var text = safeText(value).trim();
+    if (!text || !label) return text;
+
+    var escapedLabel = String(label).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp('^' + escapedLabel + '\\s*:?\\s*', 'i'), '');
+  }
+
   function escapeHtml(value) {
     return safeText(value)
       .replace(/&/g, '&amp;')
@@ -828,12 +836,13 @@ window.KTLessonEngine = (function () {
   function renderStrategyLesson(phase1Data) {
     phase1Data = phase1Data || {};
     var howTo = Array.isArray(phase1Data.how_to) ? phase1Data.how_to : [];
+    var modelText = stripLeadingLabel(phase1Data.model, 'Model');
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 1 · Strategy Power</div>' +
         '<div class="section-title">' + escapeHtml(phase1Data.name || 'Reading Strategy') + '</div>' +
         '<div class="sub">' + escapeHtml(phase1Data.definition || '') + '</div>' +
-        (phase1Data.model ? '<div class="sage" style="margin-top:12px;"><strong>Model:</strong> ' + escapeHtml(phase1Data.model) + '</div>' : '') +
+        (modelText ? '<div class="sage" style="margin-top:12px;"><strong>Model:</strong> ' + escapeHtml(modelText) + '</div>' : '') +
         (howTo.length
           ? '<div class="section-title" style="margin-top:14px;">How to Use It</div><ol style="margin:8px 0 0 20px;line-height:1.8;">' +
               howTo.map(function (step) { return '<li>' + escapeHtml(step) + '</li>'; }).join('') +
