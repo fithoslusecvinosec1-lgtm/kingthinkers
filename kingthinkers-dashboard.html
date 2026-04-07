@@ -44,14 +44,16 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   gap:12px;
 }
 #topbar-title{font-family:var(--f-d);font-size:16px;font-weight:800;color:var(--gold);}
-.topbar-pill{font-size:12px;font-weight:800;border-radius:100px;padding:4px 12px;border:1px solid var(--border);}
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+.topbar-pill{font-size:12px;font-weight:800;border-radius:100px;padding:6px 12px;border:1px solid var(--border);line-height:1;min-height:30px;display:inline-flex;align-items:center;}
 #topbar-xp{color:var(--gold);background:rgba(245,168,0,.12);border-color:rgba(245,168,0,.25);}
-#topbar-crowns{color:var(--white);background:rgba(255,255,255,.06);}
+#topbar-crowns{color:var(--gold);background:rgba(245,168,0,.12);border-color:rgba(245,168,0,.25);}
 .topbar-btn{
   background:rgba(255,255,255,.06);border:1px solid var(--border);
-  color:var(--muted);border-radius:10px;padding:6px 11px;
+  color:var(--muted);border-radius:100px;padding:6px 12px;
   font-size:11px;font-weight:800;font-family:var(--f-b);white-space:nowrap;
   cursor:pointer;-webkit-tap-highlight-color:transparent;
+  min-height:30px;display:inline-flex;align-items:center;
 }
 
 /* ── PAGES ── */
@@ -256,8 +258,9 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 .coming-soon .cs-icon{font-size:48px;margin-bottom:12px;}
 @media (max-width: 640px){
   .page{padding:14px 12px 18px;}
-  #topbar{padding:10px 12px;gap:8px;}
+  #topbar{padding:10px 12px;gap:8px;align-items:flex-start;flex-wrap:wrap;}
   #topbar-title{font-size:15px;}
+  .topbar-actions{width:100%;justify-content:flex-start;}
   .topbar-pill{font-size:11px;}
   .topbar-btn{padding:5px 8px;}
   .hero-card{padding:16px;border-radius:16px;}
@@ -274,7 +277,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
   <!-- TOPBAR -->
   <div id="topbar">
     <div id="topbar-title">👑 KingThinkers</div>
-    <div style="display:flex;align-items:center;gap:8px;">
+    <div class="topbar-actions">
       <div id="topbar-xp" class="topbar-pill">60 XP</div>
       <div id="topbar-crowns" class="topbar-pill">👑 0</div>
 

@@ -14,11 +14,14 @@
     --f-d: 'Baloo 2', cursive; --f-b: 'Nunito', sans-serif;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; max-width:100%; overflow-x:hidden; }
   body {
     background: var(--navy); font-family: var(--f-b);
-    min-height: 100vh; display: flex; flex-direction: column;
+    min-height: 100vh; min-height: 100svh; min-height: 100dvh;
+    display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    overflow-x: hidden; overflow-y: auto; color: var(--white);
+    overflow-y: auto; color: var(--white);
+    padding: max(12px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom));
   }
 
   #stars { position:fixed; inset:0; pointer-events:none; z-index:0; }
@@ -87,10 +90,10 @@
     letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px;
   }
   .code-boxes {
-    display: flex; gap: 12px; justify-content: center; margin-bottom: 4px;
+    display: flex; gap: 12px; justify-content: center; margin-bottom: 4px; width: 100%;
   }
   .code-box {
-    width: 64px; height: 72px;
+    width: 64px; max-width:64px; min-width:0; flex:1; height: 72px;
     background: var(--card); border: 1px solid var(--border);
     border-radius: 12px;
     font-family: var(--f-d); font-size: 32px; font-weight: 900;
@@ -189,13 +192,19 @@
   .wb-name { font-family:var(--f-d); font-size:15px; font-weight:900; color:var(--green); }
   .wb-sub  { font-size:11px; color:var(--muted); }
   @media (max-width: 640px) {
-    body { overflow-y:auto; }
+    body { justify-content:flex-start; }
     .login-card { width: min(440px, calc(100vw - 20px)); padding: 26px 18px; border-radius: 16px; margin: 18px 0; }
     .code-boxes { gap: 8px; }
-    .code-box { width: 56px; height: 64px; font-size: 28px; }
+    .code-box { width: 56px; max-width:56px; height: 64px; font-size: 28px; }
     .btn-primary { padding: 14px; font-size: 16px; }
     .crown-wrap { width: 78px; height: 78px; margin-bottom: 12px; }
     .logo { font-size: 26px; }
+  }
+  @media (max-height: 760px) {
+    body { justify-content:flex-start; }
+    .login-card { margin: 14px 0 18px; padding: 24px 18px; }
+    .tagline { margin-bottom: 18px; }
+    .tabs { margin-bottom: 16px; }
   }
 </style>
 <link rel="manifest" href="manifest.json">
