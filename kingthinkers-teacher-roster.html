@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>KingThinkers â€” Teacher Roster</title>
+<title>KingThinkers — Teacher Roster</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;900&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -160,35 +160,35 @@ textarea.inp{min-height:110px;resize:vertical;}
 
 <div id="topbar">
   <div class="topbar-title">
-    <div class="t-logo">ðŸ‘‘ Teacher Roster</div>
+    <div class="t-logo">👑 Teacher Roster</div>
     <div id="teacher-name-display" style="font-size:11px;color:var(--muted);margin-top:1px;"></div>
   </div>
   <div class="top-actions">
-    <button class="t-link" type="button" onclick="window.print()">ðŸ–¨ï¸ Print</button>
+    <button class="t-link" type="button" onclick="window.print()">🖨️ Print</button>
     <a class="t-link gold" href="kingthinkers-login.html">Student Sign In</a>
-    <button class="t-link" type="button" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);">ðŸšª Log Out</button>
+    <button class="t-link" type="button" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);">🚪 Log Out</button>
   </div>
 </div>
 
 <div id="tab-nav">
-  <a href="#roster">ðŸ“‹ Roster</a>
-  <a href="#progress">ðŸ“Š Progress</a>
-  <a href="#codes">ðŸ”‘ King Codes</a>
+  <a href="#roster">📋 Roster</a>
+  <a href="#progress">📊 Progress</a>
+  <a href="#codes">🔑 King Codes</a>
   <a href="#add">âž• Add Student</a>
-  <a href="#settings">âš™ï¸ Settings</a>
+  <a href="#settings">⚙️ Settings</a>
 </div>
 
 <!-- ROSTER -->
 <div class="section" id="roster">
-  <div class="sh">ðŸ“‹ Class Roster</div>
+  <div class="sh">📋 Class Roster</div>
   <div class="stat-row">
     <div class="stat-box"><div class="stat-n" id="st-count">0</div><div class="stat-l">Students</div></div>
     <div class="stat-box"><div class="stat-n" id="st-active">0</div><div class="stat-l">Active</div></div>
     <div class="stat-box"><div class="stat-n" id="st-xp">0</div><div class="stat-l">Total XP</div></div>
   </div>
-  <input type="text" id="search" class="inp" placeholder="Search studentsâ€¦" oninput="renderRoster()">
+  <input type="text" id="search" class="inp" placeholder="Search students…" oninput="renderRoster()">
   <div class="sort-bar">
-  <button class="sort-btn active" id="sort-name" onclick="setSort('name')">Aâ€“Z Name</button>
+  <button class="sort-btn active" id="sort-name" onclick="setSort('name')">A–Z Name</button>
   <button class="sort-btn" id="sort-progress" onclick="setSort('progress')">Progress</button>
   <button class="sort-btn" id="sort-xp" onclick="setSort('xp')">XP</button>
   <button class="sort-btn" id="sort-risk" onclick="setSort('risk')">At Risk First</button>
@@ -198,14 +198,14 @@ textarea.inp{min-height:110px;resize:vertical;}
 
 <!-- PROGRESS -->
 <div class="section" id="progress">
-  <div class="sh">ðŸ“Š Progress Overview</div>
+  <div class="sh">📊 Progress Overview</div>
   <div id="prog-list"></div>
 </div>
 
 <!-- KING CODES -->
 <div class="section" id="codes">
-  <div class="sh">ðŸ”‘ King Codes</div>
-  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;" onclick="printKingCards()">ðŸ–¨ï¸ Print All King Cards</button>
+  <div class="sh">🔑 King Codes</div>
+  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;" onclick="printKingCards()">🖨️ Print All King Cards</button>
   <div class="kg" id="codes-grid"></div>
 </div>
 
@@ -223,10 +223,10 @@ textarea.inp{min-height:110px;resize:vertical;}
     <option value="4">4th Grade</option>
     <option value="5">5th Grade</option>
   </select>
-  <button class="add-btn" id="add-btn">Add King ðŸ‘‘</button>
+  <button class="add-btn" id="add-btn">Add King 👑</button>
 
   <div style="margin-top:28px;">
-    <div class="sh" style="font-size:16px;">ðŸ“¥ Bulk Add</div>
+    <div class="sh" style="font-size:16px;">📥 Bulk Add</div>
     <label class="lbl">One name per line. Add grade after comma: Marcus, 3</label>
     <textarea id="bulk-names" class="inp" placeholder="Marcus&#10;Jaylen, 4&#10;Kofi, 2&#10;Amari&#10;Zion, 5"></textarea>
     <button class="add-btn" id="bulk-btn" onclick="doBulk()">Add All Students</button>
@@ -235,23 +235,23 @@ textarea.inp{min-height:110px;resize:vertical;}
 
 <!-- SETTINGS -->
 <div class="section" id="settings">
-  <div class="sh">âš™ï¸ Settings</div>
+  <div class="sh">⚙️ Settings</div>
   <label class="lbl">Teacher Name</label>
   <input type="text" id="s-teacher" class="inp" placeholder="e.g. Mr. Johnson">
   <label class="lbl">Class Code</label>
   <input type="text" id="s-class" class="inp" placeholder="e.g. MR-JOHNSON-3B">
   <label class="lbl">School Name</label>
   <input type="text" id="s-school" class="inp" placeholder="e.g. MLK Elementary">
-  <button class="ghost-btn" id="save-settings-btn" onclick="saveSettingsNow()">Save Settings âœ“</button>
-  <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);" onclick="syncFromSupabase()">â˜ï¸ Sync from Cloud</button>
-  <button class="ghost-btn" id="sample-btn">ðŸ§ª Load Sample Class</button>
-  <button class="danger-btn" id="clear-btn" onclick="clearAllData()">ðŸ—‘ï¸ Reset All Data</button>
+  <button class="ghost-btn" id="save-settings-btn" onclick="saveSettingsNow()">Save Settings ✓</button>
+  <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);" onclick="syncFromSupabase()">☁️ Sync from Cloud</button>
+  <button class="ghost-btn" id="sample-btn">🧪 Load Sample Class</button>
+  <button class="danger-btn" id="clear-btn" onclick="clearAllData()">🗑️ Reset All Data</button>
 </div>
 
 <!-- CARD MODAL -->
 <div class="modal-bg" id="card-modal">
   <div class="modal-box">
-    <div class="modal-title">ðŸ‘‘ King Card</div>
+    <div class="modal-title">👑 King Card</div>
     <div id="card-body"></div>
     <button class="modal-close" id="card-close-btn">Close</button>
   </div>
@@ -260,14 +260,14 @@ textarea.inp{min-height:110px;resize:vertical;}
 <!-- PROGRESS MODAL -->
 <div class="modal-bg" id="prog-modal">
   <div class="modal-box">
-    <div class="modal-title">ðŸ“Š <span id="pm-name">Student</span>'s Progress</div>
+    <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Mark completed missions below. Changes save automatically.</p>
     <div id="pm-list"></div>
-    <button class="modal-close" id="prog-close-btn">Done âœ“</button>
+    <button class="modal-close" id="prog-close-btn">Done ✓</button>
   </div>
 </div>
 
-<div id="toast">âœ“</div>
+<div id="toast">✓</div>
 
 <script>
 var _progCode = null;
@@ -275,7 +275,7 @@ var _teacherSession = null;
 
 // â”€â”€ SESSION CHECK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getTeacherSession() {
-  // Session-only â€” matches login page. No localStorage fallback.
+  // Session-only — matches login page. No localStorage fallback.
   // If the tab closes, the teacher must log in again (safer on shared devices).
   if (typeof kt_getTeacherSession === 'function') return kt_getTeacherSession();
   try {
@@ -460,10 +460,10 @@ async function loadSampleStudents() {
       });
     });
     persistRosterCache();
-    toast('âœ… Sample class loaded!');
+    toast('✅ Sample class loaded!');
     renderAll();
   } catch (e) {
-    toast('âš ï¸ Failed to load sample class: ' + e.message);
+    toast('⚠️ Failed to load sample class: ' + e.message);
     console.warn('loadSampleStudents failed:', e);
   }
 }
@@ -490,7 +490,7 @@ async function doAdd(){
     toast('King '+name+' added! Code: '+code);
     renderAll();
   } catch(e) {
-    toast('âš ï¸ Failed to add student: '+e.message);
+    toast('⚠️ Failed to add student: '+e.message);
     console.warn('doAdd failed:',e);
   }
 }
@@ -532,7 +532,7 @@ async function doBulk(){
     toast(created.length+' students added!');
     renderAll();
   } catch(e) {
-    toast('âš ï¸ Bulk add failed: '+e.message);
+    toast('⚠️ Bulk add failed: '+e.message);
     console.warn('Bulk add failed:', e);
   }
 }
@@ -541,13 +541,13 @@ async function doBulk(){
 async function removeStudent(code){
   if(!confirm('Remove '+code+'?'))return;
   if (typeof db_removeStudent !== 'function') {
-    toast('âš ï¸ Delete service unavailable');
+    toast('⚠️ Delete service unavailable');
     return;
   }
   try {
     await db_removeStudent(code);
   } catch(e){
-    toast('âš ï¸ Failed to remove: ' + e.message);
+    toast('⚠️ Failed to remove: ' + e.message);
     console.warn('Supabase delete failed',e);
     return;
   }
@@ -591,7 +591,7 @@ function getLastActiveLabel(lastActive) {
   if (days === 1) return { text: 'Active yesterday', cls: 'la-recent' };
   if (days <= 7)  return { text: 'Active ' + days + 'd ago', cls: 'la-week' };
   if (days <= 14) return { text: days + ' days ago', cls: 'la-old' };
-  return { text: days + 'd ago â€” check in!', cls: 'la-old' };
+  return { text: days + 'd ago — check in!', cls: 'la-old' };
 }
 
 function getStandards(p) {
@@ -637,7 +637,7 @@ function renderRoster(){
   var list=document.getElementById('roster-list');
   if(!list) return;
   if(!rosterState.length){
-    list.innerHTML='<div class="empty"><div class="empty-i">ðŸ‘¥</div><div>No students â€” use Add Student below</div></div>';
+    list.innerHTML='<div class="empty"><div class="empty-i">👥</div><div>No students — use Add Student below</div></div>';
     return;
   }
 
@@ -677,12 +677,12 @@ function renderRoster(){
           (d.risk==='green'?'On track':d.risk==='yellow'?'Needs attention':'At risk')+'"></div>'+
         '<div class="s-info" style="flex:1;min-width:0;">'+
           '<div class="s-name">'+escapeHtml(d.s.name)+'</div>'+
-          '<div class="s-meta">Gr '+escapeHtml(d.s.grade)+' Â· '+escapeHtml(d.summary.currentWorld ? d.summary.currentWorld.name : getWorld(d.c))+' Â· '+d.done+'/'+TOTAL_MISSIONS+' missions Â· '+d.xp+' XP</div>'+
+          '<div class="s-meta">Gr '+escapeHtml(d.s.grade)+' · '+escapeHtml(d.summary.currentWorld ? d.summary.currentWorld.name : getWorld(d.c))+' · '+d.done+'/'+TOTAL_MISSIONS+' missions · '+d.xp+' XP</div>'+
         '</div>'+
         '<div class="s-btns">'+
-          '<button class="s-btn grn" data-action="prog" data-code="'+escapeHtml(d.c)+'">ðŸ“‹</button>'+
-          '<button class="s-btn" data-action="card" data-code="'+escapeHtml(d.c)+'">ðŸƒ</button>'+
-          '<button class="s-btn" data-action="del" data-code="'+escapeHtml(d.c)+'">ðŸ—‘ï¸</button>'+
+          '<button class="s-btn grn" data-action="prog" data-code="'+escapeHtml(d.c)+'">📋</button>'+
+          '<button class="s-btn" data-action="card" data-code="'+escapeHtml(d.c)+'">🎏</button>'+
+          '<button class="s-btn" data-action="del" data-code="'+escapeHtml(d.c)+'">🗑️</button>'+
         '</div>'+
       '</div>'+
 
@@ -719,7 +719,7 @@ function renderRoster(){
         // Standards + last active row
         '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">'+
           '<div style="display:flex;gap:4px;flex-wrap:wrap;">'+stdHtml+'</div>'+
-          '<div class="last-active '+la.cls+'">ðŸ• '+la.text+'</div>'+
+          '<div class="last-active '+la.cls+'">🕐 '+la.text+'</div>'+
         '</div>'+
 
       '</div>'+
@@ -729,7 +729,7 @@ function renderRoster(){
 
 function renderProgress(){
   var el=document.getElementById('prog-list');
-  if(!rosterState.length){el.innerHTML='<div class="empty"><div class="empty-i">ðŸ“Š</div><div>Add students, then tap ðŸ“Š to track progress</div></div>';return}
+  if(!rosterState.length){el.innerHTML='<div class="empty"><div class="empty-i">📊</div><div>Add students, then tap 📊 to track progress</div></div>';return}
   var data=rosterState.map(function(s){
     var p=getMerged(s.code);
     var summary = getProgressSummary(p);
@@ -737,28 +737,28 @@ function renderProgress(){
   }).filter(function(d){return d.s}).sort(function(a,b){return b.done-a.done});
   el.innerHTML=data.map(function(d,i){
     var pct=d.summary.pct;
-    var medal=(i===0&&d.done>0)?'ðŸ¥‡':(i===1&&d.done>0)?'ðŸ¥ˆ':(i===2&&d.done>0)?'ðŸ¥‰':'ðŸ‘‘';
+    var medal=(i===0&&d.done>0)?'🥇':(i===1&&d.done>0)?'🥈':(i===2&&d.done>0)?'🥉':'👑';
     var names=d.summary.completedMissions.map(function(m){return m.name});
     return'<div class="p-card" data-action="prog" data-code="'+escapeHtml(d.c)+'">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;">'+
         '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">'+medal+'</span>'+
           '<div><div style="font-weight:800;font-size:14px;">'+escapeHtml(d.s.name)+'</div>'+
-          '<div style="font-size:11px;color:var(--muted);">Gr '+escapeHtml(d.s.grade)+' Â· '+escapeHtml(d.summary.currentWorld ? d.summary.currentWorld.name : getWorld(d.c))+' Â· '+d.done+'/'+TOTAL_MISSIONS+' missions</div></div></div>'+
+          '<div style="font-size:11px;color:var(--muted);">Gr '+escapeHtml(d.s.grade)+' · '+escapeHtml(d.summary.currentWorld ? d.summary.currentWorld.name : getWorld(d.c))+' · '+d.done+'/'+TOTAL_MISSIONS+' missions</div></div></div>'+
         '<div style="text-align:right;"><div style="font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);">'+d.xp+' XP</div>'+
         '<div style="font-size:10px;color:var(--muted);">'+pct+'%</div></div>'+
       '</div>'+
       '<div class="p-bar-bg"><div class="p-bar-fg" style="width:'+pct+'%"></div></div>'+
-      (names.length?'<div style="font-size:10px;color:var(--green);line-height:1.7;">âœ… '+escapeHtml(names.join(' Â· '))+'</div>':'')+
+      (names.length?'<div style="font-size:10px;color:var(--green);line-height:1.7;">✅ '+escapeHtml(names.join(' · '))+'</div>':'')+
     '</div>';
   }).join('');
 }
 
 function renderCodes(){
   var g=document.getElementById('codes-grid');
-  if(!rosterState.length){g.innerHTML='<div class="empty"><div class="empty-i">ðŸ”‘</div><div>No codes yet</div></div>';return}
+  if(!rosterState.length){g.innerHTML='<div class="empty"><div class="empty-i">🔑</div><div>No codes yet</div></div>';return}
   g.innerHTML=rosterState.map(function(s){
     return'<div class="kc" data-action="card" data-code="'+escapeHtml(s.code)+'">'+
-      '<div class="kc-crown">ðŸ‘‘</div><div class="kc-brand">KINGTHINKERS</div>'+
+      '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
       '<div class="kc-name">King '+escapeHtml(s.name)+'</div><div class="kc-div"></div>'+
       '<div class="kc-lbl">King Code</div><div class="kc-code">'+escapeHtml(s.code)+'</div>'+
       '<div class="kc-gr">Grade '+escapeHtml(s.grade)+'</div></div>';
@@ -767,7 +767,7 @@ function renderCodes(){
 
 var _renderTimer = null;
 function renderAll() {
-  // Debounce â€” collapse rapid successive calls into one paint
+  // Debounce — collapse rapid successive calls into one paint
   if (_renderTimer) clearTimeout(_renderTimer);
   _renderTimer = setTimeout(function() {
     renderRoster();
@@ -781,7 +781,7 @@ function showCard(code){
   var s=getStudent(code);if(!s)return;
   document.getElementById('card-body').innerHTML=
     '<div class="kc" style="max-width:220px;margin:0 auto;">'+
-    '<div class="kc-crown">ðŸ‘‘</div><div class="kc-brand">KINGTHINKERS</div>'+
+    '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
     '<div class="kc-name">King '+escapeHtml(s.name)+'</div><div class="kc-div"></div>'+
     '<div class="kc-lbl">King Code</div><div class="kc-code">'+escapeHtml(code)+'</div>'+
     '<div class="kc-gr">Grade '+escapeHtml(s.grade)+'</div></div>';
@@ -795,13 +795,13 @@ function showProg(code){
   var p=getMerged(code);
   var html='';
   WORLDS.forEach(function(world){
-    html+='<div class="m-world">âš”ï¸ '+escapeHtml(world.name)+'</div>';
+    html+='<div class="m-world">⚔️ '+escapeHtml(world.name)+'</div>';
     world.missions.forEach(function(m){
       var done=isMissionComplete(p, m);
       html+='<label class="m-check">'+
         '<input type="checkbox" '+(done?'checked':'')+' data-id="'+escapeHtml(m.id)+'" data-xp="'+m.xp+'">'+
-        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' Â· +'+m.xp+' XP</div></div>'+
-        (done?'<span style="color:var(--green);">âœ…</span>':'')+
+        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' · +'+m.xp+' XP</div></div>'+
+        (done?'<span style="color:var(--green);">✅</span>':'')+
       '</label>';
     });
   });
@@ -810,13 +810,13 @@ function showProg(code){
     cb.addEventListener('change',function(){
       var id=cb.getAttribute('data-id');var xp=parseInt(cb.getAttribute('data-xp'));
       var manual=getManProg(_progCode);var st=getStudent(_progCode);
-      // Use server-side idempotent mark â€” prevents XP double counting
+      // Use server-side idempotent mark — prevents XP double counting
       db_teacherMarkMission(_progCode, id, xp, cb.checked).then(function(result){
         if(result && result.missions){
           localStorage.setItem('kt_quest_progress_'+_progCode, JSON.stringify(result.missions));
         }
         clearManualMissionOverride(_progCode, id);
-        toast('âœ… Saved!');
+        toast('✅ Saved!');
         renderAll();
       }).catch(function(e){
         // Fallback: update locally only
@@ -827,7 +827,7 @@ function showProg(code){
         }
         saveManProg(_progCode,manual);
         updateLocalTeacherProgress(_progCode, id, cb.checked);
-        toast('âš ï¸ Saved locally â€” sync when online');
+        toast('⚠️ Saved locally — sync when online');
         renderAll();
       });
     });
@@ -886,7 +886,7 @@ function wireButtons() {
   // â”€â”€ TEACHER INFO + LOGOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (_teacherSession) {
     var nameEl = document.getElementById('teacher-name-display');
-    if (nameEl) nameEl.textContent = (_teacherSession.name || _teacherSession.username) + ' Â· ' + (_teacherSession.classCode || '');
+    if (nameEl) nameEl.textContent = (_teacherSession.name || _teacherSession.username) + ' · ' + (_teacherSession.classCode || '');
   }
 
   on('logout-btn', logOut);
@@ -905,7 +905,7 @@ function wireButtons() {
   });
 }
 
-// Boot â€” runs immediately since script is at bottom of body
+// Boot — runs immediately since script is at bottom of body
 (function boot() {
   // Debug: log session state to help diagnose 401s
   // Keep only actionable session warnings in the console.
@@ -917,7 +917,7 @@ function wireButtons() {
   renderAll();
   loadSettingsForm();
   wireButtons();
-  syncFromSupabase(true); // silent=true â€” no toast, no flicker on load
+  syncFromSupabase(true); // silent=true — no toast, no flicker on load
 })();
 
 function saveSettingsNow() {
@@ -927,7 +927,7 @@ function saveSettingsNow() {
   if (t)  putSetting('teacherName', t.value);
   if (c)  putSetting('classCode',   c.value);
   if (sc) putSetting('schoolName',  sc.value);
-  toast('âœ… Settings saved!');
+  toast('✅ Settings saved!');
 }
 
 function loadSampleClass() {
@@ -947,7 +947,7 @@ function clearAllData() {
   rosterState = [];
   saveCachedRoster([]);
   localStorage.removeItem('kt_roster');
-  toast('ðŸ—‘ï¸ All data cleared');
+  toast('🗑️ All data cleared');
   renderAll();
 }
 
@@ -971,22 +971,22 @@ function logOut() {
 }
 
 async function syncFromSupabase(silent) {
-  // silent=true on boot â€” no toast, no flicker
+  // silent=true on boot — no toast, no flicker
   if (window.location && window.location.protocol === 'file:') {
     var localOnly = getCachedRoster();
     if (localOnly && localOnly.length) {
       setRosterState(localOnly);
       renderAll();
-      if (!silent) toast('âš ï¸ Using cached roster in local demo mode');
+      if (!silent) toast('⚠️ Using cached roster in local demo mode');
     } else if (!silent) {
-      toast('âš ï¸ Local demo mode has no cached roster yet');
+      toast('⚠️ Local demo mode has no cached roster yet');
     }
     return;
   }
 
-  if (!silent) toast('ðŸ”„ Syncing from cloudâ€¦');
+  if (!silent) toast('🔄 Syncing from cloud…');
   if (typeof db_getRosterWithProgress !== 'function') {
-    if (!silent) toast('âš ï¸ Sync service unavailable');
+    if (!silent) toast('⚠️ Sync service unavailable');
     return;
   }
 
@@ -1005,8 +1005,8 @@ async function syncFromSupabase(silent) {
     });
     persistRosterCache();
     if (!silent) {
-      if (!rosterState.length) toast('â˜ï¸ No students found in cloud yet');
-      else toast('âœ… Synced ' + rosterState.length + ' students from cloud!');
+      if (!rosterState.length) toast('☁️ No students found in cloud yet');
+      else toast('✅ Synced ' + rosterState.length + ' students from cloud!');
     }
     renderAll();
   } catch(e) {
@@ -1014,9 +1014,9 @@ async function syncFromSupabase(silent) {
     if (cached && cached.length) {
       setRosterState(cached);
       renderAll();
-      if (!silent) toast('âš ï¸ Cloud unavailable â€” using cached roster');
+      if (!silent) toast('⚠️ Cloud unavailable — using cached roster');
     } else if (!silent) {
-      toast('âš ï¸ Sync failed â€” no cache available');
+      toast('⚠️ Sync failed — no cache available');
     }
     if (!silent) console.warn('syncFromSupabase failed:', e);
   }

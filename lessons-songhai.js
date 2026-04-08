@@ -3,7 +3,7 @@
 window.KT_LESSONS.songhai = [
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // songhai-s1 â€” River Kings (Reading, RI.3.3 Cause and Effect)
+  // songhai-s1 — River Kings (Reading, RI.3.3 Cause and Effect)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'songhai-s1',
@@ -17,9 +17,9 @@ window.KT_LESSONS.songhai = [
     estMinutes: 8,
 
     intro: {
-      kicker: 'Songhai Empire Â· Quest 1',
-      text: "King, after the Mali Empire weakened, a new power rose along the Niger River. The Songhai Empire grew to become the largest empire in African history â€” stretching across 1.4 million square miles and controlling the most important trade routes in the world. Read closely to understand how a river kingdom became a continental superpower.",
-      sage: "Size does not make an empire great â€” strategy does. Find out how Songhai used the river and trade to rise above all others. âš”ï¸"
+      kicker: 'Songhai Empire · Quest 1',
+      text: "King, after the Mali Empire weakened, a new power rose along the Niger River. The Songhai Empire grew to become the largest empire in African history — stretching across 1.4 million square miles and controlling the most important trade routes in the world. Read closely to understand how a river kingdom became a continental superpower.",
+      sage: "Size does not make an empire great — strategy does. Find out how Songhai used the river and trade to rise above all others. ⚔️"
     },
 
     phase1_strategy: {
@@ -132,14 +132,14 @@ window.KT_LESSONS.songhai = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You followed a cause-and-effect chain across an entire empire's rise â€” from a river to the largest empire Africa ever produced. That is the power of reading closely.",
+      title: 'Quest Complete, King! 👑',
+      text: "You followed a cause-and-effect chain across an entire empire's rise — from a river to the largest empire Africa ever produced. That is the power of reading closely.",
       badge: 'River Kingdom Scholar'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // songhai-s2 â€” Empire Division (Math, 3.OA.B.6 / 3.NBT.A.3)
+  // songhai-s2 — Empire Division (Math, 3.OA.B.6 / 3.NBT.A.3)
   // Four-phase: Division as unknown factor + multiply by 10/100
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -154,24 +154,24 @@ window.KT_LESSONS.songhai = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Songhai Empire Â· Math Quest',
-      text: "King, running the largest empire in African history required dividing resources fairly across thousands of miles. Soldiers, food, gold, and land all had to be distributed equally. Today you will master division and learn how to multiply by tens and hundreds â€” the math that powered the Songhai Empire.",
-      sage: "Division is just multiplication running backwards. Once you know that, it becomes easy. Watch. âš”ï¸"
+      kicker: 'Songhai Empire · Math Quest',
+      text: "King, running the largest empire in African history required dividing resources fairly across thousands of miles. Soldiers, food, gold, and land all had to be distributed equally. Today you will master division and learn how to multiply by tens and hundreds — the math that powered the Songhai Empire.",
+      sage: "Division is just multiplication running backwards. Once you know that, it becomes easy. Watch. ⚔️"
     },
 
     phase1_concept: {
       title: 'Division as the Opposite of Multiplication',
-      definition: 'Division splits a total into equal groups. It is the opposite of multiplication. If you know your multiplication facts, you already know your division facts â€” just work backwards.',
+      definition: 'Division splits a total into equal groups. It is the opposite of multiplication. If you know your multiplication facts, you already know your division facts — just work backwards.',
       example: {
         context: "A Songhai commander divides 72 soldiers equally among 8 units.",
-        equation: '72 Ã· 8 = ?   â†’   Think: 8 Ã— ? = 72',
+        equation: '72 ÷ 8 = ?   →   Think: 8 × ? = 72',
         visual: 'groups',
         visual_data: {
           type: 'division_fact_family',
           dividend: 72,
           divisor: 8,
           quotient: 9,
-          label: '8 Ã— 9 = 72, so 72 Ã· 8 = 9'
+          label: '8 × 9 = 72, so 72 ÷ 8 = 9'
         }
       },
       sage: "Ask yourself: what times the divisor equals the dividend? That is your answer. Now watch me solve two Songhai problems."
@@ -180,52 +180,52 @@ window.KT_LESSONS.songhai = [
     phase2_worked: [
       {
         problem: "The Songhai treasury has 56 bags of gold to distribute equally among 7 provinces. How many bags does each province receive?",
-        equation: '56 Ã· 7 = ?',
+        equation: '56 ÷ 7 = ?',
         steps: [
           {
-            display: '56 Ã· 7 = ?   Think: 7 Ã— ? = 56',
+            display: '56 ÷ 7 = ?   Think: 7 × ? = 56',
             explanation: 'Reframe the problem as a missing factor. What number times 7 equals 56?',
-            visual: '56 Ã· 7 with missing factor shown'
+            visual: '56 ÷ 7 with missing factor shown'
           },
           {
-            display: '7 Ã— 8 = 56',
-            explanation: 'Use your multiplication facts: 7 Ã— 8 = 56.',
+            display: '7 × 8 = 56',
+            explanation: 'Use your multiplication facts: 7 × 8 = 56.',
             visual: '8 highlighted as the answer'
           },
           {
-            display: '56 Ã· 7 = 8 bags per province',
+            display: '56 ÷ 7 = 8 bags per province',
             explanation: 'Each of the 7 provinces receives 8 bags of gold.',
             visual: '8 groups of 7 shown'
           }
         ],
-        sage: "Find the multiplication fact that matches â€” that is your division answer every time."
+        sage: "Find the multiplication fact that matches — that is your division answer every time."
       },
       {
         problem: "Songhai needs to supply 6 river forts with equal amounts of grain. There are 480 sacks total. How many sacks go to each fort? Then: the empire produces 300 sacks of grain per day. How many sacks in 7 days?",
-        equation: 'Part A: 480 Ã· 6 = ?   Part B: 300 Ã— 7 = ?',
+        equation: 'Part A: 480 ÷ 6 = ?   Part B: 300 × 7 = ?',
         steps: [
           {
-            display: 'Part A: 480 Ã· 6 = ?   Think: 6 Ã— ? = 480',
+            display: 'Part A: 480 ÷ 6 = ?   Think: 6 × ? = 480',
             explanation: 'What times 6 equals 480? Use what you know about 6s.',
-            visual: '480 Ã· 6 shown'
+            visual: '480 ÷ 6 shown'
           },
           {
-            display: '6 Ã— 80 = 480',
-            explanation: '6 Ã— 8 = 48, so 6 Ã— 80 = 480. Each fort gets 80 sacks.',
+            display: '6 × 80 = 480',
+            explanation: '6 × 8 = 48, so 6 × 80 = 480. Each fort gets 80 sacks.',
             visual: '80 highlighted'
           },
           {
-            display: 'Part B: 300 Ã— 7 = ?',
+            display: 'Part B: 300 × 7 = ?',
             explanation: 'To multiply by a multiple of 100: multiply the non-zero digits, then add the zeros.',
-            visual: '300 Ã— 7 shown'
+            visual: '300 × 7 shown'
           },
           {
-            display: '3 Ã— 7 = 21, then add the two zeros from 300',
-            explanation: '300 has two zeros. 3 Ã— 7 = 21. Add two zeros: 2,100 sacks in 7 days.',
+            display: '3 × 7 = 21, then add the two zeros from 300',
+            explanation: '300 has two zeros. 3 × 7 = 21. Add two zeros: 2,100 sacks in 7 days.',
             visual: '2100 revealed'
           }
         ],
-        sage: "Multiples of 10 and 100 are shortcuts â€” multiply the base digits, then attach the zeros. Fast and clean."
+        sage: "Multiples of 10 and 100 are shortcuts — multiply the base digits, then attach the zeros. Fast and clean."
       }
     ],
 
@@ -234,21 +234,21 @@ window.KT_LESSONS.songhai = [
         id: 'songhai-s2-p1',
         type: 'mcq',
         prompt: 'A Songhai commander divides 63 soldiers equally among 9 units. How many soldiers per unit?',
-        hint: 'Think: 9 Ã— ? = 63.',
+        hint: 'Think: 9 × ? = 63.',
         choices: ['6', '7', '8', '9'],
         answer: 1,
-        correctFeedback: '63 Ã· 9 = 7. Check: 9 Ã— 7 = 63. âœ“',
-        wrongFeedback: 'Use your 9s facts: 9Ã—7=63. So 63Ã·9=7.',
+        correctFeedback: '63 ÷ 9 = 7. Check: 9 × 7 = 63. ✓',
+        wrongFeedback: 'Use your 9s facts: 9×7=63. So 63÷9=7.',
         xp: 7
       },
       {
         id: 'songhai-s2-p2',
         type: 'input',
         prompt: '320 sacks of grain are divided equally among 4 storehouses. How many sacks in each storehouse?',
-        hint: 'Think: 4 Ã— ? = 320. Use your 4s facts scaled up.',
+        hint: 'Think: 4 × ? = 320. Use your 4s facts scaled up.',
         answer: '80',
-        correctFeedback: '320 Ã· 4 = 80. Check: 4 Ã— 80 = 320. âœ“',
-        wrongFeedback: '4 Ã— 8 = 32, so 4 Ã— 80 = 320. Therefore 320 Ã· 4 = 80.',
+        correctFeedback: '320 ÷ 4 = 80. Check: 4 × 80 = 320. ✓',
+        wrongFeedback: '4 × 8 = 32, so 4 × 80 = 320. Therefore 320 ÷ 4 = 80.',
         xp: 8
       },
       {
@@ -258,28 +258,28 @@ window.KT_LESSONS.songhai = [
         hint: 'Multiply the non-zero digits first, then add the zeros from 400.',
         choices: ['2,800 fish', '3,200 fish', '2,400 fish', '3,600 fish'],
         answer: 1,
-        correctFeedback: '400 Ã— 8 = 3,200. 4 Ã— 8 = 32, then add two zeros: 3,200.',
-        wrongFeedback: '4 Ã— 8 = 32. 400 has two zeros. Add them: 3,200.',
+        correctFeedback: '400 × 8 = 3,200. 4 × 8 = 32, then add two zeros: 3,200.',
+        wrongFeedback: '4 × 8 = 32. 400 has two zeros. Add them: 3,200.',
         xp: 8
       },
       {
         id: 'songhai-s2-p4',
         type: 'true_false',
-        prompt: '540 Ã· 6 = 90',
-        hint: 'Think: 6 Ã— ? = 540. Use 6 Ã— 9 = 54 as your starting fact.',
+        prompt: '540 ÷ 6 = 90',
+        hint: 'Think: 6 × ? = 540. Use 6 × 9 = 54 as your starting fact.',
         answer: true,
-        correctFeedback: 'Correct! 6 Ã— 9 = 54, so 6 Ã— 90 = 540. Therefore 540 Ã· 6 = 90.',
-        wrongFeedback: '6 Ã— 9 = 54, so 6 Ã— 90 = 540. That means 540 Ã· 6 = 90. The statement is true.',
+        correctFeedback: 'Correct! 6 × 9 = 54, so 6 × 90 = 540. Therefore 540 ÷ 6 = 90.',
+        wrongFeedback: '6 × 9 = 54, so 6 × 90 = 540. That means 540 ÷ 6 = 90. The statement is true.',
         xp: 7
       },
       {
         id: 'songhai-s2-p5',
         type: 'input',
         prompt: 'A Songhai province pays 700 gold coins in taxes each month. How much does it pay in 6 months?',
-        hint: '700 Ã— 6. Multiply 7 Ã— 6 first, then add the zeros.',
+        hint: '700 × 6. Multiply 7 × 6 first, then add the zeros.',
         answer: '4200',
-        correctFeedback: '700 Ã— 6 = 4,200. 7 Ã— 6 = 42, add two zeros: 4,200.',
-        wrongFeedback: '7 Ã— 6 = 42. 700 has two zeros. Put them together: 4,200.',
+        correctFeedback: '700 × 6 = 4,200. 7 × 6 = 42, add two zeros: 4,200.',
+        wrongFeedback: '7 × 6 = 42. 700 has two zeros. Put them together: 4,200.',
         xp: 10
       }
     ],
@@ -292,8 +292,8 @@ window.KT_LESSONS.songhai = [
         prompt: '56 river boats are organized into equal groups of 8. How many groups are there?',
         hint_disabled: true,
         answer: '7',
-        correctFeedback: '56 Ã· 8 = 7. Check: 8 Ã— 7 = 56. âœ“',
-        wrongFeedback: 'Think: 8 Ã— ? = 56. Your 8s facts: 8Ã—7=56. So 56Ã·8=7.'
+        correctFeedback: '56 ÷ 8 = 7. Check: 8 × 7 = 56. ✓',
+        wrongFeedback: 'Think: 8 × ? = 56. Your 8s facts: 8×7=56. So 56÷8=7.'
       },
       {
         id: 'songhai-s2-t2',
@@ -303,8 +303,8 @@ window.KT_LESSONS.songhai = [
         hint_disabled: true,
         choices: ['25', '27', '30', '35'],
         answer: 2,
-        correctFeedback: '270 Ã· 9 = 30. Check: 9 Ã— 30 = 270. âœ“',
-        wrongFeedback: '9 Ã— 3 = 27, so 9 Ã— 30 = 270. Therefore 270 Ã· 9 = 30, not the number you chose.'
+        correctFeedback: '270 ÷ 9 = 30. Check: 9 × 30 = 270. ✓',
+        wrongFeedback: '9 × 3 = 27, so 9 × 30 = 270. Therefore 270 ÷ 9 = 30, not the number you chose.'
       },
       {
         id: 'songhai-s2-t3',
@@ -313,30 +313,30 @@ window.KT_LESSONS.songhai = [
         prompt: 'The Songhai Empire collects 500 gold coins per province per year. It has 8 provinces. How many coins in total?',
         hint_disabled: true,
         answer: '4000',
-        correctFeedback: '500 Ã— 8 = 4,000. 5 Ã— 8 = 40, add two zeros: 4,000.',
-        wrongFeedback: '5 Ã— 8 = 40. 500 has two zeros. Add them to get 4,000 â€” not the number you entered.'
+        correctFeedback: '500 × 8 = 4,000. 5 × 8 = 40, add two zeros: 4,000.',
+        wrongFeedback: '5 × 8 = 40. 500 has two zeros. Add them to get 4,000 — not the number you entered.'
       },
       {
         id: 'songhai-s2-t4',
         standard: '3.OA.B.6',
         type: 'true_false',
-        prompt: 'If 6 Ã— 9 = 54, then 54 Ã· 9 = 6.',
+        prompt: 'If 6 × 9 = 54, then 54 ÷ 9 = 6.',
         hint_disabled: true,
         answer: true,
-        correctFeedback: 'Correct! Division and multiplication are inverses. If 6 Ã— 9 = 54, then 54 Ã· 9 = 6 and 54 Ã· 6 = 9.',
-        wrongFeedback: 'Multiplication and division are fact families. 6 Ã— 9 = 54 means 54 Ã· 9 = 6 is automatically true.'
+        correctFeedback: 'Correct! Division and multiplication are inverses. If 6 × 9 = 54, then 54 ÷ 9 = 6 and 54 ÷ 6 = 9.',
+        wrongFeedback: 'Multiplication and division are fact families. 6 × 9 = 54 means 54 ÷ 9 = 6 is automatically true.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
+      title: 'Quest Complete, King! 👑',
       text: "You divided like a Songhai general and multiplied by hundreds like an imperial treasurer. The math of the largest empire in African history is now yours.",
       badge: 'Imperial Calculator'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // songhai-s3 â€” Askia the Great (Reading, RI.3.6 Author's Purpose)
+  // songhai-s3 — Askia the Great (Reading, RI.3.6 Author's Purpose)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'songhai-s3',
@@ -350,9 +350,9 @@ window.KT_LESSONS.songhai = [
     estMinutes: 8,
 
     intro: {
-      kicker: 'Songhai Empire Â· Quest 3',
-      text: "King, after the mighty Sunni Ali died, a new kind of leader transformed the Songhai Empire. Askia Muhammad â€” known as Askia the Great â€” was not just a conqueror. He was a builder of systems, a protector of scholars, and the man who turned Songhai into the most organized government in African history. Read closely and think about what the author most wants you to understand.",
-      sage: "Authors write for a reason. By the end of this passage, you will be able to say exactly what this author's purpose was. ðŸ“œ"
+      kicker: 'Songhai Empire · Quest 3',
+      text: "King, after the mighty Sunni Ali died, a new kind of leader transformed the Songhai Empire. Askia Muhammad — known as Askia the Great — was not just a conqueror. He was a builder of systems, a protector of scholars, and the man who turned Songhai into the most organized government in African history. Read closely and think about what the author most wants you to understand.",
+      sage: "Authors write for a reason. By the end of this passage, you will be able to say exactly what this author's purpose was. 📜"
     },
 
     phase1_strategy: {
@@ -465,14 +465,14 @@ window.KT_LESSONS.songhai = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You identified the author's purpose â€” not just what they said, but WHY they said it. That is one of the most powerful reading skills you can develop.",
+      title: 'Quest Complete, King! 👑',
+      text: "You identified the author's purpose — not just what they said, but WHY they said it. That is one of the most powerful reading skills you can develop.",
       badge: 'Sankore Scholar'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // songhai-s4 â€” West African Trade Routes (Math, 3.MD.B.3 / 3.OA)
+  // songhai-s4 — West African Trade Routes (Math, 3.MD.B.3 / 3.OA)
   // Four-phase: Reading bar graphs + multiplication
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -487,9 +487,9 @@ window.KT_LESSONS.songhai = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Songhai Empire Â· Math Quest',
-      text: "King, the Songhai Empire controlled the most important trade routes in West Africa. Merchants recorded their goods using tally marks, charts, and diagrams â€” early versions of the graphs we use today. Today you will read bar graphs and pictographs to track trade data across the empire, and use multiplication to answer real questions about commerce.",
-      sage: "Data is just math with a story behind it. Let me show you how to read it. ðŸ“Š"
+      kicker: 'Songhai Empire · Math Quest',
+      text: "King, the Songhai Empire controlled the most important trade routes in West Africa. Merchants recorded their goods using tally marks, charts, and diagrams — early versions of the graphs we use today. Today you will read bar graphs and pictographs to track trade data across the empire, and use multiplication to answer real questions about commerce.",
+      sage: "Data is just math with a story behind it. Let me show you how to read it. 📊"
     },
 
     phase1_concept: {
@@ -497,7 +497,7 @@ window.KT_LESSONS.songhai = [
       definition: 'A bar graph uses bars of different lengths to compare amounts. A pictograph uses pictures or symbols to represent data. To read either graph: check the title, read the labels, and look at the scale (what each unit or symbol represents).',
       example: {
         context: "A bar graph shows gold traded by four Songhai cities in one month.",
-        equation: 'Read the scale â†’ Read each bar â†’ Compare â†’ Answer questions',
+        equation: 'Read the scale → Read each bar → Compare → Answer questions',
         visual: 'bar_graph',
         visual_data: {
           type: 'bar_graph_example',
@@ -505,70 +505,70 @@ window.KT_LESSONS.songhai = [
           bars: [
             { label: 'Timbuktu', value: 6 },
             { label: 'Gao', value: 4 },
-            { label: 'DjennÃ©', value: 8 },
+            { label: 'Djenné', value: 8 },
             { label: 'Kukia', value: 3 }
           ],
           scale: 'Each unit = 10 bags of gold',
-          note: 'DjennÃ© traded the most: 8 Ã— 10 = 80 bags'
+          note: 'Djenné traded the most: 8 × 10 = 80 bags'
         }
       },
-      sage: "Always check the scale first â€” it tells you what each bar unit is worth. Miss the scale and every answer will be wrong."
+      sage: "Always check the scale first — it tells you what each bar unit is worth. Miss the scale and every answer will be wrong."
     },
 
     phase2_worked: [
       {
-        problem: "A pictograph shows salt traded per month. Each symbol (ðŸª) = 5 bags. Timbuktu has 6 symbols, Gao has 4, DjennÃ© has 8, Kukia has 3. How many bags did DjennÃ© trade? Which city traded the least?",
-        equation: 'DjennÃ©: 8 symbols Ã— 5 bags = ?   Least: find smallest number of symbols',
+        problem: "A pictograph shows salt traded per month. Each symbol (🐪) = 5 bags. Timbuktu has 6 symbols, Gao has 4, Djenné has 8, Kukia has 3. How many bags did Djenné trade? Which city traded the least?",
+        equation: 'Djenné: 8 symbols × 5 bags = ?   Least: find smallest number of symbols',
         steps: [
           {
-            display: 'Check the key: each ðŸª = 5 bags',
+            display: 'Check the key: each 🐪 = 5 bags',
             explanation: 'The pictograph key tells us what each symbol is worth. Always read this first.',
             visual: 'Pictograph key shown'
           },
           {
-            display: 'DjennÃ© has 8 symbols. 8 Ã— 5 = ?',
+            display: 'Djenné has 8 symbols. 8 × 5 = ?',
             explanation: 'Multiply the number of symbols by the value of each symbol.',
             visual: '8 camel symbols highlighted'
           },
           {
-            display: '8 Ã— 5 = 40 bags',
-            explanation: 'DjennÃ© traded 40 bags of salt.',
+            display: '8 × 5 = 40 bags',
+            explanation: 'Djenné traded 40 bags of salt.',
             visual: '40 revealed'
           },
           {
-            display: 'Kukia has 3 symbols â€” the fewest',
-            explanation: 'Compare all cities: Timbuktu 6, Gao 4, DjennÃ© 8, Kukia 3. Kukia has the least.',
+            display: 'Kukia has 3 symbols — the fewest',
+            explanation: 'Compare all cities: Timbuktu 6, Gao 4, Djenné 8, Kukia 3. Kukia has the least.',
             visual: 'Kukia highlighted as smallest'
           }
         ],
-        sage: "Pictograph: symbols Ã— value = total. Always multiply â€” never just count the symbols and call it the answer."
+        sage: "Pictograph: symbols × value = total. Always multiply — never just count the symbols and call it the answer."
       },
       {
         problem: "A bar graph shows iron produced by Songhai in 4 seasons. The scale says each bar unit = 30 bars of iron. Spring: 4 units, Summer: 7 units, Autumn: 5 units, Winter: 2 units. How much more iron was made in summer than winter?",
-        equation: 'Summer total âˆ’ Winter total = difference',
+        equation: 'Summer total − Winter total = difference',
         steps: [
           {
-            display: 'Summer: 7 units Ã— 30 = ?',
+            display: 'Summer: 7 units × 30 = ?',
             explanation: 'Read the summer bar (7 units), multiply by the scale value (30).',
             visual: 'Summer bar highlighted, scale shown'
           },
           {
-            display: '7 Ã— 30 = 210 bars',
-            explanation: '7 Ã— 3 = 21, add one zero: 210 bars of iron in summer.',
+            display: '7 × 30 = 210 bars',
+            explanation: '7 × 3 = 21, add one zero: 210 bars of iron in summer.',
             visual: '210 highlighted'
           },
           {
-            display: 'Winter: 2 units Ã— 30 = 60 bars',
-            explanation: '2 Ã— 30 = 60 bars of iron in winter.',
+            display: 'Winter: 2 units × 30 = 60 bars',
+            explanation: '2 × 30 = 60 bars of iron in winter.',
             visual: '60 highlighted'
           },
           {
-            display: '210 âˆ’ 60 = 150 bars more in summer',
+            display: '210 − 60 = 150 bars more in summer',
             explanation: 'Subtract to find the difference: 150 more bars were produced in summer than winter.',
             visual: '150 difference shown'
           }
         ],
-        sage: "Two-step graph problem: read and calculate each bar, then compare. Scale Ã— units = total, then subtract to find the difference."
+        sage: "Two-step graph problem: read and calculate each bar, then compare. Scale × units = total, then subtract to find the difference."
       }
     ],
 
@@ -580,8 +580,8 @@ window.KT_LESSONS.songhai = [
         hint: 'Multiply the number of symbols by the value of each symbol.',
         choices: ['21 bags', '24 bags', '28 bags', '32 bags'],
         answer: 2,
-        correctFeedback: '7 symbols Ã— 4 bags each = 28 bags. âœ“',
-        wrongFeedback: '7 symbols Ã— 4 = 28. Multiply the symbols by the key value.',
+        correctFeedback: '7 symbols × 4 bags each = 28 bags. ✓',
+        wrongFeedback: '7 symbols × 4 = 28. Multiply the symbols by the key value.',
         xp: 8
       },
       {
@@ -590,18 +590,18 @@ window.KT_LESSONS.songhai = [
         prompt: "A bar graph shows salt traded. The scale is 1 unit = 20 bags. Gao's bar is 6 units tall. How many bags did Gao trade?",
         hint: 'Multiply the bar height by the scale value.',
         answer: '120',
-        correctFeedback: '6 units Ã— 20 bags = 120 bags.',
-        wrongFeedback: 'Bar height Ã— scale value = total. 6 Ã— 20 = 120.',
+        correctFeedback: '6 units × 20 bags = 120 bags.',
+        wrongFeedback: 'Bar height × scale value = total. 6 × 20 = 120.',
         xp: 8
       },
       {
         id: 'songhai-s4-p3',
         type: 'true_false',
         prompt: "In a pictograph where each symbol = 6 items, 4 symbols represents 24 items.",
-        hint: '4 symbols Ã— 6 items each = ?',
+        hint: '4 symbols × 6 items each = ?',
         answer: true,
-        correctFeedback: '4 Ã— 6 = 24. Correct!',
-        wrongFeedback: '4 symbols Ã— 6 items each = 24 items. The statement is true.',
+        correctFeedback: '4 × 6 = 24. Correct!',
+        wrongFeedback: '4 symbols × 6 items each = 24 items. The statement is true.',
         xp: 7
       },
       {
@@ -611,18 +611,18 @@ window.KT_LESSONS.songhai = [
         hint: 'Calculate each month total first, then subtract.',
         choices: ['15 bolts', '25 bolts', '30 bolts', '45 bolts'],
         answer: 2,
-        correctFeedback: 'February: 6Ã—15=90. January: 4Ã—15=60. Difference: 90âˆ’60=30 bolts more.',
-        wrongFeedback: 'Feb: 6Ã—15=90. Jan: 4Ã—15=60. Then subtract: 90âˆ’60=30 bolts more in February.',
+        correctFeedback: 'February: 6×15=90. January: 4×15=60. Difference: 90−60=30 bolts more.',
+        wrongFeedback: 'Feb: 6×15=90. Jan: 4×15=60. Then subtract: 90−60=30 bolts more in February.',
         xp: 10
       },
       {
         id: 'songhai-s4-p5',
         type: 'input',
         prompt: "A pictograph shows kola nuts traded. Each nut symbol = 9 bags. Timbuktu has 8 symbols. How many bags did Timbuktu trade?",
-        hint: '8 symbols Ã— 9 bags each.',
+        hint: '8 symbols × 9 bags each.',
         answer: '72',
-        correctFeedback: '8 Ã— 9 = 72 bags of kola nuts.',
-        wrongFeedback: 'Symbols Ã— key value: 8 Ã— 9 = 72.',
+        correctFeedback: '8 × 9 = 72 bags of kola nuts.',
+        wrongFeedback: 'Symbols × key value: 8 × 9 = 72.',
         xp: 8
       }
     ],
@@ -636,8 +636,8 @@ window.KT_LESSONS.songhai = [
         hint_disabled: true,
         choices: ['City A with 42 bags', 'City B with 63 bags', 'City C with 28 bags', 'City B with 56 bags'],
         answer: 1,
-        correctFeedback: 'City B has the most symbols (9). 9 Ã— 7 = 63 bags.',
-        wrongFeedback: 'City B has 9 symbols â€” the most. 9 Ã— 7 = 63 bags, not the answer you chose.'
+        correctFeedback: 'City B has the most symbols (9). 9 × 7 = 63 bags.',
+        wrongFeedback: 'City B has 9 symbols — the most. 9 × 7 = 63 bags, not the answer you chose.'
       },
       {
         id: 'songhai-s4-t2',
@@ -646,8 +646,8 @@ window.KT_LESSONS.songhai = [
         prompt: "A bar graph shows iron produced. Scale = 1 unit = 40 bars. The spring bar is 5 units. How many bars of iron were produced in spring?",
         hint_disabled: true,
         answer: '200',
-        correctFeedback: '5 units Ã— 40 bars = 200 bars of iron.',
-        wrongFeedback: 'Multiply bar height by scale value: 5 Ã— 40 = 200, not the number you entered.'
+        correctFeedback: '5 units × 40 bars = 200 bars of iron.',
+        wrongFeedback: 'Multiply bar height by scale value: 5 × 40 = 200, not the number you entered.'
       },
       {
         id: 'songhai-s4-t3',
@@ -657,8 +657,8 @@ window.KT_LESSONS.songhai = [
         hint_disabled: true,
         choices: ['50 fish', '75 fish', '100 fish', '125 fish'],
         answer: 1,
-        correctFeedback: 'Summer: 8Ã—25=200. Autumn: 5Ã—25=125. Difference: 200âˆ’125=75 fish.',
-        wrongFeedback: 'Summer: 8Ã—25=200. Autumn: 5Ã—25=125. Subtract: 200âˆ’125=75. Not the number you chose.'
+        correctFeedback: 'Summer: 8×25=200. Autumn: 5×25=125. Difference: 200−125=75 fish.',
+        wrongFeedback: 'Summer: 8×25=200. Autumn: 5×25=125. Subtract: 200−125=75. Not the number you chose.'
       },
       {
         id: 'songhai-s4-t4',
@@ -667,14 +667,14 @@ window.KT_LESSONS.songhai = [
         prompt: "In a pictograph where each symbol = 8 items, 6 symbols and 3 symbols together represent 72 items.",
         hint_disabled: true,
         answer: true,
-        correctFeedback: '(6 + 3) symbols = 9 symbols. 9 Ã— 8 = 72 items. Correct!',
-        wrongFeedback: 'Add the symbols first: 6 + 3 = 9 total symbols. Then 9 Ã— 8 = 72. The statement is true.'
+        correctFeedback: '(6 + 3) symbols = 9 symbols. 9 × 8 = 72 items. Correct!',
+        wrongFeedback: 'Add the symbols first: 6 + 3 = 9 total symbols. Then 9 × 8 = 72. The statement is true.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You read data like an imperial treasurer â€” extracting information from graphs, calculating totals, and comparing results. The merchants of Songhai would recognize your skills.",
+      title: 'Quest Complete, King! 👑',
+      text: "You read data like an imperial treasurer — extracting information from graphs, calculating totals, and comparing results. The merchants of Songhai would recognize your skills.",
       badge: 'Trade Data Master'
     }
   }
