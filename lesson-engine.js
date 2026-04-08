@@ -311,6 +311,28 @@
       };
     }
 
+    var removeFromCountMatch = raw.match(/^Show\s+(\d+)\s+([\w\s-]+)\s+and\s+remove\s+(\d+)\.?$/i);
+    if (removeFromCountMatch) {
+      var totalCount = Number(removeFromCountMatch[1]);
+      var removedCount = Number(removeFromCountMatch[3]);
+      return {
+        type: 'bar_model',
+        total: totalCount,
+        filled: Math.max(0, totalCount - removedCount),
+        label: totalCount + ' ' + removeFromCountMatch[2].trim() + ', remove ' + removedCount
+      };
+    }
+
+    var showCountMatch = raw.match(/^Show\s+(\d+)\s+([\w\s-]+)\.?$/i);
+    if (showCountMatch) {
+      return {
+        type: 'bar_model',
+        total: Number(showCountMatch[1]),
+        filled: Number(showCountMatch[1]),
+        label: showCountMatch[1] + ' ' + showCountMatch[2].trim()
+      };
+    }
+
     return null;
   }
 
