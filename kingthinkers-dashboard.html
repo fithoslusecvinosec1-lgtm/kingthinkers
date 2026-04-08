@@ -416,7 +416,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
         <button id="sage-send-btn"
           onclick="sageSendInput()"
           style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--sky));border:none;font-size:20px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;align-items:center;justify-content:center;">
-          âž¤
+          ➤
         </button>
       </div>
     </div>
@@ -795,7 +795,7 @@ function selectWorld(worldId) { if (typeof KTAudio !== 'undefined') KTAudio.whoo
     if (hasLesson && !done) {
       var playBtn = document.createElement('button');
       playBtn.className = 'play-btn';
-      playBtn.textContent = 'â–¶ Play';
+      playBtn.textContent = '▶ Play';
       playBtn.setAttribute('data-lesson-id', m.lessonId);
       playBtn.setAttribute('data-id', m.id);
       playBtn.setAttribute('data-world', worldId);

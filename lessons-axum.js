@@ -416,7 +416,7 @@ window.KT_LESSONS.axum = [
         equation: 'Area = 12 × 9   Perimeter = 12 + 12 + 9 + 9',
         steps: [
           { display: 'Area = length × width = 12 × 9', explanation: 'Apply the area formula.', visual: '12×9 grid' },
-          { display: '12 × 9 = 108 square meters', explanation: '12 × 9: 12×10=120, minus 12=108. Area = 108 mÂ².', visual: '108 highlighted' },
+          { display: '12 × 9 = 108 square meters', explanation: '12 × 9: 12×10=120, minus 12=108. Area = 108 m².', visual: '108 highlighted' },
           { display: 'Perimeter = 12 + 12 + 9 + 9', explanation: 'Add all four sides of the rectangle.', visual: 'all sides labeled' },
           { display: '24 + 18 = 42 meters', explanation: 'Perimeter = 42 meters around the room.', visual: '42 revealed' }
         ],
@@ -426,7 +426,7 @@ window.KT_LESSONS.axum = [
         problem: "A courtyard is divided into 3 equal rectangular sections. Each section is 7 meters long and 4 meters wide. What is the total area of the courtyard?",
         equation: 'One section: 7 × 4 = 28. Total: 28 × 3 = ?',
         steps: [
-          { display: 'Area of one section: 7 × 4 = 28 square meters', explanation: '7 meters × 4 meters = 28 mÂ² per section.', visual: '7×4 grid' },
+          { display: 'Area of one section: 7 × 4 = 28 square meters', explanation: '7 meters × 4 meters = 28 m² per section.', visual: '7×4 grid' },
           { display: 'Three equal sections: 28 × 3 = ?', explanation: 'Multiply the area of one section by the number of sections.', visual: '3 sections shown' },
           { display: '28 × 3 = 84 square meters total', explanation: '28 × 3: 20×3=60, 8×3=24, 60+24=84.', visual: '84 revealed' }
         ],
@@ -471,14 +471,14 @@ window.KT_LESSONS.axum = [
         prompt: 'A palace hall is divided into 4 equal rooms. Each room is 6 meters long and 5 meters wide. What is the total area of the hall?',
         hint: 'Find one room\'s area first, then multiply by 4.',
         answer: '120',
-        correctFeedback: 'One room: 6×5=30 mÂ². Total: 30×4=120 square meters.',
+        correctFeedback: 'One room: 6×5=30 m². Total: 30×4=120 square meters.',
         wrongFeedback: 'One room: 6×5=30. Four rooms: 30×4=120 square meters.'
       },
       {
         id: 'axum-ax4-p5',
         type: 'mcq',
         prompt: 'Which shape has 4 sides where opposite sides are equal but NO right angles?',
-        hint: 'Think about which quadrilateral has equal opposite sides but the corners are not 90Â°.',
+        hint: 'Think about which quadrilateral has equal opposite sides but the corners are not 90°.',
         choices: ['Rectangle', 'Square', 'Parallelogram', 'Trapezoid'],
         answer: 2,
         correctFeedback: 'A parallelogram has equal opposite sides but its angles are not right angles.',
@@ -504,10 +504,10 @@ window.KT_LESSONS.axum = [
         type: 'mcq',
         prompt: 'A rectangular temple is 20 meters long and 9 meters wide. What is the area?',
         hint_disabled: true,
-        choices: ['160 mÂ²', '180 mÂ²', '58 mÂ²', '200 mÂ²'],
+        choices: ['160 m²', '180 m²', '58 m²', '200 m²'],
         answer: 1,
         correctFeedback: '20 × 9 = 180 square meters.',
-        wrongFeedback: 'Area = 20 × 9 = 180 mÂ², not the number you chose.'
+        wrongFeedback: 'Area = 20 × 9 = 180 m², not the number you chose.'
       },
       {
         id: 'axum-ax4-t3',
@@ -544,4 +544,3 @@ window.KT_LESSONS.axum = [
     }
   }
 ];
-
