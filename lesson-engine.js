@@ -217,7 +217,7 @@
 
   function updateTopStats() {
     if ($('lesson-xp-pill')) $('lesson-xp-pill').textContent = '+' + state.xpEarned + ' XP';
-    if ($('lesson-crowns-pill')) $('lesson-crowns-pill').textContent = 'ðŸ‘‘ ' + state.crownsEarned;
+    if ($('lesson-crowns-pill')) $('lesson-crowns-pill').textContent = '👑 ' + state.crownsEarned;
   }
 
   function updateProgressBar() {
@@ -351,7 +351,7 @@
   function renderCoinsVisual(count, label) {
     count = Math.max(0, Number(count || 0));
     var coins = [];
-    for (var i = 0; i < count; i++) coins.push('ðŸª™');
+    for (var i = 0; i < count; i++) coins.push('🪙');
     return renderVisualFrame(label, '<div style="font-size:28px;line-height:1.5;text-align:center;">' + coins.join(' ') + '</div>');
   }
 
@@ -428,7 +428,7 @@
         '<div style="padding:8px 10px;border-radius:10px;background:rgba(245,168,0,.18);font-weight:900;color:var(--gold);">' + n + '</div>' +
         '<div style="padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);font-weight:800;">' + up10 + '</div>' +
       '</div>' +
-      '<div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,.9);">Nearest 10: <strong style="color:var(--gold);">' + nearest10 + '</strong> Â· Nearest 100: <strong style="color:var(--gold);">' + nearest100 + '</strong></div>' +
+      '<div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,.9);">Nearest 10: <strong style="color:var(--gold);">' + nearest10 + '</strong> · Nearest 100: <strong style="color:var(--gold);">' + nearest100 + '</strong></div>' +
       (visual.rule ? '<div style="margin-top:8px;font-size:12px;color:var(--muted);">' + escapeHtml(visual.rule) + '</div>' : '');
     return renderVisualFrame(visual.label || 'Rounding Number Line', body);
   }
@@ -449,7 +449,7 @@
     return renderVisualFrame(
       visual.label || 'Rectangle Area',
       '<div style="display:grid;grid-template-columns:repeat(' + maxCols + ',1fr);gap:3px;max-width:320px;margin:0 auto;">' + cells + '</div>' +
-      '<div style="margin-top:10px;text-align:center;font-size:13px;">Area = <strong style="color:var(--gold);">' + length + ' Ã— ' + width + ' = ' + area + '</strong></div>'
+      '<div style="margin-top:10px;text-align:center;font-size:13px;">Area = <strong style="color:var(--gold);">' + length + ' × ' + width + ' = ' + area + '</strong></div>'
     );
   }
 
@@ -474,7 +474,7 @@
     for (var g = 0; g < groups; g++) {
       rows += '<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px;">' + new Array(perGroup + 1).join('<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gold);"></span>') + '</div>';
     }
-    return renderVisualFrame(visual.label || 'Equal Groups', rows + '<div style="margin-top:10px;text-align:center;color:var(--muted);">' + groups + ' groups Ã— ' + perGroup + ' each</div>');
+    return renderVisualFrame(visual.label || 'Equal Groups', rows + '<div style="margin-top:10px;text-align:center;color:var(--muted);">' + groups + ' groups × ' + perGroup + ' each</div>');
   }
 
   function renderAngleComparisonVisual(visual) {
@@ -494,8 +494,8 @@
     return renderVisualFrame(
       visual.label || 'Fact Family',
       '<div style="display:grid;gap:8px;text-align:center;font-family:var(--f-d);font-size:24px;color:var(--gold);">' +
-        '<div>' + divisor + ' Ã— ' + quotient + ' = ' + dividend + '</div>' +
-        '<div>' + dividend + ' Ã· ' + divisor + ' = ' + quotient + '</div>' +
+        '<div>' + divisor + ' × ' + quotient + ' = ' + dividend + '</div>' +
+        '<div>' + dividend + ' ÷ ' + divisor + ' = ' + quotient + '</div>' +
       '</div>'
     );
   }
@@ -578,8 +578,8 @@
     if (visual.type === 'bar_graph_example' || visual.type === 'scaled_bar') return renderBarGraphVisual(visual);
     if (visual.type === 'operation_choice') {
       return renderStepListVisual('Operation Choice', [
-        'Step 1: ' + safeText(visual.step1 && visual.step1.operation) + ' â€” ' + safeText(visual.step1 && visual.step1.equation),
-        'Step 2: ' + safeText(visual.step2 && visual.step2.operation) + ' â€” ' + safeText(visual.step2 && visual.step2.equation)
+        'Step 1: ' + safeText(visual.step1 && visual.step1.operation) + ' — ' + safeText(visual.step1 && visual.step1.equation),
+        'Step 2: ' + safeText(visual.step2 && visual.step2.operation) + ' — ' + safeText(visual.step2 && visual.step2.equation)
       ], visual.label);
     }
     if (visual.type === 'two_step') return renderStepListVisual('Two-Step', [visual.step1, visual.step2], visual.label);
@@ -611,7 +611,7 @@
         '<div class="sub">' + escapeHtml(data.text) + '</div>' +
         (data.sage ? '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>' : '') +
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Start Quest âš”ï¸</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">Start Quest ⚔️</button>' +
         '</div>' +
       '</div>'
     );
@@ -633,7 +633,7 @@
         '<div class="section-title">' + escapeHtml(data.title || 'Next Phase') + '</div>' +
         '<div class="sub">' + escapeHtml(data.body || '') + '</div>' +
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Continue â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">Continue →</button>' +
         '</div>' +
       '</div>'
     );
@@ -650,7 +650,7 @@
     var conceptVisual = data && data.example ? getVisualPayload(data.example) : null;
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 1 Â· Learn the Idea</div>' +
+        '<div class="kicker">Phase 1 · Learn the Idea</div>' +
         '<div class="section-title">' + escapeHtml(data.title || 'Concept') + '</div>' +
         (data.definition ? '<div class="sub" style="margin-bottom:12px;">' + escapeHtml(data.definition) + '</div>' : '');
 
@@ -672,7 +672,7 @@
 
     html +=
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-btn">I Got It â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">I Got It →</button>' +
         '</div>' +
       '</div>';
 
@@ -695,7 +695,7 @@
 
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 2 Â· Worked Example ' + (meta.index + 1) + ' of ' + meta.total + '</div>' +
+        '<div class="kicker">Phase 2 · Worked Example ' + (meta.index + 1) + ' of ' + meta.total + '</div>' +
         '<div class="section-title">' + escapeHtml(data.problem || 'Worked Example') + '</div>' +
         (data.equation ? '<div class="q-hint"><strong>Equation:</strong> ' + escapeHtml(data.equation) + '</div>' : '');
 
@@ -719,24 +719,24 @@
       html += '<div class="sage" style="margin-top:14px;"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>';
     }
 
-    // Button: "Next Step" while steps remain, "Got it â†’" when all revealed
+    // Button: "Next Step" while steps remain, "Got it →" when all revealed
     if (!allRevealed) {
       html +=
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-step-btn">Next Step â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-step-btn">Next Step →</button>' +
           '<div class="phase2-progress">' + (revealed + 1) + ' / ' + steps.length + ' steps</div>' +
         '</div>';
     } else {
       html +=
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Got it, let\'s go! â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">Got it, let\'s go! →</button>' +
         '</div>';
     }
 
     html += '</div>';
     renderCard(html);
 
-    // "Next Step" â€” reveal one more step, re-render same lesson step
+    // "Next Step" — reveal one more step, re-render same lesson step
     if ($('kt-next-step-btn')) {
       $('kt-next-step-btn').onclick = function () {
         if (typeof playAudio === 'function') playAudio('tap');
@@ -746,7 +746,7 @@
       };
     }
 
-    // "Got it" â€” advance to the next lesson step and reset reveal index
+    // "Got it" — advance to the next lesson step and reset reveal index
     if ($('kt-next-btn')) {
       $('kt-next-btn').onclick = function () {
         if (typeof playAudio === 'function') playAudio('tap');
@@ -763,7 +763,7 @@
     var modelText = stripLeadingLabel(phase1Data.model, 'Model');
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 1 Â· Strategy Power</div>' +
+        '<div class="kicker">Phase 1 · Strategy Power</div>' +
         '<div class="section-title">' + escapeHtml(phase1Data.name || 'Reading Strategy') + '</div>' +
         '<div class="sub">' + escapeHtml(phase1Data.definition || '') + '</div>' +
         (modelText ? '<div class="sage" style="margin-top:12px;"><strong>Model:</strong> ' + escapeHtml(modelText) + '</div>' : '') +
@@ -773,7 +773,7 @@
             '</ol>'
           : '') +
         (phase1Data.sage ? '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(phase1Data.sage) + '</div>' : '') +
-        '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Use this strategy â†’</button></div>' +
+        '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Use this strategy →</button></div>' +
       '</div>';
     renderCard(html);
     if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
@@ -783,18 +783,18 @@
     var vocab = Array.isArray(vocabArray) ? vocabArray.slice(0, 5) : [];
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 2 Â· Vocabulary Preview</div>' +
+        '<div class="kicker">Phase 2 · Vocabulary Preview</div>' +
         '<div class="section-title">Words of Power</div>' +
         '<div class="sub">Read each word before you begin matching.</div>' +
         '<div class="vocab-list">';
     vocab.forEach(function (item) {
       html +=
         '<div class="vocab-item">' +
-          '<div><strong>' + escapeHtml(item.word) + '</strong> â€” ' + escapeHtml(item.definition) + '</div>' +
+          '<div><strong>' + escapeHtml(item.word) + '</strong> — ' + escapeHtml(item.definition) + '</div>' +
           (item.sentence ? '<div style="margin-top:6px;color:var(--muted);font-size:12px;">' + escapeHtml(item.sentence) + '</div>' : '') +
         '</div>';
     });
-    html += '</div><div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Match the words â†’</button></div></div>';
+    html += '</div><div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Match the words →</button></div></div>';
     renderCard(html);
     if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
   }
@@ -806,7 +806,7 @@
       type: 'match',
       prompt: 'Match each vocabulary word to its definition.',
       pairs: pairs,
-      correctFeedback: 'Vocabulary mastery unlocked, King! ðŸ“š',
+      correctFeedback: 'Vocabulary mastery unlocked, King! 📚',
       wrongFeedback: 'Try again. Use the strategy words carefully.',
       xp: 8
     });
@@ -834,14 +834,14 @@
 
     var html =
       '<div class="q-prompt" style="margin-top:14px;">' + escapeHtml(question.prompt || question.question || 'Question') + '</div>' +
-      (question.hint ? '<div class="q-hint">ðŸ’¡ Strategy Reminder: ' + escapeHtml(question.hint) + '</div>' : '') +
+      (question.hint ? '<div class="q-hint">💡 Strategy Reminder: ' + escapeHtml(question.hint) + '</div>' : '') +
       (visualPayload ? renderVisualBlock(visualPayload) : '') +
       (qType === 'input'
         ? '<input id="kt-guided-input" class="choice" style="cursor:text;" type="text" placeholder="Type your answer" />' +
           '<div class="btn-row"><button class="btn btn-primary" id="kt-guided-submit">Check Answer</button></div>'
         : '<div class="choices" id="kt-guided-choices"></div>') +
       '<div class="feedback" id="kt-feedback"></div>' +
-      '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Continue â†’</button></div>';
+      '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Continue →</button></div>';
 
     return { html: html, mount: function () {
       var feedback = $('kt-feedback');
@@ -921,7 +921,7 @@
     var question = questions[0] || null;
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 3 Â· Guided Reading ' + (index + 1) + ' of ' + total + '</div>' +
+        '<div class="kicker">Phase 3 · Guided Reading ' + (index + 1) + ' of ' + total + '</div>' +
         '<div class="section-title">' + escapeHtml(sectionData.title || 'Read this section') + '</div>' +
         '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>';
     if (question) {
@@ -932,7 +932,7 @@
       rendered.mount();
       return;
     }
-    html += '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Continue â†’</button></div></div>';
+    html += '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Continue →</button></div></div>';
     renderCard(html);
     if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
   }
@@ -941,7 +941,7 @@
     closeData = closeData || {};
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 3 Â· Close Reading</div>' +
+        '<div class="kicker">Phase 3 · Close Reading</div>' +
         '<div class="section-title">' + escapeHtml(closeData.title || 'Read Deeply') + '</div>' +
         '<div class="sage" style="margin-top:0;"><strong>Highlighted Excerpt:</strong><br>' + escapeHtml(closeData.excerpt || '') + '</div>';
     var rendered = renderGuidedQuestion(closeData.question || { prompt: 'What do you notice?', type: 'input', answer: '' });
@@ -960,7 +960,7 @@
     var visualPayload = getVisualPayload(activity);
     var html =
       '<div class="card">' +
-        '<div class="kicker">Phase 4 Â· Show What You Know</div>' +
+        '<div class="kicker">Phase 4 · Show What You Know</div>' +
         (activity.excerpt ? '<div class="sage" style="margin-top:0;"><strong>Excerpt:</strong> ' + escapeHtml(activity.excerpt) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question || '') + '</div>' +
         (visualPayload ? renderVisualBlock(visualPayload) : '') +
@@ -969,7 +969,7 @@
             '<div class="btn-row"><button class="btn btn-primary" id="kt-submit-btn">Check Answer</button></div>'
           : '<div class="choices" id="kt-choices"></div>') +
         '<div class="feedback" id="kt-feedback"></div>' +
-        '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Next â†’</button></div>' +
+        '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Next →</button></div>' +
       '</div>';
     renderCard(html);
 
@@ -1053,10 +1053,10 @@
     if (isCorrect) {
       state.streakCount += 1;
       if (state.streakCount === 3) {
-        // King Mode banner â€” inject above the feedback
+        // King Mode banner — inject above the feedback
         var banner = document.createElement('div');
         banner.className = 'king-mode-banner';
-        banner.innerHTML = 'ðŸ‘‘ KING MODE! 3 in a row â€” bonus XP!';
+        banner.innerHTML = '👑 KING MODE! 3 in a row — bonus XP!';
         if (feedbackEl && feedbackEl.parentNode) {
           feedbackEl.parentNode.insertBefore(banner, feedbackEl);
         }
@@ -1082,7 +1082,7 @@
         '<div class="choices" id="kt-choices"></div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
         '<div class="btn-row" id="kt-next-row" style="display:none;">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Next â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">Next →</button>' +
         '</div>' +
       '</div>';
 
@@ -1175,7 +1175,7 @@
         '</div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
         '<div class="btn-row" id="kt-next-row" style="display:none;">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Next â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">Next →</button>' +
         '</div>' +
       '</div>';
 
@@ -1299,7 +1299,7 @@
         '</div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
         '<div class="btn-row" id="kt-next-row" style="display:none;">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Next â†’</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn">Next →</button>' +
         '</div>' +
       '</div>';
 
@@ -1386,7 +1386,7 @@
   function enterReviewMode() {
     var phase3Start = findPhase3StartIndex();
     if (phase3Start === -1) {
-      // No Phase 3 found â€” just go to dashboard
+      // No Phase 3 found — just go to dashboard
       exitToDashboard();
       return;
     }
@@ -1414,7 +1414,7 @@
       state.xpEarned = finalLessonXP;
     }
 
-    // â”€â”€ REVIEW MODE OFFER â€” shown when accuracy < 75% â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // â”€â”€ REVIEW MODE OFFER — shown when accuracy < 75% â”€â”€â”€â”€â”€â”€â”€â”€â”€
     var isLowScore = accuracy < 75;
     var isPhasedLesson = findPhase3StartIndex() !== -1;
     var offerReview = isLowScore && isPhasedLesson && !state.reviewMode;
@@ -1423,20 +1423,20 @@
       renderCard(
         '<div class="card">' +
           '<div class="kicker">Quest Complete</div>' +
-          '<div class="title">' + escapeHtml(data.title || 'Good effort, King! ðŸ‘‘') + '</div>' +
+          '<div class="title">' + escapeHtml(data.title || 'Good effort, King! 👑') + '</div>' +
           '<div class="sub">You scored <strong>' + accuracy + '%</strong> on the Quest Test. ' +
           'A true king always comes back stronger. Want to review the practice round, then retry the Quest Test before you head back to your kingdom?</div>' +
           '<div class="complete-grid">' +
             '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
             '<div class="stat"><div class="stat-num">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>' +
-            '<div class="stat"><div class="stat-num review-icon">ðŸ”</div><div class="stat-label">Review Available</div></div>' +
+            '<div class="stat"><div class="stat-num review-icon">🔁</div><div class="stat-label">Review Available</div></div>' +
           '</div>' +
           '<div class="review-offer">' +
-            '<div class="review-offer-text">ðŸ‘‘ Review Mode unlocked â€” go back through the practice round, then retake the Quest Test.</div>' +
+            '<div class="review-offer-text">👑 Review Mode unlocked — go back through the practice round, then retake the Quest Test.</div>' +
           '</div>' +
           '<div class="btn-row">' +
-            '<button class="btn btn-primary" id="kt-review-btn">ðŸ” Review &amp; Retry</button>' +
-            '<button class="btn btn-secondary" id="kt-finish-btn">Return to Kingdom â†’</button>' +
+            '<button class="btn btn-primary" id="kt-review-btn">🔁 Review &amp; Retry</button>' +
+            '<button class="btn btn-secondary" id="kt-finish-btn">Return to Kingdom →</button>' +
           '</div>' +
         '</div>'
       );
@@ -1454,7 +1454,7 @@
         };
       }
 
-      // Save progress now even for low score â€” student completed the lesson
+      // Save progress now even for low score — student completed the lesson
       try {
         var active = JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
         var code = (typeof window.kt_getActiveCode === 'function')
@@ -1481,12 +1481,12 @@
     }
 
     // â”€â”€ STANDARD COMPLETION SCREEN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    var kicker = state.reviewMode ? 'Review Complete! ðŸ‘‘' : 'Quest Complete';
+    var kicker = state.reviewMode ? 'Review Complete! 👑' : 'Quest Complete';
     var titleText = state.reviewMode
-      ? 'You came back stronger, King! ðŸ‘‘'
-      : escapeHtml(data.title || 'You Did It, King! ðŸ‘‘');
+      ? 'You came back stronger, King! 👑'
+      : escapeHtml(data.title || 'You Did It, King! 👑');
     var subText = state.reviewMode
-      ? 'That is what kings do â€” they review, improve, and keep going.'
+      ? 'That is what kings do — they review, improve, and keep going.'
       : escapeHtml(data.text || 'You completed the lesson.');
 
     renderCard(
@@ -1501,7 +1501,7 @@
         '</div>' +
         (data.badge ? '<div class="sage" style="margin-top:16px;"><strong>Badge Unlocked:</strong> ' + escapeHtml(data.badge) + '</div>' : '') +
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-finish-btn">Return to Kingdom â†’</button>' +
+          '<button class="btn btn-primary" id="kt-finish-btn">Return to Kingdom →</button>' +
         '</div>' +
       '</div>'
     );

@@ -3,7 +3,7 @@
 window.KT_LESSONS.mali = [
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // mali-m1 â€” Mansa Musa's Gold (Reading, RI.3.2 Main Idea)
+  // mali-m1 — Mansa Musa's Gold (Reading, RI.3.2 Main Idea)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'mali-m1',
@@ -17,9 +17,9 @@ window.KT_LESSONS.mali = [
     estMinutes: 8,
 
     intro: {
-      kicker: 'Kingdom of Mali Â· Quest 1',
+      kicker: 'Kingdom of Mali · Quest 1',
       text: "King, in 1324 the ruler of Mali made a journey that shocked the entire world. Mansa Musa traveled to Mecca with so much gold that he changed the economies of Egypt and Arabia. Read carefully and discover what made this king the wealthiest person who ever lived.",
-      sage: "The richest man in history was a Black king, King. Read and find out why. ðŸ‘‘"
+      sage: "The richest man in history was a Black king, King. Read and find out why. 👑"
     },
 
     phase1_strategy: {
@@ -132,14 +132,14 @@ window.KT_LESSONS.mali = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You learned about the wealthiest person in history â€” a Black king who used his power to build schools, libraries, and cities. That is what true wealth looks like.",
+      title: 'Quest Complete, King! 👑',
+      text: "You learned about the wealthiest person in history — a Black king who used his power to build schools, libraries, and cities. That is what true wealth looks like.",
       badge: 'Scholar of Mali'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // mali-m2 â€” The Golden Trade (Math, 3.NBT.A.2 / 3.OA.D.8)
+  // mali-m2 — The Golden Trade (Math, 3.NBT.A.2 / 3.OA.D.8)
   // Four-phase: Multi-step word problems + place value addition
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -154,9 +154,9 @@ window.KT_LESSONS.mali = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Kingdom of Mali Â· Math Quest',
-      text: "King, Mali's merchants traded gold and salt across thousands of miles. Every deal required careful math â€” counting goods, calculating totals, and solving problems with multiple steps. Today you will use the same problem-solving strategies that made Mali merchants legendary.",
-      sage: "A good merchant never guesses. He calculates. Let me show you how. âš–ï¸"
+      kicker: 'Kingdom of Mali · Math Quest',
+      text: "King, Mali's merchants traded gold and salt across thousands of miles. Every deal required careful math — counting goods, calculating totals, and solving problems with multiple steps. Today you will use the same problem-solving strategies that made Mali merchants legendary.",
+      sage: "A good merchant never guesses. He calculates. Let me show you how. ⚖️"
     },
 
     phase1_concept: {
@@ -164,16 +164,16 @@ window.KT_LESSONS.mali = [
       definition: 'A two-step word problem requires two separate calculations to find the answer. Read carefully to find what you need to solve first, then use that answer in the second calculation.',
       example: {
         context: "A Mali merchant has 145 gold coins. He earns 78 more at the market, then spends 63 on supplies.",
-        equation: 'Step 1: 145 + 78 = 223   Step 2: 223 âˆ’ 63 = 160 coins remaining',
+        equation: 'Step 1: 145 + 78 = 223   Step 2: 223 − 63 = 160 coins remaining',
         visual: 'place_value_columns',
         visual_data: {
           type: 'two_step',
           step1: '145 + 78 = 223',
-          step2: '223 âˆ’ 63 = 160',
+          step2: '223 − 63 = 160',
           label: 'Find the total first, then subtract'
         }
       },
-      sage: "Two steps means two calculations. Find what you need to solve first â€” then use that answer. Watch me work through it."
+      sage: "Two steps means two calculations. Find what you need to solve first — then use that answer. Watch me work through it."
     },
 
     phase2_worked: [
@@ -207,11 +207,11 @@ window.KT_LESSONS.mali = [
             visual: '579 revealed'
           }
         ],
-        sage: 'Clean addition â€” no regrouping. Line up the columns and add each one from right to left.'
+        sage: 'Clean addition — no regrouping. Line up the columns and add each one from right to left.'
       },
       {
         problem: "Mansa Musa gave 248 gold coins to scholars on Monday and 375 coins to builders on Tuesday. He started with 800 coins. How many does he have left?",
-        equation: 'Step 1: 248 + 375 = ?   Step 2: 800 âˆ’ ? = ?',
+        equation: 'Step 1: 248 + 375 = ?   Step 2: 800 − ? = ?',
         steps: [
           {
             display: 'Step 1: 248 + 375 = ?',
@@ -219,12 +219,12 @@ window.KT_LESSONS.mali = [
             visual: '248 + 375 stacked'
           },
           {
-            display: 'Ones: 8 + 5 = 13 â†’ write 3, carry 1',
+            display: 'Ones: 8 + 5 = 13 → write 3, carry 1',
             explanation: '8 + 5 = 13. Write the 3, carry 1 ten to the tens column.',
             visual: '3 written in ones, 1 carried'
           },
           {
-            display: 'Tens: 4 + 7 + 1 carried = 12 â†’ write 2, carry 1',
+            display: 'Tens: 4 + 7 + 1 carried = 12 → write 2, carry 1',
             explanation: '4 + 7 + 1 = 12. Write 2, carry 1 hundred.',
             visual: '2 written in tens, 1 carried'
           },
@@ -234,8 +234,8 @@ window.KT_LESSONS.mali = [
             visual: '623 revealed'
           },
           {
-            display: 'Step 2: 800 âˆ’ 623 = 177 coins remaining',
-            explanation: 'Now subtract: 800 âˆ’ 623 = 177. Mansa Musa has 177 coins left.',
+            display: 'Step 2: 800 − 623 = 177 coins remaining',
+            explanation: 'Now subtract: 800 − 623 = 177. Mansa Musa has 177 coins left.',
             visual: '177 highlighted'
           }
         ],
@@ -261,8 +261,8 @@ window.KT_LESSONS.mali = [
         prompt: 'A merchant starts with 500 gold coins. He earns 178 at the market and spends 243 on goods. How many coins does he have now?',
         hint: 'Two steps: first add what he earned, then subtract what he spent.',
         answer: '435',
-        correctFeedback: '500 + 178 = 678, then 678 âˆ’ 243 = 435 coins.',
-        wrongFeedback: 'Step 1: 500 + 178 = 678. Step 2: 678 âˆ’ 243. Work each column carefully.',
+        correctFeedback: '500 + 178 = 678, then 678 − 243 = 435 coins.',
+        wrongFeedback: 'Step 1: 500 + 178 = 678. Step 2: 678 − 243. Work each column carefully.',
         xp: 10
       },
       {
@@ -290,10 +290,10 @@ window.KT_LESSONS.mali = [
         id: 'mali-m2-p5',
         type: 'input',
         prompt: 'A salt mine produces 450 blocks of salt per week. How many blocks does it produce in 6 weeks?',
-        hint: '450 Ã— 6. Think: 400 Ã— 6 and 50 Ã— 6, then add.',
+        hint: '450 × 6. Think: 400 × 6 and 50 × 6, then add.',
         answer: '2700',
-        correctFeedback: '450 Ã— 6 = 2,700 blocks. 400Ã—6=2,400 and 50Ã—6=300, total 2,700.',
-        wrongFeedback: 'Break it apart: 400Ã—6=2,400 and 50Ã—6=300. Add: 2,400+300=2,700.',
+        correctFeedback: '450 × 6 = 2,700 blocks. 400×6=2,400 and 50×6=300, total 2,700.',
+        wrongFeedback: 'Break it apart: 400×6=2,400 and 50×6=300. Add: 2,400+300=2,700.',
         xp: 10
       }
     ],
@@ -317,8 +317,8 @@ window.KT_LESSONS.mali = [
         hint_disabled: true,
         choices: ['187 coins', '197 coins', '213 coins', '177 coins'],
         answer: 0,
-        correctFeedback: '175 + 238 = 413 spent. 600 âˆ’ 413 = 187 coins remaining.',
-        wrongFeedback: 'Two steps: add what was spent (175+238=413), then subtract from 600. 600âˆ’413=187, not the number you chose.'
+        correctFeedback: '175 + 238 = 413 spent. 600 − 413 = 187 coins remaining.',
+        wrongFeedback: 'Two steps: add what was spent (175+238=413), then subtract from 600. 600−413=187, not the number you chose.'
       },
       {
         id: 'mali-m2-t3',
@@ -337,20 +337,20 @@ window.KT_LESSONS.mali = [
         prompt: "Mansa Musa's builders complete 85 bricks per day. How many bricks do 4 builders complete together in one day?",
         hint_disabled: true,
         answer: '340',
-        correctFeedback: '85 Ã— 4 = 340 bricks. 80Ã—4=320 and 5Ã—4=20, total 340.',
-        wrongFeedback: '85 Ã— 4: break it up as 80Ã—4=320 and 5Ã—4=20. Add them: 320+20=340.'
+        correctFeedback: '85 × 4 = 340 bricks. 80×4=320 and 5×4=20, total 340.',
+        wrongFeedback: '85 × 4: break it up as 80×4=320 and 5×4=20. Add them: 320+20=340.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You calculated like a Mali merchant â€” adding large numbers, solving two-step problems, and thinking carefully before acting. That is the math of empires.",
+      title: 'Quest Complete, King! 👑',
+      text: "You calculated like a Mali merchant — adding large numbers, solving two-step problems, and thinking carefully before acting. That is the math of empires.",
       badge: 'Gold Merchant'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // mali-m3 â€” Sundiata Rises (Reading, RI.3.3 Cause and Effect)
+  // mali-m3 — Sundiata Rises (Reading, RI.3.3 Cause and Effect)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'mali-m3',
@@ -364,9 +364,9 @@ window.KT_LESSONS.mali = [
     estMinutes: 8,
 
     intro: {
-      kicker: 'Kingdom of Mali Â· Quest 3',
-      text: "King, before Mansa Musa there was Sundiata â€” the Lion King of Mali who rose from a child who could not walk to become one of the greatest rulers in African history. His story is about overcoming impossible odds. Read closely and discover how one man's determination changed the course of a kingdom.",
-      sage: "Every great empire starts with one person who refuses to give up. This is that story. ðŸ¦"
+      kicker: 'Kingdom of Mali · Quest 3',
+      text: "King, before Mansa Musa there was Sundiata — the Lion King of Mali who rose from a child who could not walk to become one of the greatest rulers in African history. His story is about overcoming impossible odds. Read closely and discover how one man's determination changed the course of a kingdom.",
+      sage: "Every great empire starts with one person who refuses to give up. This is that story. 🦁"
     },
 
     phase1_strategy: {
@@ -479,14 +479,14 @@ window.KT_LESSONS.mali = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
+      title: 'Quest Complete, King! 👑',
       text: "You followed the cause-and-effect chain of Sundiata's rise from a child who could not walk to the founder of one of history's greatest empires. Every obstacle had a reason, and every reason had a result.",
       badge: 'Lion Scholar'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // mali-m4 â€” Camel Caravan Math (Math, 3.OA.A.3 / 3.MD.D.8)
+  // mali-m4 — Camel Caravan Math (Math, 3.OA.A.3 / 3.MD.D.8)
   // Four-phase: Multiplication, division, perimeter
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -501,9 +501,9 @@ window.KT_LESSONS.mali = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Kingdom of Mali Â· Math Quest',
+      kicker: 'Kingdom of Mali · Math Quest',
       text: "King, Mansa Musa's legendary hajj included 80 camels each carrying 300 pounds of gold. Planning a caravan that size required serious multiplication. Today you will use multiplication and division to organize the greatest caravan in history.",
-      sage: "Equal groups, organized thinking â€” that is all multiplication is. Let me show you how the caravan masters planned their loads. ðŸª"
+      sage: "Equal groups, organized thinking — that is all multiplication is. Let me show you how the caravan masters planned their loads. 🐪"
     },
 
     phase1_concept: {
@@ -511,12 +511,12 @@ window.KT_LESSONS.mali = [
       definition: 'Multiplication finds the total of equal groups. To multiply larger numbers, break them into parts: multiply the tens and ones separately, then add the results together.',
       example: {
         context: "A caravan section has 6 camels. Each camel carries 24 bags of salt.",
-        equation: '6 Ã— 24 = ?',
+        equation: '6 × 24 = ?',
         visual: 'place_value_columns',
         visual_data: {
           type: 'distributive',
-          step1: '6 Ã— 20 = 120',
-          step2: '6 Ã— 4 = 24',
+          step1: '6 × 20 = 120',
+          step2: '6 × 4 = 24',
           total: '120 + 24 = 144',
           label: 'Break apart, multiply, then add'
         }
@@ -527,21 +527,21 @@ window.KT_LESSONS.mali = [
     phase2_worked: [
       {
         problem: "A caravan section has 7 camels. Each camel carries 32 bags of goods. How many bags in total?",
-        equation: '7 Ã— 32 = ?',
+        equation: '7 × 32 = ?',
         steps: [
           {
-            display: '7 Ã— 32 = 7 Ã— (30 + 2)',
+            display: '7 × 32 = 7 × (30 + 2)',
             explanation: 'Break 32 into 30 and 2. Multiply 7 by each part separately.',
             visual: '32 split into 30 and 2'
           },
           {
-            display: '7 Ã— 30 = 210',
-            explanation: 'Multiply 7 by the tens part: 7 Ã— 30 = 210.',
+            display: '7 × 30 = 210',
+            explanation: 'Multiply 7 by the tens part: 7 × 30 = 210.',
             visual: '210 highlighted'
           },
           {
-            display: '7 Ã— 2 = 14',
-            explanation: 'Multiply 7 by the ones part: 7 Ã— 2 = 14.',
+            display: '7 × 2 = 14',
+            explanation: 'Multiply 7 by the ones part: 7 × 2 = 14.',
             visual: '14 highlighted'
           },
           {
@@ -554,22 +554,22 @@ window.KT_LESSONS.mali = [
       },
       {
         problem: "A trading post has 168 bags of grain split equally among 8 merchants. How many bags does each merchant receive? And what is the perimeter of the trading post if it is 15 meters long and 9 meters wide?",
-        equation: 'Part A: 168 Ã· 8 = ?   Part B: Perimeter = ?',
+        equation: 'Part A: 168 ÷ 8 = ?   Part B: Perimeter = ?',
         steps: [
           {
-            display: 'Part A: 168 Ã· 8 = ?',
-            explanation: 'Think: 8 Ã— ? = 168. Use multiplication facts to work backwards.',
-            visual: '168 Ã· 8 shown'
+            display: 'Part A: 168 ÷ 8 = ?',
+            explanation: 'Think: 8 × ? = 168. Use multiplication facts to work backwards.',
+            visual: '168 ÷ 8 shown'
           },
           {
-            display: '8 Ã— 20 = 160 and 8 Ã— 1 = 8',
-            explanation: '8 Ã— 21 = 168. So 168 Ã· 8 = 21 bags per merchant.',
+            display: '8 × 20 = 160 and 8 × 1 = 8',
+            explanation: '8 × 21 = 168. So 168 ÷ 8 = 21 bags per merchant.',
             visual: '21 revealed'
           },
           {
             display: 'Part B: Perimeter = 15 + 15 + 9 + 9',
             explanation: 'The trading post is a rectangle. Add all four sides.',
-            visual: 'Rectangle labeled 15m Ã— 9m'
+            visual: 'Rectangle labeled 15m × 9m'
           },
           {
             display: '15 + 15 + 9 + 9 = 48 meters',
@@ -577,7 +577,7 @@ window.KT_LESSONS.mali = [
             visual: '48m perimeter shown'
           }
         ],
-        sage: "Division is the opposite of multiplication â€” use what you know about times tables to find the answer. And perimeter always means walking the whole outside."
+        sage: "Division is the opposite of multiplication — use what you know about times tables to find the answer. And perimeter always means walking the whole outside."
       }
     ],
 
@@ -589,18 +589,18 @@ window.KT_LESSONS.mali = [
         hint: 'Break 45 into 40 + 5. Multiply 8 by each part, then add.',
         choices: ['320 bags', '360 bags', '340 bags', '380 bags'],
         answer: 1,
-        correctFeedback: '8 Ã— 45 = 8Ã—40 + 8Ã—5 = 320 + 40 = 360 bags.',
-        wrongFeedback: 'Use the distributive property: 8Ã—40=320 and 8Ã—5=40. Add: 320+40=360.',
+        correctFeedback: '8 × 45 = 8×40 + 8×5 = 320 + 40 = 360 bags.',
+        wrongFeedback: 'Use the distributive property: 8×40=320 and 8×5=40. Add: 320+40=360.',
         xp: 8
       },
       {
         id: 'mali-m4-p2',
         type: 'input',
         prompt: '252 bags of salt are divided equally among 9 merchants. How many bags does each merchant receive?',
-        hint: 'Think: 9 Ã— ? = 252. Try 9 Ã— 28.',
+        hint: 'Think: 9 × ? = 252. Try 9 × 28.',
         answer: '28',
-        correctFeedback: '252 Ã· 9 = 28 bags each. Check: 9 Ã— 28 = 252. âœ“',
-        wrongFeedback: 'Think multiplication: 9 Ã— 20 = 180, 9 Ã— 8 = 72, 180 + 72 = 252. So 252 Ã· 9 = 28.',
+        correctFeedback: '252 ÷ 9 = 28 bags each. Check: 9 × 28 = 252. ✓',
+        wrongFeedback: 'Think multiplication: 9 × 20 = 180, 9 × 8 = 72, 180 + 72 = 252. So 252 ÷ 9 = 28.',
         xp: 10
       },
       {
@@ -617,26 +617,26 @@ window.KT_LESSONS.mali = [
         id: 'mali-m4-p4',
         type: 'input',
         prompt: 'Mansa Musa brought 80 camels each carrying 300 pounds of gold. How many pounds of gold in total?',
-        hint: '80 Ã— 300. Think: 8 Ã— 3 = 24, then add the zeros.',
+        hint: '80 × 300. Think: 8 × 3 = 24, then add the zeros.',
         answer: '24000',
-        correctFeedback: '80 Ã— 300 = 24,000 pounds of gold. 8Ã—3=24, then two zeros from 80 and 300 gives 24,000.',
-        wrongFeedback: '8 Ã— 3 = 24. Now count the zeros: 80 has one zero, 300 has two zeros. That is three total zeros. 24,000.',
+        correctFeedback: '80 × 300 = 24,000 pounds of gold. 8×3=24, then two zeros from 80 and 300 gives 24,000.',
+        wrongFeedback: '8 × 3 = 24. Now count the zeros: 80 has one zero, 300 has two zeros. That is three total zeros. 24,000.',
         xp: 10
       },
       {
         id: 'mali-m4-p5',
         type: 'mcq',
-        prompt: 'Which equation could you use to find 6 Ã— 53?',
+        prompt: 'Which equation could you use to find 6 × 53?',
         hint: 'Break 53 into its tens and ones parts.',
         choices: [
-          '(6 Ã— 5) + (6 Ã— 3)',
-          '(6 Ã— 50) + (6 Ã— 3)',
-          '(6 + 50) Ã— (6 + 3)',
-          '60 Ã— 53'
+          '(6 × 5) + (6 × 3)',
+          '(6 × 50) + (6 × 3)',
+          '(6 + 50) × (6 + 3)',
+          '60 × 53'
         ],
         answer: 1,
-        correctFeedback: 'Correct! 6 Ã— 53 = (6 Ã— 50) + (6 Ã— 3) = 300 + 18 = 318.',
-        wrongFeedback: 'Break 53 into 50 and 3 â€” not 5 and 3. Then multiply 6 by each part.',
+        correctFeedback: 'Correct! 6 × 53 = (6 × 50) + (6 × 3) = 300 + 18 = 318.',
+        wrongFeedback: 'Break 53 into 50 and 3 — not 5 and 3. Then multiply 6 by each part.',
         xp: 8
       }
     ],
@@ -649,8 +649,8 @@ window.KT_LESSONS.mali = [
         prompt: "A Mali caravan has 9 sections. Each section carries 56 bags of goods. How many bags in total?",
         hint_disabled: true,
         answer: '504',
-        correctFeedback: '9 Ã— 56 = 9Ã—50 + 9Ã—6 = 450 + 54 = 504 bags.',
-        wrongFeedback: 'Use the distributive property: 9Ã—50=450 and 9Ã—6=54. Add them: 450+54=504.'
+        correctFeedback: '9 × 56 = 9×50 + 9×6 = 450 + 54 = 504 bags.',
+        wrongFeedback: 'Use the distributive property: 9×50=450 and 9×6=54. Add them: 450+54=504.'
       },
       {
         id: 'mali-m4-t2',
@@ -660,8 +660,8 @@ window.KT_LESSONS.mali = [
         hint_disabled: true,
         choices: ['40 coins', '45 coins', '42 coins', '48 coins'],
         answer: 1,
-        correctFeedback: '315 Ã· 7 = 45. Check: 7 Ã— 45 = 315. âœ“',
-        wrongFeedback: 'Think: 7 Ã— ? = 315. 7 Ã— 40 = 280 and 7 Ã— 5 = 35. 280 + 35 = 315. So the answer is 45.'
+        correctFeedback: '315 ÷ 7 = 45. Check: 7 × 45 = 315. ✓',
+        wrongFeedback: 'Think: 7 × ? = 315. 7 × 40 = 280 and 7 × 5 = 35. 280 + 35 = 315. So the answer is 45.'
       },
       {
         id: 'mali-m4-t3',
@@ -677,16 +677,16 @@ window.KT_LESSONS.mali = [
         id: 'mali-m4-t4',
         standard: '3.OA.A.3',
         type: 'true_false',
-        prompt: '4 Ã— 68 = 272',
+        prompt: '4 × 68 = 272',
         hint_disabled: true,
         answer: true,
-        correctFeedback: '4 Ã— 68 = 4Ã—60 + 4Ã—8 = 240 + 32 = 272. Correct!',
-        wrongFeedback: '4Ã—68: 4Ã—60=240 and 4Ã—8=32. 240+32=272. The statement is true.'
+        correctFeedback: '4 × 68 = 4×60 + 4×8 = 240 + 32 = 272. Correct!',
+        wrongFeedback: '4×68: 4×60=240 and 4×8=32. 240+32=272. The statement is true.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
+      title: 'Quest Complete, King! 👑',
       text: "You multiplied, divided, and calculated perimeters like the caravan masters of Mali. The greatest trade empire in history ran on exactly this math.",
       badge: 'Caravan Master'
     }

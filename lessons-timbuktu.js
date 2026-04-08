@@ -3,7 +3,7 @@
 window.KT_LESSONS.timbuktu = [
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // timbuktu-t1 â€” The Great Library (Reading, RI.3.2)
+  // timbuktu-t1 — The Great Library (Reading, RI.3.2)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'timbuktu-t1',
@@ -17,9 +17,9 @@ window.KT_LESSONS.timbuktu = [
     estMinutes: 8,
 
     intro: {
-      kicker: 'Timbuktu Â· Quest 1',
+      kicker: 'Timbuktu · Quest 1',
       text: "King, at a time when Europe was in the Dark Ages, the city of Timbuktu in West Africa was one of the most advanced centers of learning in the world. Scholars came from Arabia, Egypt, and across Africa to study at its great university. Read closely to discover what made Timbuktu remarkable.",
-      sage: "The greatest weapon a king can have is knowledge. Timbuktu understood this better than anyone. ðŸ“œ"
+      sage: "The greatest weapon a king can have is knowledge. Timbuktu understood this better than anyone. 📜"
     },
 
     phase1_strategy: {
@@ -132,14 +132,14 @@ window.KT_LESSONS.timbuktu = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
+      title: 'Quest Complete, King! 👑',
       text: "You discovered that while other parts of the world struggled, Timbuktu was producing knowledge that shaped mathematics, medicine, and law. That history belongs to you.",
       badge: 'Sankore Scholar'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // timbuktu-t2 â€” Scholar's Math (Math, 3.MD.B.3 / 3.OA)
+  // timbuktu-t2 — Scholar's Math (Math, 3.MD.B.3 / 3.OA)
   // Four-phase: Data, graphs, and multi-step problems
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -154,17 +154,17 @@ window.KT_LESSONS.timbuktu = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Timbuktu Â· Math Quest',
-      text: "King, the scholars of Timbuktu were masters of mathematics. They used data, charts, and calculations to track trade, study the stars, and manage their libraries. Today you will read and interpret data the way Timbuktu's scholars did â€” and use multiplication and division to answer real questions.",
-      sage: "A scholar doesn't guess â€” they read the data carefully and calculate precisely. Let me show you how. ðŸ“Š"
+      kicker: 'Timbuktu · Math Quest',
+      text: "King, the scholars of Timbuktu were masters of mathematics. They used data, charts, and calculations to track trade, study the stars, and manage their libraries. Today you will read and interpret data the way Timbuktu's scholars did — and use multiplication and division to answer real questions.",
+      sage: "A scholar doesn't guess — they read the data carefully and calculate precisely. Let me show you how. 📊"
     },
 
     phase1_concept: {
       title: 'Reading Scaled Graphs',
-      definition: 'A scaled graph uses a key where each unit or symbol represents more than one item. Always check the scale before reading any value â€” miss the scale and every answer will be wrong.',
+      definition: 'A scaled graph uses a key where each unit or symbol represents more than one item. Always check the scale before reading any value — miss the scale and every answer will be wrong.',
       example: {
         context: "A bar graph shows manuscripts collected by 4 Timbuktu scholars. Scale: 1 bar unit = 50 manuscripts.",
-        equation: '5 units Ã— 50 = 250 manuscripts',
+        equation: '5 units × 50 = 250 manuscripts',
         visual: 'bar_graph',
         visual_data: {
           type: 'scaled_bar',
@@ -177,29 +177,29 @@ window.KT_LESSONS.timbuktu = [
           ]
         }
       },
-      sage: "Scale first, always. Then bar height Ã— scale value = the real number. Watch me work through a full graph problem."
+      sage: "Scale first, always. Then bar height × scale value = the real number. Watch me work through a full graph problem."
     },
 
     phase2_worked: [
       {
         problem: "A graph shows books copied per month. Scale: 1 unit = 30 books. January: 4 units, February: 6 units, March: 5 units. How many books were copied in total across all three months?",
-        equation: 'Each month: units Ã— 30. Then add all three.',
+        equation: 'Each month: units × 30. Then add all three.',
         steps: [
-          { display: 'January: 4 units Ã— 30 = 120 books', explanation: 'Read the January bar (4 units), multiply by scale value (30).', visual: '120 highlighted' },
-          { display: 'February: 6 units Ã— 30 = 180 books', explanation: 'February bar is 6 units. 6 Ã— 30 = 180.', visual: '180 highlighted' },
-          { display: 'March: 5 units Ã— 30 = 150 books', explanation: 'March bar is 5 units. 5 Ã— 30 = 150.', visual: '150 highlighted' },
+          { display: 'January: 4 units × 30 = 120 books', explanation: 'Read the January bar (4 units), multiply by scale value (30).', visual: '120 highlighted' },
+          { display: 'February: 6 units × 30 = 180 books', explanation: 'February bar is 6 units. 6 × 30 = 180.', visual: '180 highlighted' },
+          { display: 'March: 5 units × 30 = 150 books', explanation: 'March bar is 5 units. 5 × 30 = 150.', visual: '150 highlighted' },
           { display: '120 + 180 + 150 = 450 books total', explanation: 'Add all three months together.', visual: '450 revealed' }
         ],
         sage: "Calculate each bar separately, then add. Don't try to do it all at once."
       },
       {
         problem: "A pictograph shows students per class. Each symbol = 8 students. Class A: 6 symbols, Class B: 9 symbols, Class C: 7 symbols. How many more students does Class B have than Class A? And what is the total number of students across all three classes?",
-        equation: 'Part A: (B symbols âˆ’ A symbols) Ã— 8   Part B: (A + B + C symbols) Ã— 8',
+        equation: 'Part A: (B symbols − A symbols) × 8   Part B: (A + B + C symbols) × 8',
         steps: [
-          { display: 'Class A: 6 Ã— 8 = 48 students', explanation: '6 symbols Ã— 8 students each = 48.', visual: '48 highlighted' },
-          { display: 'Class B: 9 Ã— 8 = 72 students', explanation: '9 symbols Ã— 8 students each = 72.', visual: '72 highlighted' },
-          { display: 'Part A: 72 âˆ’ 48 = 24 more students in Class B', explanation: 'Subtract to find the difference.', visual: '24 difference shown' },
-          { display: 'Class C: 7 Ã— 8 = 56. Total: 48 + 72 + 56 = 176 students', explanation: 'Add all three classes for the total.', visual: '176 total revealed' }
+          { display: 'Class A: 6 × 8 = 48 students', explanation: '6 symbols × 8 students each = 48.', visual: '48 highlighted' },
+          { display: 'Class B: 9 × 8 = 72 students', explanation: '9 symbols × 8 students each = 72.', visual: '72 highlighted' },
+          { display: 'Part A: 72 − 48 = 24 more students in Class B', explanation: 'Subtract to find the difference.', visual: '24 difference shown' },
+          { display: 'Class C: 7 × 8 = 56. Total: 48 + 72 + 56 = 176 students', explanation: 'Add all three classes for the total.', visual: '176 total revealed' }
         ],
         sage: "Two-part graph problem: difference first, then total. Work one question at a time and label your answers."
       }
@@ -213,8 +213,8 @@ window.KT_LESSONS.timbuktu = [
         hint: 'Multiply bar height by the scale value.',
         choices: ['200', '220', '240', '260'],
         answer: 2,
-        correctFeedback: '6 units Ã— 40 = 240 manuscripts.',
-        wrongFeedback: '6 Ã— 40 = 240. Always multiply units by the scale value.',
+        correctFeedback: '6 units × 40 = 240 manuscripts.',
+        wrongFeedback: '6 × 40 = 240. Always multiply units by the scale value.',
         xp: 9
       },
       {
@@ -223,18 +223,18 @@ window.KT_LESSONS.timbuktu = [
         prompt: "A pictograph shows books per library. Each symbol = 9 books. Library A: 7 symbols, Library B: 5 symbols. How many books total across both libraries?",
         hint: 'Calculate each library separately, then add.',
         answer: '108',
-        correctFeedback: 'Library A: 7Ã—9=63. Library B: 5Ã—9=45. Total: 63+45=108 books.',
-        wrongFeedback: 'A: 7Ã—9=63. B: 5Ã—9=45. Add them: 63+45=108.',
+        correctFeedback: 'Library A: 7×9=63. Library B: 5×9=45. Total: 63+45=108 books.',
+        wrongFeedback: 'A: 7×9=63. B: 5×9=45. Add them: 63+45=108.',
         xp: 10
       },
       {
         id: 'timbuktu-t2-p3',
         type: 'true_false',
         prompt: "In a bar graph with scale 1 unit = 25, a bar of 8 units represents 200.",
-        hint: '8 Ã— 25 = ?',
+        hint: '8 × 25 = ?',
         answer: true,
-        correctFeedback: '8 Ã— 25 = 200. Correct!',
-        wrongFeedback: '8 Ã— 25 = 200. The statement is true.',
+        correctFeedback: '8 × 25 = 200. Correct!',
+        wrongFeedback: '8 × 25 = 200. The statement is true.',
         xp: 9
       },
       {
@@ -244,18 +244,18 @@ window.KT_LESSONS.timbuktu = [
         hint: 'Calculate each subject total first, then find the difference.',
         choices: ['40 students', '50 students', '60 students', '80 students'],
         answer: 2,
-        correctFeedback: 'Math: 8Ã—20=160. Law: 5Ã—20=100. Difference: 160âˆ’100=60 students.',
-        wrongFeedback: 'Math: 8Ã—20=160. Law: 5Ã—20=100. Subtract: 160âˆ’100=60.',
+        correctFeedback: 'Math: 8×20=160. Law: 5×20=100. Difference: 160−100=60 students.',
+        wrongFeedback: 'Math: 8×20=160. Law: 5×20=100. Subtract: 160−100=60.',
         xp: 10
       },
       {
         id: 'timbuktu-t2-p5',
         type: 'input',
         prompt: "A bar graph shows manuscripts written per century. Scale: 1 unit = 500 manuscripts. The 14th century bar is 9 units. How many manuscripts were written?",
-        hint: '9 Ã— 500. Multiply 9 Ã— 5 first, then add the zeros.',
+        hint: '9 × 500. Multiply 9 × 5 first, then add the zeros.',
         answer: '4500',
-        correctFeedback: '9 Ã— 500 = 4,500 manuscripts.',
-        wrongFeedback: '9 Ã— 5 = 45. 500 has two zeros. Add them: 4,500.',
+        correctFeedback: '9 × 500 = 4,500 manuscripts.',
+        wrongFeedback: '9 × 5 = 45. 500 has two zeros. Add them: 4,500.',
         xp: 10
       }
     ],
@@ -268,8 +268,8 @@ window.KT_LESSONS.timbuktu = [
         prompt: "A bar graph shows books per scholar. Scale: 1 unit = 60 books. Scholar Mahmud's bar is 7 units. How many books does he have?",
         hint_disabled: true,
         answer: '420',
-        correctFeedback: '7 Ã— 60 = 420 books.',
-        wrongFeedback: 'Units Ã— scale value: 7 Ã— 60 = 420, not the number you entered.'
+        correctFeedback: '7 × 60 = 420 books.',
+        wrongFeedback: 'Units × scale value: 7 × 60 = 420, not the number you entered.'
       },
       {
         id: 'timbuktu-t2-t2',
@@ -279,8 +279,8 @@ window.KT_LESSONS.timbuktu = [
         hint_disabled: true,
         choices: ['14 scrolls', '21 scrolls', '28 scrolls', '35 scrolls'],
         answer: 1,
-        correctFeedback: 'A: 8Ã—7=56. B: 5Ã—7=35. Difference: 56âˆ’35=21 scrolls.',
-        wrongFeedback: 'A: 8Ã—7=56. B: 5Ã—7=35. 56âˆ’35=21, not the answer you chose.'
+        correctFeedback: 'A: 8×7=56. B: 5×7=35. Difference: 56−35=21 scrolls.',
+        wrongFeedback: 'A: 8×7=56. B: 5×7=35. 56−35=21, not the answer you chose.'
       },
       {
         id: 'timbuktu-t2-t3',
@@ -289,8 +289,8 @@ window.KT_LESSONS.timbuktu = [
         prompt: "A graph shows students per year. Scale: 1 unit = 100 students. Year 1: 4 units, Year 2: 6 units, Year 3: 5 units. How many students total across all three years?",
         hint_disabled: true,
         answer: '1500',
-        correctFeedback: '4Ã—100 + 6Ã—100 + 5Ã—100 = 400+600+500 = 1,500 students.',
-        wrongFeedback: 'Calculate each year: 4Ã—100=400, 6Ã—100=600, 5Ã—100=500. Add them: 1,500.'
+        correctFeedback: '4×100 + 6×100 + 5×100 = 400+600+500 = 1,500 students.',
+        wrongFeedback: 'Calculate each year: 4×100=400, 6×100=600, 5×100=500. Add them: 1,500.'
       },
       {
         id: 'timbuktu-t2-t4',
@@ -299,20 +299,20 @@ window.KT_LESSONS.timbuktu = [
         prompt: "In a pictograph where each symbol = 6, a collection with 9 symbols has 54 items.",
         hint_disabled: true,
         answer: true,
-        correctFeedback: '9 Ã— 6 = 54. Correct!',
-        wrongFeedback: '9 symbols Ã— 6 items each = 54. The statement is true.'
+        correctFeedback: '9 × 6 = 54. Correct!',
+        wrongFeedback: '9 symbols × 6 items each = 54. The statement is true.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You read data like a Timbuktu scholar â€” checking scales, calculating carefully, and comparing results. The mathematical tradition of Africa runs through everything you just did.",
+      title: 'Quest Complete, King! 👑',
+      text: "You read data like a Timbuktu scholar — checking scales, calculating carefully, and comparing results. The mathematical tradition of Africa runs through everything you just did.",
       badge: 'Timbuktu Mathematician'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // timbuktu-t3 â€” Manuscripts of Ages (Reading, RI.3.4)
+  // timbuktu-t3 — Manuscripts of Ages (Reading, RI.3.4)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'timbuktu-t3',
@@ -326,9 +326,9 @@ window.KT_LESSONS.timbuktu = [
     estMinutes: 8,
 
     intro: {
-      kicker: 'Timbuktu Â· Quest 3',
-      text: "King, the manuscripts of Timbuktu were hidden for centuries to protect them from invasion. Today, scholars are working to restore and translate hundreds of thousands of these ancient texts. Read closely â€” and use context clues to figure out the meaning of words you may not know.",
-      sage: "A strong reader never skips a word they don't know. They use what's around it to figure it out. Let me show you how. ðŸ“–"
+      kicker: 'Timbuktu · Quest 3',
+      text: "King, the manuscripts of Timbuktu were hidden for centuries to protect them from invasion. Today, scholars are working to restore and translate hundreds of thousands of these ancient texts. Read closely — and use context clues to figure out the meaning of words you may not know.",
+      sage: "A strong reader never skips a word they don't know. They use what's around it to figure it out. Let me show you how. 📖"
     },
 
     phase1_strategy: {
@@ -441,14 +441,14 @@ window.KT_LESSONS.timbuktu = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You used context clues to unlock the meaning of challenging words â€” a skill that makes every difficult text accessible. And you learned about some of the bravest librarians in history.",
+      title: 'Quest Complete, King! 👑',
+      text: "You used context clues to unlock the meaning of challenging words — a skill that makes every difficult text accessible. And you learned about some of the bravest librarians in history.",
       badge: 'Context Clue Master'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // timbuktu-t4 â€” Astronomy Numbers (Math, 3.NBT.A.2 / 3.OA)
+  // timbuktu-t4 — Astronomy Numbers (Math, 3.NBT.A.2 / 3.OA)
   // Four-phase: Large number addition/subtraction + patterns
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -463,9 +463,9 @@ window.KT_LESSONS.timbuktu = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Timbuktu Â· Math Quest',
-      text: "King, the scholars of Timbuktu tracked the movement of stars across the sky to create calendars, predict seasons, and guide caravans through the desert at night. Astronomy requires precise calculation with very large numbers. Today you will add and subtract large numbers and find patterns in sequences â€” skills the astronomers of Timbuktu used every single night.",
-      sage: "Stars move in patterns. So does math. Let me show you both. â­"
+      kicker: 'Timbuktu · Math Quest',
+      text: "King, the scholars of Timbuktu tracked the movement of stars across the sky to create calendars, predict seasons, and guide caravans through the desert at night. Astronomy requires precise calculation with very large numbers. Today you will add and subtract large numbers and find patterns in sequences — skills the astronomers of Timbuktu used every single night.",
+      sage: "Stars move in patterns. So does math. Let me show you both. ⭐"
     },
 
     phase1_concept: {
@@ -483,7 +483,7 @@ window.KT_LESSONS.timbuktu = [
           steps: ['Ones: 7+5=12, write 2 carry 1', 'Tens: 4+6+1=11, write 1 carry 1', 'Hundreds: 2+8+1=11, write 1 carry 1', 'Thousands: 1+0+1=2', 'Answer: 2,112']
         }
       },
-      sage: "Same process â€” just more columns. Start at the ones, carry when you need to, never skip a column. Watch me."
+      sage: "Same process — just more columns. Start at the ones, carry when you need to, never skip a column. Watch me."
     },
 
     phase2_worked: [
@@ -492,24 +492,24 @@ window.KT_LESSONS.timbuktu = [
         equation: '3,456 + 1,278 = ?',
         steps: [
           { display: '3,456 + 1,278 = ?', explanation: 'Line up all four place value columns.', visual: 'columns shown' },
-          { display: 'Ones: 6 + 8 = 14 â†’ write 4, carry 1', explanation: 'Start with ones. 14 is more than 9 so we regroup.', visual: '4 written, 1 carried' },
-          { display: 'Tens: 5 + 7 + 1 = 13 â†’ write 3, carry 1', explanation: 'Tens: 5+7+1=13. Write 3, carry 1.', visual: '3 written, 1 carried' },
+          { display: 'Ones: 6 + 8 = 14 → write 4, carry 1', explanation: 'Start with ones. 14 is more than 9 so we regroup.', visual: '4 written, 1 carried' },
+          { display: 'Tens: 5 + 7 + 1 = 13 → write 3, carry 1', explanation: 'Tens: 5+7+1=13. Write 3, carry 1.', visual: '3 written, 1 carried' },
           { display: 'Hundreds: 4 + 2 + 1 = 7', explanation: 'Hundreds: 4+2+1=7. No regrouping needed.', visual: '7 written' },
           { display: 'Thousands: 3 + 1 = 4. Answer: 4,734', explanation: 'Thousands: 3+1=4. Total: 4,734 manuscripts.', visual: '4734 revealed' }
         ],
-        sage: "Four columns â€” same process as three. Just one more step."
+        sage: "Four columns — same process as three. Just one more step."
       },
       {
         problem: "An astronomer recorded 2,500 observations over his career. He made 1,347 in daytime and the rest at night. How many were at night? Also: what is the next number in the pattern 150, 300, 450, 600, ___?",
-        equation: 'Part A: 2,500 âˆ’ 1,347 = ?   Part B: find the pattern rule',
+        equation: 'Part A: 2,500 − 1,347 = ?   Part B: find the pattern rule',
         steps: [
-          { display: '2,500 âˆ’ 1,347 = ?', explanation: 'Subtract. Start with ones.', visual: '2500 - 1347 stacked' },
-          { display: 'Ones: 0 âˆ’ 7. Need to regroup from tens.', explanation: 'Cannot do 0âˆ’7. Borrow 1 ten â†’ ones becomes 10. 10âˆ’7=3.', visual: 'regrouping shown' },
-          { display: 'Tens: 9 âˆ’ 4 = 5 (after borrowing). Hundreds: 4 âˆ’ 3 = 1. Thousands: 2 âˆ’ 1 = 1.', explanation: 'Complete each column after regrouping.', visual: '1,153 shown' },
-          { display: 'Part A: 1,153 night observations', explanation: '2,500 âˆ’ 1,347 = 1,153.', visual: '1153 highlighted' },
+          { display: '2,500 − 1,347 = ?', explanation: 'Subtract. Start with ones.', visual: '2500 - 1347 stacked' },
+          { display: 'Ones: 0 − 7. Need to regroup from tens.', explanation: 'Cannot do 0−7. Borrow 1 ten → ones becomes 10. 10−7=3.', visual: 'regrouping shown' },
+          { display: 'Tens: 9 − 4 = 5 (after borrowing). Hundreds: 4 − 3 = 1. Thousands: 2 − 1 = 1.', explanation: 'Complete each column after regrouping.', visual: '1,153 shown' },
+          { display: 'Part A: 1,153 night observations', explanation: '2,500 − 1,347 = 1,153.', visual: '1153 highlighted' },
           { display: 'Part B: 150, 300, 450, 600, 750. Rule: +150 each time.', explanation: 'Each term increases by 150. The next term is 600+150=750.', visual: 'pattern shown' }
         ],
-        sage: "Subtraction with regrouping â€” borrow from the next column when you need to. And patterns have rules: find the rule, apply it."
+        sage: "Subtraction with regrouping — borrow from the next column when you need to. And patterns have rules: find the rule, apply it."
       }
     ],
 
@@ -530,8 +530,8 @@ window.KT_LESSONS.timbuktu = [
         hint: 'Subtract 1,648 from 3,000. You will need to regroup multiple times.',
         choices: ['1,252', '1,352', '1,452', '1,342'],
         answer: 1,
-        correctFeedback: '3,000 âˆ’ 1,648 = 1,352 stars remaining.',
-        wrongFeedback: '3,000 âˆ’ 1,648: regroup carefully from thousands down. The answer is 1,352.'
+        correctFeedback: '3,000 − 1,648 = 1,352 stars remaining.',
+        wrongFeedback: '3,000 − 1,648: regroup carefully from thousands down. The answer is 1,352.'
       },
       {
         id: 'timbuktu-t4-p3',
@@ -541,7 +541,7 @@ window.KT_LESSONS.timbuktu = [
         choices: ['900', '950', '1,000', '1,200'],
         answer: 2,
         correctFeedback: 'The rule is +200. 800 + 200 = 1,000.',
-        wrongFeedback: 'Each term increases by 200. 200, 400, 600, 800 â€” what comes next?',
+        wrongFeedback: 'Each term increases by 200. 200, 400, 600, 800 — what comes next?',
         xp: 9
       },
       {
@@ -551,7 +551,7 @@ window.KT_LESSONS.timbuktu = [
         hint: 'Add ones first: 6+8=14. Watch for regrouping in every column.',
         answer: true,
         correctFeedback: 'Correct! Ones 6+8=14 write 4 carry 1. Tens 5+8+1=14 write 4 carry 1. Hundreds 2+3+1=6. Thousands 4+1=5. Answer: 5,644.',
-        wrongFeedback: 'Work each column: 6+8=14 carry 1, 5+8+1=14 carry 1, 2+3+1=6, 4+1=5. That gives 5,644 â€” making the statement true.'
+        wrongFeedback: 'Work each column: 6+8=14 carry 1, 5+8+1=14 carry 1, 2+3+1=6, 4+1=5. That gives 5,644 — making the statement true.'
       },
       {
         id: 'timbuktu-t4-p5',
@@ -560,7 +560,7 @@ window.KT_LESSONS.timbuktu = [
         hint: 'The rule is adding the same amount each time. What is 500 + that amount?',
         answer: '625',
         correctFeedback: 'The rule is +125. 500 + 125 = 625.',
-        wrongFeedback: '125, 250, 375, 500 â€” the difference between each is 125. So the next term is 500+125=625.'
+        wrongFeedback: '125, 250, 375, 500 — the difference between each is 125. So the next term is 500+125=625.'
       }
     ],
 
@@ -583,8 +583,8 @@ window.KT_LESSONS.timbuktu = [
         hint_disabled: true,
         choices: ['1,637', '1,737', '1,837', '2,237'],
         answer: 1,
-        correctFeedback: '4,500 âˆ’ 2,763 = 1,737 manuscripts remaining.',
-        wrongFeedback: '4,500 âˆ’ 2,763: regroup carefully. Ones 0âˆ’3 regroup, tens 9âˆ’6=... work each column. Answer is 1,737.'
+        correctFeedback: '4,500 − 2,763 = 1,737 manuscripts remaining.',
+        wrongFeedback: '4,500 − 2,763: regroup carefully. Ones 0−3 regroup, tens 9−6=... work each column. Answer is 1,737.'
       },
       {
         id: 'timbuktu-t4-t3',
@@ -595,23 +595,23 @@ window.KT_LESSONS.timbuktu = [
         choices: ['Add 25', 'Add 50', 'Multiply by 2', 'Add 75'],
         answer: 1,
         correctFeedback: 'The rule is +50. Each term increases by 50.',
-        wrongFeedback: '50â†’100â†’150â†’200â†’250. The difference between each pair is 50. The rule is add 50.'
+        wrongFeedback: '50→100→150→200→250. The difference between each pair is 50. The rule is add 50.'
       },
       {
         id: 'timbuktu-t4-t4',
         standard: '3.NBT.A.2',
         type: 'true_false',
-        prompt: '3,742 âˆ’ 1,895 = 1,847',
+        prompt: '3,742 − 1,895 = 1,847',
         hint_disabled: true,
         answer: true,
-        correctFeedback: '3,742 âˆ’ 1,895 = 1,847. Correct.',
-        wrongFeedback: 'Ones 2âˆ’5 regroup â†’ 12âˆ’5=7. Tens 3âˆ’1âˆ’9 regroup â†’ 13âˆ’1âˆ’9=... work each column carefully. Answer is 1,847.'
+        correctFeedback: '3,742 − 1,895 = 1,847. Correct.',
+        wrongFeedback: 'Ones 2−5 regroup → 12−5=7. Tens 3−1−9 regroup → 13−1−9=... work each column carefully. Answer is 1,847.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You calculated with large numbers and found patterns in sequences â€” the exact skills Timbuktu's astronomers used to map the stars and guide the caravans of the ancient world.",
+      title: 'Quest Complete, King! 👑',
+      text: "You calculated with large numbers and found patterns in sequences — the exact skills Timbuktu's astronomers used to map the stars and guide the caravans of the ancient world.",
       badge: 'Star Counter'
     }
   }

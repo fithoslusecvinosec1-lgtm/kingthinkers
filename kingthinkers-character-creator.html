@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KingThinkers â€” Create Your King</title>
+<title>KingThinkers — Create Your King</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -483,7 +483,7 @@
 <!-- Success screen -->
 <div id="success-screen">
   <div class="success-glow">
-    <div class="success-avatar" id="success-avatar">ðŸ§’ðŸ¾</div>
+    <div class="success-avatar" id="success-avatar">🧑🏾</div>
   </div>
   <div class="success-title" id="success-title">Rise up, King Marcus!</div>
   <div class="success-sub">Your kingdom awaits. Every quest you complete makes you stronger. Let's go!</div>
@@ -491,22 +491,22 @@
     <div class="xp-burst-val">Ready!</div>
     <div class="xp-burst-lbl">Character created</div>
   </div>
-  <button class="btn-enter" onclick="enterKingdom()">Enter the Kingdom â†’</button>
+  <button class="btn-enter" onclick="enterKingdom()">Enter the Kingdom →</button>
 </div>
 
 <div class="app">
 
   <!-- Top bar -->
   <div class="topbar">
-    <div class="logo">ðŸ‘‘ KingThinkers</div>
+    <div class="logo">👑 KingThinkers</div>
     <div class="step-badge">Step 2 of 4 - Create Your King</div>
   </div>
 
   <!-- Hero -->
   <div class="hero">
-    <div class="hero-eyebrow">âœ¨ Character Creation</div>
+    <div class="hero-eyebrow">✨ Character Creation</div>
     <h1 class="hero-title">Build Your <span>King</span></h1>
-    <p class="hero-sub">Make him look just like you â€” or whoever you want to be. This is YOUR adventure.</p>
+    <p class="hero-sub">Make him look just like you — or whoever you want to be. This is YOUR adventure.</p>
   </div>
 
   <!-- Creator -->
@@ -522,7 +522,7 @@
           <!-- SVG character rendered here -->
           <svg viewBox="0 0 100 100" id="king-svg"></svg>
         </div>
-        <div class="king-crown">ðŸ‘‘</div>
+        <div class="king-crown">👑</div>
       </div>
 
       <div class="preview-name" id="preview-name">Young King</div>
@@ -540,7 +540,7 @@
           <div class="stat-lbl">Quests</div>
         </div>
         <div class="stat-chip">
-          <div class="stat-val" style="color:var(--sky)">ðŸ‘‘ 0</div>
+          <div class="stat-val" style="color:var(--sky)">👑 0</div>
           <div class="stat-lbl">Crowns</div>
         </div>
       </div>
@@ -560,7 +560,7 @@
 
       <!-- Skin tone -->
       <div class="option-section">
-        <div class="section-label">ðŸŽ¨ Skin Tone</div>
+        <div class="section-label">🎨 Skin Tone</div>
         <div class="skin-grid" id="skin-grid">
           <!-- rendered by JS -->
         </div>
@@ -568,7 +568,7 @@
 
       <!-- Hairstyle -->
       <div class="option-section">
-        <div class="section-label">âœ‚ï¸ Hairstyle</div>
+        <div class="section-label">✂️ Hairstyle</div>
         <div class="hair-grid" id="hair-grid">
           <!-- rendered by JS -->
         </div>
@@ -576,7 +576,7 @@
 
       <!-- Outfit -->
       <div class="option-section">
-        <div class="section-label">ðŸ‘˜ Outfit</div>
+        <div class="section-label">👘 Outfit</div>
         <div class="outfit-grid" id="outfit-grid">
           <!-- rendered by JS -->
         </div>
@@ -584,7 +584,7 @@
 
       <!-- Grade -->
       <div class="option-section">
-        <div class="section-label">ðŸ“š Grade Level</div>
+        <div class="section-label">📚 Grade Level</div>
         <div class="grade-grid" id="grade-grid">
           <!-- rendered by JS -->
         </div>
@@ -596,7 +596,7 @@
   <!-- CTA -->
   <div class="cta-row">
     <button class="btn-start" id="btn-start" onclick="createKing()">
-      ðŸ‘‘ Start My Kingdom
+      👑 Start My Kingdom
     </button>
     <div class="btn-sub" id="btn-sub">Choose your look to begin your quest</div>
   </div>
@@ -615,25 +615,25 @@ const SKINS = [
 ];
 
 const HAIR_STYLES = [
-  { id:'h1', emoji:'ðŸŒ€', name:'Coils',    path: 'coils'    },
-  { id:'h2', emoji:'ã€°ï¸', name:'Waves',    path: 'waves'    },
+  { id:'h1', emoji:'🌀', name:'Coils',    path: 'coils'    },
+  { id:'h2', emoji:'〰️', name:'Waves',    path: 'waves'    },
   { id:'h3', emoji:'â¬›', name:'Fade',     path: 'fade'     },
-  { id:'h4', emoji:'ðŸŒ¿', name:'Locs',     path: 'locs'     },
-  { id:'h5', emoji:'ðŸ’«', name:'Afro',     path: 'afro'     },
-  { id:'h6', emoji:'ðŸ”²', name:'Box Cut',  path: 'boxcut'   },
+  { id:'h4', emoji:'🌿', name:'Locs',     path: 'locs'     },
+  { id:'h5', emoji:'💫', name:'Afro',     path: 'afro'     },
+  { id:'h6', emoji:'🔲', name:'Box Cut',  path: 'boxcut'   },
   { id:'h7', emoji:'âž°', name:'Twists',   path: 'twists'   },
-  { id:'h8', emoji:'âš¡', name:'Clean',    path: 'clean'    },
+  { id:'h8', emoji:'⚡', name:'Clean',    path: 'clean'    },
 ];
 
 const OUTFITS = [
-  { id:'o1', emoji:'ðŸ¦', name:'Lion King',    badge: null      },
-  { id:'o2', emoji:'âš”ï¸',  name:'Warrior',     badge: null      },
-  { id:'o3', emoji:'ðŸŒ', name:'Scholar',      badge: null      },
-  { id:'o4', emoji:'ðŸº', name:'Pharaoh',      badge: null      },
-  { id:'o5', emoji:'ðŸŽ“', name:'Graduate',     badge: null      },
-  { id:'o6', emoji:'ðŸš€', name:'Astronaut',    badge: 'NEW'     },
-  { id:'o7', emoji:'ðŸŽ®', name:'Gamer King',   badge: null      },
-  { id:'o8', emoji:'ðŸŽ¨', name:'Artist',       badge: null      },
+  { id:'o1', emoji:'🦁', name:'Lion King',    badge: null      },
+  { id:'o2', emoji:'⚔️',  name:'Warrior',     badge: null      },
+  { id:'o3', emoji:'🌍', name:'Scholar',      badge: null      },
+  { id:'o4', emoji:'🏺', name:'Pharaoh',      badge: null      },
+  { id:'o5', emoji:'🎓', name:'Graduate',     badge: null      },
+  { id:'o6', emoji:'🚀', name:'Astronaut',    badge: 'NEW'     },
+  { id:'o7', emoji:'🎮', name:'Gamer King',   badge: null      },
+  { id:'o8', emoji:'🎨', name:'Artist',       badge: null      },
 ];
 
 const GRADES = [
@@ -1013,7 +1013,7 @@ function createKing() {
 function launchFireworks() {
   // Play fanfare
   try { playFanfare && KTAudio.questComplete(); } catch(e) {}
-  const emojis = ['ðŸ‘‘','â­','âœ¨','ðŸ’«','ðŸŒŸ','ðŸŽ‰','ðŸ†'];
+  const emojis = ['👑','⭐','✨','💫','🌟','🎉','🏆'];
   for (let i = 0; i < 20; i++) {
     setTimeout(() => {
       const fw = document.createElement('div');

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KingThinkers â€” Enter Your Kingdom</title>
+<title>KingThinkers — Enter Your Kingdom</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -221,13 +221,13 @@
 <div id="stars"></div>
 
 <div class="loading-screen" id="loading">
-  <div class="loading-crown">ðŸ‘‘</div>
-  <div class="loading-text" id="loading-text">Opening your kingdomâ€¦</div>
+  <div class="loading-crown">👑</div>
+  <div class="loading-text" id="loading-text">Opening your kingdom…</div>
   <div class="loading-sub" id="loading-sub">Get ready, King!</div>
 </div>
 
 <div class="login-card" id="login-card">
-  <div class="crown-wrap"><div class="crown-icon">ðŸ‘‘</div></div>
+  <div class="crown-wrap"><div class="crown-icon">👑</div></div>
   <div class="logo">KingThinkers</div>
   <div class="tagline">Student sign in</div>
 
@@ -247,7 +247,7 @@
         <input class="code-box" id="c2" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" oninput="onCodeInput(2)" onkeydown="onCodeKey(event,2)">
         <input class="code-box" id="c3" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" oninput="onCodeInput(3)" onkeydown="onCodeKey(event,3)">
       </div>
-      <div class="code-hint">Ask your teacher for your King Code ðŸ‘‘</div>
+      <div class="code-hint">Ask your teacher for your King Code 👑</div>
       <div class="code-hint" id="not-you-wrap" style="display:none;margin-top:6px;">
         <a onclick="clearLastStudent()">Not you?</a>
       </div>
@@ -291,7 +291,7 @@
   </div>
 
   <div class="teacher-link">
-    Are you a teacher? <a onclick="window.location.href='kingthinkers-teacher-login.html'">Open Teacher Roster â†’</a>
+    Are you a teacher? <a onclick="window.location.href='kingthinkers-teacher-login.html'">Open Teacher Roster →</a>
   </div>
 </div>
 
@@ -304,7 +304,7 @@ for (let i = 0; i < 70; i++) {
   s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;`;
   sc.appendChild(s);
 }
-const EMOJIS = ['ðŸ‘‘','â­','ðŸŒ','ðŸº','âš”ï¸','ðŸ“š','âœ¨'];
+const EMOJIS = ['👑','⭐','🌍','🏺','⚔️','📚','✨'];
 for (let i = 0; i < 8; i++) {
   const p = document.createElement('div'); p.className = 'particle';
   p.textContent = EMOJIS[i % EMOJIS.length];
@@ -355,14 +355,14 @@ function switchTab(tab) {
   wrap.className = 'welcome-back';
   const avatar = document.createElement('div');
   avatar.className = 'wb-avatar';
-  avatar.textContent = 'ðŸ‘‘';
+  avatar.textContent = '👑';
   const meta = document.createElement('div');
   const nameEl = document.createElement('div');
   nameEl.className = 'wb-name';
   nameEl.textContent = 'Welcome back, King ' + (student.name || '') + '!';
   const subEl = document.createElement('div');
   subEl.className = 'wb-sub';
-  subEl.textContent = 'Code: ' + lastCode + ' Â· Grade ' + (student.grade || '') + ' Â· ' + (student.xp || 0) + ' XP';
+  subEl.textContent = 'Code: ' + lastCode + ' · Grade ' + (student.grade || '') + ' · ' + (student.xp || 0) + ' XP';
   meta.appendChild(nameEl);
   meta.appendChild(subEl);
   wrap.appendChild(avatar);
@@ -495,7 +495,7 @@ async function doLogin() {
     localStorage.removeItem('kt_last_code');
   }
 
-  showLoading(`Opening your kingdom, King ${student.name}â€¦`, 'Get ready to conquer!');
+  showLoading(`Opening your kingdom, King ${student.name}…`, 'Get ready to conquer!');
   setTimeout(() => {
     if (student.profileComplete) {
       window.location.href = 'kingthinkers-dashboard.html';

@@ -3,7 +3,7 @@
 window.KT_LESSONS.axum = [
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // axum-ax1 â€” The Obelisk Builders (Reading, RI.3.3)
+  // axum-ax1 — The Obelisk Builders (Reading, RI.3.3)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'axum-ax1',
@@ -141,7 +141,7 @@ window.KT_LESSONS.axum = [
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // axum-ax2 â€” Red Sea Trade Math (Math, 3.OA / 3.NBT)
+  // axum-ax2 — Red Sea Trade Math (Math, 3.OA / 3.NBT)
   // Four-phase: Multi-step problems + rounding
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -156,9 +156,9 @@ window.KT_LESSONS.axum = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Kingdom of Axum Â· Math Quest',
-      text: "King, Axum's port city of Adulis sat on the Red Sea and was one of the busiest trading ports in the ancient world. Ships arrived daily from Rome, Arabia, India, and Persia. Keeping track of all those goods required precise calculation â€” and sometimes, fast estimates. Today you will master rounding and use it to make smart estimates in trade problems.",
-      sage: "Sometimes an exact answer isn't what you need â€” a smart estimate is faster and just as useful. Let me show you the rounding rules. âš“"
+      kicker: 'Kingdom of Axum · Math Quest',
+      text: "King, Axum's port city of Adulis sat on the Red Sea and was one of the busiest trading ports in the ancient world. Ships arrived daily from Rome, Arabia, India, and Persia. Keeping track of all those goods required precise calculation — and sometimes, fast estimates. Today you will master rounding and use it to make smart estimates in trade problems.",
+      sage: "Sometimes an exact answer isn't what you need — a smart estimate is faster and just as useful. Let me show you the rounding rules. ⚓"
     },
 
     phase1_concept: {
@@ -166,17 +166,17 @@ window.KT_LESSONS.axum = [
       definition: 'Rounding replaces a number with a simpler approximate value. To round to the nearest 10: look at the ones digit. If it is 5 or more, round up. If it is less than 5, round down. To round to the nearest 100: look at the tens digit.',
       example: {
         context: "A ship carries 347 bags of ivory. Round to the nearest 10 and the nearest 100.",
-        equation: 'Nearest 10: 347 â†’ 350   Nearest 100: 347 â†’ 300',
+        equation: 'Nearest 10: 347 → 350   Nearest 100: 347 → 300',
         visual: 'number_line',
         visual_data: {
           type: 'rounding_number_line',
           number: 347,
           nearest_10: 350,
           nearest_100: 300,
-          rule: 'Ones digit is 7 â‰¥ 5: round up to 350. Tens digit is 4 < 5: round down to 300.'
+          rule: 'Ones digit is 7 ≥ 5: round up to 350. Tens digit is 4 < 5: round down to 300.'
         }
       },
-      sage: "The digit to the RIGHT of where you're rounding tells you which way to go. 5 or more â€” round up. Less than 5 â€” round down. Now watch me apply this."
+      sage: "The digit to the RIGHT of where you're rounding tells you which way to go. 5 or more — round up. Less than 5 — round down. Now watch me apply this."
     },
 
     phase2_worked: [
@@ -184,24 +184,24 @@ window.KT_LESSONS.axum = [
         problem: "An Axum merchant has 473 gold coins. Round to the nearest 10. Round to the nearest 100.",
         equation: 'Nearest 10: look at ones. Nearest 100: look at tens.',
         steps: [
-          { display: '473 â€” what is the ones digit?', explanation: 'The ones digit is 3. Since 3 < 5, we round DOWN.', visual: '473 with 3 highlighted' },
-          { display: 'Round DOWN â†’ 470 (nearest 10)', explanation: '473 rounded to the nearest 10 is 470.', visual: '470 on number line' },
-          { display: '473 â€” what is the tens digit?', explanation: 'To round to the nearest 100, look at the tens digit: 7. Since 7 â‰¥ 5, we round UP.', visual: '473 with 7 highlighted' },
-          { display: 'Round UP â†’ 500 (nearest 100)', explanation: '473 rounded to the nearest 100 is 500.', visual: '500 on number line' }
+          { display: '473 — what is the ones digit?', explanation: 'The ones digit is 3. Since 3 < 5, we round DOWN.', visual: '473 with 3 highlighted' },
+          { display: 'Round DOWN → 470 (nearest 10)', explanation: '473 rounded to the nearest 10 is 470.', visual: '470 on number line' },
+          { display: '473 — what is the tens digit?', explanation: 'To round to the nearest 100, look at the tens digit: 7. Since 7 ≥ 5, we round UP.', visual: '473 with 7 highlighted' },
+          { display: 'Round UP → 500 (nearest 100)', explanation: '473 rounded to the nearest 100 is 500.', visual: '500 on number line' }
         ],
-        sage: "Same number, two different roundings â€” because the rounding position changes which digit you look at."
+        sage: "Same number, two different roundings — because the rounding position changes which digit you look at."
       },
       {
         problem: "A ship delivers 256 bags of spices. Another delivers 384 bags. Estimate the total by rounding each to the nearest 100. Then find the exact total.",
-        equation: 'Estimate: round both â†’ add. Exact: 256 + 384 = ?',
+        equation: 'Estimate: round both → add. Exact: 256 + 384 = ?',
         steps: [
-          { display: '256 rounded to nearest 100: tens digit is 5 â‰¥ 5 â†’ round UP â†’ 300', explanation: '256 rounds to 300.', visual: '300 highlighted' },
-          { display: '384 rounded to nearest 100: tens digit is 8 â‰¥ 5 â†’ round UP â†’ 400', explanation: '384 rounds to 400.', visual: '400 highlighted' },
+          { display: '256 rounded to nearest 100: tens digit is 5 ≥ 5 → round UP → 300', explanation: '256 rounds to 300.', visual: '300 highlighted' },
+          { display: '384 rounded to nearest 100: tens digit is 8 ≥ 5 → round UP → 400', explanation: '384 rounds to 400.', visual: '400 highlighted' },
           { display: 'Estimate: 300 + 400 = 700 bags', explanation: 'Quick estimate: about 700 bags total.', visual: '700 estimate shown' },
           { display: 'Exact: 256 + 384 = 640 bags', explanation: 'Ones 6+4=10 carry 1. Tens 5+8+1=14 carry 1. Hundreds 2+3+1=6. Exact answer: 640.', visual: '640 highlighted' },
-          { display: 'Estimate 700 vs exact 640 â€” close and useful', explanation: 'The estimate was off by 60, but it gave a fast, reasonable answer.', visual: 'comparison shown' }
+          { display: 'Estimate 700 vs exact 640 — close and useful', explanation: 'The estimate was off by 60, but it gave a fast, reasonable answer.', visual: 'comparison shown' }
         ],
-        sage: "Estimates don't have to be perfect â€” they have to be close and fast. Round, then add. Then check with the exact calculation."
+        sage: "Estimates don't have to be perfect — they have to be close and fast. Round, then add. Then check with the exact calculation."
       }
     ],
 
@@ -213,8 +213,8 @@ window.KT_LESSONS.axum = [
         hint: 'Look at the ones digit. Is it 5 or more?',
         choices: ['340', '350', '300', '400'],
         answer: 1,
-        correctFeedback: 'Ones digit is 8 â‰¥ 5, so round UP. 348 â†’ 350.',
-        wrongFeedback: 'Ones digit is 8. Since 8 â‰¥ 5, round up. 340 rounds up to 350.',
+        correctFeedback: 'Ones digit is 8 ≥ 5, so round UP. 348 → 350.',
+        wrongFeedback: 'Ones digit is 8. Since 8 ≥ 5, round up. 340 rounds up to 350.',
         xp: 9
       },
       {
@@ -224,7 +224,7 @@ window.KT_LESSONS.axum = [
         hint: 'Look at the tens digit. Is it 5 or more?',
         choices: ['500', '600', '700', '620'],
         answer: 1,
-        correctFeedback: 'Tens digit is 2 < 5, so round DOWN. 623 â†’ 600.',
+        correctFeedback: 'Tens digit is 2 < 5, so round DOWN. 623 → 600.',
         wrongFeedback: 'For nearest 100, look at the tens digit: 2. Since 2 < 5, round down to 600.',
         xp: 9
       },
@@ -232,10 +232,10 @@ window.KT_LESSONS.axum = [
         id: 'axum-ax2-p3',
         type: 'input',
         prompt: 'Two Axum ships carry 267 and 419 bags of goods. Estimate the total by rounding each to the nearest 100 first.',
-        hint: 'Round 267 â†’ ? and 419 â†’ ? Then add the rounded numbers.',
+        hint: 'Round 267 → ? and 419 → ? Then add the rounded numbers.',
         answer: '700',
-        correctFeedback: '267 â†’ 300 and 419 â†’ 400. Estimate: 300 + 400 = 700 bags.',
-        wrongFeedback: '267 rounds to 300 (tens digit 6 â‰¥ 5). 419 rounds to 400 (tens digit 1 < 5). 300+400=700.'
+        correctFeedback: '267 → 300 and 419 → 400. Estimate: 300 + 400 = 700 bags.',
+        wrongFeedback: '267 rounds to 300 (tens digit 6 ≥ 5). 419 rounds to 400 (tens digit 1 < 5). 300+400=700.'
       },
       {
         id: 'axum-ax2-p4',
@@ -243,8 +243,8 @@ window.KT_LESSONS.axum = [
         prompt: '754 rounded to the nearest 10 is 750.',
         hint: 'Look at the ones digit of 754.',
         answer: true,
-        correctFeedback: 'Ones digit is 4 < 5, so round DOWN. 754 â†’ 750. Correct!',
-        wrongFeedback: 'Ones digit is 4. Since 4 < 5, round down. 754 â†’ 750. The statement is true.'
+        correctFeedback: 'Ones digit is 4 < 5, so round DOWN. 754 → 750. Correct!',
+        wrongFeedback: 'Ones digit is 4. Since 4 < 5, round down. 754 → 750. The statement is true.'
       },
       {
         id: 'axum-ax2-p5',
@@ -252,8 +252,8 @@ window.KT_LESSONS.axum = [
         prompt: 'A merchant has 1,376 ivory pieces. Round to the nearest 100.',
         hint: 'Look at the tens digit of 1,376.',
         answer: '1400',
-        correctFeedback: 'Tens digit is 7 â‰¥ 5, so round UP. 1,376 â†’ 1,400.',
-        wrongFeedback: 'Tens digit is 7. Since 7 â‰¥ 5, round up. 1,376 â†’ 1,400.'
+        correctFeedback: 'Tens digit is 7 ≥ 5, so round UP. 1,376 → 1,400.',
+        wrongFeedback: 'Tens digit is 7. Since 7 ≥ 5, round up. 1,376 → 1,400.'
       }
     ],
 
@@ -266,8 +266,8 @@ window.KT_LESSONS.axum = [
         hint_disabled: true,
         choices: ['500', '580', '600', '590'],
         answer: 2,
-        correctFeedback: 'Tens digit is 8 â‰¥ 5, round UP. 583 â†’ 600.',
-        wrongFeedback: 'Look at the tens digit of 583: it is 8. Since 8 â‰¥ 5, round up to 600.'
+        correctFeedback: 'Tens digit is 8 ≥ 5, round UP. 583 → 600.',
+        wrongFeedback: 'Look at the tens digit of 583: it is 8. Since 8 ≥ 5, round up to 600.'
       },
       {
         id: 'axum-ax2-t2',
@@ -276,8 +276,8 @@ window.KT_LESSONS.axum = [
         prompt: 'Round 847 to the nearest 10.',
         hint_disabled: true,
         answer: '850',
-        correctFeedback: 'Ones digit is 7 â‰¥ 5, round UP. 847 â†’ 850.',
-        wrongFeedback: 'Look at the ones digit: 7. Since 7 â‰¥ 5, round up. 847 â†’ 850.'
+        correctFeedback: 'Ones digit is 7 ≥ 5, round UP. 847 → 850.',
+        wrongFeedback: 'Look at the ones digit: 7. Since 7 ≥ 5, round up. 847 → 850.'
       },
       {
         id: 'axum-ax2-t3',
@@ -303,14 +303,14 @@ window.KT_LESSONS.axum = [
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You mastered rounding â€” one of the most practical math skills there is. The traders of Axum used estimates every day to make fast decisions at the docks of the Red Sea.",
+      title: 'Quest Complete, King! 👑',
+      text: "You mastered rounding — one of the most practical math skills there is. The traders of Axum used estimates every day to make fast decisions at the docks of the Red Sea.",
       badge: 'Red Sea Trader'
     }
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // axum-ax3 â€” Kingdom of Faith (Reading, RI.3.6)
+  // axum-ax3 — Kingdom of Faith (Reading, RI.3.6)
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
     id: 'axum-ax3',
@@ -372,7 +372,7 @@ window.KT_LESSONS.axum = [
   },
 
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // axum-ax4 â€” Stone Tower Geometry (Math, 3.G.A.1 / 3.MD.C.7)
+  // axum-ax4 — Stone Tower Geometry (Math, 3.G.A.1 / 3.MD.C.7)
   // Four-phase: Area, perimeter, shape attributes
   // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   {
@@ -387,48 +387,48 @@ window.KT_LESSONS.axum = [
     estMinutes: 22,
 
     intro: {
-      kicker: 'Kingdom of Axum Â· Math Quest',
-      text: "King, the builders of Axum carved massive obelisks and constructed royal palaces using precise geometric knowledge. They had to calculate the area and perimeter of foundations, understand the properties of shapes, and plan structures that would stand for centuries. Today you will master area using the formula length Ã— width, and review the geometry of quadrilaterals.",
-      sage: "Every great building starts with geometry. Let me show you the math behind the monuments of Axum. ðŸ—¿"
+      kicker: 'Kingdom of Axum · Math Quest',
+      text: "King, the builders of Axum carved massive obelisks and constructed royal palaces using precise geometric knowledge. They had to calculate the area and perimeter of foundations, understand the properties of shapes, and plan structures that would stand for centuries. Today you will master area using the formula length × width, and review the geometry of quadrilaterals.",
+      sage: "Every great building starts with geometry. Let me show you the math behind the monuments of Axum. 🗿"
     },
 
     phase1_concept: {
-      title: 'Area = Length Ã— Width',
-      definition: 'Area measures the amount of space inside a flat shape. For a rectangle or square, Area = length Ã— width. The answer is always in square units.',
+      title: 'Area = Length × Width',
+      definition: 'Area measures the amount of space inside a flat shape. For a rectangle or square, Area = length × width. The answer is always in square units.',
       example: {
         context: "The base of a palace room is 8 meters long and 6 meters wide.",
-        equation: 'Area = 8 Ã— 6 = 48 square meters',
+        equation: 'Area = 8 × 6 = 48 square meters',
         visual: 'area_grid',
         visual_data: {
           type: 'rectangle_area',
           length: 8,
           width: 6,
           area: 48,
-          label: '8 columns Ã— 6 rows = 48 square meters'
+          label: '8 columns × 6 rows = 48 square meters'
         }
       },
-      sage: "Length Ã— width â€” that is the formula. Count the rows, count the columns, multiply. Watch me apply it to some Aksumite building problems."
+      sage: "Length × width — that is the formula. Count the rows, count the columns, multiply. Watch me apply it to some Aksumite building problems."
     },
 
     phase2_worked: [
       {
         problem: "An Aksumite throne room is 12 meters long and 9 meters wide. Find the area and the perimeter.",
-        equation: 'Area = 12 Ã— 9   Perimeter = 12 + 12 + 9 + 9',
+        equation: 'Area = 12 × 9   Perimeter = 12 + 12 + 9 + 9',
         steps: [
-          { display: 'Area = length Ã— width = 12 Ã— 9', explanation: 'Apply the area formula.', visual: '12Ã—9 grid' },
-          { display: '12 Ã— 9 = 108 square meters', explanation: '12 Ã— 9: 12Ã—10=120, minus 12=108. Area = 108 mÂ².', visual: '108 highlighted' },
+          { display: 'Area = length × width = 12 × 9', explanation: 'Apply the area formula.', visual: '12×9 grid' },
+          { display: '12 × 9 = 108 square meters', explanation: '12 × 9: 12×10=120, minus 12=108. Area = 108 mÂ².', visual: '108 highlighted' },
           { display: 'Perimeter = 12 + 12 + 9 + 9', explanation: 'Add all four sides of the rectangle.', visual: 'all sides labeled' },
           { display: '24 + 18 = 42 meters', explanation: 'Perimeter = 42 meters around the room.', visual: '42 revealed' }
         ],
-        sage: "Area tells you what's inside. Perimeter tells you what's around the outside. Two different questions â€” two different formulas."
+        sage: "Area tells you what's inside. Perimeter tells you what's around the outside. Two different questions — two different formulas."
       },
       {
         problem: "A courtyard is divided into 3 equal rectangular sections. Each section is 7 meters long and 4 meters wide. What is the total area of the courtyard?",
-        equation: 'One section: 7 Ã— 4 = 28. Total: 28 Ã— 3 = ?',
+        equation: 'One section: 7 × 4 = 28. Total: 28 × 3 = ?',
         steps: [
-          { display: 'Area of one section: 7 Ã— 4 = 28 square meters', explanation: '7 meters Ã— 4 meters = 28 mÂ² per section.', visual: '7Ã—4 grid' },
-          { display: 'Three equal sections: 28 Ã— 3 = ?', explanation: 'Multiply the area of one section by the number of sections.', visual: '3 sections shown' },
-          { display: '28 Ã— 3 = 84 square meters total', explanation: '28 Ã— 3: 20Ã—3=60, 8Ã—3=24, 60+24=84.', visual: '84 revealed' }
+          { display: 'Area of one section: 7 × 4 = 28 square meters', explanation: '7 meters × 4 meters = 28 mÂ² per section.', visual: '7×4 grid' },
+          { display: 'Three equal sections: 28 × 3 = ?', explanation: 'Multiply the area of one section by the number of sections.', visual: '3 sections shown' },
+          { display: '28 × 3 = 84 square meters total', explanation: '28 × 3: 20×3=60, 8×3=24, 60+24=84.', visual: '84 revealed' }
         ],
         sage: "When shapes repeat, find one area then multiply. Faster and less error-prone than adding individual pieces."
       }
@@ -439,10 +439,10 @@ window.KT_LESSONS.axum = [
         id: 'axum-ax4-p1',
         type: 'input',
         prompt: 'A palace garden is 11 meters long and 7 meters wide. What is its area?',
-        hint: 'Area = length Ã— width.',
+        hint: 'Area = length × width.',
         answer: '77',
-        correctFeedback: '11 Ã— 7 = 77 square meters.',
-        wrongFeedback: 'Area = length Ã— width = 11 Ã— 7 = 77 square meters.',
+        correctFeedback: '11 × 7 = 77 square meters.',
+        wrongFeedback: 'Area = length × width = 11 × 7 = 77 square meters.',
         xp: 9
       },
       {
@@ -460,10 +460,10 @@ window.KT_LESSONS.axum = [
         id: 'axum-ax4-p3',
         type: 'true_false',
         prompt: 'A square with sides of 9 meters has an area of 81 square meters.',
-        hint: 'Area of a square = side Ã— side.',
+        hint: 'Area of a square = side × side.',
         answer: true,
-        correctFeedback: '9 Ã— 9 = 81 square meters. Correct!',
-        wrongFeedback: 'For a square, area = side Ã— side = 9 Ã— 9 = 81. The statement is true.'
+        correctFeedback: '9 × 9 = 81 square meters. Correct!',
+        wrongFeedback: 'For a square, area = side × side = 9 × 9 = 81. The statement is true.'
       },
       {
         id: 'axum-ax4-p4',
@@ -471,8 +471,8 @@ window.KT_LESSONS.axum = [
         prompt: 'A palace hall is divided into 4 equal rooms. Each room is 6 meters long and 5 meters wide. What is the total area of the hall?',
         hint: 'Find one room\'s area first, then multiply by 4.',
         answer: '120',
-        correctFeedback: 'One room: 6Ã—5=30 mÂ². Total: 30Ã—4=120 square meters.',
-        wrongFeedback: 'One room: 6Ã—5=30. Four rooms: 30Ã—4=120 square meters.'
+        correctFeedback: 'One room: 6×5=30 mÂ². Total: 30×4=120 square meters.',
+        wrongFeedback: 'One room: 6×5=30. Four rooms: 30×4=120 square meters.'
       },
       {
         id: 'axum-ax4-p5',
@@ -495,8 +495,8 @@ window.KT_LESSONS.axum = [
         prompt: 'The base of an Aksumite obelisk monument is 13 meters long and 4 meters wide. What is the area of the base?',
         hint_disabled: true,
         answer: '52',
-        correctFeedback: '13 Ã— 4 = 52 square meters.',
-        wrongFeedback: 'Area = length Ã— width = 13 Ã— 4 = 52 square meters.'
+        correctFeedback: '13 × 4 = 52 square meters.',
+        wrongFeedback: 'Area = length × width = 13 × 4 = 52 square meters.'
       },
       {
         id: 'axum-ax4-t2',
@@ -506,8 +506,8 @@ window.KT_LESSONS.axum = [
         hint_disabled: true,
         choices: ['160 mÂ²', '180 mÂ²', '58 mÂ²', '200 mÂ²'],
         answer: 1,
-        correctFeedback: '20 Ã— 9 = 180 square meters.',
-        wrongFeedback: 'Area = 20 Ã— 9 = 180 mÂ², not the number you chose.'
+        correctFeedback: '20 × 9 = 180 square meters.',
+        wrongFeedback: 'Area = 20 × 9 = 180 mÂ², not the number you chose.'
       },
       {
         id: 'axum-ax4-t3',
@@ -522,7 +522,7 @@ window.KT_LESSONS.axum = [
           'Opposite sides are different lengths'
         ],
         answer: 1,
-        correctFeedback: 'Every rectangle has exactly 4 right angles â€” that is a defining property.',
+        correctFeedback: 'Every rectangle has exactly 4 right angles — that is a defining property.',
         wrongFeedback: 'A rectangle doesn\'t need all sides equal (that would be a square). But every rectangle always has 4 right angles.'
       },
       {
@@ -532,14 +532,14 @@ window.KT_LESSONS.axum = [
         prompt: 'A room with area 72 square meters could be 8 meters long and 9 meters wide.',
         hint_disabled: true,
         answer: true,
-        correctFeedback: '8 Ã— 9 = 72. Yes, that room would have an area of 72 square meters.',
-        wrongFeedback: 'Check: 8 Ã— 9 = 72. That equals 72 square meters â€” so the statement is true.'
+        correctFeedback: '8 × 9 = 72. Yes, that room would have an area of 72 square meters.',
+        wrongFeedback: 'Check: 8 × 9 = 72. That equals 72 square meters — so the statement is true.'
       }
     ],
 
     wrapUp: {
-      title: 'Quest Complete, King! ðŸ‘‘',
-      text: "You calculated area, found perimeters, and identified shape properties â€” the exact geometry that Aksumite builders used to plan their palaces, obelisks, and monuments two thousand years ago.",
+      title: 'Quest Complete, King! 👑',
+      text: "You calculated area, found perimeters, and identified shape properties — the exact geometry that Aksumite builders used to plan their palaces, obelisks, and monuments two thousand years ago.",
       badge: 'Aksumite Architect'
     }
   }
