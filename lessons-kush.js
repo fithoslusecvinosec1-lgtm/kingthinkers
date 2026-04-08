@@ -235,7 +235,12 @@ window.KT_LESSONS.kush = [
       example: {
         context: 'A merchant has 6 baskets with 8 tools in each basket.',
         equation: '6 × 8 = 48',
-        visual: 'Show 6 baskets grouped with 8 tools each.'
+        visual: {
+          type: 'equal_groups',
+          groups: 6,
+          per_group: 8,
+          label: '6 baskets with 8 tools each'
+        }
       },
       sage: 'Read the trade story carefully, King. Equal groups mean multiply, and "left" often means subtract.'
     },
@@ -247,7 +252,12 @@ window.KT_LESSONS.kush = [
           {
             display: '6 groups of 8',
             explanation: 'Each basket is one equal group.',
-            visual: 'Show 6 baskets with 8 tools each.'
+            visual: {
+              type: 'equal_groups',
+              groups: 6,
+              per_group: 8,
+              label: '6 baskets with 8 tools each'
+            }
           },
           {
             display: '6 × 8',
@@ -613,7 +623,12 @@ window.KT_LESSONS.kush = [
       example: {
         context: 'A fortress yard has 5 rows of 4 tiles.',
         equation: '5 × 4 = 20',
-        visual: 'Show a rectangular yard made of 5 rows and 4 columns of tiles.'
+        visual: {
+          type: 'rectangle_area',
+          length: 5,
+          width: 4,
+          label: '5 rows × 4 columns'
+        }
       },
       sage: 'Builders must know whether they are measuring inside space or the outside boundary, King.'
     },
@@ -625,7 +640,12 @@ window.KT_LESSONS.kush = [
           {
             display: '5 rows and 4 columns',
             explanation: 'Area counts how many square units fill the shape.',
-            visual: 'Show a 5-by-4 tile array.'
+            visual: {
+              type: 'rectangle_area',
+              length: 5,
+              width: 4,
+              label: '5-by-4 tile array'
+            }
           },
           {
             display: '5 × 4',
@@ -646,7 +666,12 @@ window.KT_LESSONS.kush = [
           {
             display: 'Sides: 7, 7, 3, 3',
             explanation: 'A rectangle has two long sides and two short sides.',
-            visual: 'Show a rectangle labeled 7 and 3.'
+            visual: {
+              type: 'rectangle_area',
+              length: 7,
+              width: 3,
+              label: 'Rectangle 7 by 3'
+            }
           },
           {
             display: '7 + 7 + 3 + 3',

@@ -1001,7 +1001,12 @@ window.KT_LESSONS.egypt = [
     example: {
       context: 'A merchant has 4 baskets with 6 tools in each basket.',
       equation: '4 × 6 = 24',
-      visual: 'Show 4 equal baskets with 6 tools in each basket.'
+      visual: {
+        type: 'equal_groups',
+        groups: 4,
+        per_group: 6,
+        label: '4 baskets with 6 tools each'
+      }
     },
     sage: 'Strong traders choose the right operation, King. First ask what the problem wants you to find.'
   },
@@ -1013,7 +1018,12 @@ window.KT_LESSONS.egypt = [
         {
           display: '7 groups of 9',
           explanation: 'Each camel carries the same amount, so this is an equal-groups multiplication problem.',
-          visual: 'Show 7 camels with 9 bags each.'
+          visual: {
+            type: 'equal_groups',
+            groups: 7,
+            per_group: 9,
+            label: '7 camels with 9 bags each'
+          }
         },
         {
           display: '7 × 9',
@@ -1377,7 +1387,12 @@ window.KT_LESSONS.egypt = [
     example: {
       context: 'An archer’s bow opens less than a right angle, and a training field has 4 rows of 6 squares.',
       equation: '4 × 6 = 24',
-      visual: 'Show an acute bow angle beside a 4-by-6 array of unit squares.'
+      visual: {
+        type: 'rectangle_area',
+        length: 4,
+        width: 6,
+        label: 'Training field array (4 by 6)'
+      }
     },
     sage: 'Geometry helps a sharp eye, King. First name the angle or shape, then use multiplication to find area.'
   },
@@ -1410,7 +1425,12 @@ window.KT_LESSONS.egypt = [
         {
           display: 'Area = length × width',
           explanation: 'A rectangle’s area is found by multiplying its side lengths.',
-          visual: 'Show a rectangle labeled 9 by 7.'
+          visual: {
+            type: 'rectangle_area',
+            length: 9,
+            width: 7,
+            label: 'Rectangle 9 by 7'
+          }
         },
         {
           display: '9 × 7',
