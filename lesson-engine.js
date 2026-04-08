@@ -1501,7 +1501,7 @@ window.KTLessonEngine = (function () {
           '<div class="kicker">Quest Complete</div>' +
           '<div class="title">' + escapeHtml(data.title || 'Good effort, King! 👑') + '</div>' +
           '<div class="sub">You scored <strong>' + accuracy + '%</strong> on the Quest Test. ' +
-          'A true king always comes back stronger. Want to review the practice round before the kingdom marks this complete?</div>' +
+          'A true king always comes back stronger. Want to review the practice round, then retry the Quest Test before you head back to your kingdom?</div>' +
           '<div class="complete-grid">' +
             '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
             '<div class="stat"><div class="stat-num">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>' +

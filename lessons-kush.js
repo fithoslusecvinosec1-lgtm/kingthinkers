@@ -229,80 +229,145 @@ window.KT_LESSONS.kush = [
       sage: "A smart ruler knows the numbers behind every trade, King. Let's count like a merchant."
     },
 
-    teach: [
+    phase1_concept: {
+      title: 'Market Problems Use Different Operations',
+      definition: 'In a market, multiplication helps count equal groups, subtraction shows what is left, and addition can combine totals.',
+      example: {
+        context: 'A merchant has 6 baskets with 8 tools in each basket.',
+        equation: '6 × 8 = 48',
+        visual: 'Show 6 baskets grouped with 8 tools each.'
+      },
+      sage: 'Read the trade story carefully, King. Equal groups mean multiply, and "left" often means subtract.'
+    },
+
+    phase2_worked: [
       {
-        type: 'text',
-        title: 'Market Math',
-        body: 'Merchants use multiplication, addition, and subtraction to count goods, compare totals, and make fair trades.'
+        problem: 'A merchant has 6 baskets. Each basket holds 8 iron tools. How many tools does the merchant have in all?',
+        steps: [
+          {
+            display: '6 groups of 8',
+            explanation: 'Each basket is one equal group.',
+            visual: 'Show 6 baskets with 8 tools each.'
+          },
+          {
+            display: '6 × 8',
+            explanation: 'Multiply the number of baskets by the number of tools in each basket.',
+            visual: 'Combine the equal groups.'
+          },
+          {
+            display: '48 tools',
+            explanation: 'The merchant has 48 tools in all.',
+            visual: 'Label the total as 48.'
+          }
+        ],
+        sage: 'Count equal groups with multiplication.'
       },
       {
-        type: 'text',
-        title: 'Solve Carefully',
-        body: 'Read each word problem slowly. Decide what the question is asking, then choose the operation that fits.'
+        problem: 'A trader starts with 35 jars of oil and sells 12. How many jars are left?',
+        steps: [
+          {
+            display: 'Start with 35',
+            explanation: 'The trader begins with 35 jars.',
+            visual: 'Show 35 jars.'
+          },
+          {
+            display: '35 - 12',
+            explanation: 'Selling jars means subtract the amount sold.',
+            visual: 'Remove 12 jars from the group.'
+          },
+          {
+            display: '23 jars left',
+            explanation: '35 minus 12 equals 23 jars left.',
+            visual: 'Highlight the 23 remaining jars.'
+          }
+        ],
+        sage: 'When the story says sold or gave away, check whether subtraction fits.'
       }
     ],
 
-    activities: [
+    phase3_practice: [
       {
         id: 'k2-q1',
         type: 'mcq',
         prompt: 'A merchant has 6 baskets. Each basket holds 8 iron tools. How many tools does the merchant have in all?',
         hint: 'This is 6 groups of 8.',
-        choices: [
-          '42',
-          '48',
-          '54',
-          '56'
-        ],
+        choices: ['42', '48', '54', '56'],
         answer: 1,
         correctFeedback: 'Correct. 6 x 8 = 48 tools.',
         wrongFeedback: 'Multiply the number of baskets by the number of tools in each basket.',
-        xp: 10
+        xp: 8
       },
       {
         id: 'k2-q2',
         type: 'mcq',
         prompt: 'A trader starts with 35 jars of oil and sells 12. How many jars are left?',
         hint: 'Take away the jars that were sold.',
-        choices: [
-          '21',
-          '22',
-          '23',
-          '24'
-        ],
+        choices: ['21', '22', '23', '24'],
         answer: 2,
         correctFeedback: 'Yes. 35 - 12 = 23 jars left.',
         wrongFeedback: 'Subtract 12 from 35.',
-        xp: 10
-      },
-      {
-        id: 'k2-vocab',
-        type: 'match',
-        prompt: 'Match each market math word to its meaning.',
-        pairs: [
-          ['Product', 'The answer to a multiplication problem'],
-          ['Difference', 'The answer to a subtraction problem'],
-          ['Total', 'The whole amount added together'],
-          ['Equal groups', 'Groups with the same number in each']
-        ],
-        correctFeedback: 'Excellent, King. You speak the language of trade.',
-        wrongFeedback: 'Not quite. Try matching the math words again.',
-        xp: 10
+        xp: 8
       },
       {
         id: 'k2-q3',
         type: 'mcq',
         prompt: 'A market stall has 4 rows of beads with 7 beads in each row. How many beads are there?',
         hint: 'Rows times beads in each row.',
-        choices: [
-          '21',
-          '24',
-          '28',
-          '32'
-        ],
+        choices: ['21', '24', '28', '32'],
         answer: 2,
         correctFeedback: 'Exactly. 4 x 7 = 28 beads.',
         wrongFeedback: 'Multiply 4 rows by 7 beads in each row.',
+        xp: 8
+      },
+      {
+        id: 'k2-q4',
+        type: 'input',
+        prompt: 'A seller has 18 gold rings in one tray and 9 in another tray. How many rings are there altogether?',
+        hint: 'Put both groups together.',
+        answer: '27',
+        correctFeedback: 'Great work. 18 + 9 = 27 rings.',
+        wrongFeedback: 'Add the two trays together to find the total.',
+        xp: 8
+      }
+    ],
+
+    phase4_test: [
+      {
+        id: 'k2-t1',
+        type: 'mcq',
+        prompt: 'A merchant packs 5 boxes with 9 necklaces in each box. How many necklaces are packed in all?',
+        choices: ['40', '45', '49', '54'],
+        answer: 1,
+        correctFeedback: 'Correct. 5 × 9 = 45 necklaces.',
+        wrongFeedback: 'Multiply the number of boxes by the number in each box.',
+        xp: 10
+      },
+      {
+        id: 'k2-t2',
+        type: 'true_false',
+        prompt: 'If a trader has 42 jars and sells 17, there are 25 jars left.',
+        answer: true,
+        correctFeedback: 'Right. 42 - 17 = 25.',
+        wrongFeedback: 'Subtract 17 from 42 to see what remains.',
+        xp: 10
+      },
+      {
+        id: 'k2-t3',
+        type: 'mcq',
+        prompt: 'A cloth stand has 3 rows with 8 cloth rolls in each row. How many cloth rolls are there?',
+        choices: ['11', '21', '24', '28'],
+        answer: 2,
+        correctFeedback: 'Yes. 3 × 8 = 24 cloth rolls.',
+        wrongFeedback: 'Rows times the number in each row gives the total.',
+        xp: 10
+      },
+      {
+        id: 'k2-t4',
+        type: 'input',
+        prompt: 'A merchant has 50 copper bracelets and buys 16 more. How many bracelets does the merchant have now?',
+        answer: '66',
+        correctFeedback: 'Excellent. 50 + 16 = 66 bracelets.',
+        wrongFeedback: 'This story combines what the merchant had with what was bought, so add the amounts.',
         xp: 10
       }
     ],
@@ -542,65 +607,84 @@ window.KT_LESSONS.kush = [
       sage: 'Strong kingdoms need strong walls, King, and strong math minds to build them.'
     },
 
-    teach: [
+    phase1_concept: {
+      title: 'Area, Perimeter, and Shape Clues',
+      definition: 'Area measures the space inside a shape. Perimeter measures the distance around the outside. Shapes can be identified by their sides and angles.',
+      example: {
+        context: 'A fortress yard has 5 rows of 4 tiles.',
+        equation: '5 × 4 = 20',
+        visual: 'Show a rectangular yard made of 5 rows and 4 columns of tiles.'
+      },
+      sage: 'Builders must know whether they are measuring inside space or the outside boundary, King.'
+    },
+
+    phase2_worked: [
       {
-        type: 'text',
-        title: 'Geometry Builds Kingdoms',
-        body: 'Builders use shapes, perimeter, and area to design walls, rooms, and courtyards.'
+        problem: 'A fortress yard is a rectangle with 5 rows of square tiles and 4 tiles in each row. What is the area?',
+        steps: [
+          {
+            display: '5 rows and 4 columns',
+            explanation: 'Area counts how many square units fill the shape.',
+            visual: 'Show a 5-by-4 tile array.'
+          },
+          {
+            display: '5 × 4',
+            explanation: 'Multiply the rows by the tiles in each row.',
+            visual: 'Group the full array.'
+          },
+          {
+            display: '20 square units',
+            explanation: 'The yard has an area of 20 square units.',
+            visual: 'Label the filled yard with 20.'
+          }
+        ],
+        sage: 'Area counts the squares inside.'
       },
       {
-        type: 'text',
-        title: 'Area and Perimeter',
-        body: 'Perimeter is the distance around the outside. Area is the space inside.'
+        problem: 'A rectangular fortress garden is 7 meters long and 3 meters wide. What is the perimeter?',
+        steps: [
+          {
+            display: 'Sides: 7, 7, 3, 3',
+            explanation: 'A rectangle has two long sides and two short sides.',
+            visual: 'Show a rectangle labeled 7 and 3.'
+          },
+          {
+            display: '7 + 7 + 3 + 3',
+            explanation: 'Perimeter is the distance all the way around the outside.',
+            visual: 'Trace the outside edge of the rectangle.'
+          },
+          {
+            display: '20 meters',
+            explanation: 'The perimeter is 20 meters.',
+            visual: 'Label the outside path as 20 meters.'
+          }
+        ],
+        sage: 'Perimeter walks the outside edge, King.'
       }
     ],
 
-    activities: [
+    phase3_practice: [
       {
         id: 'k4-q1',
         type: 'mcq',
         prompt: 'A fortress yard is a rectangle with 5 rows of square tiles and 4 tiles in each row. What is the area?',
         hint: 'Multiply rows by tiles in each row.',
-        choices: [
-          '9',
-          '18',
-          '20',
-          '25'
-        ],
+        choices: ['9', '18', '20', '25'],
         answer: 2,
         correctFeedback: 'Correct. 5 x 4 = 20 square units.',
         wrongFeedback: 'Area is rows times columns.',
-        xp: 10
+        xp: 8
       },
       {
         id: 'k4-q2',
         type: 'mcq',
         prompt: 'A wall has 4 equal corners that are all right angles. What shape might the wall outline make?',
         hint: 'Think of a rectangle-shaped fortress wall.',
-        choices: [
-          'Triangle',
-          'Rectangle',
-          'Circle',
-          'Pentagon'
-        ],
+        choices: ['Triangle', 'Rectangle', 'Circle', 'Pentagon'],
         answer: 1,
         correctFeedback: 'Yes. A rectangle has 4 right angles.',
         wrongFeedback: 'Look for the shape with four corners and all right angles.',
-        xp: 10
-      },
-      {
-        id: 'k4-vocab',
-        type: 'match',
-        prompt: 'Match each geometry word to its meaning.',
-        pairs: [
-          ['Area', 'The amount of space inside a shape'],
-          ['Perimeter', 'The distance around the outside of a shape'],
-          ['Rectangle', 'A shape with 4 sides and 4 right angles'],
-          ['Angle', 'The space where two lines meet']
-        ],
-        correctFeedback: 'Excellent, King. You are building with geometry power.',
-        wrongFeedback: 'Not quite. Try matching the geometry words again.',
-        xp: 10
+        xp: 8
       },
       {
         id: 'k4-q3',
@@ -610,6 +694,58 @@ window.KT_LESSONS.kush = [
         hint: 'Add all 4 sides: 7 + 7 + 3 + 3.',
         correctFeedback: 'Great work. The perimeter is 20 meters.',
         wrongFeedback: 'Perimeter means all the way around the outside.',
+        xp: 8
+      },
+      {
+        id: 'k4-q4',
+        type: 'mcq',
+        prompt: 'A storage room is 6 meters long and 4 meters wide. What is its area?',
+        hint: 'Area of a rectangle = length × width.',
+        choices: ['10', '20', '24', '28'],
+        answer: 2,
+        correctFeedback: 'Exactly. 6 × 4 = 24 square meters.',
+        wrongFeedback: 'Multiply the length by the width to find the area inside.',
+        xp: 8
+      }
+    ],
+
+    phase4_test: [
+      {
+        id: 'k4-t1',
+        type: 'mcq',
+        prompt: 'A wall outline has 4 sides and 4 right angles. Which shape is it?',
+        choices: ['Triangle', 'Rectangle', 'Circle', 'Hexagon'],
+        answer: 1,
+        correctFeedback: 'Correct. A rectangle has 4 sides and 4 right angles.',
+        wrongFeedback: 'Choose the shape known for four corners that are all right angles.',
+        xp: 10
+      },
+      {
+        id: 'k4-t2',
+        type: 'true_false',
+        prompt: 'A courtyard that is 8 meters long and 2 meters wide has a perimeter of 20 meters.',
+        answer: true,
+        correctFeedback: 'Right. 8 + 8 + 2 + 2 = 20.',
+        wrongFeedback: 'Perimeter means add all the outside sides: 8 + 8 + 2 + 2.',
+        xp: 10
+      },
+      {
+        id: 'k4-t3',
+        type: 'mcq',
+        prompt: 'A room is tiled in 3 rows with 9 tiles in each row. What is the area?',
+        choices: ['12', '18', '27', '36'],
+        answer: 2,
+        correctFeedback: 'Yes. 3 × 9 = 27 square units.',
+        wrongFeedback: 'Area is the number of square units inside, so multiply rows by tiles in each row.',
+        xp: 10
+      },
+      {
+        id: 'k4-t4',
+        type: 'input',
+        prompt: 'A fortress gate is 5 meters long and 5 meters wide. What is the area?',
+        answer: '25',
+        correctFeedback: 'Excellent. 5 × 5 = 25 square meters.',
+        wrongFeedback: 'Multiply the length by the width to find the inside space.',
         xp: 10
       }
     ],

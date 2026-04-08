@@ -17,85 +17,191 @@ window.KT_LESSONS.egypt = [
       sage: "The strongest leaders don't just speak — they listen. Read closely, King. 👑"
     },
 
-    reading: {
-      passage: [
-        "Long ago in ancient Egypt, a pharaoh named Amara ruled with wisdom and calm strength. His people respected him because he listened before he acted.",
-        "Each morning, Amara left the palace in simple clothes and walked through the marketplace. No crown. No throne. No royal guards around him.",
-        "He listened to the farmers talk about dry fields. He heard merchants complain about broken roads. He noticed children who needed books and schools.",
-        "When he returned to the palace, he gave orders that solved the real problems of the people. Because he listened closely, he ruled wisely.",
-        "Some people whispered that Amara had magic. But his true secret was simple: he paid attention to his people and learned from what they said."
+    phase1_strategy: {
+      name: "Author's Message",
+      definition: "The author's message is the lesson or truth the writer wants readers to understand after reading the text.",
+      model: 'A village leader walks among the people, listens to their worries, and then fixes the roads they need. The author\'s message is that wise leaders listen before they act.',
+      how_to: [
+        'Notice what the main character chooses to do again and again.',
+        'Ask what that choice teaches about leadership or life.',
+        'State the lesson in one clear sentence you could use in real life.'
       ],
-      vocab: [
-        { term: 'wisdom', definition: 'good judgment and smart decisions' },
-        { term: 'marketplace', definition: 'a place where people buy, sell, and trade' },
-        { term: 'merchants', definition: 'people who sell goods' },
-        { term: 'whispered', definition: 'spoke very softly' }
-      ]
+      sage: 'Do not chase the magic rumor, King. Look for the repeated choice that made Pharaoh Amara wise.'
     },
 
-    teach: [
+    phase2_vocab: [
       {
-        type: 'text',
-        title: 'Reading Like a King',
-        body: 'Strong readers pay attention to key details, character actions, and the lesson the author wants us to learn.'
+        word: 'wisdom',
+        definition: 'good judgment and smart decisions',
+        sentence: 'Pharaoh Amara showed wisdom when he listened before he gave orders.'
+      },
+      {
+        word: 'marketplace',
+        definition: 'a place where people buy, sell, and trade',
+        sentence: 'The marketplace helped Amara hear what the people needed most.'
+      },
+      {
+        word: 'merchants',
+        definition: 'people who sell goods',
+        sentence: 'Merchants complained about broken roads that made trade harder.'
+      },
+      {
+        word: 'whispered',
+        definition: 'spoke very softly',
+        sentence: 'Some people whispered that Amara had magic, but the real answer was simpler.'
       }
     ],
 
-    activities: [
+    phase3_guided: {
+      sections: [
+        {
+          id: 'egypt-e1-s1',
+          title: 'A Ruler Who Watched Closely',
+          passage: [
+            'Long ago in ancient Egypt, a pharaoh named Amara ruled with wisdom and calm strength. His people respected him because he listened before he acted.',
+            'Each morning, Amara left the palace in simple clothes and walked through the marketplace. No crown. No throne. No royal guards around him.'
+          ],
+          questions: [
+            {
+              id: 'egypt-e1-q1',
+              type: 'mcq',
+              prompt: 'Why did Pharaoh Amara walk through the marketplace in simple clothes?',
+              hint: 'Think about what he wanted to learn from the people.',
+              choices: [
+                'He wanted to hide forever',
+                'He wanted to understand the people’s real problems',
+                'He forgot his crown at home',
+                'He wanted to become a merchant'
+              ],
+              answer: 1,
+              correctFeedback: 'Exactly. Amara wanted to understand his people so he could lead wisely.',
+              wrongFeedback: 'Not quite. Look at what he learned by walking among the people.',
+              explanation: 'Amara dressed simply so he could listen and learn what life was really like for the people.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'egypt-e1-s2',
+          title: 'Listening to Real Problems',
+          passage: [
+            'He listened to the farmers talk about dry fields. He heard merchants complain about broken roads. He noticed children who needed books and schools.',
+            'When he returned to the palace, he gave orders that solved the real problems of the people. Because he listened closely, he ruled wisely.'
+          ],
+          questions: [
+            {
+              id: 'egypt-e1-q2',
+              type: 'true_false',
+              prompt: 'Amara ruled wisely because he listened before making decisions.',
+              hint: 'Think about what happened after he returned to the palace.',
+              answer: true,
+              correctFeedback: 'Right. Listening helped him solve real problems.',
+              wrongFeedback: 'Look again at what he did after hearing the people.',
+              explanation: 'The passage shows a clear chain: Amara listened first, then made decisions that truly helped.',
+              xp: 8
+            }
+          ]
+        },
+        {
+          id: 'egypt-e1-s3',
+          title: 'The Secret Was Not Magic',
+          passage: [
+            'Some people whispered that Amara had magic. But his true secret was simple: he paid attention to his people and learned from what they said.',
+            'That is why the kingdom trusted him. He did not lead by guessing. He led by listening, learning, and acting with wisdom.'
+          ],
+          questions: [
+            {
+              id: 'egypt-e1-q3',
+              type: 'input',
+              prompt: 'Type one word that names the pharaoh’s real secret.',
+              hint: 'It was not magic. It was something he chose to do every day.',
+              answer: 'listening',
+              correctFeedback: 'Yes. Amara’s real secret was listening carefully to his people.',
+              wrongFeedback: 'Choose the exact idea from the passage that explains how he learned what the kingdom needed.',
+              explanation: 'The story makes it clear that Amara became wise by listening, not by using magic.',
+              xp: 9
+            }
+          ]
+        }
+      ],
+      close_reading: {
+        title: 'Close Reading: The Real Secret',
+        excerpt: 'But his true secret was simple: he paid attention to his people and learned from what they said.',
+        question: {
+          id: 'egypt-e1-close-q1',
+          type: 'mcq',
+          prompt: 'What author’s message is best supported by this line?',
+          hint: 'Turn the line into a lesson about leadership.',
+          choices: [
+            'Leaders should hide their plans from everyone',
+            'Wise leaders learn by listening to the people they serve',
+            'Magic is the most important power in a kingdom',
+            'Good rulers should stay inside the palace'
+          ],
+          answer: 1,
+          correctFeedback: 'Exactly. The line teaches that wise leadership begins with listening and learning.',
+          wrongFeedback: 'The line focuses on how Amara learns from the people. Choose the lesson about listening, not magic or hiding.',
+          explanation: 'The author’s message is that strong leaders pay attention to others before making decisions.',
+          xp: 8
+        }
+      }
+    },
+
+    phase4_test: [
       {
-        id: 'egypt-e1-q1',
+        id: 'egypt-e1-t1',
         type: 'mcq',
-        prompt: 'Why did Pharaoh Amara walk through the marketplace in simple clothes?',
-        hint: 'Think about what he wanted to learn from the people.',
+        excerpt: 'Each morning, Amara left the palace in simple clothes and walked through the marketplace.',
+        prompt: 'What does this detail help readers understand about Amara?',
         choices: [
-          'He wanted to hide forever',
-          'He wanted to understand the people’s real problems',
-          'He forgot his crown at home',
-          'He wanted to become a merchant'
+          'He cared more about hiding than helping',
+          'He wanted to learn directly from the people',
+          'He hoped to become a merchant',
+          'He was tired of being pharaoh'
         ],
         answer: 1,
-        correctFeedback: 'Exactly. Amara wanted to understand his people so he could lead wisely.',
-        wrongFeedback: 'Not quite. Look at what he learned by walking among the people.',
+        hint_disabled: true,
+        correctFeedback: 'Correct. The detail shows Amara chose to learn directly from the people around him.',
+        wrongFeedback: 'The marketplace walk mattered because it helped Amara gather real information from the people, not because he wanted a different job.',
         xp: 10
       },
       {
-        id: 'egypt-e1-q2',
-        type: 'true_false',
-        prompt: 'Amara ruled wisely because he listened before making decisions.',
-        hint: 'Think about what happened after he returned to the palace.',
-        answer: true,
-        correctFeedback: 'Right. Listening helped him solve real problems.',
-        wrongFeedback: 'Look again at what he did after hearing the people.',
-        xp: 10
-      },
-      {
-        id: 'egypt-e1-vocab',
-        type: 'match',
-        prompt: 'Match each word to its meaning.',
-        pairs: [
-          ['wisdom', 'good judgment and smart decisions'],
-          ['marketplace', 'a place where people buy, sell, and trade'],
-          ['merchants', 'people who sell goods'],
-          ['whispered', 'spoke very softly']
-        ],
-        correctFeedback: 'Strong work, King. Your vocabulary power is growing. 📚',
-        wrongFeedback: 'Not that one. Take another look, King.',
-        xp: 10
-      },
-      {
-        id: 'egypt-e1-q3',
+        id: 'egypt-e1-t2',
         type: 'mcq',
-        prompt: "What was the pharaoh’s real 'secret'?",
-        hint: 'It was not magic. It was something he chose to do every day.',
+        excerpt: 'Because he listened closely, he ruled wisely.',
+        prompt: 'Which author’s message does this excerpt support?',
         choices: [
-          'He had hidden treasure',
-          'He used powerful spells',
-          'He listened carefully to his people',
-          'He never left the palace'
+          'Wise leaders listen before they decide',
+          'A ruler should never change plans',
+          'Problems are solved by magic',
+          'Only merchants understand the kingdom'
         ],
-        answer: 2,
-        correctFeedback: "Yes! The pharaoh's real secret was listening carefully to his people.",
-        wrongFeedback: "Not quite. The story makes it clear his power wasn't magic.",
+        answer: 0,
+        hint_disabled: true,
+        correctFeedback: 'Yes. The excerpt directly connects listening with wise leadership.',
+        wrongFeedback: 'Look at the cause and effect in the line. Listening came first, and wise rule came after.',
+        xp: 10
+      },
+      {
+        id: 'egypt-e1-t3',
+        type: 'true_false',
+        excerpt: 'He heard merchants complain about broken roads. He noticed children who needed books and schools.',
+        prompt: 'This excerpt supports the idea that Amara paid attention to the real needs of the people.',
+        answer: true,
+        hint_disabled: true,
+        correctFeedback: 'Correct. The excerpt shows Amara noticed practical problems that needed action.',
+        wrongFeedback: 'The lines name real needs in the kingdom. That supports the idea that Amara was paying close attention to his people.',
+        xp: 10
+      },
+      {
+        id: 'egypt-e1-t4',
+        type: 'input',
+        excerpt: 'Some people whispered that Amara had magic. But his true secret was simple.',
+        prompt: 'Type one word that tells how the people spoke about Amara’s secret.',
+        answer: 'whispered',
+        hint_disabled: true,
+        correctFeedback: 'Great answer. The passage says people whispered about his secret.',
+        wrongFeedback: 'Use the exact word from the excerpt that shows how the people spoke softly about Amara.',
         xp: 10
       }
     ],
@@ -508,31 +614,69 @@ window.KT_LESSONS.egypt = [
     sage: 'Fractions helped ancient builders plan with precision, King. Let’s build like a royal architect. 🔺'
   },
 
-  teach: [
+  phase1_concept: {
+    title: 'Naming and Comparing Fractions',
+    definition: 'A fraction names part of a whole. The numerator shows how many parts you have, and the denominator shows how many equal parts there are in all.',
+    example: {
+      context: 'A pyramid wall is divided into 8 equal stone sections. Builders finish 3 sections.',
+      equation: '3/8',
+      visual: 'Show 8 equal sections with 3 shaded to represent the finished part.'
+    },
+    sage: 'Always ask two questions, King: how many equal parts are there in all, and how many of those parts are we talking about?'
+  },
+
+  phase2_worked: [
     {
-      type: 'text',
-      title: 'Fraction Power',
-      body: 'A fraction names part of a whole. The top number tells how many parts you have. The bottom number tells how many equal parts there are in all.'
+      problem: 'A pyramid has 8 equal sections. Workers finish 3 of them. What fraction of the pyramid is complete?',
+      steps: [
+        {
+          display: '8 equal sections total',
+          explanation: 'The denominator tells how many equal parts are in the whole pyramid.',
+          visual: 'Show a pyramid diagram split into 8 equal sections.'
+        },
+        {
+          display: '3 sections finished',
+          explanation: 'The numerator tells how many parts are complete.',
+          visual: 'Shade 3 of the 8 sections.'
+        },
+        {
+          display: '3/8',
+          explanation: '3 out of 8 equal sections are complete, so the fraction is 3/8.',
+          visual: 'Label the shaded diagram with 3/8.'
+        }
+      ],
+      sage: 'Top number for the finished parts, bottom number for the total equal parts.'
     },
     {
-      type: 'text',
-      title: 'Compare Carefully',
-      body: 'When two fractions have the same denominator, compare the numerators. The bigger top number means the bigger fraction.'
+      problem: 'Amara ate 2/5 of his bread. Kofi ate 4/5 of his bread. Who ate more?',
+      steps: [
+        {
+          display: '2/5 and 4/5',
+          explanation: 'Both fractions have the same denominator, so both breads are split into fifths.',
+          visual: 'Show two bars each divided into 5 equal parts.'
+        },
+        {
+          display: 'Compare 2 and 4',
+          explanation: 'When denominators match, compare the numerators.',
+          visual: 'Shade 2 parts on one bar and 4 parts on the other.'
+        },
+        {
+          display: '4/5 > 2/5',
+          explanation: 'Kofi ate more because 4 fifths is greater than 2 fifths.',
+          visual: 'Highlight the larger shaded bar.'
+        }
+      ],
+      sage: 'Same denominator means same-sized pieces. Then the bigger top number wins.'
     }
   ],
 
-  activities: [
+  phase3_practice: [
     {
       id: 'egypt-m4-q1',
       type: 'mcq',
       prompt: 'The pyramid has 8 equal sections. Workers finished 3 of them. What fraction of the pyramid is complete?',
       hint: 'Think: parts finished over total equal parts.',
-      choices: [
-        '3/5',
-        '5/8',
-        '3/8',
-        '8/3'
-      ],
+      choices: ['3/5', '5/8', '3/8', '8/3'],
       answer: 2,
       correctFeedback: 'Yes! 3 out of 8 equal sections is 3/8.',
       wrongFeedback: 'Use the pattern: parts done on top, total equal parts on the bottom.',
@@ -543,30 +687,11 @@ window.KT_LESSONS.egypt = [
       type: 'mcq',
       prompt: 'A stone sled traveled 4 of 6 equal parts of the road. How far has it gone as a fraction?',
       hint: 'Count what the sled traveled first, then the total number of equal parts.',
-      choices: [
-        '2/6',
-        '6/4',
-        '4/6',
-        '1/2'
-      ],
+      choices: ['2/6', '6/4', '4/6', '1/2'],
       answer: 2,
       correctFeedback: 'Correct. The sled traveled 4 out of 6 equal parts, so the fraction is 4/6.',
       wrongFeedback: 'The fraction should show traveled parts over total parts.',
       xp: 8
-    },
-    {
-      id: 'egypt-m4-vocab',
-      type: 'match',
-      prompt: 'Match each fraction word to its meaning.',
-      pairs: [
-        ['Numerator', 'The top number of a fraction'],
-        ['Denominator', 'The bottom number showing total equal parts'],
-        ['Fraction', 'A number that names part of a whole'],
-        ['Equal', 'The same amount or value']
-      ],
-      correctFeedback: 'Excellent, King. You’re speaking fraction language like a scholar. 📚',
-      wrongFeedback: 'Not quite. Try matching the math words again.',
-      xp: 7
     },
     {
       id: 'egypt-m4-q3',
@@ -582,23 +707,58 @@ window.KT_LESSONS.egypt = [
       answer: 2,
       correctFeedback: 'Exactly. With the same denominator, the bigger numerator means the bigger fraction. 4/5 is more than 2/5.',
       wrongFeedback: 'Both fractions have fifths, so only the top numbers need to be compared.',
-      xp: 6
+      xp: 8
     },
     {
       id: 'egypt-m4-q4',
+      type: 'input',
+      prompt: 'A royal wall is split into 10 equal stone blocks. Builders decorate 6 of them. What fraction of the wall is decorated?',
+      hint: 'Use decorated parts over total equal parts.',
+      answer: '6/10',
+      correctFeedback: 'Great work. 6 out of 10 equal parts is 6/10.',
+      wrongFeedback: 'Write the number of decorated parts on top and the total equal parts on the bottom.',
+      xp: 8
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'egypt-m4-t1',
       type: 'mcq',
       prompt: 'The royal kitchen had 12 jars of honey and used 4. Which fraction shows the honey left before reducing?',
-      hint: 'First find how many jars are left, then write left over total.',
-      choices: [
-        '4/12',
-        '8/12',
-        '2/3',
-        '12/8'
-      ],
+      choices: ['4/12', '8/12', '2/3', '12/8'],
       answer: 1,
       correctFeedback: 'Yes. 12 minus 4 equals 8, so 8/12 shows the honey left before reducing.',
       wrongFeedback: 'Subtract first: 12 - 4. Then place the amount left over the total of 12.',
-      xp: 6
+      xp: 10
+    },
+    {
+      id: 'egypt-m4-t2',
+      type: 'true_false',
+      prompt: 'If two fractions have the same denominator, the one with the bigger numerator is greater.',
+      answer: true,
+      correctFeedback: 'Correct. With the same denominator, the larger numerator means more equal parts.',
+      wrongFeedback: 'When the denominators match, you compare only the numerators.',
+      xp: 10
+    },
+    {
+      id: 'egypt-m4-t3',
+      type: 'mcq',
+      prompt: 'Which fraction is greater: 1/6 or 5/6?',
+      choices: ['1/6', '5/6', 'They are equal', 'Not enough information'],
+      answer: 1,
+      correctFeedback: 'Right. Both are sixths, and 5 sixths is greater than 1 sixth.',
+      wrongFeedback: 'The pieces are the same size because the denominators match. Compare the numerators.',
+      xp: 10
+    },
+    {
+      id: 'egypt-m4-t4',
+      type: 'input',
+      prompt: 'A pyramid path is divided into 9 equal parts. Travelers have crossed 7 parts. Type the fraction that shows how much of the path they crossed.',
+      answer: '7/9',
+      correctFeedback: 'Excellent. 7 of 9 equal parts is 7/9.',
+      wrongFeedback: 'Put the number of crossed parts on top and the total equal parts on the bottom.',
+      xp: 10
     }
   ],
 
@@ -835,31 +995,69 @@ window.KT_LESSONS.egypt = [
     sage: 'Great traders use strong math, King. Count carefully, solve step by step, and protect the kingdom’s riches. 🏺'
   },
 
-  teach: [
+  phase1_concept: {
+    title: 'Solve Trade Problems Step by Step',
+    definition: 'Merchants use multiplication to count equal groups, division to find how many groups fit, perimeter to measure around something, and subtraction to track what is left.',
+    example: {
+      context: 'A merchant has 4 baskets with 6 tools in each basket.',
+      equation: '4 × 6 = 24',
+      visual: 'Show 4 equal baskets with 6 tools in each basket.'
+    },
+    sage: 'Strong traders choose the right operation, King. First ask what the problem wants you to find.'
+  },
+
+  phase2_worked: [
     {
-      type: 'text',
-      title: 'Merchant Math',
-      body: 'Nubian traders used math to count goods, measure journeys, and make fair trades. Strong math skills kept caravans moving and kingdoms thriving.'
+      problem: 'Your caravan has 7 camels. Each camel carries 9 bags of gold dust. How many bags are there in all?',
+      steps: [
+        {
+          display: '7 groups of 9',
+          explanation: 'Each camel carries the same amount, so this is an equal-groups multiplication problem.',
+          visual: 'Show 7 camels with 9 bags each.'
+        },
+        {
+          display: '7 × 9',
+          explanation: 'Multiply the number of camels by the number of bags on each camel.',
+          visual: 'Combine the 7 equal groups.'
+        },
+        {
+          display: '7 × 9 = 63',
+          explanation: 'The caravan carries 63 bags in all.',
+          visual: 'Label the total as 63 bags.'
+        }
+      ],
+      sage: 'Equal groups mean multiply, King.'
     },
     {
-      type: 'text',
-      title: 'Solve in Steps',
-      body: 'Some problems take one step. Others take two. Read carefully, decide what to do first, then check your answer.'
+      problem: 'You start with 85 ivory pieces. You trade 28 away, then sell 15 more. How many ivory pieces are left?',
+      steps: [
+        {
+          display: '85 - 28',
+          explanation: 'First subtract the ivory pieces traded away.',
+          visual: 'Show 85 pieces and remove 28.'
+        },
+        {
+          display: '57 - 15',
+          explanation: 'Now subtract the 15 more pieces that were sold.',
+          visual: 'Show 57 remaining pieces and remove 15.'
+        },
+        {
+          display: '42',
+          explanation: 'There are 42 ivory pieces left after both trades.',
+          visual: 'Highlight the final amount: 42.'
+        }
+      ],
+      sage: 'Two-step problems become easier when you finish one action before starting the next.'
     }
   ],
 
-  activities: [
+  phase3_practice: [
     {
       id: 'nubia-m2-q1',
       type: 'mcq',
       prompt: 'Your caravan has 7 camels. Each camel carries 9 bags of gold dust. How many bags are there in all?',
       hint: 'This is 7 groups of 9.',
-      choices: [
-        '54 bags',
-        '63 bags',
-        '72 bags',
-        '56 bags'
-      ],
+      choices: ['54 bags', '63 bags', '72 bags', '56 bags'],
       answer: 1,
       correctFeedback: 'Excellent. 7 × 9 = 63 bags of gold dust.',
       wrongFeedback: 'Skip-count by 9 seven times, or use 7 groups of 9.',
@@ -870,30 +1068,11 @@ window.KT_LESSONS.egypt = [
       type: 'mcq',
       prompt: 'The trade route is 240 miles long. Your caravan travels 40 miles each day. How many days will the journey take?',
       hint: 'Ask: 40 × what number = 240?',
-      choices: [
-        '4 days',
-        '5 days',
-        '6 days',
-        '8 days'
-      ],
+      choices: ['4 days', '5 days', '6 days', '8 days'],
       answer: 2,
       correctFeedback: 'Yes. 240 ÷ 40 = 6, so the trip takes 6 days.',
       wrongFeedback: 'Use division or think of a multiplication fact with 40.',
       xp: 8
-    },
-    {
-      id: 'nubia-m2-vocab',
-      type: 'match',
-      prompt: 'Match each trade math word to its meaning.',
-      pairs: [
-        ['Perimeter', 'The total distance around the outside of a shape'],
-        ['Product', 'The result of multiplying two numbers'],
-        ['Difference', 'The result of subtracting one number from another'],
-        ['Estimate', 'A careful guess close to the exact answer']
-      ],
-      correctFeedback: 'Strong work, King. A smart trader knows the language of math. 📚',
-      wrongFeedback: 'Not quite. Try matching the math words again.',
-      xp: 7
     },
     {
       id: 'nubia-m2-q3',
@@ -903,23 +1082,59 @@ window.KT_LESSONS.egypt = [
       hint: 'Add all four sides: 8 + 8 + 5 + 5.',
       correctFeedback: 'Great work. The perimeter is 26 meters.',
       wrongFeedback: 'Perimeter means the total distance around the outside. Add all four sides.',
-      xp: 6
+      xp: 8
     },
     {
       id: 'nubia-m2-q4',
       type: 'mcq',
       prompt: 'You start with 85 ivory pieces. You trade 28 away, then sell 15 more. How many ivory pieces are left?',
       hint: 'Do it in two steps: subtract 28, then subtract 15.',
-      choices: [
-        '26 pieces',
-        '42 pieces',
-        '38 pieces',
-        '57 pieces'
-      ],
+      choices: ['26 pieces', '42 pieces', '38 pieces', '57 pieces'],
       answer: 1,
       correctFeedback: 'KING! 85 - 28 = 57, and 57 - 15 = 42. You have 42 ivory pieces left.',
       wrongFeedback: 'Subtract 28 first. Then take that new amount and subtract 15 more.',
-      xp: 6
+      xp: 8
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'nubia-m2-t1',
+      type: 'mcq',
+      prompt: 'A merchant packs 8 baskets with 5 iron tools in each basket. How many tools are packed in all?',
+      choices: ['13', '35', '40', '45'],
+      answer: 2,
+      correctFeedback: 'Correct. 8 × 5 = 40 tools.',
+      wrongFeedback: 'This is an equal-groups problem, so multiply 8 baskets by 5 tools in each.',
+      xp: 10
+    },
+    {
+      id: 'nubia-m2-t2',
+      type: 'true_false',
+      prompt: 'A tent that is 6 meters long and 4 meters wide has a perimeter of 20 meters.',
+      answer: true,
+      correctFeedback: 'Right. 6 + 6 + 4 + 4 = 20 meters.',
+      wrongFeedback: 'Perimeter means all the way around the outside: 6 + 6 + 4 + 4.',
+      xp: 10
+    },
+    {
+      id: 'nubia-m2-t3',
+      type: 'mcq',
+      prompt: 'A trader has 64 copper rings. She places them equally into 8 boxes. How many rings go in each box?',
+      choices: ['6', '7', '8', '9'],
+      answer: 2,
+      correctFeedback: 'Yes. 64 ÷ 8 = 8 rings in each box.',
+      wrongFeedback: 'Divide the total number of rings by the 8 boxes.',
+      xp: 10
+    },
+    {
+      id: 'nubia-m2-t4',
+      type: 'input',
+      prompt: 'A caravan starts with 73 cloth rolls. It sells 19 in one town and 14 in another. How many cloth rolls are left?',
+      answer: '40',
+      correctFeedback: 'Excellent. 73 - 19 = 54, and 54 - 14 = 40.',
+      wrongFeedback: 'Subtract the first sale, then subtract the second sale from what remains.',
+      xp: 10
     }
   ],
 
@@ -1156,31 +1371,69 @@ window.KT_LESSONS.egypt = [
     sage: 'A great archer understands space, shape, and aim, King. Let’s train your geometry eye. 🏹'
   },
 
-  teach: [
+  phase1_concept: {
+    title: 'Angles, Shapes, and Area',
+    definition: 'Angles describe how wide something opens. Shapes can be identified by their sides and corners. Area tells how much space is inside a flat shape.',
+    example: {
+      context: 'An archer’s bow opens less than a right angle, and a training field has 4 rows of 6 squares.',
+      equation: '4 × 6 = 24',
+      visual: 'Show an acute bow angle beside a 4-by-6 array of unit squares.'
+    },
+    sage: 'Geometry helps a sharp eye, King. First name the angle or shape, then use multiplication to find area.'
+  },
+
+  phase2_worked: [
     {
-      type: 'text',
-      title: 'Geometry for Archers',
-      body: 'Archers need to understand direction, shape, and space. Angles help describe how something opens, and area tells how much space is inside a shape.'
+      problem: 'An archer holds her bow at an angle less than 90 degrees. What kind of angle is it?',
+      steps: [
+        {
+          display: 'Compare to 90°',
+          explanation: 'A right angle is exactly 90 degrees.',
+          visual: 'Show a right angle next to a smaller opening.'
+        },
+        {
+          display: 'Less than 90°',
+          explanation: 'An angle smaller than a right angle is called acute.',
+          visual: 'Highlight the smaller angle.'
+        },
+        {
+          display: 'Acute angle',
+          explanation: 'So the bow forms an acute angle.',
+          visual: 'Label the angle as acute.'
+        }
+      ],
+      sage: 'When the opening is smaller than a right angle, think acute.'
     },
     {
-      type: 'text',
-      title: 'Know Your Angle Types',
-      body: 'A right angle is exactly 90 degrees. An acute angle is smaller than 90 degrees. An obtuse angle is larger than 90 degrees.'
+      problem: 'A new archery range is 9 meters long and 7 meters wide. What is its area?',
+      steps: [
+        {
+          display: 'Area = length × width',
+          explanation: 'A rectangle’s area is found by multiplying its side lengths.',
+          visual: 'Show a rectangle labeled 9 by 7.'
+        },
+        {
+          display: '9 × 7',
+          explanation: 'Multiply the length by the width.',
+          visual: 'Fill the rectangle with a 9-by-7 array.'
+        },
+        {
+          display: '63 square meters',
+          explanation: 'The range covers 63 square meters.',
+          visual: 'Label the full rectangle as 63 square meters.'
+        }
+      ],
+      sage: 'Area measures the space inside, not the distance around the outside.'
     }
   ],
 
-  activities: [
+  phase3_practice: [
     {
       id: 'nubia-m4-q1',
       type: 'mcq',
       prompt: 'An archer holds her bow at an angle less than 90 degrees. What kind of angle is it?',
       hint: 'Angles smaller than a right angle are acute.',
-      choices: [
-        'Right angle',
-        'Obtuse angle',
-        'Acute angle',
-        'Straight angle'
-      ],
+      choices: ['Right angle', 'Obtuse angle', 'Acute angle', 'Straight angle'],
       answer: 2,
       correctFeedback: 'Perfect. An angle less than 90 degrees is an acute angle.',
       wrongFeedback: 'Compare it to a right angle. If it is smaller than 90 degrees, it is acute.',
@@ -1191,30 +1444,11 @@ window.KT_LESSONS.egypt = [
       type: 'mcq',
       prompt: 'The archery target has 4 equal sides and 4 right angles. What shape is it?',
       hint: 'Look for the shape that has both equal sides and right angles.',
-      choices: [
-        'Rectangle',
-        'Rhombus',
-        'Square',
-        'Trapezoid'
-      ],
+      choices: ['Rectangle', 'Rhombus', 'Square', 'Trapezoid'],
       answer: 2,
       correctFeedback: 'Yes. A square has 4 equal sides and 4 right angles.',
       wrongFeedback: 'A rectangle has right angles, but not always equal sides. Which shape has both?',
       xp: 8
-    },
-    {
-      id: 'nubia-m4-vocab',
-      type: 'match',
-      prompt: 'Match each geometry word to its meaning.',
-      pairs: [
-        ['Acute', 'An angle that measures less than 90 degrees'],
-        ['Obtuse', 'An angle that measures more than 90 degrees'],
-        ['Area', 'The amount of space inside a 2D shape'],
-        ['Perimeter', 'The total distance around the outside of a shape']
-      ],
-      correctFeedback: 'Excellent, King. A sharp mind makes a sharp archer. 📚',
-      wrongFeedback: 'Not quite. Try matching the geometry words again.',
-      xp: 7
     },
     {
       id: 'nubia-m4-q3',
@@ -1224,23 +1458,59 @@ window.KT_LESSONS.egypt = [
       hint: 'Area = rows × squares in each row.',
       correctFeedback: 'Excellent. 4 × 6 = 24 square units.',
       wrongFeedback: 'Multiply the number of rows by the number of squares in each row.',
-      xp: 6
+      xp: 8
     },
     {
       id: 'nubia-m4-q4',
       type: 'mcq',
+      prompt: 'A wall angle is bigger than 90 degrees. What kind of angle is it?',
+      hint: 'Angles larger than a right angle are obtuse.',
+      choices: ['Acute angle', 'Right angle', 'Obtuse angle', 'Straight side'],
+      answer: 2,
+      correctFeedback: 'Correct. An angle bigger than 90 degrees is obtuse.',
+      wrongFeedback: 'Compare the angle to a right angle. Bigger than 90 degrees means obtuse.',
+      xp: 8
+    }
+  ],
+
+  phase4_test: [
+    {
+      id: 'nubia-m4-t1',
+      type: 'mcq',
       prompt: 'A new archery range is 9 meters long and 7 meters wide. What is its area?',
-      hint: 'Area of a rectangle = length × width.',
-      choices: [
-        '54 square meters',
-        '63 square meters',
-        '32 square meters',
-        '49 square meters'
-      ],
+      choices: ['54 square meters', '63 square meters', '32 square meters', '49 square meters'],
       answer: 1,
       correctFeedback: 'KING! 9 × 7 = 63 square meters.',
       wrongFeedback: 'Multiply length by width: 9 × 7.',
-      xp: 6
+      xp: 10
+    },
+    {
+      id: 'nubia-m4-t2',
+      type: 'true_false',
+      prompt: 'A square always has 4 equal sides and 4 right angles.',
+      answer: true,
+      correctFeedback: 'Correct. Those are the key features of a square.',
+      wrongFeedback: 'A square has equal sides and all four corners are right angles.',
+      xp: 10
+    },
+    {
+      id: 'nubia-m4-t3',
+      type: 'mcq',
+      prompt: 'Which angle is acute?',
+      choices: ['An angle of 120°', 'An angle of 90°', 'An angle of 45°', 'An angle of 180°'],
+      answer: 2,
+      correctFeedback: 'Right. 45 degrees is less than 90 degrees, so it is acute.',
+      wrongFeedback: 'An acute angle must be smaller than a right angle.',
+      xp: 10
+    },
+    {
+      id: 'nubia-m4-t4',
+      type: 'input',
+      prompt: 'A practice court has 8 rows of square tiles with 3 tiles in each row. What is the area?',
+      answer: '24',
+      correctFeedback: 'Excellent. 8 × 3 = 24 square units.',
+      wrongFeedback: 'Area is rows times tiles in each row.',
+      xp: 10
     }
   ],
 

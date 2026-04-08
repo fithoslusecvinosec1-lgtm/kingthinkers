@@ -1,4 +1,4 @@
-// ── KINGTHINKERS DB CLIENT v7 ─────────────────────────────────
+﻿// â”€â”€ KINGTHINKERS DB CLIENT v7 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // All database calls proxy through the kt-api Supabase Edge Function.
 // No keys are exposed to the browser.
 //
@@ -15,7 +15,15 @@
 const KT_API = 'https://bfyogmoqasqoefxxykdv.supabase.co/functions/v1/kt-api';
 const KT_TIMEOUT_MS = 8000;
 
-// ── STUDENT SESSION ───────────────────────────────────────────
+function kt_canUseRemote() {
+  try {
+    return !(typeof window !== 'undefined' && window.location && window.location.protocol === 'file:');
+  } catch (e) {
+    return true;
+  }
+}
+
+// â”€â”€ STUDENT SESSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function kt_getActiveCode() {
   return localStorage.getItem('kt_active_code') || null;
@@ -50,7 +58,7 @@ function kt_clearSession() {
   localStorage.removeItem('kt_last_code');
 }
 
-// ── TEACHER SESSION ───────────────────────────────────────────
+// â”€â”€ TEACHER SESSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Session token is issued and signed by the Edge Function.
 // Keep it in sessionStorage only.
 
@@ -77,7 +85,7 @@ function kt_clearTeacherSession() {
   sessionStorage.removeItem('kt_teacher');
 }
 
-// ── CORE API HELPER ───────────────────────────────────────────
+// â”€â”€ CORE API HELPER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function kt_api(action, body, useTeacherToken) {
   body = body || {};
@@ -135,11 +143,12 @@ async function kt_api(action, body, useTeacherToken) {
   }
 }
 
-// ── STUDENT FUNCTIONS ─────────────────────────────────────────
+// â”€â”€ STUDENT FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // Authoritative student fetch with localStorage fallback.
 async function db_getStudent(code) {
   if (!code) return null;
+  if (!kt_canUseRemote()) return _ls_getStudent(code);
 
   try {
     var data = await kt_api('student-login', { code: code });
@@ -227,6 +236,8 @@ async function db_saveProfile(code, skinId, hairId, outfitId) {
 
   localStorage.setItem('kt_student_' + code, JSON.stringify(existing));
 
+  if (!kt_canUseRemote()) return;
+
   try {
     await kt_api('save-profile', {
       code: code,
@@ -240,11 +251,12 @@ async function db_saveProfile(code, skinId, hairId, outfitId) {
   }
 }
 
-// ── PROGRESS FUNCTIONS ────────────────────────────────────────
+// â”€â”€ PROGRESS FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // Authoritative progress fetch with localStorage fallback.
 async function db_getProgress(code) {
   if (!code) return {};
+  if (!kt_canUseRemote()) return _ls_getProgress(code);
 
   try {
     var data = await kt_api('get-progress', { code: code });
@@ -261,6 +273,7 @@ async function db_saveProgress(code, missions) {
   if (!code || !missions) return;
 
   localStorage.setItem(kt_getScopedProgressKey(code), JSON.stringify(missions));
+  if (!kt_canUseRemote()) return;
 
   try {
     await kt_api('save-progress', {
@@ -272,7 +285,7 @@ async function db_saveProgress(code, missions) {
   }
 }
 
-// ── LESSON COMPLETION ─────────────────────────────────────────
+// â”€â”€ LESSON COMPLETION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Authoritative mission completion. Server decides final XP/crowns/missions.
 
 async function db_completeLesson(code, missionId, xpEarned) {
@@ -290,6 +303,10 @@ async function db_completeLesson(code, missionId, xpEarned) {
       student.crowns = (student.crowns || 0) + 1;
       localStorage.setItem('kt_student_' + code, JSON.stringify(student));
     }
+  }
+
+  if (!kt_canUseRemote()) {
+    return { missions: local };
   }
 
   try {
@@ -320,7 +337,7 @@ async function db_completeLesson(code, missionId, xpEarned) {
   }
 }
 
-// ── XP / CROWN SYNC ──────────────────────────────────────────
+// â”€â”€ XP / CROWN SYNC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 // Explicit stat sync only.
 async function db_syncStudentStats(code, xp, crowns) {
@@ -334,6 +351,8 @@ async function db_syncStudentStats(code, xp, crowns) {
     localStorage.setItem('kt_student_' + code, JSON.stringify(s));
   }
 
+  if (!kt_canUseRemote()) return;
+
   try {
     await kt_api('sync-stats', {
       code: code,
@@ -345,7 +364,7 @@ async function db_syncStudentStats(code, xp, crowns) {
   }
 }
 
-// ── TEACHER FUNCTIONS ─────────────────────────────────────────
+// â”€â”€ TEACHER FUNCTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function db_teacherLogin(username, passwordHash) {
   try {
@@ -376,6 +395,7 @@ async function db_teacherRegister(username, passwordHash, name, classCode, schoo
 
 // Intentionally rethrows so teacher roster UI can show sync error.
 async function db_getRosterWithProgress() {
+  if (!kt_canUseRemote()) return [];
   var data = await kt_api('get-roster', {}, true);
   return (data && data.roster) ? data.roster : [];
 }
@@ -426,7 +446,7 @@ async function db_teacherMarkMission(code, missionId, xpEarned, completed) {
   }
 }
 
-// ── SAGE PROXY ────────────────────────────────────────────────
+// â”€â”€ SAGE PROXY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function kt_sage(messages, systemPrompt) {
   try {
@@ -441,7 +461,7 @@ async function kt_sage(messages, systemPrompt) {
   }
 }
 
-// ── LOCAL STORAGE HELPERS ─────────────────────────────────────
+// â”€â”€ LOCAL STORAGE HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function _ls_getStudent(code) {
   if (!code) return null;
@@ -461,7 +481,7 @@ function _ls_getProgress(code) {
   }
 }
 
-// ── BACKWARD COMPATIBILITY ────────────────────────────────────
+// â”€â”€ BACKWARD COMPATIBILITY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function getStudent(code) {
   return _ls_getStudent(code);
@@ -486,7 +506,7 @@ function getQuestProgress(code) {
 function db_getAllStudents() {
   return db_getRosterWithProgress();
 }
-// ── GLOBAL EXPORTS ────────────────────────────────────────────
+// â”€â”€ GLOBAL EXPORTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 window.kt_api = kt_api;
 window.kt_sage = kt_sage;
@@ -519,4 +539,3 @@ window.db_teacherMarkMission = db_teacherMarkMission;
 window.getStudent = getStudent;
 window.getQuestProgress = getQuestProgress;
 window.db_getAllStudents = db_getAllStudents;
-console.log('✅ KingThinkers DB v7 loaded');

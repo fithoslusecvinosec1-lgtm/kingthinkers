@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KingThinkers — Create Your King</title>
+<title>KingThinkers â€” Create Your King</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -33,7 +33,7 @@
     color: var(--white);
   }
 
-  /* ── STARFIELD ─────────────────────────────── */
+  /* â”€â”€ STARFIELD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   #stars {
     position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background:
@@ -50,7 +50,7 @@
     50%      { opacity: 0.7; transform: scale(1.3); }
   }
 
-  /* ── LAYOUT ────────────────────────────────── */
+  /* â”€â”€ LAYOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .app {
     position: relative; z-index: 1;
     min-height: 100vh;
@@ -60,7 +60,7 @@
     padding: 24px 16px 40px;
   }
 
-  /* ── TOP BAR ───────────────────────────────── */
+  /* â”€â”€ TOP BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .topbar {
     display: flex; align-items: center; justify-content: space-between;
     width: 100%; max-width: 900px; margin-bottom: 32px;
@@ -75,7 +75,7 @@
     font-size: 12px; font-weight: 800; color: var(--gold); letter-spacing: 0.06em;
   }
 
-  /* ── HERO TITLE ────────────────────────────── */
+  /* â”€â”€ HERO TITLE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .hero { text-align: center; margin-bottom: 36px; }
   .hero-eyebrow {
     font-size: 11px; font-weight: 900; color: var(--amber);
@@ -89,7 +89,7 @@
   .hero-title span { color: var(--gold); }
   .hero-sub { font-size: 15px; color: var(--muted); max-width: 460px; margin: 0 auto; }
 
-  /* ── MAIN CREATOR CARD ─────────────────────── */
+  /* â”€â”€ MAIN CREATOR CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .creator {
     width: 100%; max-width: 900px;
     display: grid;
@@ -106,7 +106,7 @@
     }
   }
 
-  /* ── LEFT: LIVE PREVIEW ────────────────────── */
+  /* â”€â”€ LEFT: LIVE PREVIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .preview-panel {
     background: var(--navy2);
     border: 1px solid var(--border);
@@ -218,7 +218,7 @@
     font-size: 10px; font-weight: 800; color: var(--sky);
   }
 
-  /* ── RIGHT: CUSTOMIZATION PANELS ──────────── */
+  /* â”€â”€ RIGHT: CUSTOMIZATION PANELS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .options-panel {
     display: flex; flex-direction: column; gap: 20px;
   }
@@ -364,7 +364,7 @@
   .grade-lbl { font-size: 9px; font-weight: 800; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
   .grade-option.selected .grade-lbl { color: var(--sky); }
 
-  /* ── CTA ───────────────────────────────────── */
+  /* â”€â”€ CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .cta-row {
     width: 100%; max-width: 900px;
     margin-top: 28px;
@@ -402,7 +402,7 @@
 
   .btn-sub { font-size: 12px; color: var(--muted); }
 
-  /* ── SUCCESS SCREEN ────────────────────────── */
+  /* â”€â”€ SUCCESS SCREEN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   #success-screen {
     display: none;
     position: fixed; inset: 0; z-index: 100;
@@ -447,7 +447,7 @@
   }
   .btn-enter:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 14px 40px rgba(245,168,0,0.45); }
 
-  /* ── FIREWORKS ─────────────────────────────── */
+  /* â”€â”€ FIREWORKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   .fw {
     position: fixed; font-size: 20px; pointer-events: none; z-index: 200;
     animation: fw var(--dur, 0.8s) ease-out forwards var(--delay, 0s);
@@ -457,7 +457,7 @@
     100% { opacity: 0; transform: translate(var(--tx,0), var(--ty,-120px)) scale(1.2); }
   }
 
-  /* ── SHIMMER on select ─────────────────────── */
+  /* â”€â”€ SHIMMER on select â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   @keyframes shimmer {
     0%   { transform: scale(1); }
     30%  { transform: scale(1.25); }
@@ -483,30 +483,30 @@
 <!-- Success screen -->
 <div id="success-screen">
   <div class="success-glow">
-    <div class="success-avatar" id="success-avatar">🧒🏾</div>
+    <div class="success-avatar" id="success-avatar">ðŸ§’ðŸ¾</div>
   </div>
   <div class="success-title" id="success-title">Rise up, King Marcus!</div>
   <div class="success-sub">Your kingdom awaits. Every quest you complete makes you stronger. Let's go!</div>
   <div class="xp-burst">
-    <div class="xp-burst-val">+100 XP</div>
-    <div class="xp-burst-lbl">Character Created!</div>
+    <div class="xp-burst-val">Ready!</div>
+    <div class="xp-burst-lbl">Character created</div>
   </div>
-  <button class="btn-enter" onclick="enterKingdom()">Enter the Kingdom →</button>
+  <button class="btn-enter" onclick="enterKingdom()">Enter the Kingdom â†’</button>
 </div>
 
 <div class="app">
 
   <!-- Top bar -->
   <div class="topbar">
-    <div class="logo">👑 KingThinkers</div>
-    <div class="step-badge">Step 1 of 4 — Create Your King</div>
+    <div class="logo">ðŸ‘‘ KingThinkers</div>
+    <div class="step-badge">Step 2 of 4 - Create Your King</div>
   </div>
 
   <!-- Hero -->
   <div class="hero">
-    <div class="hero-eyebrow">✨ Character Creation</div>
+    <div class="hero-eyebrow">âœ¨ Character Creation</div>
     <h1 class="hero-title">Build Your <span>King</span></h1>
-    <p class="hero-sub">Make him look just like you — or whoever you want to be. This is YOUR adventure.</p>
+    <p class="hero-sub">Make him look just like you â€” or whoever you want to be. This is YOUR adventure.</p>
   </div>
 
   <!-- Creator -->
@@ -522,7 +522,7 @@
           <!-- SVG character rendered here -->
           <svg viewBox="0 0 100 100" id="king-svg"></svg>
         </div>
-        <div class="king-crown">👑</div>
+        <div class="king-crown">ðŸ‘‘</div>
       </div>
 
       <div class="preview-name" id="preview-name">Young King</div>
@@ -540,7 +540,7 @@
           <div class="stat-lbl">Quests</div>
         </div>
         <div class="stat-chip">
-          <div class="stat-val" style="color:var(--sky)">👑 0</div>
+          <div class="stat-val" style="color:var(--sky)">ðŸ‘‘ 0</div>
           <div class="stat-lbl">Crowns</div>
         </div>
       </div>
@@ -560,7 +560,7 @@
 
       <!-- Skin tone -->
       <div class="option-section">
-        <div class="section-label">🎨 Skin Tone</div>
+        <div class="section-label">ðŸŽ¨ Skin Tone</div>
         <div class="skin-grid" id="skin-grid">
           <!-- rendered by JS -->
         </div>
@@ -568,7 +568,7 @@
 
       <!-- Hairstyle -->
       <div class="option-section">
-        <div class="section-label">✂️ Hairstyle</div>
+        <div class="section-label">âœ‚ï¸ Hairstyle</div>
         <div class="hair-grid" id="hair-grid">
           <!-- rendered by JS -->
         </div>
@@ -576,7 +576,7 @@
 
       <!-- Outfit -->
       <div class="option-section">
-        <div class="section-label">👘 Outfit</div>
+        <div class="section-label">ðŸ‘˜ Outfit</div>
         <div class="outfit-grid" id="outfit-grid">
           <!-- rendered by JS -->
         </div>
@@ -584,7 +584,7 @@
 
       <!-- Grade -->
       <div class="option-section">
-        <div class="section-label">📚 Grade Level</div>
+        <div class="section-label">ðŸ“š Grade Level</div>
         <div class="grade-grid" id="grade-grid">
           <!-- rendered by JS -->
         </div>
@@ -596,7 +596,7 @@
   <!-- CTA -->
   <div class="cta-row">
     <button class="btn-start" id="btn-start" onclick="createKing()">
-      👑 Start My Kingdom
+      ðŸ‘‘ Start My Kingdom
     </button>
     <div class="btn-sub" id="btn-sub">Choose your look to begin your quest</div>
   </div>
@@ -604,7 +604,7 @@
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────
+// â”€â”€ DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SKINS = [
   { id:'s1', tone:'#FDBCB4', label:'Light',   fill:'#FDBCB4', shadow:'#E8957A' },
   { id:'s2', tone:'#E8A87C', label:'Medium',  fill:'#E8A87C', shadow:'#C97B42' },
@@ -615,25 +615,25 @@ const SKINS = [
 ];
 
 const HAIR_STYLES = [
-  { id:'h1', emoji:'🌀', name:'Coils',    path: 'coils'    },
-  { id:'h2', emoji:'〰️', name:'Waves',    path: 'waves'    },
-  { id:'h3', emoji:'⬛', name:'Fade',     path: 'fade'     },
-  { id:'h4', emoji:'🌿', name:'Locs',     path: 'locs'     },
-  { id:'h5', emoji:'💫', name:'Afro',     path: 'afro'     },
-  { id:'h6', emoji:'🔲', name:'Box Cut',  path: 'boxcut'   },
-  { id:'h7', emoji:'➰', name:'Twists',   path: 'twists'   },
-  { id:'h8', emoji:'⚡', name:'Clean',    path: 'clean'    },
+  { id:'h1', emoji:'ðŸŒ€', name:'Coils',    path: 'coils'    },
+  { id:'h2', emoji:'ã€°ï¸', name:'Waves',    path: 'waves'    },
+  { id:'h3', emoji:'â¬›', name:'Fade',     path: 'fade'     },
+  { id:'h4', emoji:'ðŸŒ¿', name:'Locs',     path: 'locs'     },
+  { id:'h5', emoji:'ðŸ’«', name:'Afro',     path: 'afro'     },
+  { id:'h6', emoji:'ðŸ”²', name:'Box Cut',  path: 'boxcut'   },
+  { id:'h7', emoji:'âž°', name:'Twists',   path: 'twists'   },
+  { id:'h8', emoji:'âš¡', name:'Clean',    path: 'clean'    },
 ];
 
 const OUTFITS = [
-  { id:'o1', emoji:'🦁', name:'Lion King',    badge: null      },
-  { id:'o2', emoji:'⚔️',  name:'Warrior',     badge: null      },
-  { id:'o3', emoji:'🌍', name:'Scholar',      badge: null      },
-  { id:'o4', emoji:'🏺', name:'Pharaoh',      badge: null      },
-  { id:'o5', emoji:'🎓', name:'Graduate',     badge: null      },
-  { id:'o6', emoji:'🚀', name:'Astronaut',    badge: 'NEW'     },
-  { id:'o7', emoji:'🎮', name:'Gamer King',   badge: null      },
-  { id:'o8', emoji:'🎨', name:'Artist',       badge: null      },
+  { id:'o1', emoji:'ðŸ¦', name:'Lion King',    badge: null      },
+  { id:'o2', emoji:'âš”ï¸',  name:'Warrior',     badge: null      },
+  { id:'o3', emoji:'ðŸŒ', name:'Scholar',      badge: null      },
+  { id:'o4', emoji:'ðŸº', name:'Pharaoh',      badge: null      },
+  { id:'o5', emoji:'ðŸŽ“', name:'Graduate',     badge: null      },
+  { id:'o6', emoji:'ðŸš€', name:'Astronaut',    badge: 'NEW'     },
+  { id:'o7', emoji:'ðŸŽ®', name:'Gamer King',   badge: null      },
+  { id:'o8', emoji:'ðŸŽ¨', name:'Artist',       badge: null      },
 ];
 
 const GRADES = [
@@ -645,7 +645,7 @@ const GRADES = [
   { id:'g5', num:'5',  lbl:'5th'     },
 ];
 
-// ── STATE ─────────────────────────────────────────────────────
+// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let state = {
   name:    '',
   skinId:  's4',
@@ -654,7 +654,7 @@ let state = {
   gradeId: 'g3',
 };
 
-// ── INIT ──────────────────────────────────────────────────────
+// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function init() {
   // Load student name from active session
   try {
@@ -691,7 +691,7 @@ function init() {
   syncCreateButton();
 }
 
-// ── STARS ─────────────────────────────────────────────────────
+// â”€â”€ STARS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function buildStars() {
   const cont = document.getElementById('stars');
   for (let i = 0; i < 60; i++) {
@@ -709,7 +709,7 @@ function buildStars() {
   }
 }
 
-// ── RENDERERS ─────────────────────────────────────────────────
+// â”€â”€ RENDERERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderSkins() {
   const g = document.getElementById('skin-grid');
   g.innerHTML = SKINS.map(s => `
@@ -755,7 +755,7 @@ function renderGrades() {
   `).join('');
 }
 
-// ── CHARACTER SVG ─────────────────────────────────────────────
+// â”€â”€ CHARACTER SVG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderCharacter() {
   const skin   = SKINS.find(s => s.id === state.skinId);
   const hair   = HAIR_STYLES.find(h => h.id === state.hairId);
@@ -915,7 +915,7 @@ function renderCharacter() {
   document.getElementById('king-svg').innerHTML = svg;
 }
 
-// ── SELECTORS ─────────────────────────────────────────────────
+// â”€â”€ SELECTORS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function selectSkin(id) { KTAudio.tap();
   var body = document.getElementById('king-body');
   if (body) { body.classList.remove('bounce'); void body.offsetWidth; body.classList.add('bounce'); }
@@ -952,8 +952,8 @@ function syncCreateButton() {
   const hasValidName = state.name && state.name.trim().length >= 2;
   document.getElementById('btn-start').disabled = !hasValidName;
   document.querySelector('.btn-sub').textContent = hasValidName
-    ? `Ready, King ${state.name}! Let's go! 👑`
-    : "Log in first so we know your king's name";
+    ? `Ready, King ${state.name}! Enter your kingdom when you are set.`
+    : "We could not load your king name yet. Please sign in again.";
   document.getElementById('preview-name').textContent = hasValidName ? state.name : 'Young King';
 }
 
@@ -970,7 +970,7 @@ function popKing() {
   el.classList.add('pop');
 }
 
-// ── CREATE KING ───────────────────────────────────────────────
+// â”€â”€ CREATE KING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function createKing() {
   if (!state.name || state.name.trim().length < 2) {
     syncCreateButton();
@@ -990,7 +990,7 @@ function createKing() {
     outfitId:state.outfitId,
     gradeId: state.gradeId,
     grade:   grade.num,
-    xp:      100,
+    xp:      0,
     crowns:  0,
     quests:  0,
     createdAt: Date.now(),
@@ -1013,7 +1013,7 @@ function createKing() {
 function launchFireworks() {
   // Play fanfare
   try { playFanfare && KTAudio.questComplete(); } catch(e) {}
-  const emojis = ['👑','⭐','✨','💫','🌟','🎉','🏆'];
+  const emojis = ['ðŸ‘‘','â­','âœ¨','ðŸ’«','ðŸŒŸ','ðŸŽ‰','ðŸ†'];
   for (let i = 0; i < 20; i++) {
     setTimeout(() => {
       const fw = document.createElement('div');
@@ -1059,7 +1059,7 @@ async function enterKingdom() { KTAudio.levelUp();
   window.location.href = 'kingthinkers-dashboard.html';
 }
 
-// ── BOOT ──────────────────────────────────────────────────────
+// â”€â”€ BOOT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 init();
 </script>
 </body>

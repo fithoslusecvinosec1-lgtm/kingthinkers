@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KingThinkers — Enter Your Kingdom</title>
+<title>KingThinkers â€” Enter Your Kingdom</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -221,13 +221,13 @@
 <div id="stars"></div>
 
 <div class="loading-screen" id="loading">
-  <div class="loading-crown">👑</div>
-  <div class="loading-text" id="loading-text">Opening your kingdom…</div>
+  <div class="loading-crown">ðŸ‘‘</div>
+  <div class="loading-text" id="loading-text">Opening your kingdomâ€¦</div>
   <div class="loading-sub" id="loading-sub">Get ready, King!</div>
 </div>
 
 <div class="login-card" id="login-card">
-  <div class="crown-wrap"><div class="crown-icon">👑</div></div>
+  <div class="crown-wrap"><div class="crown-icon">ðŸ‘‘</div></div>
   <div class="logo">KingThinkers</div>
   <div class="tagline">Student sign in</div>
 
@@ -247,7 +247,7 @@
         <input class="code-box" id="c2" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" oninput="onCodeInput(2)" onkeydown="onCodeKey(event,2)">
         <input class="code-box" id="c3" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" oninput="onCodeInput(3)" onkeydown="onCodeKey(event,3)">
       </div>
-      <div class="code-hint">Ask your teacher for your King Code 👑</div>
+      <div class="code-hint">Ask your teacher for your King Code ðŸ‘‘</div>
       <div class="code-hint" id="not-you-wrap" style="display:none;margin-top:6px;">
         <a onclick="clearLastStudent()">Not you?</a>
       </div>
@@ -256,7 +256,7 @@
     <div class="error-msg" id="login-error">That code isn't in the roster. Ask your teacher for help!</div>
 
     <button class="btn-primary" id="btn-login" onclick="doLogin()" disabled>
-      Enter Lesson →
+      Enter My Kingdom
     </button>
   </div>
 
@@ -284,18 +284,19 @@
     </div>
 
     <button class="btn-primary" id="btn-new" onclick="doRegister()" disabled>
-      Create Student Profile →
+      Create My King Code
     </button>
+    <div class="error-msg" id="new-error">We could not create your kingdom right now.</div>
     <div class="code-hint" style="margin-top:-4px;">A King Code will be created for you to use next time!</div>
   </div>
 
   <div class="teacher-link">
-    Are you a teacher? <a onclick="window.location.href='kingthinkers-teacher-login.html'">Open Teacher Roster →</a>
+    Are you a teacher? <a onclick="window.location.href='kingthinkers-teacher-login.html'">Open Teacher Roster â†’</a>
   </div>
 </div>
 
 <script>
-// ── STARS ─────────────────────────────────────────────────────
+// â”€â”€ STARS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const sc = document.getElementById('stars');
 for (let i = 0; i < 70; i++) {
   const s = document.createElement('div'); s.className = 'star';
@@ -303,7 +304,7 @@ for (let i = 0; i < 70; i++) {
   s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;`;
   sc.appendChild(s);
 }
-const EMOJIS = ['👑','⭐','🌍','🏺','⚔️','📚','✨'];
+const EMOJIS = ['ðŸ‘‘','â­','ðŸŒ','ðŸº','âš”ï¸','ðŸ“š','âœ¨'];
 for (let i = 0; i < 8; i++) {
   const p = document.createElement('div'); p.className = 'particle';
   p.textContent = EMOJIS[i % EMOJIS.length];
@@ -311,14 +312,14 @@ for (let i = 0; i < 8; i++) {
   document.body.appendChild(p);
 }
 
-// ── STORAGE HELPERS ───────────────────────────────────────────
+// â”€â”€ STORAGE HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getStudentKey(code) { return 'kt_student_' + code; }
 function getStudent(code) {
   try { return JSON.parse(localStorage.getItem(getStudentKey(code)) || 'null'); }
   catch(e){ return null; }
 }
 
-// ── STATE ─────────────────────────────────────────────────────
+// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let newGrade = '3';
 let lastCode = sessionStorage.getItem('kt_last_code') || '';
 if (!lastCode && localStorage.getItem('kt_remember_student_code') === '1') {
@@ -328,21 +329,22 @@ if (!lastCode && localStorage.getItem('kt_remember_student_code') === '1') {
 }
 let isLoginSubmitting = false;
 
-// ── AUDIO SAFE WRAPPER ────────────────────────────────────────
+// â”€â”€ AUDIO SAFE WRAPPER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function audioTap() {
   if (window.KTAudio && KTAudio.init) KTAudio.init();
   if (window.KTAudio && KTAudio.tap) KTAudio.tap();
 }
 
-// ── TABS ──────────────────────────────────────────────────────
+// â”€â”€ TABS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='new')));
   document.getElementById('panel-login').classList.toggle('active', tab==='login');
   document.getElementById('panel-new').classList.toggle('active', tab==='new');
   document.getElementById('login-error').classList.remove('show');
+  document.getElementById('new-error').classList.remove('show');
 }
 
-// ── WELCOME BACK ──────────────────────────────────────────────
+// â”€â”€ WELCOME BACK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function checkWelcomeBack() {
   if (!lastCode) return;
   const student = getStudent(lastCode);
@@ -353,14 +355,14 @@ function switchTab(tab) {
   wrap.className = 'welcome-back';
   const avatar = document.createElement('div');
   avatar.className = 'wb-avatar';
-  avatar.textContent = '👑';
+  avatar.textContent = 'ðŸ‘‘';
   const meta = document.createElement('div');
   const nameEl = document.createElement('div');
   nameEl.className = 'wb-name';
   nameEl.textContent = 'Welcome back, King ' + (student.name || '') + '!';
   const subEl = document.createElement('div');
   subEl.className = 'wb-sub';
-  subEl.textContent = 'Code: ' + lastCode + ' · Grade ' + (student.grade || '') + ' · ' + (student.xp || 0) + ' XP';
+  subEl.textContent = 'Code: ' + lastCode + ' Â· Grade ' + (student.grade || '') + ' Â· ' + (student.xp || 0) + ' XP';
   meta.appendChild(nameEl);
   meta.appendChild(subEl);
   wrap.appendChild(avatar);
@@ -394,13 +396,14 @@ function clearLastStudent() {
   document.getElementById('c0').focus();
 }
 
-// ── CODE INPUT ────────────────────────────────────────────────
+// â”€â”€ CODE INPUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function onCodeInput(idx) {
   const box = document.getElementById('c'+idx);
   const val = box.value.replace(/\D/g,'');
   box.value = val ? val[val.length-1] : '';
   box.classList.toggle('filled', !!box.value);
   document.getElementById('login-error').classList.remove('show');
+  document.getElementById('new-error').classList.remove('show');
   if (box.value && idx < 3) document.getElementById('c'+(idx+1)).focus();
   checkCodeComplete();
 }
@@ -440,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// ── LOGIN ─────────────────────────────────────────────────────
+// â”€â”€ LOGIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function doLogin() {
   if (isLoginSubmitting) return;
 
@@ -492,7 +495,7 @@ async function doLogin() {
     localStorage.removeItem('kt_last_code');
   }
 
-  showLoading(`Opening your kingdom, King ${student.name}…`, 'Get ready to conquer!');
+  showLoading(`Opening your kingdom, King ${student.name}â€¦`, 'Get ready to conquer!');
   setTimeout(() => {
     if (student.profileComplete) {
       window.location.href = 'kingthinkers-dashboard.html';
@@ -502,27 +505,31 @@ async function doLogin() {
   }, 1600);
 }
 
-// ── REGISTER ──────────────────────────────────────────────────
+// â”€â”€ REGISTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function selectNewGrade(el, grade) {
   document.querySelectorAll('.grade-chip').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   newGrade = grade;
   validateNew();
 }
-
 function validateNew() {
   const name = document.getElementById('new-name').value.trim();
   const cls  = document.getElementById('new-class').value.trim();
+  document.getElementById('new-error').classList.remove('show');
   document.getElementById('btn-new').disabled = name.length < 2 || cls.length < 2;
 }
 
 async function doRegister() {
   audioTap();
 
+  const registerBtn = document.getElementById('btn-new');
   const name = document.getElementById('new-name').value.trim();
   const cls  = document.getElementById('new-class').value.trim().toUpperCase();
 
   if (name.length < 2 || cls.length < 2) return;
+
+  document.getElementById('new-error').classList.remove('show');
+  registerBtn.disabled = true;
 
   const student = {
     name,
@@ -545,17 +552,17 @@ async function doRegister() {
       throw new Error('Student registration is unavailable right now.');
     }
   } catch (e) {
-    document.getElementById('login-error').textContent = e && e.message ? e.message : 'We could not create your kingdom right now.';
-    document.getElementById('login-error').classList.add('show');
-    switchTab('login');
+    document.getElementById('new-error').textContent = e && e.message ? e.message : 'We could not create your kingdom right now.';
+    document.getElementById('new-error').classList.add('show');
+    validateNew();
     return;
   }
 
   const code = savedStudent && savedStudent.code ? String(savedStudent.code) : '';
   if (!code) {
-    document.getElementById('login-error').textContent = 'We could not create your kingdom right now.';
-    document.getElementById('login-error').classList.add('show');
-    switchTab('login');
+    document.getElementById('new-error').textContent = 'We could not create your kingdom right now.';
+    document.getElementById('new-error').classList.add('show');
+    validateNew();
     return;
   }
 
@@ -571,13 +578,14 @@ async function doRegister() {
     localStorage.removeItem('kt_last_code');
   }
 
-  showLoading(`Welcome, King ${name}! Your code is ${code}`, "Write it down — you'll need it next time!");
+  showLoading(`Welcome, King ${name}! Your code is ${code}`, "Write it down - you'll need it next time!");
   setTimeout(() => {
     window.location.href = 'kingthinkers-character-creator.html';
   }, 2400);
 }
 
-// ── LOADING ───────────────────────────────────────────────────
+
+// â”€â”€ LOADING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showLoading(text, sub) {
   document.getElementById('loading-text').textContent = text;
   document.getElementById('loading-sub').textContent = sub;

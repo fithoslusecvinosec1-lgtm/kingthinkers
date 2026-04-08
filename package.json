@@ -1,0 +1,16 @@
+{
+  "name": "kingthinkers-main",
+  "version": "1.0.0",
+  "description": "KingThinkers is a browser-based HTML/CSS/JavaScript learning app with game-style progression for students and classroom tools for teachers/admins. The current codebase includes a complete student flow, a teacher roster/progress flow, a shared mission registry, and a lesson runtime that supports both phased lessons and older legacy lesson objects still present in the repo.",
+  "main": "kt-audio.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "playwright": "^1.59.1"
+  }
+}

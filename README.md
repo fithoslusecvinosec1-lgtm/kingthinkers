@@ -1,58 +1,151 @@
-# 👑 KingThinkers
+# KingThinkers
 
-**Every Young King Deserves to Shine**
+KingThinkers is a browser-based HTML/CSS/JavaScript learning app with game-style progression for students and classroom tools for teachers/admins. The current codebase includes a complete student flow, a teacher roster/progress flow, a shared mission registry, and a lesson runtime that supports both phased lessons and older legacy lesson objects still present in the repo.
 
-KingThinkers is a culturally affirming, game-based learning platform for Black male students in grades K–5. Students journey through ancient African civilizations — Egypt, Nubia, Mali, Songhai, and beyond — completing reading and math quests aligned to Common Core standards.
+## What Is In This Repo
 
----
+- Student experience:
+  student login, character creation, dashboard/world map, lesson launch, lesson completion, and progress tracking
+- Teacher/admin experience:
+  teacher login, roster management, bulk add, remove student, manual mission mark/unmark, progress summaries, and printable student cards
+- Lesson/content system:
+  shared world and mission registry plus lesson packs loaded into a single lesson player/runtime
+- Browser-first app shell:
+  plain HTML/CSS/JS with no build step
 
-## 🚀 Live Pilot
+## Entry Points
 
-**Student Login:** [kingthinkers-login.html](./kingthinkers-login.html)  
-**Teacher Login:** [kingthinkers-teacher-login.html](./kingthinkers-teacher-login.html)
+- Student login: `kingthinkers-login.html`
+- Teacher login: `kingthinkers-teacher-login.html`
+- Student dashboard: `kingthinkers-dashboard.html`
+- Lesson runtime: `lesson-player.html`
+- Teacher roster: `kingthinkers-teacher-roster.html`
 
----
+`manifest.json` points the PWA start URL at `./kingthinkers-login.html`.
 
-## 📱 iPad Setup (Add to Home Screen)
+## Student Flow
 
-1. Open the Student Login link in **Safari**
-2. Tap the **Share** button (box with arrow)
-3. Tap **"Add to Home Screen"**
-4. Name it **KingThinkers** → tap **Add**
+1. Students enter a code on `kingthinkers-login.html`.
+2. First-time students are routed to `kingthinkers-character-creator.html` to set name/avatar/profile details.
+3. Returning students land on `kingthinkers-dashboard.html`.
+4. The dashboard renders the world map from the shared registry in `kt-content.js`.
+5. Launching a mission opens `lesson-player.html?id=<lessonId>` for lesson-pack content, while preserving mission context in storage.
+6. Completing a lesson updates progress and returns students to the dashboard with completion state intact.
 
-The app will appear on the iPad home screen and open full-screen like a native app.
+The dashboard currently exposes the active Home, Quest, and Sage surfaces.
 
----
+## Teacher/Admin Flow
 
-## 🗺️ Available Lessons
+1. Teachers sign in or register through `kingthinkers-teacher-login.html`.
+2. `kingthinkers-teacher-roster.html` loads the class roster and progress.
+3. Teachers can add one student, bulk add students, remove students, print student cards, refresh/sync roster data, and manually mark or unmark missions.
+4. Progress summaries, standards pills, skill percentages, and manual progress controls are driven from the same canonical content registry used by the student dashboard.
 
-| World | Mission | Type | Standard |
-|-------|---------|------|----------|
-| Egypt | The Pharaoh's Secret | Reading | RI.3.1–3.6 |
-| Egypt | Hieroglyph Numbers | Math | 3.OA, 3.NBT |
-| Egypt | The Nile's Gift | Reading | RI.3.1–3.6 |
-| Egypt | Pyramid Fractions | Math | 3.NF |
-| Nubia | Warriors of the South | Reading | RI.3.1–3.6 |
-| Nubia | Trade Route Math | Math | 3.OA, 3.MD |
-| Nubia | The Black Pharaohs | Reading | RI.3.1–3.6 |
-| Nubia | Archery Angles | Math | 3.G, 3.MD |
+Teacher progress logic recognizes completion records keyed by either mission id or lesson id, while manual teacher marking still writes the canonical mission id through the existing persistence layer.
 
----
+## Current Content Footprint
 
-## 👨‍🏫 Teacher Quick Start
+The shared registry in `kt-content.js` currently defines:
 
-1. Open the **Teacher Roster** on your device
-2. Go to **Settings** → enter your name and class code
-3. Click **Bulk Add** → paste your student names
-4. Click **Print All Cards** → cut and hand out King Cards
-5. Students open KingThinkers, enter their 4-digit code, and begin
+- 8 worlds
+- 33 total missions / lessons
+- 17 reading missions
+- 16 math missions
 
----
+Worlds in order:
 
-## 🏗️ Built With
+1. Egypt
+2. Nubia
+3. Kush
+4. Mali
+5. Songhai
+6. Timbuktu
+7. Axum
+8. Diaspora
 
-Pure HTML, CSS, and JavaScript — no frameworks, no build tools, no dependencies. Runs entirely in the browser. Progress saved to localStorage per device.
+`kt-content.js` is the canonical source for world/mission metadata used by both the student dashboard and teacher/admin reporting.
 
----
+## Lesson Architecture
 
-*KingThinkers — Pre-Seed Pilot, Spring 2025*
+Lesson content lives in the lesson pack files:
+
+- `lessons-egypt.js`
+- `lessons-kush.js`
+- `lessons-mali.js`
+- `lessons-songhai.js`
+- `lessons-timbuktu.js`
+- `lessons-axum.js`
+- `lessons-diaspora.js`
+
+Lessons are loaded by `lesson-player.html` and rendered by `lesson-engine.js`.
+
+Current lesson schemas:
+
+- Phased reading lessons:
+  `phase1_strategy`, `phase2_vocab`, `phase3_guided`, `phase4_test`
+- Phased math lessons:
+  `phase1_concept`, `phase2_worked`, `phase3_practice`, `phase4_test`
+- Legacy compatibility:
+  `lesson-engine.js` still contains fallback rendering for older lesson objects that use legacy fields such as `reading`, `teach`, and `activities`
+
+The app is in a transition state where the phased lesson runtime is the main path, but legacy compatibility still exists to support any remaining older lesson definitions that still use legacy fields.
+
+## Persistence And Data Behavior
+
+Persistence is handled in `kt-db.js`.
+
+What is confirmed in code today:
+
+- Student active code and several UI/session values are stored in `localStorage`
+- Teacher session state is stored in `sessionStorage`
+- Student records and mission progress attempt to use the configured remote API first, with `localStorage` fallback when requests fail
+- Teacher roster and class-management actions call the same remote API layer
+- Teacher mission marking uses the existing `db_teacherMarkMission(...)` contract
+- Progress completion helpers support records keyed by either mission id or lesson id
+
+The remote API target currently configured in code is a Supabase Edge Function endpoint. The app is not local-only, but it is also built to continue functioning in a degraded local-storage mode when the network/API path is unavailable.
+
+## Repo Orientation
+
+- `kingthinkers-login.html`
+  student entry point
+- `kingthinkers-character-creator.html`
+  student profile/avatar setup
+- `kingthinkers-dashboard.html`
+  main student dashboard, world map, mission launch, and in-app pages
+- `lesson-player.html`
+  lesson runtime shell
+- `lesson-engine.js`
+  lesson rendering/completion engine
+- `kt-content.js`
+  shared canonical world and mission registry
+- `lessons-*.js`
+  lesson content packs by world
+- `kt-db.js`
+  persistence, sync, roster, and teacher/admin data helpers
+- `kingthinkers-teacher-login.html`
+  teacher/auth entry point
+- `kingthinkers-teacher-roster.html`
+  teacher/admin roster, reporting, and progress management
+- `manifest.json`
+  PWA metadata and start URL
+
+## Current Project State
+
+This repo is a working product prototype, not just a static mockup. The main student loop and teacher/admin roster flow are implemented and wired to shared content metadata.
+
+At the same time, a few surfaces are clearly still in progress in the current code:
+
+- `lesson-engine.js` still contains legacy lesson fallback support
+
+## Contributor Notes
+
+If you are new to the project, start here:
+
+1. Read `kt-content.js` to understand the mission/world registry used across student and teacher flows.
+2. Read `kingthinkers-dashboard.html` for the student-side app shell and mission launch logic.
+3. Read `lesson-player.html` and `lesson-engine.js` for the lesson runtime.
+4. Read `kt-db.js` for persistence, sync, and local fallback behavior.
+5. Read `kingthinkers-teacher-roster.html` for teacher/admin reporting and manual progress flows.
+
+This repo does not use a framework or build pipeline, so most changes are direct edits to runtime HTML and JavaScript files.

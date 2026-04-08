@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>KingThinkers — Teacher Roster</title>
+<title>KingThinkers â€” Teacher Roster</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;900&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -154,40 +154,41 @@ textarea.inp{min-height:110px;resize:vertical;}
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#F5A800">
 <script src="kt-db.js"></script>
+<script src="kt-content.js"></script>
 </head>
 <body>
 
 <div id="topbar">
   <div class="topbar-title">
-    <div class="t-logo">👑 Teacher Roster</div>
+    <div class="t-logo">ðŸ‘‘ Teacher Roster</div>
     <div id="teacher-name-display" style="font-size:11px;color:var(--muted);margin-top:1px;"></div>
   </div>
   <div class="top-actions">
-    <button class="t-link" type="button" onclick="window.print()">🖨️ Print</button>
-    <a class="t-link gold" href="kingthinkers-dashboard.html">👦 Student View</a>
-    <button class="t-link" type="button" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);">🚪 Log Out</button>
+    <button class="t-link" type="button" onclick="window.print()">ðŸ–¨ï¸ Print</button>
+    <a class="t-link gold" href="kingthinkers-login.html">Student Sign In</a>
+    <button class="t-link" type="button" id="logout-btn" style="border-color:rgba(255,71,87,.3);color:var(--red);">ðŸšª Log Out</button>
   </div>
 </div>
 
 <div id="tab-nav">
-  <a href="#roster">📋 Roster</a>
-  <a href="#progress">📊 Progress</a>
-  <a href="#codes">🔑 King Codes</a>
-  <a href="#add">➕ Add Student</a>
-  <a href="#settings">⚙️ Settings</a>
+  <a href="#roster">ðŸ“‹ Roster</a>
+  <a href="#progress">ðŸ“Š Progress</a>
+  <a href="#codes">ðŸ”‘ King Codes</a>
+  <a href="#add">âž• Add Student</a>
+  <a href="#settings">âš™ï¸ Settings</a>
 </div>
 
 <!-- ROSTER -->
 <div class="section" id="roster">
-  <div class="sh">📋 Class Roster</div>
+  <div class="sh">ðŸ“‹ Class Roster</div>
   <div class="stat-row">
     <div class="stat-box"><div class="stat-n" id="st-count">0</div><div class="stat-l">Students</div></div>
     <div class="stat-box"><div class="stat-n" id="st-active">0</div><div class="stat-l">Active</div></div>
     <div class="stat-box"><div class="stat-n" id="st-xp">0</div><div class="stat-l">Total XP</div></div>
   </div>
-  <input type="text" id="search" class="inp" placeholder="Search students…" oninput="renderRoster()">
+  <input type="text" id="search" class="inp" placeholder="Search studentsâ€¦" oninput="renderRoster()">
   <div class="sort-bar">
-  <button class="sort-btn active" id="sort-name" onclick="setSort('name')">A–Z Name</button>
+  <button class="sort-btn active" id="sort-name" onclick="setSort('name')">Aâ€“Z Name</button>
   <button class="sort-btn" id="sort-progress" onclick="setSort('progress')">Progress</button>
   <button class="sort-btn" id="sort-xp" onclick="setSort('xp')">XP</button>
   <button class="sort-btn" id="sort-risk" onclick="setSort('risk')">At Risk First</button>
@@ -197,20 +198,20 @@ textarea.inp{min-height:110px;resize:vertical;}
 
 <!-- PROGRESS -->
 <div class="section" id="progress">
-  <div class="sh">📊 Progress Overview</div>
+  <div class="sh">ðŸ“Š Progress Overview</div>
   <div id="prog-list"></div>
 </div>
 
 <!-- KING CODES -->
 <div class="section" id="codes">
-  <div class="sh">🔑 King Codes</div>
-  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;" onclick="printKingCards()">🖨️ Print All King Cards</button>
+  <div class="sh">ðŸ”‘ King Codes</div>
+  <button class="add-btn" id="print-cards-btn" style="margin-bottom:14px;" onclick="printKingCards()">ðŸ–¨ï¸ Print All King Cards</button>
   <div class="kg" id="codes-grid"></div>
 </div>
 
 <!-- ADD STUDENT -->
 <div class="section" id="add">
-  <div class="sh">➕ Add a Student</div>
+  <div class="sh">âž• Add a Student</div>
   <label class="lbl">Student Name</label>
   <input type="text" id="f-name" class="inp" placeholder="First name" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="words">
   <label class="lbl">Grade</label>
@@ -222,10 +223,10 @@ textarea.inp{min-height:110px;resize:vertical;}
     <option value="4">4th Grade</option>
     <option value="5">5th Grade</option>
   </select>
-  <button class="add-btn" id="add-btn">Add King 👑</button>
+  <button class="add-btn" id="add-btn">Add King ðŸ‘‘</button>
 
   <div style="margin-top:28px;">
-    <div class="sh" style="font-size:16px;">📥 Bulk Add</div>
+    <div class="sh" style="font-size:16px;">ðŸ“¥ Bulk Add</div>
     <label class="lbl">One name per line. Add grade after comma: Marcus, 3</label>
     <textarea id="bulk-names" class="inp" placeholder="Marcus&#10;Jaylen, 4&#10;Kofi, 2&#10;Amari&#10;Zion, 5"></textarea>
     <button class="add-btn" id="bulk-btn" onclick="doBulk()">Add All Students</button>
@@ -234,23 +235,23 @@ textarea.inp{min-height:110px;resize:vertical;}
 
 <!-- SETTINGS -->
 <div class="section" id="settings">
-  <div class="sh">⚙️ Settings</div>
+  <div class="sh">âš™ï¸ Settings</div>
   <label class="lbl">Teacher Name</label>
   <input type="text" id="s-teacher" class="inp" placeholder="e.g. Mr. Johnson">
   <label class="lbl">Class Code</label>
   <input type="text" id="s-class" class="inp" placeholder="e.g. MR-JOHNSON-3B">
   <label class="lbl">School Name</label>
   <input type="text" id="s-school" class="inp" placeholder="e.g. MLK Elementary">
-  <button class="ghost-btn" id="save-settings-btn" onclick="saveSettingsNow()">Save Settings ✓</button>
-  <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);" onclick="syncFromSupabase()">☁️ Sync from Cloud</button>
-  <button class="ghost-btn" id="sample-btn">🧪 Load Sample Class</button>
-  <button class="danger-btn" id="clear-btn" onclick="clearAllData()">🗑️ Reset All Data</button>
+  <button class="ghost-btn" id="save-settings-btn" onclick="saveSettingsNow()">Save Settings âœ“</button>
+  <button class="ghost-btn" id="sync-btn" style="background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.3);color:var(--sky);" onclick="syncFromSupabase()">â˜ï¸ Sync from Cloud</button>
+  <button class="ghost-btn" id="sample-btn">ðŸ§ª Load Sample Class</button>
+  <button class="danger-btn" id="clear-btn" onclick="clearAllData()">ðŸ—‘ï¸ Reset All Data</button>
 </div>
 
 <!-- CARD MODAL -->
 <div class="modal-bg" id="card-modal">
   <div class="modal-box">
-    <div class="modal-title">👑 King Card</div>
+    <div class="modal-title">ðŸ‘‘ King Card</div>
     <div id="card-body"></div>
     <button class="modal-close" id="card-close-btn">Close</button>
   </div>
@@ -259,22 +260,22 @@ textarea.inp{min-height:110px;resize:vertical;}
 <!-- PROGRESS MODAL -->
 <div class="modal-bg" id="prog-modal">
   <div class="modal-box">
-    <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Check off completed missions.</p>
+    <div class="modal-title">ðŸ“Š <span id="pm-name">Student</span>'s Progress</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Mark completed missions below. Changes save automatically.</p>
     <div id="pm-list"></div>
-    <button class="modal-close" id="prog-close-btn">Done ✓</button>
+    <button class="modal-close" id="prog-close-btn">Done âœ“</button>
   </div>
 </div>
 
-<div id="toast">✓</div>
+<div id="toast">âœ“</div>
 
 <script>
 var _progCode = null;
 var _teacherSession = null;
 
-// ── SESSION CHECK ─────────────────────────────────────────────
+// â”€â”€ SESSION CHECK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getTeacherSession() {
-  // Session-only — matches login page. No localStorage fallback.
+  // Session-only â€” matches login page. No localStorage fallback.
   // If the tab closes, the teacher must log in again (safer on shared devices).
   if (typeof kt_getTeacherSession === 'function') return kt_getTeacherSession();
   try {
@@ -288,7 +289,7 @@ if (!_teacherSession) {
   window.location.href = 'kingthinkers-teacher-login.html';
 }
 
-// ── STORAGE ───────────────────────────────────────────────────
+// â”€â”€ STORAGE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var rosterState = [];
 function escapeHtml(value){
   return String(value == null ? '' : value)
@@ -348,16 +349,36 @@ function getManProg(c){try{return JSON.parse(localStorage.getItem('kt_manual_'+c
 function saveManProg(c,p){localStorage.setItem('kt_manual_'+c,JSON.stringify(p))}
 function getMerged(c){return Object.assign({},getManProg(c),getDevProg(c))}
 
-var MISSIONS=[
-  {id:'e1',name:"The Pharaoh's Secret",world:'Egypt',type:'Reading',xp:40},
-  {id:'e2',name:'Hieroglyph Numbers',world:'Egypt',type:'Math',xp:35},
-  {id:'e3',name:"The Nile's Gift",world:'Egypt',type:'Reading',xp:40},
-  {id:'e4',name:'Pyramid Fractions',world:'Egypt',type:'Math',xp:35},
-  {id:'n1',name:'Warriors of the South',world:'Nubia',type:'Reading',xp:40},
-  {id:'n2',name:'Trade Route Math',world:'Nubia',type:'Math',xp:35},
-  {id:'n3',name:'The Black Pharaohs',world:'Nubia',type:'Reading',xp:40},
-  {id:'n4',name:'Archery Angles',world:'Nubia',type:'Math',xp:35},
-];
+var WORLDS = window.KT_WORLDS || [];
+var MISSIONS = window.KT_MISSIONS || [];
+var TOTAL_MISSIONS = MISSIONS.length;
+
+function getMissionById(id){
+  for(var i=0;i<MISSIONS.length;i++){
+    if(MISSIONS[i].id===id)return MISSIONS[i];
+  }
+  return null;
+}
+
+function clearManualMissionOverride(code, missionId){
+  var mission=getMissionById(missionId);
+  var manual=getManProg(code);
+  delete manual[missionId];
+  if(mission&&mission.lessonId)delete manual[mission.lessonId];
+  saveManProg(code,manual);
+}
+
+function updateLocalTeacherProgress(code, missionId, completed){
+  var mission=getMissionById(missionId);
+  var progress=getDevProg(code);
+  if(completed){
+    progress[missionId]=progress[missionId]||{completedAt:Date.now(),manual:true};
+  }else{
+    delete progress[missionId];
+    if(mission&&mission.lessonId)delete progress[mission.lessonId];
+  }
+  localStorage.setItem('kt_quest_progress_'+code, JSON.stringify(progress));
+}
 
 function genCode(){
   var used=rosterState.map(function(s){ return s.code; });
@@ -372,9 +393,39 @@ function toast(msg){
   setTimeout(function(){t.classList.remove('show')},2500);
 }
 
+function isMissionComplete(progress, mission) {
+  if (!progress || !mission) return false;
+  return !!(progress[mission.id] || (mission.lessonId && progress[mission.lessonId]));
+}
+
+function getCompletedMissions(progress) {
+  return MISSIONS.filter(function(m){ return isMissionComplete(progress, m); });
+}
+
+function getProgressSummary(progress) {
+  var completed = getCompletedMissions(progress);
+  var xp = completed.reduce(function(sum, mission){ return sum + (mission.xp || 0); }, 0);
+  var currentWorld = WORLDS[0] || null;
+
+  for (var i = 0; i < WORLDS.length; i++) {
+    var world = WORLDS[i];
+    var worldDone = world.missions.every(function(m){ return isMissionComplete(progress, m); });
+    currentWorld = world;
+    if (!worldDone) break;
+  }
+
+  return {
+    done: completed.length,
+    xp: xp,
+    pct: TOTAL_MISSIONS ? Math.round(completed.length / TOTAL_MISSIONS * 100) : 0,
+    currentWorld: currentWorld,
+    completedMissions: completed
+  };
+}
+
 function getWorld(c){
-  var done=Object.keys(getMerged(c)).length;
-  if(done<4)return'Egypt';if(done<8)return'Nubia';return'Kush+';
+  var summary = getProgressSummary(getMerged(c));
+  return summary.currentWorld ? summary.currentWorld.name : 'Egypt';
 }
 
 
@@ -409,15 +460,15 @@ async function loadSampleStudents() {
       });
     });
     persistRosterCache();
-    toast('✅ Sample class loaded!');
+    toast('âœ… Sample class loaded!');
     renderAll();
   } catch (e) {
-    toast('⚠️ Failed to load sample class: ' + e.message);
+    toast('âš ï¸ Failed to load sample class: ' + e.message);
     console.warn('loadSampleStudents failed:', e);
   }
 }
 
-// ── ADD ───────────────────────────────────────────────────────
+// â”€â”€ ADD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function doAdd(){
   var nameEl=document.getElementById('f-name');
   var gradeEl=document.getElementById('f-grade');
@@ -439,7 +490,7 @@ async function doAdd(){
     toast('King '+name+' added! Code: '+code);
     renderAll();
   } catch(e) {
-    toast('⚠️ Failed to add student: '+e.message);
+    toast('âš ï¸ Failed to add student: '+e.message);
     console.warn('doAdd failed:',e);
   }
 }
@@ -481,7 +532,7 @@ async function doBulk(){
     toast(created.length+' students added!');
     renderAll();
   } catch(e) {
-    toast('⚠️ Bulk add failed: '+e.message);
+    toast('âš ï¸ Bulk add failed: '+e.message);
     console.warn('Bulk add failed:', e);
   }
 }
@@ -490,13 +541,13 @@ async function doBulk(){
 async function removeStudent(code){
   if(!confirm('Remove '+code+'?'))return;
   if (typeof db_removeStudent !== 'function') {
-    toast('⚠️ Delete service unavailable');
+    toast('âš ï¸ Delete service unavailable');
     return;
   }
   try {
     await db_removeStudent(code);
   } catch(e){
-    toast('⚠️ Failed to remove: ' + e.message);
+    toast('âš ï¸ Failed to remove: ' + e.message);
     console.warn('Supabase delete failed',e);
     return;
   }
@@ -507,8 +558,8 @@ async function removeStudent(code){
   toast('Removed');renderAll();
 }
 
-// ── RENDER ────────────────────────────────────────────────────
-// ── SORT STATE ────────────────────────────────────────────────
+// â”€â”€ RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€ SORT STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var _sortBy = 'name';
 
 function setSort(by) {
@@ -519,7 +570,7 @@ function setSort(by) {
   renderRoster();
 }
 
-// ── HELPERS ───────────────────────────────────────────────────
+// â”€â”€ HELPERS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function getRiskLevel(done, lastActive) {
   var daysSince = lastActive ? Math.floor((Date.now() - new Date(lastActive).getTime()) / 86400000) : 999;
@@ -540,31 +591,28 @@ function getLastActiveLabel(lastActive) {
   if (days === 1) return { text: 'Active yesterday', cls: 'la-recent' };
   if (days <= 7)  return { text: 'Active ' + days + 'd ago', cls: 'la-week' };
   if (days <= 14) return { text: days + ' days ago', cls: 'la-old' };
-  return { text: days + 'd ago — check in!', cls: 'la-old' };
+  return { text: days + 'd ago â€” check in!', cls: 'la-old' };
 }
 
 function getStandards(p) {
-  var stds = [];
-  MISSIONS.forEach(function(m) {
-    if (p[m.id]) {
-      if (m.type === 'Reading') { if (stds.indexOf('RI.3') < 0) stds.push('RI.3'); }
-      if (m.id === 'e2') { if (stds.indexOf('3.NBT') < 0) stds.push('3.NBT'); }
-      if (m.id === 'e4') { if (stds.indexOf('3.NF') < 0) stds.push('3.NF'); }
-      if (m.id === 'n2') { if (stds.indexOf('3.OA') < 0) stds.push('3.OA'); if (stds.indexOf('3.MD') < 0) stds.push('3.MD'); }
-      if (m.id === 'n4') { if (stds.indexOf('3.G') < 0) stds.push('3.G'); }
+  var seen = {};
+  return getCompletedMissions(p).reduce(function(stds, mission) {
+    if (mission.standard && !seen[mission.standard]) {
+      seen[mission.standard] = true;
+      stds.push(mission.standard);
     }
-  });
-  return stds;
+    return stds;
+  }, []);
 }
 
 function getSkillLevels(p) {
   var readingMissions  = MISSIONS.filter(function(m){ return m.type === 'Reading'; });
   var mathMissions     = MISSIONS.filter(function(m){ return m.type === 'Math'; });
-  var readingDone = readingMissions.filter(function(m){ return !!p[m.id]; }).length;
-  var mathDone    = mathMissions.filter(function(m){ return !!p[m.id]; }).length;
+  var readingDone = readingMissions.filter(function(m){ return isMissionComplete(p, m); }).length;
+  var mathDone    = mathMissions.filter(function(m){ return isMissionComplete(p, m); }).length;
   return {
-    reading: Math.round(readingDone / readingMissions.length * 100),
-    math:    Math.round(mathDone    / mathMissions.length    * 100),
+    reading: readingMissions.length ? Math.round(readingDone / readingMissions.length * 100) : 0,
+    math:    mathMissions.length ? Math.round(mathDone / mathMissions.length * 100) : 0,
   };
 }
 
@@ -574,7 +622,7 @@ function skillColor(pct) {
   return 'var(--red)';
 }
 
-// ── RENDER ROSTER ─────────────────────────────────────────────
+// â”€â”€ RENDER ROSTER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderRoster(){
   var search=(document.getElementById('search')||{value:''}).value.toLowerCase();
   var totalXP=0,active=0;
@@ -589,18 +637,18 @@ function renderRoster(){
   var list=document.getElementById('roster-list');
   if(!list) return;
   if(!rosterState.length){
-    list.innerHTML='<div class="empty"><div class="empty-i">👥</div><div>No students — use Add Student below</div></div>';
+    list.innerHTML='<div class="empty"><div class="empty-i">ðŸ‘¥</div><div>No students â€” use Add Student below</div></div>';
     return;
   }
 
   // Build data array
   var data = rosterState.map(function(s){
     var p=getMerged(s.code);
-    var done=MISSIONS.filter(function(m){return!!p[m.id]}).length;
+    var summary = getProgressSummary(p);
     var xp=s.xp||0;
     var lastActive=s.lastActive||s.last_active||null;
-    var risk=getRiskLevel(done, lastActive);
-    return { c:s.code, s:s, p:p, done:done, xp:xp, lastActive:lastActive, risk:risk };
+    var risk=getRiskLevel(summary.done, lastActive);
+    return { c:s.code, s:s, p:p, done:summary.done, xp:xp, lastActive:lastActive, risk:risk, summary:summary };
   }).filter(function(d){ return (!search || d.s.name.toLowerCase().indexOf(search)>-1 || d.c.indexOf(search)>-1); });
 
   // Sort
@@ -612,7 +660,7 @@ function renderRoster(){
   });
 
   list.innerHTML = data.map(function(d){
-    var pct = Math.round(d.done / MISSIONS.length * 100);
+    var pct = d.summary.pct;
     var barColor = pct >= 60 ? 'var(--green)' : pct >= 30 ? 'var(--gold)' : 'var(--red)';
     var riskClass = 'risk-'+d.risk;
     var la = getLastActiveLabel(d.lastActive);
@@ -622,23 +670,23 @@ function renderRoster(){
 
     return '<div class="s-card">'+
 
-      // ── TOP ROW: code, risk dot, name, last active, buttons ──
+      // â”€â”€ TOP ROW: code, risk dot, name, last active, buttons â”€â”€
       '<div class="s-card-top">'+
         '<div class="s-code">'+escapeHtml(d.c)+'</div>'+
         '<div class="risk-dot '+riskClass+'" title="'+
           (d.risk==='green'?'On track':d.risk==='yellow'?'Needs attention':'At risk')+'"></div>'+
         '<div class="s-info" style="flex:1;min-width:0;">'+
           '<div class="s-name">'+escapeHtml(d.s.name)+'</div>'+
-          '<div class="s-meta">Gr '+escapeHtml(d.s.grade)+' · '+escapeHtml(getWorld(d.c))+' · '+d.done+'/8 missions · '+d.xp+' XP</div>'+
+          '<div class="s-meta">Gr '+escapeHtml(d.s.grade)+' Â· '+escapeHtml(d.summary.currentWorld ? d.summary.currentWorld.name : getWorld(d.c))+' Â· '+d.done+'/'+TOTAL_MISSIONS+' missions Â· '+d.xp+' XP</div>'+
         '</div>'+
         '<div class="s-btns">'+
-          '<button class="s-btn grn" data-action="prog" data-code="'+escapeHtml(d.c)+'">📋</button>'+
-          '<button class="s-btn" data-action="card" data-code="'+escapeHtml(d.c)+'">🃏</button>'+
-          '<button class="s-btn" data-action="del" data-code="'+escapeHtml(d.c)+'">🗑️</button>'+
+          '<button class="s-btn grn" data-action="prog" data-code="'+escapeHtml(d.c)+'">ðŸ“‹</button>'+
+          '<button class="s-btn" data-action="card" data-code="'+escapeHtml(d.c)+'">ðŸƒ</button>'+
+          '<button class="s-btn" data-action="del" data-code="'+escapeHtml(d.c)+'">ðŸ—‘ï¸</button>'+
         '</div>'+
       '</div>'+
 
-      // ── BOTTOM ROW: progress bar, skills, standards, last active ──
+      // â”€â”€ BOTTOM ROW: progress bar, skills, standards, last active â”€â”€
       '<div class="s-card-bottom">'+
 
         // Mini overall progress bar
@@ -671,7 +719,7 @@ function renderRoster(){
         // Standards + last active row
         '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">'+
           '<div style="display:flex;gap:4px;flex-wrap:wrap;">'+stdHtml+'</div>'+
-          '<div class="last-active '+la.cls+'">🕐 '+la.text+'</div>'+
+          '<div class="last-active '+la.cls+'">ðŸ• '+la.text+'</div>'+
         '</div>'+
 
       '</div>'+
@@ -681,37 +729,36 @@ function renderRoster(){
 
 function renderProgress(){
   var el=document.getElementById('prog-list');
-  if(!rosterState.length){el.innerHTML='<div class="empty"><div class="empty-i">📊</div><div>Add students, then tap 📊 to track progress</div></div>';return}
+  if(!rosterState.length){el.innerHTML='<div class="empty"><div class="empty-i">ðŸ“Š</div><div>Add students, then tap ðŸ“Š to track progress</div></div>';return}
   var data=rosterState.map(function(s){
     var p=getMerged(s.code);
-    var done=MISSIONS.filter(function(m){return!!p[m.id]}).length;
-    var xp=MISSIONS.filter(function(m){return!!p[m.id]}).reduce(function(sum,m){return sum+m.xp},0);
-    return{c:s.code,s:s,done:done,xp:xp,p:p};
+    var summary = getProgressSummary(p);
+    return{c:s.code,s:s,done:summary.done,xp:summary.xp,p:p,summary:summary};
   }).filter(function(d){return d.s}).sort(function(a,b){return b.done-a.done});
   el.innerHTML=data.map(function(d,i){
-    var pct=Math.round(d.done/MISSIONS.length*100);
-    var medal=(i===0&&d.done>0)?'🥇':(i===1&&d.done>0)?'🥈':(i===2&&d.done>0)?'🥉':'👑';
-    var names=MISSIONS.filter(function(m){return!!d.p[m.id]}).map(function(m){return m.name});
+    var pct=d.summary.pct;
+    var medal=(i===0&&d.done>0)?'ðŸ¥‡':(i===1&&d.done>0)?'ðŸ¥ˆ':(i===2&&d.done>0)?'ðŸ¥‰':'ðŸ‘‘';
+    var names=d.summary.completedMissions.map(function(m){return m.name});
     return'<div class="p-card" data-action="prog" data-code="'+escapeHtml(d.c)+'">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;">'+
         '<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">'+medal+'</span>'+
           '<div><div style="font-weight:800;font-size:14px;">'+escapeHtml(d.s.name)+'</div>'+
-          '<div style="font-size:11px;color:var(--muted);">Gr '+escapeHtml(d.s.grade)+' · '+d.done+'/8 missions</div></div></div>'+
+          '<div style="font-size:11px;color:var(--muted);">Gr '+escapeHtml(d.s.grade)+' Â· '+escapeHtml(d.summary.currentWorld ? d.summary.currentWorld.name : getWorld(d.c))+' Â· '+d.done+'/'+TOTAL_MISSIONS+' missions</div></div></div>'+
         '<div style="text-align:right;"><div style="font-family:var(--f-d);font-size:16px;font-weight:900;color:var(--gold);">'+d.xp+' XP</div>'+
         '<div style="font-size:10px;color:var(--muted);">'+pct+'%</div></div>'+
       '</div>'+
       '<div class="p-bar-bg"><div class="p-bar-fg" style="width:'+pct+'%"></div></div>'+
-      (names.length?'<div style="font-size:10px;color:var(--green);line-height:1.7;">✅ '+escapeHtml(names.join(' · '))+'</div>':'')+
+      (names.length?'<div style="font-size:10px;color:var(--green);line-height:1.7;">âœ… '+escapeHtml(names.join(' Â· '))+'</div>':'')+
     '</div>';
   }).join('');
 }
 
 function renderCodes(){
   var g=document.getElementById('codes-grid');
-  if(!rosterState.length){g.innerHTML='<div class="empty"><div class="empty-i">🔑</div><div>No codes yet</div></div>';return}
+  if(!rosterState.length){g.innerHTML='<div class="empty"><div class="empty-i">ðŸ”‘</div><div>No codes yet</div></div>';return}
   g.innerHTML=rosterState.map(function(s){
     return'<div class="kc" data-action="card" data-code="'+escapeHtml(s.code)+'">'+
-      '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
+      '<div class="kc-crown">ðŸ‘‘</div><div class="kc-brand">KINGTHINKERS</div>'+
       '<div class="kc-name">King '+escapeHtml(s.name)+'</div><div class="kc-div"></div>'+
       '<div class="kc-lbl">King Code</div><div class="kc-code">'+escapeHtml(s.code)+'</div>'+
       '<div class="kc-gr">Grade '+escapeHtml(s.grade)+'</div></div>';
@@ -720,7 +767,7 @@ function renderCodes(){
 
 var _renderTimer = null;
 function renderAll() {
-  // Debounce — collapse rapid successive calls into one paint
+  // Debounce â€” collapse rapid successive calls into one paint
   if (_renderTimer) clearTimeout(_renderTimer);
   _renderTimer = setTimeout(function() {
     renderRoster();
@@ -729,12 +776,12 @@ function renderAll() {
   }, 16); // one animation frame
 }
 
-// ── MODALS ────────────────────────────────────────────────────
+// â”€â”€ MODALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showCard(code){
   var s=getStudent(code);if(!s)return;
   document.getElementById('card-body').innerHTML=
     '<div class="kc" style="max-width:220px;margin:0 auto;">'+
-    '<div class="kc-crown">👑</div><div class="kc-brand">KINGTHINKERS</div>'+
+    '<div class="kc-crown">ðŸ‘‘</div><div class="kc-brand">KINGTHINKERS</div>'+
     '<div class="kc-name">King '+escapeHtml(s.name)+'</div><div class="kc-div"></div>'+
     '<div class="kc-lbl">King Code</div><div class="kc-code">'+escapeHtml(code)+'</div>'+
     '<div class="kc-gr">Grade '+escapeHtml(s.grade)+'</div></div>';
@@ -746,17 +793,15 @@ function showProg(code){
   var s=getStudent(code);if(!s)return;
   document.getElementById('pm-name').textContent=s.name;
   var p=getMerged(code);
-  var worlds={};
-  MISSIONS.forEach(function(m){if(!worlds[m.world])worlds[m.world]=[];worlds[m.world].push(m)});
   var html='';
-  Object.keys(worlds).forEach(function(w){
-    html+='<div class="m-world">⚔️ '+w+'</div>';
-    worlds[w].forEach(function(m){
-      var done=!!p[m.id];
+  WORLDS.forEach(function(world){
+    html+='<div class="m-world">âš”ï¸ '+escapeHtml(world.name)+'</div>';
+    world.missions.forEach(function(m){
+      var done=isMissionComplete(p, m);
       html+='<label class="m-check">'+
         '<input type="checkbox" '+(done?'checked':'')+' data-id="'+escapeHtml(m.id)+'" data-xp="'+m.xp+'">'+
-        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' · +'+m.xp+' XP</div></div>'+
-        (done?'<span style="color:var(--green);">✅</span>':'')+
+        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' Â· +'+m.xp+' XP</div></div>'+
+        (done?'<span style="color:var(--green);">âœ…</span>':'')+
       '</label>';
     });
   });
@@ -765,12 +810,13 @@ function showProg(code){
     cb.addEventListener('change',function(){
       var id=cb.getAttribute('data-id');var xp=parseInt(cb.getAttribute('data-xp'));
       var manual=getManProg(_progCode);var st=getStudent(_progCode);
-      // Use server-side idempotent mark — prevents XP double counting
+      // Use server-side idempotent mark â€” prevents XP double counting
       db_teacherMarkMission(_progCode, id, xp, cb.checked).then(function(result){
         if(result && result.missions){
           localStorage.setItem('kt_quest_progress_'+_progCode, JSON.stringify(result.missions));
         }
-        toast('✅ Saved!');
+        clearManualMissionOverride(_progCode, id);
+        toast('âœ… Saved!');
         renderAll();
       }).catch(function(e){
         // Fallback: update locally only
@@ -780,7 +826,8 @@ function showProg(code){
           delete manual[id];
         }
         saveManProg(_progCode,manual);
-        toast('⚠️ Saved locally — sync when online');
+        updateLocalTeacherProgress(_progCode, id, cb.checked);
+        toast('âš ï¸ Saved locally â€” sync when online');
         renderAll();
       });
     });
@@ -788,7 +835,7 @@ function showProg(code){
   document.getElementById('prog-modal').classList.add('open');
 }
 
-// ── SETTINGS ──────────────────────────────────────────────────
+// â”€â”€ SETTINGS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function loadSettingsForm(){
   var s=getSettings();
   if(s.teacherName)document.getElementById('s-teacher').value=s.teacherName;
@@ -796,7 +843,7 @@ function loadSettingsForm(){
   if(s.schoolName)document.getElementById('s-school').value=s.schoolName;
 }
 
-// ── WIRE BUTTONS ─────────────────────────────────────────────
+// â”€â”€ WIRE BUTTONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var _wired = false;
 function wireButtons() {
   if (_wired) return;
@@ -810,41 +857,41 @@ function wireButtons() {
     else { console.warn('Button not found: ' + id); }
   }
 
-  // ── SORT BUTTONS ─────────────────────────────────────────────
+  // â”€â”€ SORT BUTTONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   on('sort-name',     function(){ setSort('name'); });
   on('sort-progress', function(){ setSort('progress'); });
   on('sort-xp',       function(){ setSort('xp'); });
   on('sort-risk',     function(){ setSort('risk'); });
 
-  // ── ADD STUDENT ───────────────────────────────────────────────
+  // â”€â”€ ADD STUDENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   on('add-btn',  doAdd);
   on('bulk-btn', doBulk);
 
-  // ── PRINT KING CARDS ──────────────────────────────────────────
+  // â”€â”€ PRINT KING CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   on('print-cards-btn', printKingCards);
   // Also wire the topbar print button (prints everything)
   var topPrint = document.querySelector('.t-link[onclick*="print"]');
   if (topPrint) topPrint.onclick = function(){ window.print(); };
 
-  // ── MODALS ────────────────────────────────────────────────────
+  // â”€â”€ MODALS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   on('card-close-btn', function(){ document.getElementById('card-modal').classList.remove('open'); });
   on('prog-close-btn', function(){ document.getElementById('prog-modal').classList.remove('open'); renderAll(); });
 
-  // ── SETTINGS ─────────────────────────────────────────────────
+  // â”€â”€ SETTINGS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   on('save-settings-btn', saveSettingsNow);
   on('sync-btn', function(){ syncFromSupabase(); });
   on('sample-btn', loadSampleStudents);
   on('clear-btn', clearAllData);
 
-  // ── TEACHER INFO + LOGOUT ─────────────────────────────────────
+  // â”€â”€ TEACHER INFO + LOGOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (_teacherSession) {
     var nameEl = document.getElementById('teacher-name-display');
-    if (nameEl) nameEl.textContent = (_teacherSession.name || _teacherSession.username) + ' · ' + (_teacherSession.classCode || '');
+    if (nameEl) nameEl.textContent = (_teacherSession.name || _teacherSession.username) + ' Â· ' + (_teacherSession.classCode || '');
   }
 
   on('logout-btn', logOut);
 
-  // ── EVENT DELEGATION for roster cards ──────────────────────
+  // â”€â”€ EVENT DELEGATION for roster cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Handles all data-action buttons without inline onclick escaping issues
   document.addEventListener('click', function(e) {
     var el = e.target.closest('[data-action]');
@@ -858,23 +905,19 @@ function wireButtons() {
   });
 }
 
-// Boot — runs immediately since script is at bottom of body
+// Boot â€” runs immediately since script is at bottom of body
 (function boot() {
   // Debug: log session state to help diagnose 401s
+  // Keep only actionable session warnings in the console.
   var sess = getTeacherSession();
-  if (sess) {
-    console.log('✅ Teacher session loaded:', sess.username, '| Token:', sess.token ? 'present' : 'MISSING');
-    if (!sess.token) {
-      console.warn('⚠️ Session has no token — API calls may fail with 401. Re-login recommended.');
-    }
-  } else {
-    console.warn('❌ No teacher session found');
+  if (sess && !sess.token) {
+    console.warn('Teacher session is missing its token. Re-login recommended.');
   }
   setRosterState(getCachedRoster());
   renderAll();
   loadSettingsForm();
   wireButtons();
-  syncFromSupabase(true); // silent=true — no toast, no flicker on load
+  syncFromSupabase(true); // silent=true â€” no toast, no flicker on load
 })();
 
 function saveSettingsNow() {
@@ -884,7 +927,7 @@ function saveSettingsNow() {
   if (t)  putSetting('teacherName', t.value);
   if (c)  putSetting('classCode',   c.value);
   if (sc) putSetting('schoolName',  sc.value);
-  toast('✅ Settings saved!');
+  toast('âœ… Settings saved!');
 }
 
 function loadSampleClass() {
@@ -904,7 +947,7 @@ function clearAllData() {
   rosterState = [];
   saveCachedRoster([]);
   localStorage.removeItem('kt_roster');
-  toast('🗑️ All data cleared');
+  toast('ðŸ—‘ï¸ All data cleared');
   renderAll();
 }
 
@@ -928,10 +971,22 @@ function logOut() {
 }
 
 async function syncFromSupabase(silent) {
-  // silent=true on boot — no toast, no flicker
-  if (!silent) toast('🔄 Syncing from cloud…');
+  // silent=true on boot â€” no toast, no flicker
+  if (window.location && window.location.protocol === 'file:') {
+    var localOnly = getCachedRoster();
+    if (localOnly && localOnly.length) {
+      setRosterState(localOnly);
+      renderAll();
+      if (!silent) toast('âš ï¸ Using cached roster in local demo mode');
+    } else if (!silent) {
+      toast('âš ï¸ Local demo mode has no cached roster yet');
+    }
+    return;
+  }
+
+  if (!silent) toast('ðŸ”„ Syncing from cloudâ€¦');
   if (typeof db_getRosterWithProgress !== 'function') {
-    if (!silent) toast('⚠️ Sync service unavailable');
+    if (!silent) toast('âš ï¸ Sync service unavailable');
     return;
   }
 
@@ -950,8 +1005,8 @@ async function syncFromSupabase(silent) {
     });
     persistRosterCache();
     if (!silent) {
-      if (!rosterState.length) toast('☁️ No students found in cloud yet');
-      else toast('✅ Synced ' + rosterState.length + ' students from cloud!');
+      if (!rosterState.length) toast('â˜ï¸ No students found in cloud yet');
+      else toast('âœ… Synced ' + rosterState.length + ' students from cloud!');
     }
     renderAll();
   } catch(e) {
@@ -959,11 +1014,11 @@ async function syncFromSupabase(silent) {
     if (cached && cached.length) {
       setRosterState(cached);
       renderAll();
-      if (!silent) toast('⚠️ Cloud unavailable — using cached roster');
+      if (!silent) toast('âš ï¸ Cloud unavailable â€” using cached roster');
     } else if (!silent) {
-      toast('⚠️ Sync failed — no cache available');
+      toast('âš ï¸ Sync failed â€” no cache available');
     }
-    console.warn('syncFromSupabase failed:', e);
+    if (!silent) console.warn('syncFromSupabase failed:', e);
   }
 }
 </script>

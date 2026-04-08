@@ -1,9 +1,9 @@
-// ── KINGTHINKERS MATH ENGINE ──────────────────────────────────
+﻿// â”€â”€ KINGTHINKERS MATH ENGINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Handles: streaks, step-by-step hints, answer tolerance,
 // targeted feedback, TTS with word highlighting, images,
 // question tracking, and motivational feedback
 
-// ── STREAK TRACKER ────────────────────────────────────────────
+// â”€â”€ STREAK TRACKER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var KTStreak = (function() {
   var streak = 0;
   var bestStreak = 0;
@@ -32,58 +32,58 @@ var KTStreak = (function() {
   return { onCorrect, onWrong, reset, get, getStats };
 })();
 
-// ── MOTIVATIONAL FEEDBACK POOLS ───────────────────────────────
+// â”€â”€ MOTIVATIONAL FEEDBACK POOLS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var KTFeedback = (function() {
 
   var correctBase = [
-    "That's the mind of a King! 👑",
-    "Pharaoh-level thinking right there! 🔺",
-    "The scribes of Egypt would be proud! 📜",
+    "That's the mind of a King! ðŸ‘‘",
+    "Pharaoh-level thinking right there! ðŸ”º",
+    "The scribes of Egypt would be proud! ðŸ“œ",
     "You're reading the numbers like a Royal Architect!",
-    "Exactly right, King! Ancient wisdom agrees! ⭐",
-    "The Nile flows strong when Kings think clearly! 🌊",
+    "Exactly right, King! Ancient wisdom agrees! â­",
+    "The Nile flows strong when Kings think clearly! ðŸŒŠ",
   ];
 
   var streakMessages = {
-    2: "Two in a row! You're on fire, King! 🔥",
-    3: "THREE STRAIGHT! The kingdom grows! 🏆",
-    4: "Four correct! Ancient warriors bow to your math! ⚔️",
-    5: "FIVE IN A ROW!! You're unstoppable! 🌟👑",
+    2: "Two in a row! You're on fire, King! ðŸ”¥",
+    3: "THREE STRAIGHT! The kingdom grows! ðŸ†",
+    4: "Four correct! Ancient warriors bow to your math! âš”ï¸",
+    5: "FIVE IN A ROW!! You're unstoppable! ðŸŒŸðŸ‘‘",
   };
 
   var improvementMessages = [
-    "Better than last time — keep climbing, King! 📈",
-    "You figured it out! That's real growth! 💪",
-    "Second try is still a victory! 👑",
-    "You worked through it — that's a warrior's mindset! ⚔️",
+    "Better than last time â€” keep climbing, King! ðŸ“ˆ",
+    "You figured it out! That's real growth! ðŸ’ª",
+    "Second try is still a victory! ðŸ‘‘",
+    "You worked through it â€” that's a warrior's mindset! âš”ï¸",
   ];
 
   var wrongBase = [
-    "Not quite — but great Kings learn from every attempt! ⚔️",
-    "Almost there! Read the question one more time, King. 👀",
-    "The pharaohs failed before they succeeded — try again! 🔺",
-    "Your kingdom needs you to think this one through. 💭",
-    "Close! The answer is hidden in the question itself. 🔍",
-    "Every wrong answer teaches something — look closer! 📜",
+    "Not quite â€” but great Kings learn from every attempt! âš”ï¸",
+    "Almost there! Read the question one more time, King. ðŸ‘€",
+    "The pharaohs failed before they succeeded â€” try again! ðŸ”º",
+    "Your kingdom needs you to think this one through. ðŸ’­",
+    "Close! The answer is hidden in the question itself. ðŸ”",
+    "Every wrong answer teaches something â€” look closer! ðŸ“œ",
   ];
 
   var wrongSpecific = {
-    'too_high':    "Your answer is a little too big — try going smaller, King! 📉",
-    'too_low':     "Your answer is a little too small — try going larger! 📈",
-    'wrong_unit':  "Check the units — are you counting the right thing? 🔍",
-    'close':       "SO close! You're just one step off — look again! 🎯",
-    'off_by_one':  "Just one off! Double-check your counting, King! 🔢",
+    'too_high':    "Your answer is a little too big â€” try going smaller, King! ðŸ“‰",
+    'too_low':     "Your answer is a little too small â€” try going larger! ðŸ“ˆ",
+    'wrong_unit':  "Check the units â€” are you counting the right thing? ðŸ”",
+    'close':       "SO close! You're just one step off â€” look again! ðŸŽ¯",
+    'off_by_one':  "Just one off! Double-check your counting, King! ðŸ”¢",
   };
 
   var tryAgainMessages = [
-    "Take your time — you've got this! ⏳",
-    "Read it again carefully — the clue is in the question! 📖",
-    "Think step by step, King. Start with what you know. 🪜",
-    "Ancient scribes checked their work twice — so should you! 📜",
+    "Take your time â€” you've got this! â³",
+    "Read it again carefully â€” the clue is in the question! ðŸ“–",
+    "Think step by step, King. Start with what you know. ðŸªœ",
+    "Ancient scribes checked their work twice â€” so should you! ðŸ“œ",
   ];
 
   function getCorrect(streak) {
-    if (streak >= 5) return "FIVE IN A ROW!! You're UNSTOPPABLE, King! 🌟👑🔥";
+    if (streak >= 5) return "FIVE IN A ROW!! You're UNSTOPPABLE, King! ðŸŒŸðŸ‘‘ðŸ”¥";
     if (streak >= 2 && streakMessages[streak]) return streakMessages[streak];
     return correctBase[Math.floor(Math.random() * correctBase.length)];
   }
@@ -102,16 +102,16 @@ var KTFeedback = (function() {
   }
 
   function getStreakLabel(streak) {
-    if (streak >= 5) return '🔥🔥🔥 ON FIRE';
-    if (streak >= 3) return '🔥 HOT STREAK';
-    if (streak >= 2) return '⚡ STREAK x' + streak;
+    if (streak >= 5) return 'ðŸ”¥ðŸ”¥ðŸ”¥ ON FIRE';
+    if (streak >= 3) return 'ðŸ”¥ HOT STREAK';
+    if (streak >= 2) return 'âš¡ STREAK x' + streak;
     return null;
   }
 
   return { getCorrect, getWrong, getTryAgain, getImprovement, getStreakLabel };
 })();
 
-// ── ANSWER TOLERANCE ──────────────────────────────────────────
+// â”€â”€ ANSWER TOLERANCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var KTTolerance = (function() {
 
   // Check if two fraction strings are equivalent: 2/3 == 4/6
@@ -141,7 +141,7 @@ var KTTolerance = (function() {
     return null;
   }
 
-  // Main check — accepts exact, float-equal, fraction-equivalent, and near-miss tolerance
+  // Main check â€” accepts exact, float-equal, fraction-equivalent, and near-miss tolerance
   function check(studentInput, correctAnswer) {
     var val = String(studentInput).trim().replace(/,/g, '').replace(/\s/g, '');
     var ans = String(correctAnswer).trim();
@@ -169,7 +169,7 @@ var KTTolerance = (function() {
   return { check, diagnose, fracEqual };
 })();
 
-// ── STEP-BY-STEP HINTS ────────────────────────────────────────
+// â”€â”€ STEP-BY-STEP HINTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var KTSteps = (function() {
   var _steps = [];
   var _currentStep = 0;
@@ -200,11 +200,11 @@ var KTSteps = (function() {
     var btn = document.getElementById('step-btn');
     if (btn) {
       if (_currentStep >= _steps.length) {
-        btn.textContent = '✅ All Steps Shown';
+        btn.textContent = 'âœ… All Steps Shown';
         btn.disabled = true;
         btn.style.opacity = '0.5';
       } else {
-        btn.textContent = 'Show Step ' + (_currentStep + 1) + ' →';
+        btn.textContent = 'Show Step ' + (_currentStep + 1) + ' â†’';
       }
     }
     return true;
@@ -213,7 +213,7 @@ var KTSteps = (function() {
   return { init, hasSteps, showNext };
 })();
 
-// ── TEXT-TO-SPEECH WITH WORD HIGHLIGHTING ────────────────────
+// â”€â”€ TEXT-TO-SPEECH WITH WORD HIGHLIGHTING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 var KTTS = (function() {
   var _utterance = null;
   var _speaking = false;
@@ -230,7 +230,7 @@ var KTTS = (function() {
       w.classList.remove('speaking');
     });
     var btn = document.getElementById('tts-btn');
-    if (btn) btn.textContent = '🔊 Read Aloud';
+    if (btn) btn.textContent = 'ðŸ”Š Read Aloud';
   }
 
   // Wrap words in spans for highlighting
@@ -248,14 +248,14 @@ var KTTS = (function() {
   function speak(text, containerId) {
     if (!isSupported()) {
       if (typeof showToast === 'function') {
-        showToast('🔊', 'Read Aloud', 'Audio not supported on this device');
+        showToast('ðŸ”Š', 'Read Aloud', 'Audio not supported on this device');
       }
       return;
     }
     if (_speaking) { stop(); return; }
 
     var btn = document.getElementById('tts-btn');
-    if (btn) btn.textContent = '⏹ Stop Reading';
+    if (btn) btn.textContent = 'â¹ Stop Reading';
 
     _speaking = true;
     _utterance = new SpeechSynthesisUtterance(text);
@@ -290,55 +290,55 @@ var KTTS = (function() {
   return { speak, stop, wrapWords, isSupported };
 })();
 
-// ── EMOJI IMAGES FOR MATH CONTEXT ────────────────────────────
+// â”€â”€ EMOJI IMAGES FOR MATH CONTEXT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Returns inline SVG/emoji visual for a given math problem type
 var KTVisuals = (function() {
 
   var CONTEXT_ICONS = {
-    'pyramid':    '🔺',
-    'jar':        '🏺',
-    'block':      '🧱',
-    'stone':      '🪨',
-    'sled':       '🛷',
-    'scribe':     '📜',
-    'hieroglyph': '𓀀',
-    'merchant':   '🧑‍💼',
-    'worker':     '👷',
-    'pharaoh':    '👑',
-    'arrow':      '🏹',
-    'warrior':    '⚔️',
-    'trade':      '🤝',
-    'gold':       '🪙',
-    'food':       '🌾',
-    'water':      '💧',
-    'fish':       '🐟',
-    'boat':       '⛵',
-    'camel':      '🐪',
-    'elephant':   '🐘',
-    'star':       '⭐',
-    'sun':        '☀️',
-    'moon':       '🌙',
-    'fraction':   '➗',
-    'angle':      '📐',
-    'measure':    '📏',
-    'number':     '🔢',
-    'crown':      '👑',
-    'kingdom':    '🏰',
+    'pyramid':    'ðŸ”º',
+    'jar':        'ðŸº',
+    'block':      'ðŸ§±',
+    'stone':      'ðŸª¨',
+    'sled':       'ðŸ›·',
+    'scribe':     'ðŸ“œ',
+    'hieroglyph': 'ð“€€',
+    'merchant':   'ðŸ§‘â€ðŸ’¼',
+    'worker':     'ðŸ‘·',
+    'pharaoh':    'ðŸ‘‘',
+    'arrow':      'ðŸ¹',
+    'warrior':    'âš”ï¸',
+    'trade':      'ðŸ¤',
+    'gold':       'ðŸª™',
+    'food':       'ðŸŒ¾',
+    'water':      'ðŸ’§',
+    'fish':       'ðŸŸ',
+    'boat':       'â›µ',
+    'camel':      'ðŸª',
+    'elephant':   'ðŸ˜',
+    'star':       'â­',
+    'sun':        'â˜€ï¸',
+    'moon':       'ðŸŒ™',
+    'fraction':   'âž—',
+    'angle':      'ðŸ“',
+    'measure':    'ðŸ“',
+    'number':     'ðŸ”¢',
+    'crown':      'ðŸ‘‘',
+    'kingdom':    'ðŸ°',
   };
 
   function getIcon(context) {
-    if (!context) return '🔢';
+    if (!context) return 'ðŸ”¢';
     var lower = context.toLowerCase();
     for (var key in CONTEXT_ICONS) {
       if (lower.indexOf(key) > -1) return CONTEXT_ICONS[key];
     }
-    return '📐';
+    return 'ðŸ“';
   }
 
   // Build a visual card for the math problem
   function buildVisual(problem, accentColor) {
     var icon = getIcon(problem.context || problem.display || '');
-    var worldIcons = { 'Egypt': '🔺🌊🏺', 'Nubia': '🏹⚔️🛡️', 'Mali': '🐪🌙🪙', 'Kush': '🏔️💎⭐' };
+    var worldIcons = { 'Egypt': 'ðŸ”ºðŸŒŠðŸº', 'Nubia': 'ðŸ¹âš”ï¸ðŸ›¡ï¸', 'Mali': 'ðŸªðŸŒ™ðŸª™', 'Kush': 'ðŸ”ï¸ðŸ’Žâ­' };
     var worldEmojis = worldIcons['Egypt']; // default
 
     // Count-based visuals for simple problems
@@ -357,7 +357,7 @@ var KTVisuals = (function() {
   return { getIcon, buildVisual };
 })();
 
-// ── INJECT STYLES ─────────────────────────────────────────────
+// â”€â”€ INJECT STYLES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 (function injectStyles() {
   var style = document.createElement('style');
   style.textContent = `
@@ -437,4 +437,3 @@ var KTVisuals = (function() {
   document.head.appendChild(style);
 })();
 
-console.log('✅ KingThinkers Math Engine loaded');

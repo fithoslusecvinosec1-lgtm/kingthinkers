@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -379,7 +379,7 @@
       line-height:1.55;
     }
 
-    /* ── Phase 2 Step-by-Step Reveal ── */
+    /* â”€â”€ Phase 2 Step-by-Step Reveal â”€â”€ */
     .phase2-step{
       background:var(--card2);
       border:1px solid var(--border);
@@ -410,7 +410,7 @@
       to{opacity:1;transform:translateY(0)}
     }
 
-    /* ── King Mode Streak Banner ── */
+    /* â”€â”€ King Mode Streak Banner â”€â”€ */
     .king-mode-banner{
       display:flex;
       align-items:center;
@@ -433,7 +433,7 @@
       to{opacity:1;transform:scale(1)}
     }
 
-    /* ── Review Mode ── */
+    /* â”€â”€ Review Mode â”€â”€ */
     .review-offer{
       background:rgba(56,189,248,.10);
       border:1px solid rgba(56,189,248,.28);
@@ -653,11 +653,11 @@
   </div>
   <div id="app">
     <div class="topbar">
-      <div class="brand">👑 KingThinkers</div>
+      <div class="brand">ðŸ‘‘ KingThinkers</div>
       <div class="top-meta">
         <div class="pill gold" id="lesson-xp-pill">+0 XP</div>
-        <div class="pill green" id="lesson-crowns-pill">👑 0</div>
-        <button class="top-btn" type="button" onclick="KTLessonEngine.exitToDashboard()">← Dashboard</button>
+        <div class="pill green" id="lesson-crowns-pill">ðŸ‘‘ 0</div>
+        <button class="top-btn" type="button" onclick="KTLessonEngine.exitToDashboard()">Back to Kingdom</button>
       </div>
     </div>
 
@@ -680,7 +680,7 @@
     box-shadow:0 4px 20px rgba(0,196,140,.35);
     -webkit-tap-highlight-color:transparent;
     touch-action:manipulation;
-  ">🤖</div>
+  ">ðŸ¤–</div>
 
   <div id="sage-panel" style="
     position:fixed;bottom:144px;right:12px;z-index:2001;
@@ -694,14 +694,14 @@
   ">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-size:20px;">🤖</span>
+        <span style="font-size:20px;">ðŸ¤–</span>
         <span style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:#00C48C;">Sage</span>
         <span style="width:8px;height:8px;border-radius:50%;background:#00C48C;display:inline-block;"></span>
       </div>
       <button id="sage-close-btn" type="button" style="
         background:none;border:none;color:rgba(255,255,255,.45);
         font-size:18px;cursor:pointer;padding:0 4px;
-      ">✕</button>
+      ">âœ•</button>
     </div>
 
     <div id="sage-panel-messages" style="
@@ -713,7 +713,7 @@
       <input
         type="text"
         id="sage-panel-input"
-        placeholder="Ask Sage for help…"
+        placeholder="Ask Sage for helpâ€¦"
         style="
           flex:1;background:#0B0B1E;border:1px solid rgba(255,255,255,.1);
           border-radius:10px;padding:10px 12px;font-size:13px;color:#fff;
@@ -724,7 +724,7 @@
         background:linear-gradient(135deg,#00C48C,#38BDF8);
         border:none;border-radius:8px;padding:0 14px;font-size:16px;
         cursor:pointer;flex-shrink:0;
-      ">➤</button>
+      ">âž¤</button>
     </div>
 
     <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
@@ -732,19 +732,19 @@
         background:#16163A;border:1px solid rgba(0,196,140,.2);
         border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;
         color:#00C48C;cursor:pointer;
-      ">💡 Hint</button>
+      ">ðŸ’¡ Hint</button>
 
       <button id="sage-explain-btn" type="button" style="
         background:#16163A;border:1px solid rgba(0,196,140,.2);
         border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;
         color:#00C48C;cursor:pointer;
-      ">🤔 Explain</button>
+      ">ðŸ¤” Explain</button>
 
       <button id="sage-celebrate-btn" type="button" style="
         background:#16163A;border:1px solid rgba(245,168,0,.2);
         border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;
         color:#F5A800;cursor:pointer;
-      ">🎉 Celebrate</button>
+      ">ðŸŽ‰ Celebrate</button>
     </div>
   </div>
 
@@ -767,7 +767,7 @@
       }
 
       function getGreeting() {
-        return 'Hey King! I’m Sage. Ask for a hint or a quick explanation. 👑';
+        return 'Hey King! Iâ€™m Sage. Ask for a hint or a quick explanation. ðŸ‘‘';
       }
 
       function getLessonContext() {
@@ -816,7 +816,7 @@
         div.style.color = 'rgba(255,255,255,.8)';
         div.style.fontSize = '13px';
         div.style.lineHeight = '1.5';
-        div.textContent = 'Sage is thinking…';
+        div.textContent = 'Sage is thinkingâ€¦';
         return div;
       }
 
