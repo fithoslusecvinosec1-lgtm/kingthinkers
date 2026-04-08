@@ -1,6 +1,6 @@
 # KingThinkers
 
-KingThinkers is a browser-based HTML/CSS/JavaScript learning app with game-style progression for students and classroom tools for teachers/admins. The current codebase includes a complete student flow, a teacher roster/progress flow, a shared mission registry, and a lesson runtime that supports both phased lessons and older legacy lesson objects still present in the repo.
+KingThinkers is a browser-based HTML/CSS/JavaScript learning app with game-style progression for students and classroom tools for teachers/admins. The current codebase includes a complete student flow, a teacher roster/progress flow, a shared mission registry, and a phased lesson runtime used across the active lesson set.
 
 ## What Is In This Repo
 
@@ -85,10 +85,8 @@ Current lesson schemas:
   `phase1_strategy`, `phase2_vocab`, `phase3_guided`, `phase4_test`
 - Phased math lessons:
   `phase1_concept`, `phase2_worked`, `phase3_practice`, `phase4_test`
-- Legacy compatibility:
-  `lesson-engine.js` still contains fallback rendering for older lesson objects that use legacy fields such as `reading`, `teach`, and `activities`
 
-The app is in a transition state where the phased lesson runtime is the main path, but legacy compatibility still exists to support any remaining older lesson definitions that still use legacy fields.
+Active lesson packs now use the phased schema. `lesson-engine.js` keeps the phased reading path, phased math path, and a minimal intro/complete fallback for any unexpected lesson shape, but the old legacy reading lesson-content path is no longer part of the active system.
 
 ## Persistence And Data Behavior
 
@@ -134,10 +132,6 @@ The remote API target currently configured in code is a Supabase Edge Function e
 
 This repo is a working product prototype, not just a static mockup. The main student loop and teacher/admin roster flow are implemented and wired to shared content metadata.
 
-At the same time, a few surfaces are clearly still in progress in the current code:
-
-- `lesson-engine.js` still contains legacy lesson fallback support
-
 ## Contributor Notes
 
 If you are new to the project, start here:
@@ -149,3 +143,23 @@ If you are new to the project, start here:
 5. Read `kingthinkers-teacher-roster.html` for teacher/admin reporting and manual progress flows.
 
 This repo does not use a framework or build pipeline, so most changes are direct edits to runtime HTML and JavaScript files.
+
+## Smoke Tests
+
+The repo includes a small Playwright smoke suite for the highest-value browser flows:
+
+- student sign-in to dashboard
+- dashboard lesson launch plus a completion return signal
+- teacher sign-in to roster plus manual mission marking
+
+Run the suite with:
+
+- `npm run test:smoke`
+- `npm run test:smoke:headed`
+- `npm run test:smoke:debug`
+
+How it works:
+
+- Playwright starts a tiny local static server from `tests/support/static-server.cjs`
+- the tests mock only the remote `kt-api` boundary, so the real HTML/JS pages, routing, storage, and lesson runtime still execute in the browser
+- the smoke suite is intentionally lightweight and focuses on app boot, core navigation, and fatal breakage detection rather than exhaustive UI coverage

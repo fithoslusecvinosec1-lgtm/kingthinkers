@@ -4,7 +4,10 @@
   "description": "KingThinkers is a browser-based HTML/CSS/JavaScript learning app with game-style progression for students and classroom tools for teachers/admins. The current codebase includes a complete student flow, a teacher roster/progress flow, a shared mission registry, and a lesson runtime that supports both phased lessons and older legacy lesson objects still present in the repo.",
   "main": "kt-audio.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:smoke",
+    "test:smoke": "call \"%npm_node_execpath%\" .\\node_modules\\playwright\\cli.js test tests/smoke.spec.js",
+    "test:smoke:headed": "call \"%npm_node_execpath%\" .\\node_modules\\playwright\\cli.js test tests/smoke.spec.js --headed",
+    "test:smoke:debug": "call \"%npm_node_execpath%\" .\\node_modules\\playwright\\cli.js test tests/smoke.spec.js --debug"
   },
   "keywords": [],
   "author": "",
