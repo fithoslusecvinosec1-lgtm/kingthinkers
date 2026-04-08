@@ -482,7 +482,7 @@
     return renderVisualFrame(
       visual.label || 'Angle Comparison',
       labels.map(function (item) {
-        return '<div style="margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);font-size:13px;">âˆ  ' + escapeHtml(item) + '</div>';
+        return '<div style="margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.05);font-size:13px;">∠ ' + escapeHtml(item) + '</div>';
       }).join('')
     );
   }
@@ -1681,4 +1681,3 @@ document.addEventListener('DOMContentLoaded', function () {
     window.KTLessonEngine.init();
   }
 });
-

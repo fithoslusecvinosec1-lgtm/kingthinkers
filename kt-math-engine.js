@@ -76,7 +76,7 @@ var KTFeedback = (function() {
   };
 
   var tryAgainMessages = [
-    "Take your time — you've got this! â³",
+    "Take your time — you've got this! ⏳",
     "Read it again carefully — the clue is in the question! 📖",
     "Think step by step, King. Start with what you know. 🪜",
     "Ancient scribes checked their work twice — so should you! 📜",
@@ -255,7 +255,7 @@ var KTTS = (function() {
     if (_speaking) { stop(); return; }
 
     var btn = document.getElementById('tts-btn');
-    if (btn) btn.textContent = 'â¹ Stop Reading';
+    if (btn) btn.textContent = '⏹ Stop Reading';
 
     _speaking = true;
     _utterance = new SpeechSynthesisUtterance(text);
@@ -312,13 +312,13 @@ var KTVisuals = (function() {
     'food':       '🌾',
     'water':      '💧',
     'fish':       '🐟',
-    'boat':       'â›µ',
+    'boat':       '⛵',
     'camel':      '🐪',
     'elephant':   '🐘',
     'star':       '⭐',
     'sun':        '☀️',
     'moon':       '🌙',
-    'fraction':   'âž—',
+    'fraction':   '➗',
     'angle':      '📐',
     'measure':    '📏',
     'number':     '🔢',
@@ -436,4 +436,3 @@ var KTVisuals = (function() {
   `;
   document.head.appendChild(style);
 })();
-
