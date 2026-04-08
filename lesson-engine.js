@@ -261,11 +261,68 @@
     return !!value && typeof value === 'object' && !Array.isArray(value);
   }
 
+  function normalizeVisualInstructionText(text) {
+    if (typeof text !== 'string') return null;
+    var raw = text.trim();
+    if (!raw) return null;
+
+    var equalGroupsMatch = raw.match(/^Show\s+(\d+)\s+(?:equal\s+)?[\w\s-]+\s+with\s+(\d+)\s+[\w\s-]+\s+each\.?$/i);
+    if (equalGroupsMatch) {
+      return {
+        type: 'equal_groups',
+        groups: Number(equalGroupsMatch[1]),
+        per_group: Number(equalGroupsMatch[2])
+      };
+    }
+
+    var arrayByMatch = raw.match(/^Show\s+(?:a|an)\s+(\d+)-by-(\d+)\s+[\w\s-]*array\.?$/i);
+    if (arrayByMatch) {
+      return {
+        type: 'rectangle_area',
+        length: Number(arrayByMatch[1]),
+        width: Number(arrayByMatch[2])
+      };
+    }
+
+    var rowsColumnsMatch = raw.match(/^Show\s+(?:a|an)\s+rectangular\s+[\w\s-]+\s+made\s+of\s+(\d+)\s+rows\s+and\s+(\d+)\s+columns\s+of\s+[\w\s-]+\.?$/i);
+    if (rowsColumnsMatch) {
+      return {
+        type: 'rectangle_area',
+        length: Number(rowsColumnsMatch[1]),
+        width: Number(rowsColumnsMatch[2])
+      };
+    }
+
+    var rectangleLabelMatch = raw.match(/^Show\s+(?:a|an)\s+rectangle\s+labeled\s+(\d+)\s+(?:by|and)\s+(\d+)\.?$/i);
+    if (rectangleLabelMatch) {
+      return {
+        type: 'rectangle_area',
+        length: Number(rectangleLabelMatch[1]),
+        width: Number(rectangleLabelMatch[2])
+      };
+    }
+
+    var fractionMatch = raw.match(/^Show\s+(\d+)\s+equal\s+sections\s+with\s+(\d+)\s+shaded\b/i);
+    if (fractionMatch) {
+      return {
+        type: 'fraction_bar',
+        denominator: Number(fractionMatch[1]),
+        numerator: Number(fractionMatch[2])
+      };
+    }
+
+    return null;
+  }
+
   function normalizeVisualData(visual, visualData) {
     if (isVisualObject(visualData)) return visualData;
     if (isVisualObject(visual)) return visual;
-    if (typeof visualData === 'string' && visualData.trim()) return visualData;
-    if (typeof visual === 'string' && visual.trim()) return visual;
+    if (typeof visualData === 'string' && visualData.trim()) {
+      return normalizeVisualInstructionText(visualData) || visualData;
+    }
+    if (typeof visual === 'string' && visual.trim()) {
+      return normalizeVisualInstructionText(visual) || visual;
+    }
     return null;
   }
 
