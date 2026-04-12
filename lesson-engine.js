@@ -512,6 +512,71 @@
     return renderVisualFrame(visual.label || 'Rounding Number Line', body);
   }
 
+  function renderBaseTenVisual(visual) {
+    if (!isVisualObject(visual)) return '';
+
+    function renderOneRow(row) {
+      var tens = Math.max(0, Number(row.tens || 0));
+      var ones = Math.max(0, Number(row.ones || 0));
+      var tenBlocks = '';
+      var oneBlocks = '';
+
+      for (var t = 0; t < Math.min(12, tens); t++) {
+        tenBlocks += '<div style="height:12px;border-radius:4px;background:linear-gradient(135deg,var(--gold),var(--amber));opacity:.95;"></div>';
+      }
+      for (var o = 0; o < Math.min(12, ones); o++) {
+        oneBlocks += '<div style="width:12px;height:12px;border-radius:4px;background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.35);"></div>';
+      }
+
+      return (
+        '<div style="margin-top:8px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.04);">' +
+          (row.label ? '<div style="font-size:12px;color:var(--muted);font-weight:900;letter-spacing:.04em;text-transform:uppercase;">' + escapeHtml(row.label) + '</div>' : '') +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">' +
+            '<div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Tens (' + tens + ')</div><div style="display:grid;grid-template-columns:1fr;gap:4px;">' + tenBlocks + '</div></div>' +
+            '<div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Ones (' + ones + ')</div><div style="display:flex;flex-wrap:wrap;gap:4px;">' + oneBlocks + '</div></div>' +
+          '</div>' +
+          (row.note ? '<div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.9);">' + escapeHtml(row.note) + '</div>' : '') +
+        '</div>'
+      );
+    }
+
+    var rows = Array.isArray(visual.rows) && visual.rows.length ? visual.rows : [visual];
+    var body = rows.map(renderOneRow).join('');
+    if (visual.note) {
+      body += '<div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.9);">' + escapeHtml(visual.note) + '</div>';
+    }
+    return renderVisualFrame(visual.label || 'Tens and Ones', body);
+  }
+
+  function renderFractionCompareVisual(visual) {
+    if (!isVisualObject(visual)) return '';
+    var denominator = Math.max(1, Number(visual.denominator || 1));
+    var leftNumerator = Math.max(0, Number(visual.left_numerator || 0));
+    var rightNumerator = Math.max(0, Number(visual.right_numerator || 0));
+
+    function renderFractionRow(rowLabel, numerator, highlighted) {
+      var cells = '';
+      for (var i = 0; i < denominator; i++) {
+        var isFilled = i < numerator;
+        cells += '<div style="height:22px;border-radius:6px;border:1px solid var(--border);background:' + (isFilled ? 'linear-gradient(135deg,var(--gold),var(--amber))' : 'rgba(255,255,255,.06)') + ';"></div>';
+      }
+      return (
+        '<div style="margin-top:8px;padding:8px;border-radius:10px;border:1px solid ' + (highlighted ? 'rgba(245,168,0,.45)' : 'var(--border)') + ';background:' + (highlighted ? 'rgba(245,168,0,.08)' : 'rgba(255,255,255,.03)') + ';">' +
+          '<div style="font-size:12px;color:var(--muted);font-weight:800;margin-bottom:6px;">' + escapeHtml(rowLabel) + ' · ' + numerator + '/' + denominator + '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(' + denominator + ', minmax(14px,1fr));gap:6px;">' + cells + '</div>' +
+        '</div>'
+      );
+    }
+
+    var highlightLeft = visual.compare === 'left';
+    var highlightRight = visual.compare === 'right';
+    return renderVisualFrame(
+      visual.label || 'Fraction Compare',
+      renderFractionRow(visual.left_label || 'Left', leftNumerator, highlightLeft) +
+      renderFractionRow(visual.right_label || 'Right', rightNumerator, highlightRight)
+    );
+  }
+
   function renderRectangleAreaVisual(visual) {
     if (!isVisualObject(visual)) return '';
     var length = Math.max(1, Number(visual.length || 1));
@@ -650,6 +715,8 @@
     }
 
     if (visual.type === 'rounding_number_line') return renderRoundingNumberLineVisual(visual);
+    if (visual.type === 'base_ten') return renderBaseTenVisual(visual);
+    if (visual.type === 'fraction_compare') return renderFractionCompareVisual(visual);
     if (visual.type === 'rectangle_area') return renderRectangleAreaVisual(visual);
     if (visual.type === 'equal_groups') return renderEqualGroupsVisual(visual);
     if (visual.type === 'angle_comparison') return renderAngleComparisonVisual(visual);
