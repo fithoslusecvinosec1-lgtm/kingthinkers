@@ -236,7 +236,15 @@ window.KT_LESSONS.egypt = [
     example: {
       context: 'A royal scribe counted 12 scrolls in one basket and 8 more scrolls in another basket.',
       equation: '12 + 8 = 20',
-      visual: 'Show 12 as 1 ten and 2 ones, then add 8 ones to make 2 tens.'
+      visual: {
+        type: 'base_ten',
+        label: '12 + 8',
+        rows: [
+          { label: 'Start', tens: 1, ones: 2 },
+          { label: 'Add 8 ones', tens: 1, ones: 10 },
+          { label: 'Regroup', tens: 2, ones: 0, note: '10 ones become 1 ten' }
+        ]
+      }
     },
     sage: 'Watch how I combine tens and ones, King. Then you’ll try it with me.'
   },
@@ -248,17 +256,33 @@ window.KT_LESSONS.egypt = [
         {
           display: '14 + 6 = ?',
           explanation: 'Start with 14. That is 1 ten and 4 ones.',
-          visual: 'Show one group of ten and four single cakes.'
+          visual: {
+            type: 'base_ten',
+            label: 'Start with 14',
+            tens: 1,
+            ones: 4
+          }
         },
         {
           display: '14 + 6 = ?',
           explanation: 'Add 6 more ones to the 4 ones.',
-          visual: 'Animate six more single cakes joining the four ones.'
+          visual: {
+            type: 'base_ten',
+            label: 'Add 6 ones',
+            tens: 1,
+            ones: 10
+          }
         },
         {
           display: '14 + 6 = 20',
           explanation: '4 ones plus 6 ones makes 10 ones, which becomes 1 new ten. Now there are 2 tens, so the total is 20.',
-          visual: 'Regroup 10 ones into one ten rod; show 2 tens and 0 ones.'
+          visual: {
+            type: 'base_ten',
+            label: 'Regroup to 20',
+            tens: 2,
+            ones: 0,
+            note: '10 ones regroup into 1 ten'
+          }
         }
       ],
       sage: 'Nice and clean. When ones make 10, regroup them into a new ten.'
@@ -269,22 +293,45 @@ window.KT_LESSONS.egypt = [
         {
           display: '25 + 15 = ?',
           explanation: 'Break both numbers into tens and ones.',
-          visual: 'Show 25 as 2 tens and 5 ones, and 15 as 1 ten and 5 ones.'
+          visual: {
+            type: 'base_ten',
+            label: 'Break apart both addends',
+            rows: [
+              { label: '25', tens: 2, ones: 5 },
+              { label: '15', tens: 1, ones: 5 }
+            ]
+          }
         },
         {
           display: '25 + 15 = ?',
           explanation: 'Add the tens: 2 tens plus 1 ten equals 3 tens.',
-          visual: 'Highlight the three tens together.'
+          visual: {
+            type: 'base_ten',
+            label: 'Combine tens',
+            tens: 3,
+            ones: 10
+          }
         },
         {
           display: '25 + 15 = ?',
           explanation: 'Add the ones: 5 ones plus 5 ones equals 10 ones.',
-          visual: 'Highlight the ten ones.'
+          visual: {
+            type: 'base_ten',
+            label: 'Combine ones',
+            tens: 3,
+            ones: 10
+          }
         },
         {
           display: '25 + 15 = 40',
           explanation: '10 ones becomes 1 more ten. Now there are 4 tens, so the total is 40.',
-          visual: 'Regroup the ten ones into a fourth ten rod.'
+          visual: {
+            type: 'base_ten',
+            label: 'Regroup to 40',
+            tens: 4,
+            ones: 0,
+            note: '10 ones become 1 more ten'
+          }
         }
       ],
       sage: 'You can add tens and ones separately, then put them back together.'
@@ -620,7 +667,12 @@ window.KT_LESSONS.egypt = [
     example: {
       context: 'A pyramid wall is divided into 8 equal stone sections. Builders finish 3 sections.',
       equation: '3/8',
-      visual: 'Show 8 equal sections with 3 shaded to represent the finished part.'
+      visual: {
+        type: 'fraction_bar',
+        denominator: 8,
+        numerator: 3,
+        label: '3 out of 8 sections are finished'
+      }
     },
     sage: 'Always ask two questions, King: how many equal parts are there in all, and how many of those parts are we talking about?'
   },
@@ -632,17 +684,32 @@ window.KT_LESSONS.egypt = [
         {
           display: '8 equal sections total',
           explanation: 'The denominator tells how many equal parts are in the whole pyramid.',
-          visual: 'Show a pyramid diagram split into 8 equal sections.'
+          visual: {
+            type: 'fraction_bar',
+            denominator: 8,
+            numerator: 0,
+            label: '8 equal sections'
+          }
         },
         {
           display: '3 sections finished',
           explanation: 'The numerator tells how many parts are complete.',
-          visual: 'Shade 3 of the 8 sections.'
+          visual: {
+            type: 'fraction_bar',
+            denominator: 8,
+            numerator: 3,
+            label: 'Shade 3 of 8'
+          }
         },
         {
           display: '3/8',
           explanation: '3 out of 8 equal sections are complete, so the fraction is 3/8.',
-          visual: 'Label the shaded diagram with 3/8.'
+          visual: {
+            type: 'fraction_bar',
+            denominator: 8,
+            numerator: 3,
+            label: '3/8'
+          }
         }
       ],
       sage: 'Top number for the finished parts, bottom number for the total equal parts.'
@@ -653,17 +720,39 @@ window.KT_LESSONS.egypt = [
         {
           display: '2/5 and 4/5',
           explanation: 'Both fractions have the same denominator, so both breads are split into fifths.',
-          visual: 'Show two bars each divided into 5 equal parts.'
+          visual: {
+            type: 'fraction_compare',
+            denominator: 5,
+            left_numerator: 2,
+            right_numerator: 4,
+            left_label: 'Amara',
+            right_label: 'Kofi'
+          }
         },
         {
           display: 'Compare 2 and 4',
           explanation: 'When denominators match, compare the numerators.',
-          visual: 'Shade 2 parts on one bar and 4 parts on the other.'
+          visual: {
+            type: 'fraction_compare',
+            denominator: 5,
+            left_numerator: 2,
+            right_numerator: 4,
+            left_label: '2/5',
+            right_label: '4/5'
+          }
         },
         {
           display: '4/5 > 2/5',
           explanation: 'Kofi ate more because 4 fifths is greater than 2 fifths.',
-          visual: 'Highlight the larger shaded bar.'
+          visual: {
+            type: 'fraction_compare',
+            denominator: 5,
+            left_numerator: 2,
+            right_numerator: 4,
+            left_label: 'Amara: 2/5',
+            right_label: 'Kofi: 4/5',
+            compare: 'right'
+          }
         }
       ],
       sage: 'Same denominator means same-sized pieces. Then the bigger top number wins.'
@@ -1028,12 +1117,22 @@ window.KT_LESSONS.egypt = [
         {
           display: '7 × 9',
           explanation: 'Multiply the number of camels by the number of bags on each camel.',
-          visual: 'Combine the 7 equal groups.'
+          visual: {
+            type: 'equal_groups',
+            groups: 7,
+            per_group: 9,
+            label: 'Combine 7 groups of 9'
+          }
         },
         {
           display: '7 × 9 = 63',
           explanation: 'The caravan carries 63 bags in all.',
-          visual: 'Label the total as 63 bags.'
+          visual: {
+            type: 'equal_groups',
+            groups: 7,
+            per_group: 9,
+            label: 'Total: 63 bags'
+          }
         }
       ],
       sage: 'Equal groups mean multiply, King.'
@@ -1044,17 +1143,32 @@ window.KT_LESSONS.egypt = [
         {
           display: '85 - 28',
           explanation: 'First subtract the ivory pieces traded away.',
-          visual: 'Show 85 pieces and remove 28.'
+          visual: {
+            type: 'bar_model',
+            total: 85,
+            filled: 57,
+            label: '85 pieces − 28 traded'
+          }
         },
         {
           display: '57 - 15',
           explanation: 'Now subtract the 15 more pieces that were sold.',
-          visual: 'Show 57 remaining pieces and remove 15.'
+          visual: {
+            type: 'bar_model',
+            total: 57,
+            filled: 42,
+            label: '57 pieces − 15 sold'
+          }
         },
         {
           display: '42',
           explanation: 'There are 42 ivory pieces left after both trades.',
-          visual: 'Highlight the final amount: 42.'
+          visual: {
+            type: 'bar_model',
+            total: 57,
+            filled: 42,
+            label: 'Final amount: 42'
+          }
         }
       ],
       sage: 'Two-step problems become easier when you finish one action before starting the next.'

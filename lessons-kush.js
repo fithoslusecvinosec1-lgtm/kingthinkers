@@ -262,12 +262,22 @@ window.KT_LESSONS.kush = [
           {
             display: '6 × 8',
             explanation: 'Multiply the number of baskets by the number of tools in each basket.',
-            visual: 'Combine the equal groups.'
+            visual: {
+              type: 'equal_groups',
+              groups: 6,
+              per_group: 8,
+              label: 'Combine 6 groups of 8'
+            }
           },
           {
             display: '48 tools',
             explanation: 'The merchant has 48 tools in all.',
-            visual: 'Label the total as 48.'
+            visual: {
+              type: 'equal_groups',
+              groups: 6,
+              per_group: 8,
+              label: 'Total: 48 tools'
+            }
           }
         ],
         sage: 'Count equal groups with multiplication.'
@@ -278,17 +288,32 @@ window.KT_LESSONS.kush = [
           {
             display: 'Start with 35',
             explanation: 'The trader begins with 35 jars.',
-            visual: 'Show 35 jars.'
+            visual: {
+              type: 'bar_model',
+              total: 35,
+              filled: 35,
+              label: 'Start with 35 jars'
+            }
           },
           {
             display: '35 - 12',
             explanation: 'Selling jars means subtract the amount sold.',
-            visual: 'Remove 12 jars from the group.'
+            visual: {
+              type: 'bar_model',
+              total: 35,
+              filled: 23,
+              label: '35 jars − 12 sold'
+            }
           },
           {
             display: '23 jars left',
             explanation: '35 minus 12 equals 23 jars left.',
-            visual: 'Highlight the 23 remaining jars.'
+            visual: {
+              type: 'bar_model',
+              total: 35,
+              filled: 23,
+              label: '23 jars left'
+            }
           }
         ],
         sage: 'When the story says sold or gave away, check whether subtraction fits.'
