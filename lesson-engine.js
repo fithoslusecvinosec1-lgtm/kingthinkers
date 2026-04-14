@@ -482,6 +482,9 @@
       window.speechSynthesis.cancel();
     } catch (e) {}
     state.readAloud.utterance = null;
+    state.readAloud.paused = false;
+    state.readAloud.lastText = null;
+    state.readAloud.lastOpts = null;
   }
 
   function clearHighlight(containerId) {
@@ -525,12 +528,40 @@
     };
 
     state.readAloud.utterance = utterance;
+    state.readAloud.paused = false;
+    state.readAloud.lastText = safeText(text);
+    state.readAloud.lastOpts = Object.assign({}, opts);
     window.speechSynthesis.speak(utterance);
     logReadingBehavior('read_aloud_used', {
       phase: opts.phase || 'reading',
       context: opts.context || null
     });
     return true;
+  }
+
+  function pauseReadAloud() {
+    if (!canUseReadAloud()) return;
+    try {
+      if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+        window.speechSynthesis.pause();
+        state.readAloud.paused = true;
+      }
+    } catch (e) {}
+  }
+
+  function resumeReadAloud() {
+    if (!canUseReadAloud()) return;
+    try {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        state.readAloud.paused = false;
+      }
+    } catch (e) {}
+  }
+
+  function replayReadAloud() {
+    if (!state.readAloud.lastText) return;
+    speakWithHighlight(state.readAloud.lastText, state.readAloud.lastOpts || {});
   }
 
   function renderHighlightedText(text, containerId) {
@@ -573,7 +604,7 @@
   function getAdaptiveSupportText(question) {
     if (question && question.explanation) return question.explanation;
     if (question && question.hint) return question.hint;
-    return 'Let us slow down, find the clue words, and make a strong next try.';
+    return 'Let’s slow down, find the clue words, and take a strong next try together.';
   }
 
   function getAdaptiveSupportLevelCopy(level, question) {
@@ -581,14 +612,14 @@
     var explanation = safeText(question && question.explanation).trim();
     if (level >= 4) {
       return {
-        title: '🧭 Final support step',
-        copy: explanation || baseHint || 'Take a calm breath, King. We will model this one together, then you will try the next one with confidence.'
+        title: '🧭 Extra support',
+        copy: explanation || baseHint || 'Take a calm breath, King. We’ll walk through this one together, then you’ll try the next one with confidence.'
       };
     }
     if (level === 3) {
       return {
-        title: '🧠 Mentor scaffold',
-        copy: explanation || baseHint || 'Let us break this into two small moves: find the clue words, then match them to the best answer.'
+        title: '🧠 Mentor step-by-step',
+        copy: explanation || baseHint || 'Let’s do two small moves: find the clue words, then match them to the best answer.'
       };
     }
     if (level === 2) {
@@ -1448,14 +1479,14 @@
         }
         if (attempts === 2) {
           feedback.className = 'feedback info show';
-          feedback.textContent = 'Strong effort. Use the stronger hint, then try one more time.';
+          feedback.textContent = 'Strong effort. Take the stronger hint, then try once more.';
           setAdaptiveLevel(2);
           if (disableUI) disableUI(false);
           return;
         }
         if (attempts === 3) {
           feedback.className = 'feedback info show';
-          feedback.textContent = 'Almost there. Let mentor support you with a scaffolded clue.';
+          feedback.textContent = 'You’re close. Let your mentor give you one scaffolded clue.';
           setAdaptiveLevel(3);
           if (disableUI) disableUI(false);
           return;
@@ -1537,7 +1568,7 @@
             }
           }
           feedback.className = 'feedback info show';
-          feedback.textContent = 'One tricky choice is removed. You got this, King.';
+          feedback.textContent = 'One tricky choice is gone. You’ve got this, King.';
           logReadingBehavior('adaptive_support_used', { type: 'narrow_choices', phase: stepLabel || 'guided', level: supportLevel });
         };
       }
@@ -1568,13 +1599,14 @@
           ? '<div class="shared-reading">' +
               '<div class="shared-reading-head"><span class="shared-reading-mode">Shared Reading Mode</span><span class="shared-reading-progress">Turn ' + (state.sharedReading.turnIndex + 1) + ' of ' + state.sharedReading.turns.length + '</span></div>' +
               '<div class="shared-reading-turn ' + ((activeTurn && activeTurn.role === 'mentor') ? 'mentor' : 'child') + '">' +
-                '<div class="shared-reading-label">' + ((activeTurn && activeTurn.role === 'mentor') ? (escapeHtml(mentorName) + '\'s turn') : 'Your turn, King') + '</div>' +
+                '<div class="shared-reading-label">' + ((activeTurn && activeTurn.role === 'mentor') ? ('Mentor Turn · ' + escapeHtml(mentorName)) : 'Your Turn · Read aloud or quietly') + '</div>' +
                 '<div class="shared-reading-text">' + renderHighlightedText(activeTurn ? activeTurn.text : '', 'kt-shared-turn-text') + '</div>' +
               '</div>' +
               '<div class="btn-row">' +
-                '<button class="btn btn-secondary" id="kt-shared-next">Next turn</button>' +
-                '<button class="btn btn-secondary" id="kt-shared-read-it">' + ((activeTurn && activeTurn.role === 'mentor') ? 'Mark complete' : 'I read it') + '</button>' +
-                '<button class="btn btn-primary" id="kt-shared-read-aloud">Read with ' + escapeHtml(mentorName) + '</button>' +
+                '<button class="btn btn-primary" id="kt-shared-read-it">' + ((activeTurn && activeTurn.role === 'mentor') ? 'Got it, next turn' : 'I read it, next turn') + '</button>' +
+                '<button class="btn btn-secondary" id="kt-shared-read-aloud">▶ Play voice</button>' +
+                '<button class="btn btn-secondary" id="kt-shared-pause">⏸ Pause voice</button>' +
+                '<button class="btn btn-secondary" id="kt-shared-replay">↺ Replay line</button>' +
               '</div>' +
             '</div>'
           : '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>'
@@ -1586,11 +1618,6 @@
       renderCard(html);
       rendered.mount();
       if (sharedEnabled) {
-        if ($('kt-shared-next')) $('kt-shared-next').onclick = function () {
-          playAudio('tap');
-          state.sharedReading.turnIndex = Math.min(state.sharedReading.turnIndex + 1, state.sharedReading.turns.length - 1);
-          renderGuidedSection(sectionData, index, total);
-        };
         if ($('kt-shared-read-it')) $('kt-shared-read-it').onclick = function () {
           playAudio('coin');
           logReadingBehavior('shared_turn_completed', {
@@ -1611,6 +1638,18 @@
             mode: 'mentor_audio'
           });
         };
+        if ($('kt-shared-pause')) $('kt-shared-pause').onclick = function () {
+          if (window.speechSynthesis && window.speechSynthesis.paused) {
+            resumeReadAloud();
+          } else {
+            pauseReadAloud();
+          }
+          if ($('kt-shared-pause')) $('kt-shared-pause').textContent = (window.speechSynthesis && window.speechSynthesis.paused) ? '▶ Resume voice' : '⏸ Pause voice';
+        };
+        if ($('kt-shared-replay')) $('kt-shared-replay').onclick = function () {
+          replayReadAloud();
+          if ($('kt-shared-pause')) $('kt-shared-pause').textContent = '⏸ Pause voice';
+        };
       }
       return;
     }
@@ -1626,7 +1665,11 @@
         '<div class="kicker">Phase 3 · Close Reading</div>' +
         '<div class="section-title">' + escapeHtml(closeData.title || 'Read Deeply') + '</div>' +
         '<div class="sage" style="margin-top:0;"><strong>Highlighted Excerpt:</strong><br>' + renderHighlightedText(closeData.excerpt || '', 'kt-close-excerpt-text') + '</div>' +
-        '<div class="btn-row"><button class="btn btn-secondary" id="kt-read-close-excerpt">🔊 Read excerpt aloud</button></div>';
+        '<div class="btn-row">' +
+          '<button class="btn btn-secondary" id="kt-read-close-excerpt">▶ Play voice</button>' +
+          '<button class="btn btn-secondary" id="kt-pause-close-excerpt">⏸ Pause voice</button>' +
+          '<button class="btn btn-secondary" id="kt-replay-close-excerpt">↺ Replay excerpt</button>' +
+        '</div>';
     var rendered = renderGuidedQuestion(closeData.question || { prompt: 'What do you notice?', type: 'input', answer: '' }, 'phase3_close_reading');
     html += rendered.html + '</div>';
     renderCard(html);
@@ -1638,6 +1681,22 @@
           phase: 'phase3_close_reading',
           context: 'close_excerpt'
         });
+      };
+    }
+    if ($('kt-pause-close-excerpt')) {
+      $('kt-pause-close-excerpt').onclick = function () {
+        if (window.speechSynthesis && window.speechSynthesis.paused) {
+          resumeReadAloud();
+        } else {
+          pauseReadAloud();
+        }
+        $('kt-pause-close-excerpt').textContent = (window.speechSynthesis && window.speechSynthesis.paused) ? '▶ Resume voice' : '⏸ Pause voice';
+      };
+    }
+    if ($('kt-replay-close-excerpt')) {
+      $('kt-replay-close-excerpt').onclick = function () {
+        replayReadAloud();
+        if ($('kt-pause-close-excerpt')) $('kt-pause-close-excerpt').textContent = '⏸ Pause voice';
       };
     }
   }
@@ -2223,9 +2282,9 @@
 
     renderCard(
       '<div class="card">' +
-        '<div class="kicker">Quest Complete + Reflection</div>' +
-        '<div class="title">One more step, King 👑</div>' +
-        '<div class="sub">You earned your rewards. Share how reading felt today.</div>' +
+        '<div class="kicker">Reading Reflection</div>' +
+        '<div class="title">You did it, King 👑</div>' +
+        '<div class="sub">Take a quick reflection so your mentor and teacher can support you better next time.</div>' +
         '<div class="complete-grid">' +
           '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
           '<div class="stat"><div class="stat-num">' + state.crownsEarned + '</div><div class="stat-label">Crowns</div></div>' +
@@ -2245,7 +2304,7 @@
           }).join('') +
         '</div>' +
         '<textarea id="kt-reflect-notes" class="choice" style="cursor:text;width:100%;margin-top:10px;min-height:80px;" maxlength="120" placeholder="Optional: Share one quick thought"></textarea>' +
-        '<div class="btn-row"><button class="btn btn-primary" id="kt-reflect-submit" disabled>Finish & Return to Kingdom →</button></div>' +
+        '<div class="btn-row"><button class="btn btn-primary" id="kt-reflect-submit" disabled>Save reflection & Return →</button></div>' +
       '</div>'
     );
 
@@ -2330,7 +2389,7 @@
           '</div>' +
           '<div class="btn-row">' +
             '<button class="btn btn-primary" id="kt-review-btn">🔁 Review &amp; Retry</button>' +
-            '<button class="btn btn-secondary" id="kt-finish-btn">Return to Kingdom →</button>' +
+            '<button class="btn btn-secondary" id="kt-finish-btn">' + (isReadingSession() ? 'Next: Quick Reflection →' : 'Return to Kingdom →') + '</button>' +
           '</div>' +
         '</div>'
       );
@@ -2414,7 +2473,7 @@
         (readingRewards.length ? '<div class="sage" style="margin-top:10px;"><strong>Reading Rewards:</strong> ' + readingRewards.map(function (reward) { return escapeHtml(reward.title) + ' (+' + reward.xp + ' XP)'; }).join(' · ') + '</div>' : '') +
         (data.badge ? '<div class="sage" style="margin-top:16px;"><strong>Badge Unlocked:</strong> ' + escapeHtml(data.badge) + '</div>' : '') +
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-finish-btn">Return to Kingdom →</button>' +
+          '<button class="btn btn-primary" id="kt-finish-btn">' + (isReadingSession() ? 'Next: Quick Reflection →' : 'Return to Kingdom →') + '</button>' +
         '</div>' +
       '</div>'
     );
