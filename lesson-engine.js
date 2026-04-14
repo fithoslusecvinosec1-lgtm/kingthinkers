@@ -576,6 +576,33 @@
     return 'Let us slow down, find the clue words, and make a strong next try.';
   }
 
+  function getAdaptiveSupportLevelCopy(level, question) {
+    var baseHint = safeText(question && question.hint).trim();
+    var explanation = safeText(question && question.explanation).trim();
+    if (level >= 4) {
+      return {
+        title: '🧭 Final support step',
+        copy: explanation || baseHint || 'Take a calm breath, King. We will model this one together, then you will try the next one with confidence.'
+      };
+    }
+    if (level === 3) {
+      return {
+        title: '🧠 Mentor scaffold',
+        copy: explanation || baseHint || 'Let us break this into two small moves: find the clue words, then match them to the best answer.'
+      };
+    }
+    if (level === 2) {
+      return {
+        title: '🛟 Stronger hint',
+        copy: baseHint || explanation || 'Focus on one key clue in the prompt, then test each choice against that clue.'
+      };
+    }
+    return {
+      title: '🛟 Let’s reset together',
+      copy: getAdaptiveSupportText(question)
+    };
+  }
+
   function isVisualObject(value) {
     return !!value && typeof value === 'object' && !Array.isArray(value);
   }
@@ -1334,6 +1361,7 @@
     var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(question.choices);
     var answerValue = isTrueFalse ? (question.answer ? 0 : 1) : question.answer;
     var visualPayload = getVisualPayload(question);
+    var supportLevel = 1;
     var supportText = getAdaptiveSupportText(question);
 
     var html =
@@ -1346,7 +1374,7 @@
           '<div class="btn-row"><button class="btn btn-primary" id="kt-guided-submit">Check Answer</button></div>'
         : '<div class="choices" id="kt-guided-choices"></div>') +
       '<div class="adaptive-support" id="kt-adaptive-support" style="display:none;">' +
-        '<div class="adaptive-support-title">🛟 Let’s reset together</div>' +
+        '<div class="adaptive-support-title" id="kt-adaptive-title">🛟 Let’s reset together</div>' +
         '<div class="adaptive-support-copy">' + escapeHtml(supportText) + '</div>' +
         '<div class="btn-row">' +
           '<button class="btn btn-secondary" id="kt-adaptive-read">Read with mentor</button>' +
@@ -1361,6 +1389,19 @@
       var feedback = $('kt-feedback');
       function finish() {
         if ($('kt-next-row')) $('kt-next-row').style.display = 'flex';
+      }
+      function setAdaptiveLevel(level) {
+        supportLevel = Math.max(1, Math.min(4, Number(level) || 1));
+        var detail = getAdaptiveSupportLevelCopy(supportLevel, question);
+        if ($('kt-adaptive-title')) $('kt-adaptive-title').textContent = detail.title;
+        var copyNode = document.querySelector('#kt-adaptive-support .adaptive-support-copy');
+        if (copyNode) copyNode.textContent = detail.copy;
+        if ($('kt-adaptive-support')) $('kt-adaptive-support').style.display = 'block';
+        logReadingBehavior('adaptive_support_escalated', {
+          phase: stepLabel || 'guided',
+          level: supportLevel,
+          questionPrompt: safeText(question.prompt || question.question || '').slice(0, 80)
+        });
       }
       function evaluate(userAnswer, disableUI) {
         if (answered) return;
@@ -1401,14 +1442,25 @@
           }
           feedback.className = 'feedback bad show';
           feedback.textContent = safeText(question.wrongFeedback || 'Not yet. Use your strategy and try once more.');
-          if ($('kt-adaptive-support')) $('kt-adaptive-support').style.display = 'block';
-          logReadingBehavior('adaptive_support_shown', {
-            phase: stepLabel || 'guided',
-            questionPrompt: safeText(question.prompt || question.question || '').slice(0, 80)
-          });
+          setAdaptiveLevel(1);
           if (disableUI) disableUI(false);
           return;
         }
+        if (attempts === 2) {
+          feedback.className = 'feedback info show';
+          feedback.textContent = 'Strong effort. Use the stronger hint, then try one more time.';
+          setAdaptiveLevel(2);
+          if (disableUI) disableUI(false);
+          return;
+        }
+        if (attempts === 3) {
+          feedback.className = 'feedback info show';
+          feedback.textContent = 'Almost there. Let mentor support you with a scaffolded clue.';
+          setAdaptiveLevel(3);
+          if (disableUI) disableUI(false);
+          return;
+        }
+        setAdaptiveLevel(4);
         var reveal = getQuestionCorrectAnswerText(question);
         feedback.className = 'feedback bad show';
         feedback.innerHTML = escapeHtml(safeText(question.wrongFeedback || 'Good effort.')) +
@@ -1455,14 +1507,16 @@
             phase: stepLabel || 'guided',
             context: 'adaptive_support'
           });
-          logReadingBehavior('adaptive_support_used', { type: 'read_with_mentor', phase: stepLabel || 'guided' });
+          logReadingBehavior('adaptive_support_used', { type: 'read_with_mentor', phase: stepLabel || 'guided', level: supportLevel });
         };
       }
       if ($('kt-adaptive-clue')) {
         $('kt-adaptive-clue').onclick = function () {
+          setAdaptiveLevel(Math.min(4, supportLevel + 1));
+          var detail = getAdaptiveSupportLevelCopy(supportLevel, question);
           feedback.className = 'feedback info show';
-          feedback.textContent = 'Clue: ' + supportText;
-          logReadingBehavior('adaptive_support_used', { type: 'show_clue', phase: stepLabel || 'guided' });
+          feedback.textContent = 'Clue: ' + detail.copy;
+          logReadingBehavior('adaptive_support_used', { type: 'show_clue', phase: stepLabel || 'guided', level: supportLevel });
         };
       }
       if ($('kt-adaptive-narrow')) {
@@ -1484,7 +1538,7 @@
           }
           feedback.className = 'feedback info show';
           feedback.textContent = 'One tricky choice is removed. You got this, King.';
-          logReadingBehavior('adaptive_support_used', { type: 'narrow_choices', phase: stepLabel || 'guided' });
+          logReadingBehavior('adaptive_support_used', { type: 'narrow_choices', phase: stepLabel || 'guided', level: supportLevel });
         };
       }
 
@@ -1494,6 +1548,8 @@
 
   function renderGuidedSection(sectionData, index, total) {
     sectionData = sectionData || {};
+    var mentor = getActiveMentor();
+    var mentorName = (mentor && mentor.name) ? mentor.name : 'Mentor';
     var questions = Array.isArray(sectionData.questions) ? sectionData.questions : [];
     var question = questions[0] || null;
     var sharedTurns = getSharedReadingTurns(sectionData);
@@ -1512,13 +1568,13 @@
           ? '<div class="shared-reading">' +
               '<div class="shared-reading-head"><span class="shared-reading-mode">Shared Reading Mode</span><span class="shared-reading-progress">Turn ' + (state.sharedReading.turnIndex + 1) + ' of ' + state.sharedReading.turns.length + '</span></div>' +
               '<div class="shared-reading-turn ' + ((activeTurn && activeTurn.role === 'mentor') ? 'mentor' : 'child') + '">' +
-                '<div class="shared-reading-label">' + ((activeTurn && activeTurn.role === 'mentor') ? 'Mentor turn' : 'Your turn, King') + '</div>' +
+                '<div class="shared-reading-label">' + ((activeTurn && activeTurn.role === 'mentor') ? (escapeHtml(mentorName) + '\'s turn') : 'Your turn, King') + '</div>' +
                 '<div class="shared-reading-text">' + renderHighlightedText(activeTurn ? activeTurn.text : '', 'kt-shared-turn-text') + '</div>' +
               '</div>' +
               '<div class="btn-row">' +
                 '<button class="btn btn-secondary" id="kt-shared-next">Next turn</button>' +
-                '<button class="btn btn-secondary" id="kt-shared-read-it">I read it</button>' +
-                '<button class="btn btn-primary" id="kt-shared-read-aloud">Read with mentor</button>' +
+                '<button class="btn btn-secondary" id="kt-shared-read-it">' + ((activeTurn && activeTurn.role === 'mentor') ? 'Mark complete' : 'I read it') + '</button>' +
+                '<button class="btn btn-primary" id="kt-shared-read-aloud">Read with ' + escapeHtml(mentorName) + '</button>' +
               '</div>' +
             '</div>'
           : '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>'
