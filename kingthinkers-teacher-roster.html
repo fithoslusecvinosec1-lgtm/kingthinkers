@@ -397,8 +397,25 @@ function buildReadingSummaryHtml(code, progress){
 
   var rec=latest.record;
   var sum=summarizeReadingRecord(rec);
+  var behaviorCount = sum.behaviorCount || {};
+  var sharedTurns = behaviorCount.shared_turn_completed || 0;
+  var readAloudUses = behaviorCount.read_aloud_used || 0;
+  var supportEscalations = behaviorCount.adaptive_support_escalated || 0;
+  var supportUses = behaviorCount.adaptive_support_used || 0;
+  var compactSignals = [
+    'Shared reading turns: ' + sharedTurns,
+    'Read-aloud uses: ' + readAloudUses,
+    'Support boosts: ' + supportEscalations
+  ];
+  if (supportUses) compactSignals.push('Support actions used: ' + supportUses);
+
   return '<div style="font-weight:900;color:var(--gold);margin-bottom:6px;">📘 Reading Support Summary</div>' +
     '<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Latest reading mission: '+escapeHtml(latest.mission.name)+'</div>' +
+    '<div style="margin:8px 0;padding:8px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);">' +
+      '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Reading Signals</div>' +
+      '<div style="font-size:12px;line-height:1.55;margin-bottom:4px;">'+escapeHtml(compactSignals.join(' · '))+'</div>' +
+      (rec.reflection && rec.reflection.notes ? '<div style="font-size:12px;color:var(--muted);"><strong>Student note:</strong> '+escapeHtml(rec.reflection.notes)+'</div>' : '<div style="font-size:12px;color:var(--muted);">No student note saved this session.</div>') +
+    '</div>' +
     '<div style="margin:8px 0;padding:8px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);">' +
       '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Student Reflection</div>' +
       (rec.sessionGoal && rec.sessionGoal.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Goal:</strong> '+escapeHtml(rec.sessionGoal.label)+'</div>' : '<div style="font-size:12px;color:var(--muted);">No goal selected in this session.</div>') +
