@@ -285,6 +285,53 @@ async function db_saveProgress(code, missions) {
   }
 }
 
+function _teacherNotesKey() {
+  return 'kt_teacher_notes';
+}
+
+function db_getTeacherNotes() {
+  try {
+    return JSON.parse(localStorage.getItem(_teacherNotesKey()) || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
+function db_getTeacherNote(code, missionId) {
+  if (!code) return '';
+  var notes = db_getTeacherNotes();
+  var byStudent = notes[code] || {};
+  var key = missionId || '__overall__';
+  var entry = byStudent[key];
+  if (!entry) return '';
+  if (typeof entry === 'string') return entry;
+  return entry.text || '';
+}
+
+function db_saveTeacherNote(code, missionId, text, author) {
+  if (!code) return null;
+  var notes = db_getTeacherNotes();
+  var byStudent = notes[code] || {};
+  var key = missionId || '__overall__';
+  var cleanText = String(text == null ? '' : text).trim();
+
+  if (!cleanText) {
+    delete byStudent[key];
+  } else {
+    byStudent[key] = {
+      text: cleanText,
+      updatedAt: new Date().toISOString(),
+      author: author || null
+    };
+  }
+
+  if (Object.keys(byStudent).length) notes[code] = byStudent;
+  else delete notes[code];
+
+  localStorage.setItem(_teacherNotesKey(), JSON.stringify(notes));
+  return byStudent[key] || null;
+}
+
 // â”€â”€ LESSON COMPLETION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Authoritative mission completion. Server decides final XP/crowns/missions.
 
@@ -525,6 +572,9 @@ window.db_saveStudent = db_saveStudent;
 window.db_saveProfile = db_saveProfile;
 window.db_getProgress = db_getProgress;
 window.db_saveProgress = db_saveProgress;
+window.db_getTeacherNotes = db_getTeacherNotes;
+window.db_getTeacherNote = db_getTeacherNote;
+window.db_saveTeacherNote = db_saveTeacherNote;
 window.db_completeLesson = db_completeLesson;
 window.db_syncStudentStats = db_syncStudentStats;
 

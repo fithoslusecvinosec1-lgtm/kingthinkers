@@ -260,11 +260,20 @@ textarea.inp{min-height:110px;resize:vertical;}
 <!-- PROGRESS MODAL -->
 <div class="modal-bg" id="prog-modal">
   <div class="modal-box">
-    <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Mark completed missions below. Changes save automatically.</p>
-    <div id="pm-list"></div>
-    <button class="modal-close" id="prog-close-btn">Done ✓</button>
+  <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Mark completed missions below. Changes save automatically.</p>
+  <div id="pm-list"></div>
+  <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+    <div style="font-weight:900;color:var(--gold);margin-bottom:6px;">📝 Teacher / Adult Notes</div>
+    <label class="lbl">Mission</label>
+    <select id="pm-note-mission" class="inp"></select>
+    <label class="lbl">Note</label>
+    <textarea id="pm-note-text" class="inp" placeholder="Add an observation, support note, or next step..."></textarea>
+    <button class="ghost-btn" id="pm-note-save-btn" type="button">Save Note ✓</button>
+    <div id="pm-note-status" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
   </div>
+  <button class="modal-close" id="prog-close-btn">Done ✓</button>
+</div>
 </div>
 
 <div id="toast">✓</div>
@@ -348,6 +357,32 @@ function getDevProg(c){try{return JSON.parse(localStorage.getItem('kt_quest_prog
 function getManProg(c){try{return JSON.parse(localStorage.getItem('kt_manual_'+c)||'{}')}catch(e){return{}}}
 function saveManProg(c,p){localStorage.setItem('kt_manual_'+c,JSON.stringify(p))}
 function getMerged(c){return Object.assign({},getManProg(c),getDevProg(c))}
+function getTeacherNotesMap(){
+  if (typeof db_getTeacherNotes === 'function') return db_getTeacherNotes();
+  try{return JSON.parse(localStorage.getItem('kt_teacher_notes')||'{}')}catch(e){return{}}
+}
+function getTeacherNote(code, missionId){
+  if (typeof db_getTeacherNote === 'function') return db_getTeacherNote(code, missionId);
+  var all = getTeacherNotesMap();
+  var byStudent = all[code] || {};
+  var key = missionId || '__overall__';
+  var val = byStudent[key];
+  if (!val) return '';
+  return typeof val === 'string' ? val : (val.text || '');
+}
+function saveTeacherNote(code, missionId, text){
+  var author = _teacherSession ? (_teacherSession.name || _teacherSession.username || null) : null;
+  if (typeof db_saveTeacherNote === 'function') return db_saveTeacherNote(code, missionId, text, author);
+  var all = getTeacherNotesMap();
+  var byStudent = all[code] || {};
+  var key = missionId || '__overall__';
+  var clean = String(text == null ? '' : text).trim();
+  if (!clean) delete byStudent[key];
+  else byStudent[key] = { text: clean, updatedAt: new Date().toISOString(), author: author };
+  if (Object.keys(byStudent).length) all[code] = byStudent; else delete all[code];
+  localStorage.setItem('kt_teacher_notes', JSON.stringify(all));
+  return byStudent[key] || null;
+}
 
 var WORLDS = window.KT_WORLDS || [];
 var MISSIONS = window.KT_MISSIONS || [];
@@ -798,9 +833,15 @@ function showProg(code){
     html+='<div class="m-world">⚔️ '+escapeHtml(world.name)+'</div>';
     world.missions.forEach(function(m){
       var done=isMissionComplete(p, m);
+      var record = p[m.id] || (m.lessonId ? p[m.lessonId] : null) || {};
+      var goalText = record && record.sessionGoal && record.sessionGoal.label ? record.sessionGoal.label : '';
+      var reflectionText = record && record.reflection && record.reflection.challenge && record.reflection.challenge.label ? record.reflection.challenge.label : '';
       html+='<label class="m-check">'+
         '<input type="checkbox" '+(done?'checked':'')+' data-id="'+escapeHtml(m.id)+'" data-xp="'+m.xp+'">'+
-        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' · +'+m.xp+' XP</div></div>'+
+        '<div class="m-info"><div class="m-name">'+escapeHtml(m.name)+'</div><div class="m-meta">'+escapeHtml(m.type)+' · +'+m.xp+' XP'+
+          (goalText ? ' · 🎯 '+escapeHtml(goalText) : '') +
+          (reflectionText ? ' · 💬 '+escapeHtml(reflectionText) : '') +
+        '</div></div>'+
         (done?'<span style="color:var(--green);">✅</span>':'')+
       '</label>';
     });
@@ -832,6 +873,39 @@ function showProg(code){
       });
     });
   });
+
+  var missionSelect = document.getElementById('pm-note-mission');
+  if (missionSelect) {
+    var options = ['<option value="__overall__">Overall student note</option>'];
+    MISSIONS.forEach(function(mission){
+      if (mission.type === 'Reading') {
+        options.push('<option value="'+escapeHtml(mission.id)+'">'+escapeHtml(mission.name)+'</option>');
+      }
+    });
+    missionSelect.innerHTML = options.join('');
+    missionSelect.onchange = function(){
+      var missionId = missionSelect.value === '__overall__' ? null : missionSelect.value;
+      var text = getTeacherNote(code, missionId);
+      var noteInput = document.getElementById('pm-note-text');
+      if (noteInput) noteInput.value = text || '';
+      var status = document.getElementById('pm-note-status');
+      if (status) status.textContent = text ? 'Loaded saved note.' : 'No note saved for this mission yet.';
+    };
+    missionSelect.onchange();
+  }
+
+  var saveBtn = document.getElementById('pm-note-save-btn');
+  if (saveBtn) {
+    saveBtn.onclick = function(){
+      var missionIdRaw = missionSelect ? missionSelect.value : '__overall__';
+      var missionId = missionIdRaw === '__overall__' ? null : missionIdRaw;
+      var noteText = (document.getElementById('pm-note-text') || { value: '' }).value || '';
+      saveTeacherNote(code, missionId, noteText);
+      var status = document.getElementById('pm-note-status');
+      if (status) status.textContent = noteText.trim() ? 'Saved ✓' : 'Note cleared ✓';
+      toast('📝 Note saved');
+    };
+  }
   document.getElementById('prog-modal').classList.add('open');
 }
 
