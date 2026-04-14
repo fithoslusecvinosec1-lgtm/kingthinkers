@@ -268,6 +268,7 @@ html,body{height:100%;background:var(--ink);color:var(--white);font-family:var(-
 <script src="./kt-db.js"></script>
 <script src="./kt-audio.js"></script>
 <script src="./kt-content.js"></script>
+<script src="./kt-reading-support.js"></script>
 </head>
 <body>
 <div id="app">
@@ -890,6 +891,9 @@ async function processMissionSignal() {
     setTimeout(function() {
       updateHomeScreen();
       showCelebration(mName, data.xp || 40);
+      if (Array.isArray(data.readingRewards) && data.readingRewards.length) {
+        showToast('🏅', 'Reading Reward', data.readingRewards[0].title + ' unlocked');
+      }
     }, 400);
   } catch(e) {
     console.warn('processMissionSignal failed:', e);
@@ -1304,7 +1308,14 @@ function updateHomeScreen() {
 
   if (next) {
     if (titleEl) titleEl.textContent = next.mission.name;
-    if (metaEl) metaEl.textContent = next.world.name + ' · ' + next.mission.type + ' · +' + next.mission.xp + ' XP';
+    if (metaEl) {
+      var mentorText = '';
+      if (next.mission.type === 'Reading' && window.KTMentors && window.KTMentors.mentors) {
+        var mentor = window.KTMentors.mentors[next.mission.mentorId || next.world.mentorId || 'sage'];
+        if (mentor) mentorText = ' · Mentor: ' + mentor.name;
+      }
+      metaEl.textContent = next.world.name + ' · ' + next.mission.type + ' · +' + next.mission.xp + ' XP' + mentorText;
+    }
     if (btnEl) btnEl.textContent = '⚔️ Start Quest →';
     if (labelEl) labelEl.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse-dot 1.5s ease-in-out infinite;"></span> ⭐ Recommended for You';
   } else {
@@ -1324,9 +1335,13 @@ function updateHomeScreen() {
   if (wrap) wrap.style.display = completedItems.length ? 'block' : 'none';
   if (list && completedItems.length) {
     list.innerHTML = completedItems.slice(-5).reverse().map(function(item){
+      var rec = getCompletedMissionRecord(item.mission) || {};
+      var rewards = Array.isArray(rec.readingBehaviorRewards) ? rec.readingBehaviorRewards : (Array.isArray(rec.readingRewards) ? rec.readingRewards : []);
       return '<div class="cm-item">'+
         '<div class="cm-icon">'+(item.mission.type==='Reading'?'📖':'🔢')+'</div>'+
-        '<div class="cm-name">'+item.mission.name+'</div>'+
+        '<div class="cm-name">'+item.mission.name +
+          (rewards.length ? '<div style="font-size:10px;color:var(--sky);margin-top:2px;">🏅 '+rewards.map(function(r){ return r.title || r.label || r.id; }).join(', ')+'</div>' : '')+
+        '</div>'+
         '<div class="cm-xp">+'+item.mission.xp+' XP</div>'+
       '</div>';
     }).join('');

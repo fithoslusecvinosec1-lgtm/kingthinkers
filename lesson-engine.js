@@ -14,6 +14,8 @@
     sessionGoal: null,
     reflection: null,
     behaviorEvents: [],
+    readingRewards: [],
+    supportCategoriesUsed: [],
     match: {
       selectedWord: null,
       selectedDef: null,
@@ -112,6 +114,80 @@
 
   function isReadingSession() {
     return isReadingLesson(state.lesson);
+  }
+
+  function getActiveMentor() {
+    if (!isReadingSession() || !window.KTMentors || typeof window.KTMentors.resolveMentorForLesson !== 'function') return null;
+    return window.KTMentors.resolveMentorForLesson(state.lesson || {});
+  }
+
+  function getSupportTags(source, fallbackTag) {
+    if (window.KTReadingSupport && typeof window.KTReadingSupport.normalizeSupportTags === 'function') {
+      return window.KTReadingSupport.normalizeSupportTags(source && source.supportTags, fallbackTag || null);
+    }
+    var tags = Array.isArray(source && source.supportTags) ? source.supportTags.slice(0) : [];
+    if (!tags.length && fallbackTag) tags.push(fallbackTag);
+    return tags;
+  }
+
+  function getSupportTagLabel(tag) {
+    if (window.KTReadingSupport && typeof window.KTReadingSupport.getSupportMeta === 'function') {
+      var meta = window.KTReadingSupport.getSupportMeta(tag);
+      if (meta && meta.label) return meta.label;
+    }
+    var text = safeText(tag).trim();
+    return text ? (text.charAt(0).toUpperCase() + text.slice(1)) : '';
+  }
+
+  function renderSupportTags(tags) {
+    tags = Array.isArray(tags) ? tags : [];
+    if (!tags.length) return '';
+    return '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px 0;">' + tags.map(function (tag) {
+      return '<span style="font-size:10px;font-weight:800;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(56,189,248,.12);color:rgba(255,255,255,.9);">' + escapeHtml(getSupportTagLabel(tag)) + '</span>';
+    }).join('') + '</div>';
+  }
+
+  function collectSupportTagsFromEvents(events) {
+    var out = [];
+    (Array.isArray(events) ? events : []).forEach(function (evt) {
+      var tags = getSupportTags(evt, null);
+      tags.forEach(function (tag) {
+        if (out.indexOf(tag) === -1) out.push(tag);
+      });
+    });
+    return out;
+  }
+
+  function computeReadingRewards() {
+    if (!isReadingSession()) return [];
+    var events = Array.isArray(state.behaviorEvents) ? state.behaviorEvents : [];
+    var eventCounts = {};
+    events.forEach(function (evt) {
+      eventCounts[evt.type] = (eventCounts[evt.type] || 0) + 1;
+    });
+
+    var rewardRules = [
+      { id: 'strategy-starter', title: 'Strategy Starter', label: 'Set a reading goal', xp: 5, test: function () { return !!eventCounts.goal_selected; } },
+      { id: 'reflection-finisher', title: 'Reflection Finisher', label: 'Completed reflection', xp: 5, test: function () { return !!eventCounts.reflection_completed; } },
+      { id: 'kept-trying', title: 'Kept Trying', label: 'Retried after a miss', xp: 8, test: function () { return (eventCounts.retry_after_miss || 0) >= 2; } },
+      { id: 'strategy-star', title: 'Strategy Star', label: 'Used support hints', xp: 6, test: function () { return !!eventCounts.hint_used; } },
+      { id: 'vocabulary-explorer', title: 'Vocabulary Explorer', label: 'Completed vocabulary match', xp: 7, test: function () { return !!eventCounts.vocab_match_completed; } }
+    ];
+
+    return rewardRules.filter(function (rule) { return rule.test(); });
+  }
+
+  function applyReadingRewards() {
+    if (!isReadingSession()) return [];
+    if (state.readingRewards && state.readingRewards.length) return state.readingRewards;
+    var rewards = computeReadingRewards();
+    if (!rewards.length) {
+      state.readingRewards = [];
+      return [];
+    }
+    rewards.forEach(function (reward) { gainXP(reward.xp || 0); });
+    state.readingRewards = rewards;
+    return rewards;
   }
 
   function getActiveCode() {
@@ -314,6 +390,24 @@
 
   function renderCard(html) {
     if ($('lesson-content')) $('lesson-content').innerHTML = html;
+
+    if (isReadingSession() && $('lesson-content') && !$('kt-mentor-card')) {
+      var mentor = getActiveMentor();
+      if (mentor) {
+        var mentorCard = document.createElement('div');
+        mentorCard.id = 'kt-mentor-card';
+        mentorCard.style.cssText = 'margin:0 0 10px 0;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;';
+        mentorCard.innerHTML =
+          '<div style="font-size:24px;line-height:1;">' + escapeHtml(mentor.avatar || '🧠') + '</div>' +
+          '<div style="min-width:0;">' +
+            '<div style="font-size:12px;font-weight:900;color:var(--gold);">Mentor: ' + escapeHtml(mentor.name || 'Sage') + '</div>' +
+            '<div style="font-size:11px;color:rgba(255,255,255,.86);font-weight:700;">' + escapeHtml(mentor.role || 'Reading Guide') + '</div>' +
+            (mentor.supportStyle ? '<div style="font-size:11px;color:var(--muted);margin-top:2px;">' + escapeHtml(mentor.supportStyle) + '</div>' : '') +
+          '</div>';
+        $('lesson-content').prepend(mentorCard);
+      }
+    }
+
     addGoalBannerIfNeeded();
     updateProgressBar();
     updateTopStats();
@@ -855,6 +949,7 @@
         '<div class="kicker">' + escapeHtml(data.kicker || (state.lesson.subject + ' quest')) + '</div>' +
         '<div class="title">' + escapeHtml(state.lesson.title) + '</div>' +
         '<div class="sub">' + escapeHtml(data.text) + '</div>' +
+        renderSupportTags(getSupportTags(state.lesson, 'comprehension')) +
         (data.sage ? '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>' : '') +
         goalHtml +
         '<div class="btn-row">' +
@@ -1030,6 +1125,7 @@
         '<div class="kicker">Phase 1 · Strategy Power</div>' +
         '<div class="section-title">' + escapeHtml(phase1Data.name || 'Reading Strategy') + '</div>' +
         '<div class="sub">' + escapeHtml(phase1Data.definition || '') + '</div>' +
+        renderSupportTags(getSupportTags(phase1Data, 'comprehension')) +
         (modelText ? '<div class="sage" style="margin-top:12px;"><strong>Model:</strong> ' + escapeHtml(modelText) + '</div>' : '') +
         (howTo.length
           ? '<div class="section-title" style="margin-top:14px;">How to Use It</div><ol style="margin:8px 0 0 20px;line-height:1.8;">' +
@@ -1050,6 +1146,7 @@
         '<div class="kicker">Phase 2 · Vocabulary Preview</div>' +
         '<div class="section-title">Words of Power</div>' +
         '<div class="sub">Read each word before you begin matching.</div>' +
+        renderSupportTags(['vocabulary']) +
         '<div class="vocab-list">';
     vocab.forEach(function (item) {
       html +=
@@ -1098,6 +1195,7 @@
 
     var html =
       '<div class="q-prompt" style="margin-top:14px;">' + escapeHtml(question.prompt || question.question || 'Question') + '</div>' +
+      renderSupportTags(getSupportTags(question, 'comprehension')) +
       (question.hint ? '<div class="q-hint">💡 Strategy Reminder: ' + escapeHtml(question.hint) + '</div>' : '') +
       (visualPayload ? renderVisualBlock(visualPayload) : '') +
       (qType === 'input'
@@ -1125,6 +1223,10 @@
           playAudio('correct');
           feedback.className = 'feedback good show';
           feedback.textContent = safeText(question.correctFeedback || 'Great reading, King!');
+          logReadingBehavior('support_success', {
+            phase: stepLabel || 'guided',
+            supportTags: getSupportTags(question, 'comprehension')
+          });
           answered = true;
           finish();
           return;
@@ -1141,6 +1243,7 @@
           if (question.hint) {
             logReadingBehavior('hint_used', {
               phase: stepLabel || 'guided',
+              supportTags: getSupportTags(question, 'comprehension'),
               questionPrompt: safeText(question.prompt || question.question || '').slice(0, 80)
             });
           }
@@ -1239,6 +1342,7 @@
         '<div class="kicker">Phase 4 · Show What You Know</div>' +
         (activity.excerpt ? '<div class="sage" style="margin-top:0;"><strong>Excerpt:</strong> ' + escapeHtml(activity.excerpt) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question || '') + '</div>' +
+        renderSupportTags(getSupportTags(activity, 'comprehension')) +
         (visualPayload ? renderVisualBlock(visualPayload) : '') +
         (isInput
           ? '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
@@ -1267,6 +1371,7 @@
           playAudio('correct');
           $('kt-feedback').className = 'feedback good show';
           $('kt-feedback').textContent = safeText(activity.correctFeedback || 'Correct!');
+          logReadingBehavior('support_success', { phase: 'phase4_test', supportTags: getSupportTags(activity, 'comprehension') });
         } else {
           logReadingBehavior('retry_after_miss', {
             phase: 'phase4_test',
@@ -1294,6 +1399,7 @@
             btn.classList.add('correct');
             $('kt-feedback').className = 'feedback good show';
             $('kt-feedback').textContent = safeText(activity.correctFeedback || 'Correct!');
+            logReadingBehavior('support_success', { phase: 'phase4_test', supportTags: getSupportTags(activity, 'comprehension') });
           } else {
             logReadingBehavior('retry_after_miss', {
               phase: 'phase4_test',
@@ -1361,6 +1467,7 @@
       '<div class="card">' +
         (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
+        renderSupportTags(getSupportTags(activity, 'comprehension')) +
         (!activity.hint_disabled && activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
         (visualPayload ? renderVisualBlock(visualPayload) : '') +
         '<div class="choices" id="kt-choices"></div>' +
@@ -1394,6 +1501,10 @@
 
           feedback.className = 'feedback good show';
           feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
+          logReadingBehavior('support_success', {
+            phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+            supportTags: getSupportTags(activity, 'comprehension')
+          });
           handleStreak(true, feedback);
         } else {
           logReadingBehavior('retry_after_miss', {
@@ -1403,6 +1514,7 @@
           if (activity.hint && !activity.hint_disabled) {
             logReadingBehavior('hint_used', {
               phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+              supportTags: getSupportTags(activity, 'comprehension'),
               questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
             });
           }
@@ -1550,7 +1662,8 @@
 
       if (state.match.matchedCount === (activity.pairs || []).length) {
         logReadingBehavior('vocab_match_completed', {
-          pairCount: (activity.pairs || []).length
+          pairCount: (activity.pairs || []).length,
+          supportTags: ['vocabulary']
         });
         if (isPhase4Activity()) state.correctCount += 1;
         gainXP(activity.xp || activity.xpReward || 0);
@@ -1588,6 +1701,7 @@
       '<div class="card">' +
         (activity.standard ? '<div class="kicker">' + escapeHtml(activity.standard) + '</div>' : '') +
         '<div class="q-prompt">' + escapeHtml(activity.prompt || activity.question) + '</div>' +
+        renderSupportTags(getSupportTags(activity, 'comprehension')) +
         (!activity.hint_disabled && activity.hint ? '<div class="q-hint">' + escapeHtml(activity.hint) + '</div>' : '') +
         (visualPayload ? renderVisualBlock(visualPayload) : '') +
         '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
@@ -1629,6 +1743,10 @@
 
         feedback.className = 'feedback good show';
         feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
+        logReadingBehavior('support_success', {
+          phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+          supportTags: getSupportTags(activity, 'comprehension')
+        });
         handleStreak(true, feedback);
       } else {
         logReadingBehavior('retry_after_miss', {
@@ -1638,6 +1756,7 @@
         if (activity.hint && !activity.hint_disabled) {
           logReadingBehavior('hint_used', {
             phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+            supportTags: getSupportTags(activity, 'comprehension'),
             questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
           });
         }
@@ -1720,11 +1839,17 @@
     if (!progress || typeof progress !== 'object' || Array.isArray(progress)) progress = {};
 
     var existing = progress[missionId] || {};
+    var supportCategories = collectSupportTagsFromEvents(state.behaviorEvents);
+    var readingRewards = (state.readingRewards || []).slice(0);
+    state.supportCategoriesUsed = supportCategories;
     progress[missionId] = Object.assign({}, existing, {
       completedAt: existing.completedAt || Date.now(),
+      mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
       sessionGoal: state.sessionGoal || null,
       reflection: state.reflection || null,
       behaviorEvents: state.behaviorEvents.slice(-80),
+      supportCategoriesUsed: supportCategories,
+      readingBehaviorRewards: readingRewards,
       readingSupportUpdatedAt: Date.now(),
       accuracy: accuracy,
       xpAwarded: finalLessonXP
@@ -1741,10 +1866,13 @@
     sessions.push({
       lessonId: state.lesson && state.lesson.id ? state.lesson.id : null,
       missionId: missionId,
+      mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
       completedAt: Date.now(),
       sessionGoal: state.sessionGoal || null,
       reflection: state.reflection || null,
       behaviorEvents: state.behaviorEvents.slice(-30),
+      supportCategoriesUsed: state.supportCategoriesUsed || [],
+      readingBehaviorRewards: (state.readingRewards || []).slice(0),
       accuracy: accuracy
     });
     if (sessions.length > 60) sessions = sessions.slice(sessions.length - 60);
@@ -1822,7 +1950,8 @@
         };
         logReadingBehavior('reflection_completed', {
           strategyId: strategyChoice && strategyChoice.id,
-          challengeId: challengeChoice && challengeChoice.id
+          challengeId: challengeChoice && challengeChoice.id,
+          supportTags: ['comprehension']
         });
         if (typeof done === 'function') done();
       };
@@ -1836,6 +1965,9 @@
 
     var finalLessonXP = state.lesson.xp || state.xpEarned || 0;
     var finalLessonCrowns = state.lesson.crownReward || state.crownsEarned || 1;
+    var readingRewards = applyReadingRewards();
+    var supportCategories = collectSupportTagsFromEvents(state.behaviorEvents);
+    state.supportCategoriesUsed = supportCategories;
 
     if (state.crownsEarned < finalLessonCrowns) {
       state.crownsEarned = finalLessonCrowns;
@@ -1911,6 +2043,9 @@
             sessionGoal: state.sessionGoal || null,
             reflection: state.reflection || null,
             behaviorEvents: state.behaviorEvents.slice(-50),
+            supportCategoriesUsed: state.supportCategoriesUsed || [],
+            readingRewards: (state.readingRewards || []).slice(0),
+            mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
             completedAt: Date.now()
           }));
           await window.db_completeLesson(code, active.missionId, active.xp || finalLessonXP);
@@ -1943,6 +2078,7 @@
           '<div class="stat"><div class="stat-num">' + state.crownsEarned + '</div><div class="stat-label">Crowns</div></div>' +
           '<div class="stat"><div class="stat-num">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>' +
         '</div>' +
+        (readingRewards.length ? '<div class="sage" style="margin-top:10px;"><strong>Reading Rewards:</strong> ' + readingRewards.map(function (reward) { return escapeHtml(reward.title) + ' (+' + reward.xp + ' XP)'; }).join(' · ') + '</div>' : '') +
         (data.badge ? '<div class="sage" style="margin-top:16px;"><strong>Badge Unlocked:</strong> ' + escapeHtml(data.badge) + '</div>' : '') +
         '<div class="btn-row">' +
           '<button class="btn btn-primary" id="kt-finish-btn">Return to Kingdom →</button>' +
@@ -1970,6 +2106,9 @@
           sessionGoal: state.sessionGoal || null,
           reflection: state.reflection || null,
           behaviorEvents: state.behaviorEvents.slice(-50),
+          supportCategoriesUsed: state.supportCategoriesUsed || [],
+          readingRewards: (state.readingRewards || []).slice(0),
+          mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
           completedAt: Date.now()
         }));
         await window.db_completeLesson(code2, active2.missionId, active2.xp || finalLessonXP);
@@ -2109,6 +2248,8 @@
     state.sessionGoal = null;
     state.reflection = null;
     state.behaviorEvents = [];
+    state.readingRewards = [];
+    state.supportCategoriesUsed = [];
     state.startedAt = Date.now();
     applyLessonAtmosphere();
 

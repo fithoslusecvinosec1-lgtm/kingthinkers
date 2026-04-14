@@ -2,6 +2,7 @@
   var worlds = [
     {
       id: 'egypt',
+      mentorId: 'sage',
       name: 'Egypt',
       fullName: 'Kingdom of Egypt',
       icon: '🏺',
@@ -17,6 +18,7 @@
     },
     {
       id: 'nubia',
+      mentorId: 'sage',
       name: 'Nubia',
       fullName: 'Kingdom of Nubia',
       icon: '🏹',
@@ -32,6 +34,7 @@
     },
     {
       id: 'kush',
+      mentorId: 'amara',
       name: 'Kush',
       fullName: 'Kingdom of Kush',
       icon: '⚒️',
@@ -48,6 +51,7 @@
     },
     {
       id: 'mali',
+      mentorId: 'amara',
       name: 'Mali',
       fullName: 'Mali Empire',
       icon: '🌍',
@@ -63,6 +67,7 @@
     },
     {
       id: 'songhai',
+      mentorId: 'amara',
       name: 'Songhai',
       fullName: 'Songhai Empire',
       icon: '⚔️',
@@ -78,6 +83,7 @@
     },
     {
       id: 'timbuktu',
+      mentorId: 'kofi',
       name: 'Timbuktu',
       fullName: 'Timbuktu',
       icon: '📜',
@@ -93,6 +99,7 @@
     },
     {
       id: 'axum',
+      mentorId: 'kofi',
       name: 'Axum',
       fullName: 'Kingdom of Axum',
       icon: '🗿',
@@ -108,6 +115,7 @@
     },
     {
       id: 'diaspora',
+      mentorId: 'kofi',
       name: 'Diaspora',
       fullName: 'The Diaspora',
       icon: '✊',
@@ -129,6 +137,7 @@
       mission.worldId = world.id;
       mission.worldName = world.name;
       mission.worldFullName = world.fullName;
+      mission.mentorId = mission.mentorId || world.mentorId || null;
       missions.push(mission);
     });
   });

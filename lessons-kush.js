@@ -4,6 +4,7 @@ window.KT_LESSONS.kush = [
   {
     id: 'k1',
     worldId: 'kush',
+    mentorId: 'amara',
     title: 'Iron Masters',
     subject: 'reading',
     grade: '3',
@@ -33,7 +34,8 @@ window.KT_LESSONS.kush = [
       {
         word: 'furnaces',
         definition: 'very hot ovens used to heat metal',
-        sentence: 'Kush blacksmiths used furnaces to heat iron until it was ready to shape.'
+        sentence: 'Kush blacksmiths used furnaces to heat iron until it was ready to shape.',
+        supportTags: ['vocabulary']
       },
       {
         word: 'glowing',
@@ -67,6 +69,7 @@ window.KT_LESSONS.kush = [
               type: 'mcq',
               prompt: 'What effect came from Kush learning how to make iron?',
               hint: 'Look for what Kush was able to create because it mastered iron-working.',
+              supportTags: ['comprehension'],
               choices: [
                 'It made the Nile River wider',
                 'It made tools and weapons that helped the kingdom grow strong',
@@ -94,6 +97,7 @@ window.KT_LESSONS.kush = [
               type: 'true_false',
               prompt: "Baraka's mother explains that iron helped many different people in Kush.",
               hint: 'Think about all the groups she names.',
+              supportTags: ['comprehension'],
               answer: true,
               correctFeedback: 'Correct. She names farmers, builders, and warriors to show iron helped the whole kingdom.',
               wrongFeedback: 'Her words show iron was useful in farming, building, and defense, not just in one job.',
@@ -115,6 +119,7 @@ window.KT_LESSONS.kush = [
               type: 'input',
               prompt: 'Type one word that tells what Kush gained across the region because it mastered iron-working.',
               hint: 'Use a word from the passage that shows how other people knew Kush.',
+              supportTags: ['vocabulary','comprehension'],
               answer: 'famous',
               correctFeedback: 'Strong answer. Mastering iron-working helped Kush become famous across the region.',
               wrongFeedback: 'Look for the exact word in the passage that shows how widely Kush became known.',
@@ -132,6 +137,7 @@ window.KT_LESSONS.kush = [
           type: 'mcq',
           prompt: 'Which cause-and-effect idea is best shown in this line?',
           hint: 'Turn the line into a cause first and an effect second.',
+          supportTags: ['comprehension'],
           choices: [
             'Strong nations never need workers',
             'Iron-working caused Kush to become stronger',
@@ -153,6 +159,7 @@ window.KT_LESSONS.kush = [
         type: 'mcq',
         excerpt: 'Kush learned how to heat rock and metal in hot furnaces to make iron tools and iron weapons.',
         prompt: 'What effect is shown in this excerpt?',
+        supportTags: ['comprehension'],
         choices: [
           'The Nile changed direction',
           'Kush was able to make tools and weapons from iron',
@@ -170,6 +177,7 @@ window.KT_LESSONS.kush = [
         type: 'mcq',
         excerpt: 'Iron helps farmers cut the soil. It helps builders shape wood and stone. And it helps warriors defend the kingdom.',
         prompt: 'Which statement best explains the effect of iron in Kush?',
+        supportTags: ['comprehension'],
         choices: [
           'Iron only helped warriors',
           'Iron helped many parts of life in the kingdom',
@@ -187,6 +195,7 @@ window.KT_LESSONS.kush = [
         type: 'true_false',
         excerpt: 'Because Kush mastered iron-working, it became famous across the region.',
         prompt: 'This excerpt shows that mastering iron-working caused Kush to become well known.',
+        supportTags: ['comprehension'],
         answer: true,
         hint_disabled: true,
         correctFeedback: 'Correct. The excerpt directly says Kush became famous because it mastered iron-working.',
@@ -198,6 +207,7 @@ window.KT_LESSONS.kush = [
         type: 'input',
         excerpt: 'A strong metal makes a strong nation.',
         prompt: 'Type one word from the excerpt that names what the metal helps make stronger.',
+        supportTags: ['vocabulary'],
         answer: 'nation',
         hint_disabled: true,
         correctFeedback: 'Great answer. The excerpt says the metal helps make the nation strong.',
