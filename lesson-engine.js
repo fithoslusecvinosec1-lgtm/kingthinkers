@@ -24,9 +24,9 @@
   };
 
   var READING_GOALS = [
-    { id: 'use-strategy', label: 'Use a reading strategy' },
-    { id: 'read-carefully', label: 'Read carefully' },
-    { id: 'learn-vocabulary', label: 'Learn new vocabulary' },
+    { id: 'use-strategy', label: 'Use one reading strategy' },
+    { id: 'read-carefully', label: 'Read slowly and carefully' },
+    { id: 'learn-vocabulary', label: 'Learn one new word' },
     { id: 'keep-trying', label: 'Keep trying when it gets hard' }
   ];
 
@@ -122,10 +122,17 @@
   }
 
   function getSupportTags(source, fallbackTag) {
+    var mixedSupportSource = [];
+    if (Array.isArray(source && source.supportTags)) mixedSupportSource = source.supportTags.slice(0);
+    else if (Array.isArray(source && source.supportTag)) mixedSupportSource = source.supportTag.slice(0);
+    else if (source && source.supportTag) mixedSupportSource = [source.supportTag];
+    else if (source && source.hintType) mixedSupportSource = [source.hintType];
+    else if (source && source.supportCategory) mixedSupportSource = [source.supportCategory];
+
     if (window.KTReadingSupport && typeof window.KTReadingSupport.normalizeSupportTags === 'function') {
-      return window.KTReadingSupport.normalizeSupportTags(source && source.supportTags, fallbackTag || null);
+      return window.KTReadingSupport.normalizeSupportTags(mixedSupportSource, fallbackTag || null);
     }
-    var tags = Array.isArray(source && source.supportTags) ? source.supportTags.slice(0) : [];
+    var tags = mixedSupportSource.slice(0);
     if (!tags.length && fallbackTag) tags.push(fallbackTag);
     return tags;
   }
@@ -210,13 +217,32 @@
   function logReadingBehavior(type, meta) {
     if (!isReadingSession()) return;
     var lessonId = (state.lesson && state.lesson.id) || null;
+    var active = getActiveMission();
+    var missionId = active && active.missionId ? active.missionId : lessonId;
     var step = state.steps[state.stepIndex] || {};
     var event = Object.assign({
       type: type,
       lessonId: lessonId,
+      missionId: missionId,
       ts: Date.now(),
+      timestamp: new Date().toISOString(),
       stepType: step.type || null
     }, meta || {});
+    event.supportTags = getSupportTags(event, null);
+    delete event.supportTag;
+
+    var lastEvent = state.behaviorEvents.length ? state.behaviorEvents[state.behaviorEvents.length - 1] : null;
+    if (
+      lastEvent &&
+      lastEvent.type === event.type &&
+      lastEvent.stepType === event.stepType &&
+      lastEvent.lessonId === event.lessonId &&
+      (event.ts - (lastEvent.ts || 0)) < 800 &&
+      safeText(lastEvent.goalId) === safeText(event.goalId) &&
+      safeText(lastEvent.questionPrompt) === safeText(event.questionPrompt)
+    ) {
+      return;
+    }
     state.behaviorEvents.push(event);
 
     var code = getActiveCode();
@@ -236,6 +262,7 @@
     if (!isReadingSession() || !state.sessionGoal || !$('lesson-content')) return;
     var step = state.steps[state.stepIndex] || {};
     if (step.type === 'intro' || step.type === 'complete') return;
+    if (state.stepIndex > 2) return;
     if ($('kt-goal-banner')) return;
 
     var banner = document.createElement('div');
@@ -964,6 +991,7 @@
           id: btn.getAttribute('data-goal-id') || '',
           label: btn.getAttribute('data-goal-label') || btn.textContent || ''
         };
+        if (state.sessionGoal && state.sessionGoal.id === selected.id) return;
         state.sessionGoal = selected;
         document.querySelectorAll('#kt-goal-choices [data-goal-id]').forEach(function (node) {
           node.classList.remove('correct');
@@ -1844,12 +1872,13 @@
     state.supportCategoriesUsed = supportCategories;
     progress[missionId] = Object.assign({}, existing, {
       completedAt: existing.completedAt || Date.now(),
-      mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
+      mentorId: (getActiveMentor() && getActiveMentor().id) || (state.lesson && state.lesson.mentorId) || 'sage',
       sessionGoal: state.sessionGoal || null,
       reflection: state.reflection || null,
       behaviorEvents: state.behaviorEvents.slice(-80),
       supportCategoriesUsed: supportCategories,
       readingBehaviorRewards: readingRewards,
+      readingRewards: readingRewards,
       readingSupportUpdatedAt: Date.now(),
       accuracy: accuracy,
       xpAwarded: finalLessonXP
@@ -1866,7 +1895,7 @@
     sessions.push({
       lessonId: state.lesson && state.lesson.id ? state.lesson.id : null,
       missionId: missionId,
-      mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
+      mentorId: (getActiveMentor() && getActiveMentor().id) || (state.lesson && state.lesson.mentorId) || 'sage',
       completedAt: Date.now(),
       sessionGoal: state.sessionGoal || null,
       reflection: state.reflection || null,
@@ -2044,8 +2073,9 @@
             reflection: state.reflection || null,
             behaviorEvents: state.behaviorEvents.slice(-50),
             supportCategoriesUsed: state.supportCategoriesUsed || [],
+            readingBehaviorRewards: (state.readingRewards || []).slice(0),
             readingRewards: (state.readingRewards || []).slice(0),
-            mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
+            mentorId: (getActiveMentor() && getActiveMentor().id) || (state.lesson && state.lesson.mentorId) || 'sage',
             completedAt: Date.now()
           }));
           await window.db_completeLesson(code, active.missionId, active.xp || finalLessonXP);
@@ -2107,8 +2137,9 @@
           reflection: state.reflection || null,
           behaviorEvents: state.behaviorEvents.slice(-50),
           supportCategoriesUsed: state.supportCategoriesUsed || [],
+          readingBehaviorRewards: (state.readingRewards || []).slice(0),
           readingRewards: (state.readingRewards || []).slice(0),
-          mentorId: state.lesson && state.lesson.mentorId ? state.lesson.mentorId : null,
+          mentorId: (getActiveMentor() && getActiveMentor().id) || (state.lesson && state.lesson.mentorId) || 'sage',
           completedAt: Date.now()
         }));
         await window.db_completeLesson(code2, active2.missionId, active2.xp || finalLessonXP);
@@ -2245,6 +2276,13 @@
     var lessonId = getLessonIdFromUrl();
     state.lesson = findLessonById(lessonId);
     state.steps = state.lesson ? buildSteps(state.lesson) : [];
+    state.stepIndex = 0;
+    state.xpEarned = 0;
+    state.crownsEarned = 0;
+    state.correctCount = 0;
+    state.gradableCount = 0;
+    state.streakCount = 0;
+    state.reviewMode = false;
     state.sessionGoal = null;
     state.reflection = null;
     state.behaviorEvents = [];

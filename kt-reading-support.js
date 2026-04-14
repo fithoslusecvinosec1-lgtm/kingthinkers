@@ -48,13 +48,14 @@
 
   function normalizeSupportTags(tags, fallback) {
     var out = [];
-    var source = Array.isArray(tags) ? tags : [];
+    var source = Array.isArray(tags) ? tags : (tags ? [tags] : []);
     source.forEach(function(tag){
       var t = normalizeTag(tag);
       if (!t || !supportCategories[t] || out.indexOf(t) !== -1) return;
       out.push(t);
     });
-    if (!out.length && fallback && supportCategories[fallback]) out.push(fallback);
+    var fallbackTag = normalizeTag(fallback);
+    if (!out.length && fallbackTag && supportCategories[fallbackTag]) out.push(fallbackTag);
     return out;
   }
 

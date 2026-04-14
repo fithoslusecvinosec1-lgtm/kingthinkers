@@ -1310,8 +1310,10 @@ function updateHomeScreen() {
     if (titleEl) titleEl.textContent = next.mission.name;
     if (metaEl) {
       var mentorText = '';
-      if (next.mission.type === 'Reading' && window.KTMentors && window.KTMentors.mentors) {
-        var mentor = window.KTMentors.mentors[next.mission.mentorId || next.world.mentorId || 'sage'];
+      if (next.mission.type === 'Reading' && window.KTMentors) {
+        var mentor = (typeof window.KTMentors.resolveMentorForLesson === 'function')
+          ? window.KTMentors.resolveMentorForLesson(next.mission)
+          : (window.KTMentors.mentors && window.KTMentors.mentors[next.mission.mentorId || next.world.mentorId || 'sage']);
         if (mentor) mentorText = ' · Mentor: ' + mentor.name;
       }
       metaEl.textContent = next.world.name + ' · ' + next.mission.type + ' · +' + next.mission.xp + ' XP' + mentorText;
@@ -1337,10 +1339,15 @@ function updateHomeScreen() {
     list.innerHTML = completedItems.slice(-5).reverse().map(function(item){
       var rec = getCompletedMissionRecord(item.mission) || {};
       var rewards = Array.isArray(rec.readingBehaviorRewards) ? rec.readingBehaviorRewards : (Array.isArray(rec.readingRewards) ? rec.readingRewards : []);
+      var rewardLabels = [];
+      rewards.forEach(function(r){
+        var label = r && (r.title || r.label || r.id);
+        if (label && rewardLabels.indexOf(label) === -1) rewardLabels.push(label);
+      });
       return '<div class="cm-item">'+
         '<div class="cm-icon">'+(item.mission.type==='Reading'?'📖':'🔢')+'</div>'+
         '<div class="cm-name">'+item.mission.name +
-          (rewards.length ? '<div style="font-size:10px;color:var(--sky);margin-top:2px;">🏅 '+rewards.map(function(r){ return r.title || r.label || r.id; }).join(', ')+'</div>' : '')+
+          (rewardLabels.length ? '<div style="font-size:10px;color:var(--sky);margin-top:2px;">🏅 '+rewardLabels.join(', ')+'</div>' : '')+
         '</div>'+
         '<div class="cm-xp">+'+item.mission.xp+' XP</div>'+
       '</div>';

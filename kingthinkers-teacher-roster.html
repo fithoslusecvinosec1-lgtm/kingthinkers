@@ -319,11 +319,43 @@ function getSupportLabel(tag){
   return tag ? (tag.charAt(0).toUpperCase()+tag.slice(1)) : '';
 }
 
+function normalizeSupportTags(record){
+  var support = [];
+  if (Array.isArray(record && record.supportCategoriesUsed)) support = record.supportCategoriesUsed.slice(0);
+  else if (Array.isArray(record && record.supportTags)) support = record.supportTags.slice(0);
+  else if (record && record.supportTag) support = [record.supportTag];
+  return support.map(function(tag){ return String(tag || '').trim().toLowerCase(); }).filter(function(tag, idx, arr){
+    return !!tag && arr.indexOf(tag) === idx;
+  });
+}
+
+function normalizeReadingRewards(record){
+  var rewards = Array.isArray(record && record.readingBehaviorRewards) ? record.readingBehaviorRewards : (Array.isArray(record && record.readingRewards) ? record.readingRewards : []);
+  var seen = {};
+  return rewards.filter(function(reward){
+    var id = String((reward && (reward.id || reward.title || reward.label)) || '').trim().toLowerCase();
+    if (!id || seen[id]) return false;
+    seen[id] = true;
+    return true;
+  });
+}
+
+function normalizeBehaviorEvents(record){
+  var behavior = Array.isArray(record && record.behaviorEvents) ? record.behaviorEvents : [];
+  return behavior.filter(function(evt){ return evt && evt.type; }).map(function(evt){
+    return {
+      type: evt.type,
+      ts: evt.ts || null,
+      timestamp: evt.timestamp || null
+    };
+  });
+}
+
 function summarizeReadingRecord(record){
   record=record||{};
-  var behavior=Array.isArray(record.behaviorEvents)?record.behaviorEvents:[];
-  var rewards=Array.isArray(record.readingBehaviorRewards)?record.readingBehaviorRewards:(Array.isArray(record.readingRewards)?record.readingRewards:[]);
-  var support=Array.isArray(record.supportCategoriesUsed)?record.supportCategoriesUsed:[];
+  var behavior=normalizeBehaviorEvents(record);
+  var rewards=normalizeReadingRewards(record);
+  var support=normalizeSupportTags(record);
 
   var eventCount={};
   behavior.forEach(function(evt){ eventCount[evt.type]=(eventCount[evt.type]||0)+1; });
@@ -365,17 +397,21 @@ function buildReadingSummaryHtml(code, progress){
 
   var rec=latest.record;
   var sum=summarizeReadingRecord(rec);
-  var teacherNote = getTeacherNote(code, latest.mission.id) || getTeacherNote(code, null) || '';
   return '<div style="font-weight:900;color:var(--gold);margin-bottom:6px;">📘 Reading Support Summary</div>' +
     '<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Latest reading mission: '+escapeHtml(latest.mission.name)+'</div>' +
-    (rec.sessionGoal && rec.sessionGoal.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Goal:</strong> '+escapeHtml(rec.sessionGoal.label)+'</div>' : '') +
-    (rec.reflection && rec.reflection.strategyHelped && rec.reflection.strategyHelped.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Reflection strategy:</strong> '+escapeHtml(rec.reflection.strategyHelped.label)+'</div>' : '') +
-    (rec.reflection && rec.reflection.challenge && rec.reflection.challenge.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Student challenge:</strong> '+escapeHtml(rec.reflection.challenge.label)+'</div>' : '') +
-    (teacherNote ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Teacher note:</strong> '+escapeHtml(teacherNote)+'</div>' : '') +
-    (sum.supportLabels.length ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Support categories used:</strong> '+escapeHtml(sum.supportLabels.join(', '))+'</div>' : '') +
-    (sum.rewards.length ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Behavior rewards:</strong> '+escapeHtml(sum.rewards.map(function(r){return r.title || r.label || r.id;}).join(', '))+'</div>' : '') +
-    '<div style="font-size:12px;margin-top:8px;"><strong>Strength:</strong> '+escapeHtml(sum.strengths[0] || 'Steady participation in reading work')+'</div>' +
-    '<div style="font-size:12px;margin-top:4px;"><strong>Growth area:</strong> '+escapeHtml(sum.growth[0] || 'Keep practicing with scaffolded supports')+'</div>';
+    '<div style="margin:8px 0;padding:8px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);">' +
+      '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Student Reflection</div>' +
+      (rec.sessionGoal && rec.sessionGoal.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Goal:</strong> '+escapeHtml(rec.sessionGoal.label)+'</div>' : '<div style="font-size:12px;color:var(--muted);">No goal selected in this session.</div>') +
+      (rec.reflection && rec.reflection.strategyHelped && rec.reflection.strategyHelped.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Strategy that helped:</strong> '+escapeHtml(rec.reflection.strategyHelped.label)+'</div>' : '') +
+      (rec.reflection && rec.reflection.challenge && rec.reflection.challenge.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Student challenge:</strong> '+escapeHtml(rec.reflection.challenge.label)+'</div>' : '') +
+    '</div>' +
+    '<div style="margin:8px 0;padding:8px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);">' +
+      '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Support & Rewards</div>' +
+      (sum.supportLabels.length ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Support categories:</strong> '+escapeHtml(sum.supportLabels.join(', '))+'</div>' : '<div style="font-size:12px;color:var(--muted);margin-bottom:4px;">No support categories were captured.</div>') +
+      (sum.rewards.length ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Behavior rewards:</strong> '+escapeHtml(sum.rewards.map(function(r){return r.title || r.label || r.id;}).join(', '))+'</div>' : '<div style="font-size:12px;color:var(--muted);margin-bottom:4px;">No behavior rewards earned yet.</div>') +
+    '</div>' +
+    '<div style="margin-top:8px;"><div style="font-size:12px;margin-top:8px;"><strong>Strength:</strong> '+escapeHtml(sum.strengths[0] || 'Steady participation in reading work')+'</div>' +
+    '<div style="font-size:12px;margin-top:4px;"><strong>Growth area:</strong> '+escapeHtml(sum.growth[0] || 'Keep practicing with scaffolded supports')+'</div></div>';
 }
 
 function getRosterCacheKey(){
@@ -431,14 +467,23 @@ function getTeacherNotesMap(){
   if (typeof db_getTeacherNotes === 'function') return db_getTeacherNotes();
   try{return JSON.parse(localStorage.getItem('kt_teacher_notes')||'{}')}catch(e){return{}}
 }
-function getTeacherNote(code, missionId){
-  if (typeof db_getTeacherNote === 'function') return db_getTeacherNote(code, missionId);
+function getTeacherNoteEntry(code, missionId){
+  if (typeof db_getTeacherNoteEntry === 'function') return db_getTeacherNoteEntry(code, missionId);
   var all = getTeacherNotesMap();
   var byStudent = all[code] || {};
   var key = missionId || '__overall__';
   var val = byStudent[key];
-  if (!val) return '';
-  return typeof val === 'string' ? val : (val.text || '');
+  if (!val) return null;
+  if (typeof val === 'string') return { text: val, updatedAt: null, author: null };
+  return {
+    text: val.text || '',
+    updatedAt: val.updatedAt || null,
+    author: val.author || null
+  };
+}
+function getTeacherNote(code, missionId){
+  var entry = getTeacherNoteEntry(code, missionId);
+  return entry && entry.text ? entry.text : '';
 }
 function saveTeacherNote(code, missionId, text){
   var author = _teacherSession ? (_teacherSession.name || _teacherSession.username || null) : null;
@@ -957,11 +1002,19 @@ function showProg(code){
     missionSelect.innerHTML = options.join('');
     missionSelect.onchange = function(){
       var missionId = missionSelect.value === '__overall__' ? null : missionSelect.value;
-      var text = getTeacherNote(code, missionId);
+      var entry = getTeacherNoteEntry(code, missionId);
+      var text = entry && entry.text ? entry.text : '';
       var noteInput = document.getElementById('pm-note-text');
       if (noteInput) noteInput.value = text || '';
       var status = document.getElementById('pm-note-status');
-      if (status) status.textContent = text ? 'Loaded saved note.' : 'No note saved for this mission yet.';
+      if (status) {
+        if (!text) {
+          status.textContent = 'No note saved for this scope yet.';
+        } else {
+          var when = entry && entry.updatedAt ? new Date(entry.updatedAt) : null;
+          status.textContent = 'Loaded saved note' + (when && !isNaN(when.getTime()) ? (' from ' + when.toLocaleString()) : '') + '.';
+        }
+      }
     };
     missionSelect.onchange();
   }
@@ -972,10 +1025,18 @@ function showProg(code){
       var missionIdRaw = missionSelect ? missionSelect.value : '__overall__';
       var missionId = missionIdRaw === '__overall__' ? null : missionIdRaw;
       var noteText = (document.getElementById('pm-note-text') || { value: '' }).value || '';
-      saveTeacherNote(code, missionId, noteText);
+      var savedEntry = saveTeacherNote(code, missionId, noteText);
       var status = document.getElementById('pm-note-status');
-      if (status) status.textContent = noteText.trim() ? 'Saved ✓' : 'Note cleared ✓';
+      if (status) {
+        if (!noteText.trim()) status.textContent = 'Note cleared ✓';
+        else {
+          var savedAt = savedEntry && savedEntry.updatedAt ? new Date(savedEntry.updatedAt) : new Date();
+          status.textContent = 'Saved ✓ ' + savedAt.toLocaleString();
+        }
+      }
       toast('📝 Note saved');
+      var readingSummary = document.getElementById('pm-reading-summary');
+      if (readingSummary) readingSummary.innerHTML = buildReadingSummaryHtml(code, getMerged(code));
     };
   }
   document.getElementById('prog-modal').classList.add('open');
