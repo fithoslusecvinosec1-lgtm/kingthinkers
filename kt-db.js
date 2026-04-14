@@ -298,14 +298,24 @@ function db_getTeacherNotes() {
 }
 
 function db_getTeacherNote(code, missionId) {
-  if (!code) return '';
+  var entry = db_getTeacherNoteEntry(code, missionId);
+  if (!entry) return '';
+  return entry.text || '';
+}
+
+function db_getTeacherNoteEntry(code, missionId) {
+  if (!code) return null;
   var notes = db_getTeacherNotes();
   var byStudent = notes[code] || {};
   var key = missionId || '__overall__';
   var entry = byStudent[key];
-  if (!entry) return '';
-  if (typeof entry === 'string') return entry;
-  return entry.text || '';
+  if (!entry) return null;
+  if (typeof entry === 'string') return { text: entry, updatedAt: null, author: null };
+  return {
+    text: entry.text || '',
+    updatedAt: entry.updatedAt || null,
+    author: entry.author || null
+  };
 }
 
 function db_saveTeacherNote(code, missionId, text, author) {
