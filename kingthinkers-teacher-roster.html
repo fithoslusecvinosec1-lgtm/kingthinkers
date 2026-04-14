@@ -155,6 +155,7 @@ textarea.inp{min-height:110px;resize:vertical;}
 <meta name="theme-color" content="#F5A800">
 <script src="kt-db.js"></script>
 <script src="kt-content.js"></script>
+<script src="kt-reading-support.js"></script>
 </head>
 <body>
 
@@ -263,6 +264,7 @@ textarea.inp{min-height:110px;resize:vertical;}
   <div class="modal-title">📊 <span id="pm-name">Student</span>'s Progress</div>
   <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Mark completed missions below. Changes save automatically.</p>
   <div id="pm-list"></div>
+  <div id="pm-reading-summary" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);"></div>
   <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
     <div style="font-weight:900;color:var(--gold);margin-bottom:6px;">📝 Teacher / Adult Notes</div>
     <label class="lbl">Mission</label>
@@ -308,6 +310,74 @@ function escapeHtml(value){
     .replace(/"/g,'&quot;')
     .replace(/'/g,'&#39;');
 }
+function getSupportLabel(tag){
+  if(window.KTReadingSupport && typeof window.KTReadingSupport.getSupportMeta==='function'){
+    var meta=window.KTReadingSupport.getSupportMeta(tag);
+    if(meta && meta.label) return meta.label;
+  }
+  tag=String(tag||'').trim();
+  return tag ? (tag.charAt(0).toUpperCase()+tag.slice(1)) : '';
+}
+
+function summarizeReadingRecord(record){
+  record=record||{};
+  var behavior=Array.isArray(record.behaviorEvents)?record.behaviorEvents:[];
+  var rewards=Array.isArray(record.readingBehaviorRewards)?record.readingBehaviorRewards:(Array.isArray(record.readingRewards)?record.readingRewards:[]);
+  var support=Array.isArray(record.supportCategoriesUsed)?record.supportCategoriesUsed:[];
+
+  var eventCount={};
+  behavior.forEach(function(evt){ eventCount[evt.type]=(eventCount[evt.type]||0)+1; });
+
+  var strengths=[];
+  if ((record.accuracy||0)>=85) strengths.push('Strong reading accuracy in this session');
+  if (support.indexOf('vocabulary')>-1) strengths.push('Engaged with vocabulary support');
+  if (support.indexOf('comprehension')>-1 && eventCount.support_success) strengths.push('Showed comprehension success');
+  if (rewards.length) strengths.push('Earned behavior rewards: '+rewards.map(function(r){ return r.title || r.label || r.id; }).join(', '));
+
+  var growth=[];
+  if ((eventCount.retry_after_miss||0)>=2) growth.push('Needs extra check-ins after misses to reduce repeated retries');
+  if ((eventCount.hint_used||0)>=2) growth.push('Would benefit from gradual release after repeated hint use');
+  if (record.reflection && record.reflection.challenge && record.reflection.challenge.label && record.reflection.challenge.id!=='nothing') growth.push('Student named challenge: '+record.reflection.challenge.label);
+  if (!growth.length) growth.push('Continue building independence with slightly harder reading prompts');
+
+  return {
+    supportLabels: support.map(getSupportLabel),
+    rewards: rewards,
+    behaviorCount: eventCount,
+    strengths: strengths.slice(0,2),
+    growth: growth.slice(0,2)
+  };
+}
+
+function buildReadingSummaryHtml(code, progress){
+  var readingMissions = MISSIONS.filter(function(m){ return m.type==='Reading'; });
+  var latest=null;
+  readingMissions.forEach(function(m){
+    var rec=(progress && (progress[m.id] || (m.lessonId ? progress[m.lessonId] : null))) || null;
+    if(!rec || !rec.behaviorEvents) return;
+    var ts=rec.readingSupportUpdatedAt || rec.completedAt || 0;
+    if(!latest || ts > latest.ts){ latest={ mission:m, record:rec, ts:ts }; }
+  });
+
+  if(!latest){
+    return '<div style="font-weight:900;color:var(--gold);margin-bottom:6px;">📘 Reading Support Summary</div><div style="font-size:12px;color:var(--muted);">No Phase 1/2 reading-support data saved yet.</div>';
+  }
+
+  var rec=latest.record;
+  var sum=summarizeReadingRecord(rec);
+  var teacherNote = getTeacherNote(code, latest.mission.id) || getTeacherNote(code, null) || '';
+  return '<div style="font-weight:900;color:var(--gold);margin-bottom:6px;">📘 Reading Support Summary</div>' +
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Latest reading mission: '+escapeHtml(latest.mission.name)+'</div>' +
+    (rec.sessionGoal && rec.sessionGoal.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Goal:</strong> '+escapeHtml(rec.sessionGoal.label)+'</div>' : '') +
+    (rec.reflection && rec.reflection.strategyHelped && rec.reflection.strategyHelped.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Reflection strategy:</strong> '+escapeHtml(rec.reflection.strategyHelped.label)+'</div>' : '') +
+    (rec.reflection && rec.reflection.challenge && rec.reflection.challenge.label ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Student challenge:</strong> '+escapeHtml(rec.reflection.challenge.label)+'</div>' : '') +
+    (teacherNote ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Teacher note:</strong> '+escapeHtml(teacherNote)+'</div>' : '') +
+    (sum.supportLabels.length ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Support categories used:</strong> '+escapeHtml(sum.supportLabels.join(', '))+'</div>' : '') +
+    (sum.rewards.length ? '<div style="font-size:12px;margin-bottom:4px;"><strong>Behavior rewards:</strong> '+escapeHtml(sum.rewards.map(function(r){return r.title || r.label || r.id;}).join(', '))+'</div>' : '') +
+    '<div style="font-size:12px;margin-top:8px;"><strong>Strength:</strong> '+escapeHtml(sum.strengths[0] || 'Steady participation in reading work')+'</div>' +
+    '<div style="font-size:12px;margin-top:4px;"><strong>Growth area:</strong> '+escapeHtml(sum.growth[0] || 'Keep practicing with scaffolded supports')+'</div>';
+}
+
 function getRosterCacheKey(){
   var cls = _teacherSession && _teacherSession.classCode ? _teacherSession.classCode : 'global';
   var teacher = _teacherSession && (_teacherSession.username || _teacherSession.name) ? (_teacherSession.username || _teacherSession.name) : 'teacher';
@@ -847,6 +917,8 @@ function showProg(code){
     });
   });
   document.getElementById('pm-list').innerHTML=html;
+  var readingSummary = document.getElementById('pm-reading-summary');
+  if (readingSummary) readingSummary.innerHTML = buildReadingSummaryHtml(code, p);
   document.querySelectorAll('#pm-list input[type=checkbox]').forEach(function(cb){
     cb.addEventListener('change',function(){
       var id=cb.getAttribute('data-id');var xp=parseInt(cb.getAttribute('data-xp'));

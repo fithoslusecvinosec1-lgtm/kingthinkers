@@ -8,6 +8,7 @@ window.KT_LESSONS.timbuktu = [
   {
     id: 'timbuktu-t1',
     worldId: 'timbuktu',
+    mentorId: 'kofi',
     title: 'The Great Library',
     subject: 'reading',
     grade: '3',
@@ -54,6 +55,7 @@ window.KT_LESSONS.timbuktu = [
               type: 'mcq',
               prompt: 'Which detail best supports the main idea that Timbuktu became a center of learning?',
               hint: 'Choose the detail that points most clearly to teaching and study.',
+              supportTags: ['comprehension'],
               choices: ['It stood near the Niger River', 'Students and teachers came to Sankore from many places', 'Gold passed through its markets', 'It began as a camp'],
               answer: 1,
               correctFeedback: 'Correct. Students and teachers coming to Sankore strongly supports the main idea about learning.',
@@ -76,6 +78,7 @@ window.KT_LESSONS.timbuktu = [
               type: 'true_false',
               prompt: 'This section supports the main idea that Timbuktu was known for knowledge, not only trade.',
               hint: 'Think about what the manuscripts were about and why families kept them.',
+              supportTags: ['comprehension'],
               answer: true,
               correctFeedback: 'Yes. The many subjects and libraries support a main idea about rich learning and knowledge.',
               wrongFeedback: 'The section focuses on books, subjects, and libraries, which all support the larger main idea about knowledge.',
@@ -97,6 +100,7 @@ window.KT_LESSONS.timbuktu = [
               type: 'input',
               prompt: 'Type one word from the passage that names the handwritten books that proved this knowledge.',
               hint: 'Use the exact word for the handwritten books in the passage.',
+              supportTags: ['vocabulary','comprehension'],
               answer: 'manuscripts',
               correctFeedback: 'Strong answer. Manuscripts is the word that names the books carrying this knowledge.',
               wrongFeedback: 'Look for the exact word in the passage that names the handwritten books and documents.',
@@ -114,6 +118,7 @@ window.KT_LESSONS.timbuktu = [
           type: 'mcq',
           prompt: 'Which main idea is best supported by this excerpt?',
           hint: 'Turn the details into one bigger idea about Timbuktu.',
+          supportTags: ['comprehension'],
           choices: ['Timbuktu was only important for trade', 'Timbuktu became a great center of learning and knowledge', 'Timbuktu had no students', 'Books were unimportant in West Africa'],
           answer: 1,
           correctFeedback: 'Exactly. The excerpt supports the main idea that Timbuktu became a major center of learning.',
@@ -125,10 +130,10 @@ window.KT_LESSONS.timbuktu = [
     },
 
     phase4_test: [
-      { id: 'timbuktu-t1-t1', type: 'mcq', excerpt: 'Timbuktu became a city of scholars. Sankore drew students and teachers from across the Islamic world.', prompt: 'What main idea does this excerpt support?', choices: ['Timbuktu became a great center of learning', 'Timbuktu had no schools', 'Only trade mattered in Timbuktu', 'Students never traveled to study'], answer: 0, hint_disabled: true, correctFeedback: 'Correct. The students, teachers, and Sankore all support the main idea that Timbuktu became a center of learning.', wrongFeedback: 'The excerpt focuses on scholars, students, and teachers. Those details support a main idea about learning, not trade alone.', xp: 10 },
-      { id: 'timbuktu-t1-t2', type: 'mcq', excerpt: 'The scholars of Timbuktu wrote manuscripts on mathematics, astronomy, medicine, law, and philosophy.', prompt: 'Why does the author include these details?', choices: ['To show that Timbuktu produced knowledge in many subjects', 'To say scholars wrote about only one topic', 'To prove trade was unimportant everywhere', 'To explain that books were rare in every city'], answer: 0, hint_disabled: true, correctFeedback: 'Yes. The list of subjects supports the main idea that Timbuktu was rich in learning and knowledge.', wrongFeedback: 'The many subjects in the excerpt are included to support a broad point about the range of knowledge in Timbuktu.', xp: 10 },
-      { id: 'timbuktu-t1-t3', type: 'true_false', excerpt: 'The manuscripts of Timbuktu were proof that African civilization had been producing advanced knowledge for centuries.', prompt: 'This excerpt supports the main idea that Timbuktu matters because it shows a long history of African scholarship.', answer: true, hint_disabled: true, correctFeedback: 'Correct. The excerpt directly says the manuscripts proved centuries of advanced knowledge.', wrongFeedback: 'The excerpt connects Timbuktu\'s manuscripts with centuries of advanced knowledge, which supports the main idea of lasting African scholarship.', xp: 10 },
-      { id: 'timbuktu-t1-t4', type: 'input', excerpt: 'The scholars of Timbuktu wrote and collected many manuscripts.', prompt: 'Type one word from the excerpt that names the handwritten books.', answer: 'manuscripts', hint_disabled: true, correctFeedback: 'Great answer. Manuscripts is the exact word the excerpt uses for the handwritten books.', wrongFeedback: 'Use the exact word from the excerpt that means handwritten books or documents.', xp: 10 }
+      { id: 'timbuktu-t1-t1', type: 'mcq', excerpt: 'Timbuktu became a city of scholars. Sankore drew students and teachers from across the Islamic world.', prompt: 'What main idea does this excerpt support?', supportTags: ['comprehension'], choices: ['Timbuktu became a great center of learning', 'Timbuktu had no schools', 'Only trade mattered in Timbuktu', 'Students never traveled to study'], answer: 0, hint_disabled: true, correctFeedback: 'Correct. The students, teachers, and Sankore all support the main idea that Timbuktu became a center of learning.', wrongFeedback: 'The excerpt focuses on scholars, students, and teachers. Those details support a main idea about learning, not trade alone.', xp: 10 },
+      { id: 'timbuktu-t1-t2', type: 'mcq', excerpt: 'The scholars of Timbuktu wrote manuscripts on mathematics, astronomy, medicine, law, and philosophy.', prompt: 'Why does the author include these details?', supportTags: ['comprehension'], choices: ['To show that Timbuktu produced knowledge in many subjects', 'To say scholars wrote about only one topic', 'To prove trade was unimportant everywhere', 'To explain that books were rare in every city'], answer: 0, hint_disabled: true, correctFeedback: 'Yes. The list of subjects supports the main idea that Timbuktu was rich in learning and knowledge.', wrongFeedback: 'The many subjects in the excerpt are included to support a broad point about the range of knowledge in Timbuktu.', xp: 10 },
+      { id: 'timbuktu-t1-t3', type: 'true_false', excerpt: 'The manuscripts of Timbuktu were proof that African civilization had been producing advanced knowledge for centuries.', prompt: 'This excerpt supports the main idea that Timbuktu matters because it shows a long history of African scholarship.', supportTags: ['comprehension'], answer: true, hint_disabled: true, correctFeedback: 'Correct. The excerpt directly says the manuscripts proved centuries of advanced knowledge.', wrongFeedback: 'The excerpt connects Timbuktu\'s manuscripts with centuries of advanced knowledge, which supports the main idea of lasting African scholarship.', xp: 10 },
+      { id: 'timbuktu-t1-t4', type: 'input', excerpt: 'The scholars of Timbuktu wrote and collected many manuscripts.', prompt: 'Type one word from the excerpt that names the handwritten books.', supportTags: ['vocabulary'], answer: 'manuscripts', hint_disabled: true, correctFeedback: 'Great answer. Manuscripts is the exact word the excerpt uses for the handwritten books.', wrongFeedback: 'Use the exact word from the excerpt that means handwritten books or documents.', xp: 10 }
     ],
 
     wrapUp: {
