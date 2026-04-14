@@ -16,6 +16,15 @@
     behaviorEvents: [],
     readingRewards: [],
     supportCategoriesUsed: [],
+    sharedReading: {
+      stepIndex: -1,
+      turnIndex: 0,
+      turns: []
+    },
+    readAloud: {
+      utterance: null,
+      speechAvailable: !!(window.speechSynthesis && window.SpeechSynthesisUtterance)
+    },
     match: {
       selectedWord: null,
       selectedDef: null,
@@ -441,6 +450,7 @@
   }
 
   function nextStep() {
+    stopReadAloud();
     state.stepIndex += 1;
     renderCurrentStep();
   }
@@ -460,6 +470,110 @@
     try {
       window.KTAudio[name]();
     } catch (e) {}
+  }
+
+  function canUseReadAloud() {
+    return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+  }
+
+  function stopReadAloud() {
+    if (!canUseReadAloud()) return;
+    try {
+      window.speechSynthesis.cancel();
+    } catch (e) {}
+    state.readAloud.utterance = null;
+  }
+
+  function clearHighlight(containerId) {
+    if (!containerId) return;
+    var container = $(containerId);
+    if (!container) return;
+    container.querySelectorAll('[data-tts-token]').forEach(function (node) {
+      node.classList.remove('tts-active');
+    });
+  }
+
+  function speakWithHighlight(text, opts) {
+    opts = opts || {};
+    if (!canUseReadAloud() || !safeText(text).trim()) return false;
+
+    stopReadAloud();
+    clearHighlight(opts.containerId);
+
+    var utterance = new SpeechSynthesisUtterance(safeText(text));
+    utterance.rate = typeof opts.rate === 'number' ? opts.rate : 0.96;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    utterance.onboundary = function (event) {
+      if (!opts.containerId || typeof event.charIndex !== 'number') return;
+      var container = $(opts.containerId);
+      if (!container) return;
+      container.querySelectorAll('[data-tts-token]').forEach(function (node) {
+        var start = Number(node.getAttribute('data-start'));
+        var end = Number(node.getAttribute('data-end'));
+        var active = event.charIndex >= start && event.charIndex < end;
+        node.classList.toggle('tts-active', active);
+      });
+    };
+    utterance.onend = function () {
+      clearHighlight(opts.containerId);
+      state.readAloud.utterance = null;
+    };
+    utterance.onerror = function () {
+      clearHighlight(opts.containerId);
+      state.readAloud.utterance = null;
+    };
+
+    state.readAloud.utterance = utterance;
+    window.speechSynthesis.speak(utterance);
+    logReadingBehavior('read_aloud_used', {
+      phase: opts.phase || 'reading',
+      context: opts.context || null
+    });
+    return true;
+  }
+
+  function renderHighlightedText(text, containerId) {
+    var content = safeText(text);
+    if (!content) return '';
+    var regex = /\S+\s*/g;
+    var token;
+    var html = '<span id="' + escapeHtml(containerId) + '" class="tts-text">';
+    while ((token = regex.exec(content)) !== null) {
+      html += '<span data-tts-token="1" data-start="' + token.index + '" data-end="' + (token.index + token[0].length) + '">' + escapeHtml(token[0]) + '</span>';
+    }
+    html += '</span>';
+    return html;
+  }
+
+  function getSharedReadingTurns(sectionData) {
+    var section = sectionData || {};
+    if (section.sharedReading && Array.isArray(section.sharedReading.turns) && section.sharedReading.turns.length) {
+      return section.sharedReading.turns.slice(0);
+    }
+    var passage = Array.isArray(section.passage) ? section.passage : [];
+    return passage.map(function (line, index) {
+      return {
+        role: index % 2 === 0 ? 'mentor' : 'child',
+        text: line
+      };
+    });
+  }
+
+  function isSharedReadingStep(sectionData) {
+    return !!(
+      isReadingSession() &&
+      state.lesson &&
+      state.lesson.sharedReading &&
+      state.lesson.sharedReading.enabled &&
+      getSharedReadingTurns(sectionData).length
+    );
+  }
+
+  function getAdaptiveSupportText(question) {
+    if (question && question.explanation) return question.explanation;
+    if (question && question.hint) return question.hint;
+    return 'Let us slow down, find the clue words, and make a strong next try.';
   }
 
   function isVisualObject(value) {
@@ -1220,6 +1334,7 @@
     var choices = isTrueFalse ? ['True', 'False'] : normalizeChoices(question.choices);
     var answerValue = isTrueFalse ? (question.answer ? 0 : 1) : question.answer;
     var visualPayload = getVisualPayload(question);
+    var supportText = getAdaptiveSupportText(question);
 
     var html =
       '<div class="q-prompt" style="margin-top:14px;">' + escapeHtml(question.prompt || question.question || 'Question') + '</div>' +
@@ -1230,6 +1345,15 @@
         ? '<input id="kt-guided-input" class="choice" style="cursor:text;" type="text" placeholder="Type your answer" />' +
           '<div class="btn-row"><button class="btn btn-primary" id="kt-guided-submit">Check Answer</button></div>'
         : '<div class="choices" id="kt-guided-choices"></div>') +
+      '<div class="adaptive-support" id="kt-adaptive-support" style="display:none;">' +
+        '<div class="adaptive-support-title">🛟 Let’s reset together</div>' +
+        '<div class="adaptive-support-copy">' + escapeHtml(supportText) + '</div>' +
+        '<div class="btn-row">' +
+          '<button class="btn btn-secondary" id="kt-adaptive-read">Read with mentor</button>' +
+          '<button class="btn btn-secondary" id="kt-adaptive-clue">Show clue</button>' +
+          (qType === 'mcq' ? '<button class="btn btn-secondary" id="kt-adaptive-narrow">Narrow choices</button>' : '') +
+        '</div>' +
+      '</div>' +
       '<div class="feedback" id="kt-feedback"></div>' +
       '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Continue →</button></div>';
 
@@ -1277,6 +1401,11 @@
           }
           feedback.className = 'feedback bad show';
           feedback.textContent = safeText(question.wrongFeedback || 'Not yet. Use your strategy and try once more.');
+          if ($('kt-adaptive-support')) $('kt-adaptive-support').style.display = 'block';
+          logReadingBehavior('adaptive_support_shown', {
+            phase: stepLabel || 'guided',
+            questionPrompt: safeText(question.prompt || question.question || '').slice(0, 80)
+          });
           if (disableUI) disableUI(false);
           return;
         }
@@ -1318,6 +1447,47 @@
         });
       }
 
+      if ($('kt-adaptive-read')) {
+        $('kt-adaptive-read').onclick = function () {
+          var lines = [safeText(question.prompt || question.question || '')];
+          if (qType === 'mcq') lines.push('Choices: ' + choices.join(', '));
+          speakWithHighlight(lines.join('. '), {
+            phase: stepLabel || 'guided',
+            context: 'adaptive_support'
+          });
+          logReadingBehavior('adaptive_support_used', { type: 'read_with_mentor', phase: stepLabel || 'guided' });
+        };
+      }
+      if ($('kt-adaptive-clue')) {
+        $('kt-adaptive-clue').onclick = function () {
+          feedback.className = 'feedback info show';
+          feedback.textContent = 'Clue: ' + supportText;
+          logReadingBehavior('adaptive_support_used', { type: 'show_clue', phase: stepLabel || 'guided' });
+        };
+      }
+      if ($('kt-adaptive-narrow')) {
+        $('kt-adaptive-narrow').onclick = function () {
+          var correct = Number(answerValue);
+          var target = -1;
+          for (var i = 0; i < choices.length; i++) {
+            if (i !== correct) {
+              target = i;
+              break;
+            }
+          }
+          if (target > -1) {
+            var nodes = document.querySelectorAll('#kt-guided-choices .choice');
+            if (nodes[target]) {
+              nodes[target].disabled = true;
+              nodes[target].style.opacity = '.45';
+            }
+          }
+          feedback.className = 'feedback info show';
+          feedback.textContent = 'One tricky choice is removed. You got this, King.';
+          logReadingBehavior('adaptive_support_used', { type: 'narrow_choices', phase: stepLabel || 'guided' });
+        };
+      }
+
       if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
     }};
   }
@@ -1326,17 +1496,66 @@
     sectionData = sectionData || {};
     var questions = Array.isArray(sectionData.questions) ? sectionData.questions : [];
     var question = questions[0] || null;
+    var sharedTurns = getSharedReadingTurns(sectionData);
+    var sharedEnabled = isSharedReadingStep(sectionData);
+    if (sharedEnabled && state.sharedReading.stepIndex !== state.stepIndex) {
+      state.sharedReading.stepIndex = state.stepIndex;
+      state.sharedReading.turnIndex = 0;
+      state.sharedReading.turns = sharedTurns.slice(0);
+    }
+    var activeTurn = sharedEnabled ? state.sharedReading.turns[state.sharedReading.turnIndex] : null;
     var html =
       '<div class="card">' +
         '<div class="kicker">Phase 3 · Guided Reading ' + (index + 1) + ' of ' + total + '</div>' +
         '<div class="section-title">' + escapeHtml(sectionData.title || 'Read this section') + '</div>' +
-        '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>';
+        (sharedEnabled
+          ? '<div class="shared-reading">' +
+              '<div class="shared-reading-head"><span class="shared-reading-mode">Shared Reading Mode</span><span class="shared-reading-progress">Turn ' + (state.sharedReading.turnIndex + 1) + ' of ' + state.sharedReading.turns.length + '</span></div>' +
+              '<div class="shared-reading-turn ' + ((activeTurn && activeTurn.role === 'mentor') ? 'mentor' : 'child') + '">' +
+                '<div class="shared-reading-label">' + ((activeTurn && activeTurn.role === 'mentor') ? 'Mentor turn' : 'Your turn, King') + '</div>' +
+                '<div class="shared-reading-text">' + renderHighlightedText(activeTurn ? activeTurn.text : '', 'kt-shared-turn-text') + '</div>' +
+              '</div>' +
+              '<div class="btn-row">' +
+                '<button class="btn btn-secondary" id="kt-shared-next">Next turn</button>' +
+                '<button class="btn btn-secondary" id="kt-shared-read-it">I read it</button>' +
+                '<button class="btn btn-primary" id="kt-shared-read-aloud">Read with mentor</button>' +
+              '</div>' +
+            '</div>'
+          : '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>'
+        );
     if (question) {
       var rendered = renderGuidedQuestion(question, 'phase3_guided_section');
       html += rendered.html;
       html += '</div>';
       renderCard(html);
       rendered.mount();
+      if (sharedEnabled) {
+        if ($('kt-shared-next')) $('kt-shared-next').onclick = function () {
+          playAudio('tap');
+          state.sharedReading.turnIndex = Math.min(state.sharedReading.turnIndex + 1, state.sharedReading.turns.length - 1);
+          renderGuidedSection(sectionData, index, total);
+        };
+        if ($('kt-shared-read-it')) $('kt-shared-read-it').onclick = function () {
+          playAudio('coin');
+          logReadingBehavior('shared_turn_completed', {
+            role: (activeTurn && activeTurn.role) || 'child',
+            mode: 'self'
+          });
+          state.sharedReading.turnIndex = Math.min(state.sharedReading.turnIndex + 1, state.sharedReading.turns.length - 1);
+          renderGuidedSection(sectionData, index, total);
+        };
+        if ($('kt-shared-read-aloud')) $('kt-shared-read-aloud').onclick = function () {
+          speakWithHighlight(activeTurn ? activeTurn.text : '', {
+            containerId: 'kt-shared-turn-text',
+            phase: 'phase3_guided_section',
+            context: (activeTurn && activeTurn.role) || 'mentor'
+          });
+          logReadingBehavior('shared_turn_completed', {
+            role: (activeTurn && activeTurn.role) || 'mentor',
+            mode: 'mentor_audio'
+          });
+        };
+      }
       return;
     }
     html += '<div class="btn-row"><button class="btn btn-primary" id="kt-next-btn">Continue →</button></div></div>';
@@ -1350,11 +1569,21 @@
       '<div class="card">' +
         '<div class="kicker">Phase 3 · Close Reading</div>' +
         '<div class="section-title">' + escapeHtml(closeData.title || 'Read Deeply') + '</div>' +
-        '<div class="sage" style="margin-top:0;"><strong>Highlighted Excerpt:</strong><br>' + escapeHtml(closeData.excerpt || '') + '</div>';
+        '<div class="sage" style="margin-top:0;"><strong>Highlighted Excerpt:</strong><br>' + renderHighlightedText(closeData.excerpt || '', 'kt-close-excerpt-text') + '</div>' +
+        '<div class="btn-row"><button class="btn btn-secondary" id="kt-read-close-excerpt">🔊 Read excerpt aloud</button></div>';
     var rendered = renderGuidedQuestion(closeData.question || { prompt: 'What do you notice?', type: 'input', answer: '' }, 'phase3_close_reading');
     html += rendered.html + '</div>';
     renderCard(html);
     rendered.mount();
+    if ($('kt-read-close-excerpt')) {
+      $('kt-read-close-excerpt').onclick = function () {
+        speakWithHighlight(closeData.excerpt || '', {
+          containerId: 'kt-close-excerpt-text',
+          phase: 'phase3_close_reading',
+          context: 'close_excerpt'
+        });
+      };
+    }
   }
 
   function renderReadingTest(testData) {
@@ -1376,6 +1605,11 @@
           ? '<input id="kt-input-answer" class="choice" style="cursor:text;" type="text" autocomplete="off" placeholder="Type your answer" />' +
             '<div class="btn-row"><button class="btn btn-primary" id="kt-submit-btn">Check Answer</button></div>'
           : '<div class="choices" id="kt-choices"></div>') +
+        '<div class="adaptive-support" id="kt-test-adaptive-support" style="display:none;">' +
+          '<div class="adaptive-support-title">🧭 Support boost</div>' +
+          '<div class="adaptive-support-copy">' + escapeHtml(getAdaptiveSupportText(activity)) + '</div>' +
+          '<div class="btn-row"><button class="btn btn-secondary" id="kt-test-read-mentor">Read with mentor</button></div>' +
+        '</div>' +
         '<div class="feedback" id="kt-feedback"></div>' +
         '<div class="btn-row" id="kt-next-row" style="display:none;"><button class="btn btn-primary" id="kt-next-btn">Next →</button></div>' +
       '</div>';
@@ -1408,6 +1642,7 @@
           playAudio('wrong');
           $('kt-feedback').className = 'feedback bad show';
           $('kt-feedback').textContent = safeText(activity.wrongFeedback || 'Review the excerpt and reasoning.');
+          if ($('kt-test-adaptive-support')) $('kt-test-adaptive-support').style.display = 'block';
         }
         done();
       };
@@ -1439,6 +1674,7 @@
             if (all[answerIndex]) all[answerIndex].classList.add('correct');
             $('kt-feedback').className = 'feedback bad show';
             $('kt-feedback').textContent = safeText(activity.wrongFeedback || 'Review the excerpt and reasoning.');
+            if ($('kt-test-adaptive-support')) $('kt-test-adaptive-support').style.display = 'block';
           }
           done();
         };
@@ -1447,6 +1683,17 @@
     }
 
     if ($('kt-next-btn')) $('kt-next-btn').onclick = function () { playAudio('tap'); nextStep(); };
+    if ($('kt-test-read-mentor')) {
+      $('kt-test-read-mentor').onclick = function () {
+        var prompt = safeText(activity.prompt || activity.question || '');
+        var options = choices.length ? (' Choices: ' + choices.join(', ')) : '';
+        speakWithHighlight(prompt + options, {
+          phase: 'phase4_test',
+          context: 'adaptive_support'
+        });
+        logReadingBehavior('adaptive_support_used', { type: 'read_with_mentor', phase: 'phase4_test' });
+      };
+    }
   }
 
   function disableChoices() {
@@ -2288,6 +2535,8 @@
     state.behaviorEvents = [];
     state.readingRewards = [];
     state.supportCategoriesUsed = [];
+    state.sharedReading = { stepIndex: -1, turnIndex: 0, turns: [] };
+    state.readAloud = { utterance: null, speechAvailable: canUseReadAloud() };
     state.startedAt = Date.now();
     applyLessonAtmosphere();
 

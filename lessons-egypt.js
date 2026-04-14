@@ -10,6 +10,9 @@ window.KT_LESSONS.egypt = [
     xp: 40,
     crownReward: 1,
     estMinutes: 6,
+    sharedReading: {
+      enabled: true
+    },
 
     intro: {
       kicker: 'Kingdom of Egypt · Quest 1',
