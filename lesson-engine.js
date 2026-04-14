@@ -11,12 +11,36 @@
     workedStepIndex: 0,
     streakCount: 0,       // consecutive correct answers in Phase 3
     reviewMode: false,    // true when student is replaying Phase 3 after low score
+    sessionGoal: null,
+    reflection: null,
+    behaviorEvents: [],
     match: {
       selectedWord: null,
       selectedDef: null,
       matchedCount: 0
     }
   };
+
+  var READING_GOALS = [
+    { id: 'use-strategy', label: 'Use a reading strategy' },
+    { id: 'read-carefully', label: 'Read carefully' },
+    { id: 'learn-vocabulary', label: 'Learn new vocabulary' },
+    { id: 'keep-trying', label: 'Keep trying when it gets hard' }
+  ];
+
+  var REFLECTION_STRATEGIES = [
+    { id: 'reread', label: 'I reread tricky parts' },
+    { id: 'clues', label: 'I looked for context clues' },
+    { id: 'slow-down', label: 'I slowed down and focused' },
+    { id: 'question', label: 'I asked “what is this saying?”' }
+  ];
+
+  var REFLECTION_CHALLENGES = [
+    { id: 'new-words', label: 'New words felt hard' },
+    { id: 'long-passage', label: 'Long passages felt hard' },
+    { id: 'staying-focused', label: 'Staying focused felt hard' },
+    { id: 'nothing', label: 'Nothing felt too hard today' }
+  ];
 
   function $(id) {
     return document.getElementById(id);
@@ -84,6 +108,65 @@
         Array.isArray(lesson.phase4_test)
       )
     );
+  }
+
+  function isReadingSession() {
+    return isReadingLesson(state.lesson);
+  }
+
+  function getActiveCode() {
+    if (typeof window.kt_getActiveCode === 'function') return window.kt_getActiveCode();
+    return localStorage.getItem('kt_active_code');
+  }
+
+  function getActiveMission() {
+    try {
+      return JSON.parse(localStorage.getItem('kt_active_mission') || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getProgressKeyForCode(code) {
+    return 'kt_quest_progress_' + code;
+  }
+
+  function logReadingBehavior(type, meta) {
+    if (!isReadingSession()) return;
+    var lessonId = (state.lesson && state.lesson.id) || null;
+    var step = state.steps[state.stepIndex] || {};
+    var event = Object.assign({
+      type: type,
+      lessonId: lessonId,
+      ts: Date.now(),
+      stepType: step.type || null
+    }, meta || {});
+    state.behaviorEvents.push(event);
+
+    var code = getActiveCode();
+    if (!code) return;
+    var key = 'kt_reading_behavior_' + code;
+    var existing = [];
+    try {
+      existing = JSON.parse(localStorage.getItem(key) || '[]');
+    } catch (e) {}
+    if (!Array.isArray(existing)) existing = [];
+    existing.push(event);
+    if (existing.length > 250) existing = existing.slice(existing.length - 250);
+    localStorage.setItem(key, JSON.stringify(existing));
+  }
+
+  function addGoalBannerIfNeeded() {
+    if (!isReadingSession() || !state.sessionGoal || !$('lesson-content')) return;
+    var step = state.steps[state.stepIndex] || {};
+    if (step.type === 'intro' || step.type === 'complete') return;
+    if ($('kt-goal-banner')) return;
+
+    var banner = document.createElement('div');
+    banner.id = 'kt-goal-banner';
+    banner.style.cssText = 'margin:0 0 10px 0;padding:8px 12px;border-radius:12px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);font-size:12px;font-weight:700;color:rgba(255,255,255,.92);';
+    banner.innerHTML = '🎯 Goal: <strong>' + escapeHtml(state.sessionGoal.label) + '</strong>';
+    $('lesson-content').prepend(banner);
   }
 
   function normalizeChoices(choices) {
@@ -231,6 +314,7 @@
 
   function renderCard(html) {
     if ($('lesson-content')) $('lesson-content').innerHTML = html;
+    addGoalBannerIfNeeded();
     updateProgressBar();
     updateTopStats();
   }
@@ -750,20 +834,54 @@
   }
 
   function renderIntro(data) {
+    var isReading = isReadingSession();
+    var hasGoal = !!state.sessionGoal;
+    var goalHtml = '';
+    if (isReading && !hasGoal) {
+      goalHtml =
+        '<div style="margin-top:14px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);">' +
+          '<div class="section-title" style="font-size:18px;">Pick your reading goal 🎯</div>' +
+          '<div class="sub" style="margin-top:4px;">Choose one goal before you begin.</div>' +
+          '<div id="kt-goal-choices" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;">' +
+            READING_GOALS.map(function (goal) {
+              return '<button class="choice" type="button" data-goal-id="' + escapeHtml(goal.id) + '" data-goal-label="' + escapeHtml(goal.label) + '" style="flex:1 1 170px;">' + escapeHtml(goal.label) + '</button>';
+            }).join('') +
+          '</div>' +
+        '</div>';
+    }
+
     renderCard(
       '<div class="card">' +
         '<div class="kicker">' + escapeHtml(data.kicker || (state.lesson.subject + ' quest')) + '</div>' +
         '<div class="title">' + escapeHtml(state.lesson.title) + '</div>' +
         '<div class="sub">' + escapeHtml(data.text) + '</div>' +
         (data.sage ? '<div class="sage"><strong>Sage:</strong> ' + escapeHtml(data.sage) + '</div>' : '') +
+        goalHtml +
         '<div class="btn-row">' +
-          '<button class="btn btn-primary" id="kt-next-btn">Start Quest ⚔️</button>' +
+          '<button class="btn btn-primary" id="kt-next-btn"' + ((isReading && !hasGoal) ? ' disabled' : '') + '>Start Quest ⚔️</button>' +
         '</div>' +
       '</div>'
     );
 
+    document.querySelectorAll('#kt-goal-choices [data-goal-id]').forEach(function (btn) {
+      btn.onclick = function () {
+        var selected = {
+          id: btn.getAttribute('data-goal-id') || '',
+          label: btn.getAttribute('data-goal-label') || btn.textContent || ''
+        };
+        state.sessionGoal = selected;
+        document.querySelectorAll('#kt-goal-choices [data-goal-id]').forEach(function (node) {
+          node.classList.remove('correct');
+        });
+        btn.classList.add('correct');
+        if ($('kt-next-btn')) $('kt-next-btn').disabled = false;
+        logReadingBehavior('goal_selected', { goalId: selected.id, goalLabel: selected.label });
+      };
+    });
+
     if ($('kt-next-btn')) {
       $('kt-next-btn').onclick = function () {
+        if (isReading && !state.sessionGoal) return;
         playAudio('tap');
         nextStep();
       };
@@ -1014,6 +1132,18 @@
         attempts += 1;
         playAudio('wrong');
         if (attempts === 1) {
+          logReadingBehavior('retry_after_miss', {
+            phase: stepLabel || 'guided',
+            questionPrompt: safeText(question.prompt || question.question || '').slice(0, 80)
+          });
+        }
+        if (attempts === 1) {
+          if (question.hint) {
+            logReadingBehavior('hint_used', {
+              phase: stepLabel || 'guided',
+              questionPrompt: safeText(question.prompt || question.question || '').slice(0, 80)
+            });
+          }
           feedback.className = 'feedback bad show';
           feedback.textContent = safeText(question.wrongFeedback || 'Not yet. Use your strategy and try once more.');
           if (disableUI) disableUI(false);
@@ -1071,7 +1201,7 @@
         '<div class="section-title">' + escapeHtml(sectionData.title || 'Read this section') + '</div>' +
         '<div class="passage">' + (Array.isArray(sectionData.passage) ? sectionData.passage.map(function (p) { return '<p>' + escapeHtml(p) + '</p>'; }).join('') : '') + '</div>';
     if (question) {
-      var rendered = renderGuidedQuestion(question);
+      var rendered = renderGuidedQuestion(question, 'phase3_guided_section');
       html += rendered.html;
       html += '</div>';
       renderCard(html);
@@ -1090,7 +1220,7 @@
         '<div class="kicker">Phase 3 · Close Reading</div>' +
         '<div class="section-title">' + escapeHtml(closeData.title || 'Read Deeply') + '</div>' +
         '<div class="sage" style="margin-top:0;"><strong>Highlighted Excerpt:</strong><br>' + escapeHtml(closeData.excerpt || '') + '</div>';
-    var rendered = renderGuidedQuestion(closeData.question || { prompt: 'What do you notice?', type: 'input', answer: '' });
+    var rendered = renderGuidedQuestion(closeData.question || { prompt: 'What do you notice?', type: 'input', answer: '' }, 'phase3_close_reading');
     html += rendered.html + '</div>';
     renderCard(html);
     rendered.mount();
@@ -1138,6 +1268,10 @@
           $('kt-feedback').className = 'feedback good show';
           $('kt-feedback').textContent = safeText(activity.correctFeedback || 'Correct!');
         } else {
+          logReadingBehavior('retry_after_miss', {
+            phase: 'phase4_test',
+            questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
+          });
           playAudio('wrong');
           $('kt-feedback').className = 'feedback bad show';
           $('kt-feedback').textContent = safeText(activity.wrongFeedback || 'Review the excerpt and reasoning.');
@@ -1161,6 +1295,10 @@
             $('kt-feedback').className = 'feedback good show';
             $('kt-feedback').textContent = safeText(activity.correctFeedback || 'Correct!');
           } else {
+            logReadingBehavior('retry_after_miss', {
+              phase: 'phase4_test',
+              questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
+            });
             playAudio('wrong');
             btn.classList.add('wrong');
             var all = document.querySelectorAll('.choice');
@@ -1258,6 +1396,16 @@
           feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
           handleStreak(true, feedback);
         } else {
+          logReadingBehavior('retry_after_miss', {
+            phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+            questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
+          });
+          if (activity.hint && !activity.hint_disabled) {
+            logReadingBehavior('hint_used', {
+              phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+              questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
+            });
+          }
           playAudio('wrong');
           btn.classList.add('wrong');
 
@@ -1401,6 +1549,9 @@
       state.match.selectedDef = null;
 
       if (state.match.matchedCount === (activity.pairs || []).length) {
+        logReadingBehavior('vocab_match_completed', {
+          pairCount: (activity.pairs || []).length
+        });
         if (isPhase4Activity()) state.correctCount += 1;
         gainXP(activity.xp || activity.xpReward || 0);
         gainCrowns(activity.crownReward || 0);
@@ -1480,6 +1631,16 @@
         feedback.textContent = safeText(activity.correctFeedback || 'Correct!');
         handleStreak(true, feedback);
       } else {
+        logReadingBehavior('retry_after_miss', {
+          phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+          questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
+        });
+        if (activity.hint && !activity.hint_disabled) {
+          logReadingBehavior('hint_used', {
+            phase: (isPhase4Activity() ? 'phase4_test' : 'phase3_practice'),
+            questionPrompt: safeText(activity.prompt || activity.question || '').slice(0, 80)
+          });
+        }
         playAudio('wrong');
         feedback.className = 'feedback bad show';
         feedback.textContent = safeText(activity.wrongFeedback || 'Not quite.');
@@ -1545,6 +1706,129 @@
     renderCurrentStep();
   }
 
+  async function persistReadingSupport(accuracy, finalLessonXP) {
+    var code = getActiveCode();
+    if (!code) return;
+    var active = getActiveMission();
+    var missionId = active && active.missionId ? active.missionId : ((state.lesson && state.lesson.id) || null);
+    if (!missionId) return;
+
+    var progress = {};
+    try {
+      progress = JSON.parse(localStorage.getItem(getProgressKeyForCode(code)) || '{}');
+    } catch (e) {}
+    if (!progress || typeof progress !== 'object' || Array.isArray(progress)) progress = {};
+
+    var existing = progress[missionId] || {};
+    progress[missionId] = Object.assign({}, existing, {
+      completedAt: existing.completedAt || Date.now(),
+      sessionGoal: state.sessionGoal || null,
+      reflection: state.reflection || null,
+      behaviorEvents: state.behaviorEvents.slice(-80),
+      readingSupportUpdatedAt: Date.now(),
+      accuracy: accuracy,
+      xpAwarded: finalLessonXP
+    });
+    localStorage.setItem(getProgressKeyForCode(code), JSON.stringify(progress));
+    if (typeof window.db_saveProgress === 'function') {
+      try { await window.db_saveProgress(code, progress); } catch (e) {}
+    }
+
+    var sessionKey = 'kt_reading_sessions_' + code;
+    var sessions = [];
+    try { sessions = JSON.parse(localStorage.getItem(sessionKey) || '[]'); } catch (e) {}
+    if (!Array.isArray(sessions)) sessions = [];
+    sessions.push({
+      lessonId: state.lesson && state.lesson.id ? state.lesson.id : null,
+      missionId: missionId,
+      completedAt: Date.now(),
+      sessionGoal: state.sessionGoal || null,
+      reflection: state.reflection || null,
+      behaviorEvents: state.behaviorEvents.slice(-30),
+      accuracy: accuracy
+    });
+    if (sessions.length > 60) sessions = sessions.slice(sessions.length - 60);
+    localStorage.setItem(sessionKey, JSON.stringify(sessions));
+  }
+
+  function showReadingReflection(completeData, done) {
+    var strategyChoice = null;
+    var challengeChoice = null;
+    var notesValue = '';
+    var summary = completeData || {};
+
+    function updateSubmitState() {
+      if ($('kt-reflect-submit')) $('kt-reflect-submit').disabled = !(strategyChoice && challengeChoice);
+    }
+
+    renderCard(
+      '<div class="card">' +
+        '<div class="kicker">Quest Complete + Reflection</div>' +
+        '<div class="title">One more step, King 👑</div>' +
+        '<div class="sub">You earned your rewards. Share how reading felt today.</div>' +
+        '<div class="complete-grid">' +
+          '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
+          '<div class="stat"><div class="stat-num">' + state.crownsEarned + '</div><div class="stat-label">Crowns</div></div>' +
+          '<div class="stat"><div class="stat-num">' + (summary.accuracy || 0) + '%</div><div class="stat-label">Accuracy</div></div>' +
+        '</div>' +
+        (state.sessionGoal ? '<div class="sage" style="margin-top:10px;"><strong>Your Goal:</strong> ' + escapeHtml(state.sessionGoal.label) + '</div>' : '') +
+        '<div style="margin-top:14px;font-weight:800;">What strategy helped you most?</div>' +
+        '<div id="kt-reflect-strategy" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">' +
+          REFLECTION_STRATEGIES.map(function (item) {
+            return '<button type="button" class="choice" data-strategy-id="' + escapeHtml(item.id) + '" data-label="' + escapeHtml(item.label) + '" style="flex:1 1 180px;">' + escapeHtml(item.label) + '</button>';
+          }).join('') +
+        '</div>' +
+        '<div style="margin-top:12px;font-weight:800;">What felt hard today?</div>' +
+        '<div id="kt-reflect-challenge" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">' +
+          REFLECTION_CHALLENGES.map(function (item) {
+            return '<button type="button" class="choice" data-challenge-id="' + escapeHtml(item.id) + '" data-label="' + escapeHtml(item.label) + '" style="flex:1 1 180px;">' + escapeHtml(item.label) + '</button>';
+          }).join('') +
+        '</div>' +
+        '<textarea id="kt-reflect-notes" class="choice" style="cursor:text;width:100%;margin-top:10px;min-height:80px;" maxlength="120" placeholder="Optional: Share one quick thought"></textarea>' +
+        '<div class="btn-row"><button class="btn btn-primary" id="kt-reflect-submit" disabled>Finish & Return to Kingdom →</button></div>' +
+      '</div>'
+    );
+
+    document.querySelectorAll('[data-strategy-id]').forEach(function (btn) {
+      btn.onclick = function () {
+        strategyChoice = {
+          id: btn.getAttribute('data-strategy-id') || '',
+          label: btn.getAttribute('data-label') || btn.textContent || ''
+        };
+        document.querySelectorAll('[data-strategy-id]').forEach(function (node) { node.classList.remove('correct'); });
+        btn.classList.add('correct');
+        updateSubmitState();
+      };
+    });
+    document.querySelectorAll('[data-challenge-id]').forEach(function (btn) {
+      btn.onclick = function () {
+        challengeChoice = {
+          id: btn.getAttribute('data-challenge-id') || '',
+          label: btn.getAttribute('data-label') || btn.textContent || ''
+        };
+        document.querySelectorAll('[data-challenge-id]').forEach(function (node) { node.classList.remove('correct'); });
+        btn.classList.add('correct');
+        updateSubmitState();
+      };
+    });
+
+    if ($('kt-reflect-submit')) {
+      $('kt-reflect-submit').onclick = async function () {
+        notesValue = safeText($('kt-reflect-notes') && $('kt-reflect-notes').value).trim();
+        state.reflection = {
+          strategyHelped: strategyChoice,
+          challenge: challengeChoice,
+          notes: notesValue || ''
+        };
+        logReadingBehavior('reflection_completed', {
+          strategyId: strategyChoice && strategyChoice.id,
+          challengeId: challengeChoice && challengeChoice.id
+        });
+        if (typeof done === 'function') done();
+      };
+    }
+  }
+
   async function renderComplete(data) {
     var accuracy = state.gradableCount
       ? Math.round((state.correctCount / state.gradableCount) * 100)
@@ -1596,6 +1880,12 @@
 
       if ($('kt-finish-btn')) {
         $('kt-finish-btn').onclick = function () {
+          if (isReadingSession()) {
+            showReadingReflection({ accuracy: accuracy }, function () {
+              persistReadingSupport(accuracy, finalLessonXP).finally(exitToDashboard);
+            });
+            return;
+          }
           exitToDashboard();
         };
       }
@@ -1608,11 +1898,19 @@
           : localStorage.getItem('kt_active_code');
 
         if (active && code && typeof window.db_completeLesson === 'function') {
+          logReadingBehavior('lesson_completed', {
+            missionId: active.missionId,
+            accuracy: accuracy,
+            xp: active.xp || finalLessonXP
+          });
           localStorage.setItem('kt_mission_completed', JSON.stringify({
             missionId: active.missionId,
             worldId: active.worldId,
             xp: active.xp || finalLessonXP,
             accuracy: accuracy,
+            sessionGoal: state.sessionGoal || null,
+            reflection: state.reflection || null,
+            behaviorEvents: state.behaviorEvents.slice(-50),
             completedAt: Date.now()
           }));
           await window.db_completeLesson(code, active.missionId, active.xp || finalLessonXP);
@@ -1659,11 +1957,19 @@
         : localStorage.getItem('kt_active_code');
 
       if (active2 && code2 && typeof window.db_completeLesson === 'function') {
+        logReadingBehavior('lesson_completed', {
+          missionId: active2.missionId,
+          accuracy: accuracy,
+          xp: active2.xp || finalLessonXP
+        });
         localStorage.setItem('kt_mission_completed', JSON.stringify({
           missionId: active2.missionId,
           worldId: active2.worldId,
           xp: active2.xp || finalLessonXP,
           accuracy: accuracy,
+          sessionGoal: state.sessionGoal || null,
+          reflection: state.reflection || null,
+          behaviorEvents: state.behaviorEvents.slice(-50),
           completedAt: Date.now()
         }));
         await window.db_completeLesson(code2, active2.missionId, active2.xp || finalLessonXP);
@@ -1677,6 +1983,12 @@
 
     if ($('kt-finish-btn')) {
       $('kt-finish-btn').onclick = function () {
+        if (isReadingSession()) {
+          showReadingReflection({ accuracy: accuracy }, function () {
+            persistReadingSupport(accuracy, finalLessonXP).finally(exitToDashboard);
+          });
+          return;
+        }
         exitToDashboard();
       };
     }
@@ -1794,6 +2106,9 @@
     var lessonId = getLessonIdFromUrl();
     state.lesson = findLessonById(lessonId);
     state.steps = state.lesson ? buildSteps(state.lesson) : [];
+    state.sessionGoal = null;
+    state.reflection = null;
+    state.behaviorEvents = [];
     state.startedAt = Date.now();
     applyLessonAtmosphere();
 
