@@ -15,6 +15,9 @@ window.KT_LESSONS.mali = [
     xp: 48,
     crownReward: 1,
     estMinutes: 8,
+    sharedReading: {
+      enabled: true
+    },
 
     intro: {
       kicker: 'Kingdom of Mali · Quest 1',
@@ -48,6 +51,13 @@ window.KT_LESSONS.mali = [
             'Mansa Musa ruled Mali when it controlled huge amounts of gold and salt. Historians remember him as one of the richest rulers in history.',
             'These details begin building the main idea that Mansa Musa had unusual wealth and power.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Mansa Musa ruled Mali when it controlled huge amounts of gold and salt.' },
+              { role: 'child', text: 'Historians remember him as one of the richest rulers in history.' },
+              { role: 'mentor', text: 'These details build the main idea that he had unusual wealth and power.' }
+            ]
+          },
           questions: [
             {
               id: 'mali-m1-s1-q1',
@@ -184,27 +194,27 @@ window.KT_LESSONS.mali = [
           {
             display: '364 + 215 = ?',
             explanation: 'Line up by place value: ones under ones, tens under tens, hundreds under hundreds.',
-            visual: '364 and 215 stacked in columns'
+            visual: { type: 'place_value_columns', a: 364, b: 215, label: '364 + 215' }
           },
           {
             display: 'Ones: 4 + 5 = 9',
             explanation: 'Start with the ones column. No regrouping needed.',
-            visual: 'Ones column highlighted, 9 written'
+            visual: { type: 'place_value_columns', a: 364, b: 215, result: 'Ones = 9', label: 'Add ones first' }
           },
           {
             display: 'Tens: 6 + 1 = 7',
             explanation: 'Now the tens column.',
-            visual: 'Tens column highlighted, 7 written'
+            visual: { type: 'place_value_columns', a: 364, b: 215, result: 'Tens = 7', label: 'Then tens' }
           },
           {
             display: 'Hundreds: 3 + 2 = 5',
             explanation: 'Finally the hundreds column.',
-            visual: 'Hundreds column highlighted, 5 written'
+            visual: { type: 'place_value_columns', a: 364, b: 215, result: 'Hundreds = 5', label: 'Then hundreds' }
           },
           {
             display: '364 + 215 = 579 bags',
             explanation: 'The caravan carries 579 bags in total.',
-            visual: '579 revealed'
+            visual: { type: 'place_value_columns', a: 364, b: 215, result: '579', label: 'Final sum' }
           }
         ],
         sage: 'Clean addition — no regrouping. Line up the columns and add each one from right to left.'
@@ -216,27 +226,27 @@ window.KT_LESSONS.mali = [
           {
             display: 'Step 1: 248 + 375 = ?',
             explanation: 'First find the total coins given away. 248 + 375.',
-            visual: '248 + 375 stacked'
+            visual: { type: 'place_value_columns', a: 248, b: 375, label: '248 + 375' }
           },
           {
             display: 'Ones: 8 + 5 = 13 → write 3, carry 1',
             explanation: '8 + 5 = 13. Write the 3, carry 1 ten to the tens column.',
-            visual: '3 written in ones, 1 carried'
+            visual: { type: 'place_value_columns', a: 248, b: 375, result: 'Ones = 3, carry 1', label: 'Regroup ones' }
           },
           {
             display: 'Tens: 4 + 7 + 1 carried = 12 → write 2, carry 1',
             explanation: '4 + 7 + 1 = 12. Write 2, carry 1 hundred.',
-            visual: '2 written in tens, 1 carried'
+            visual: { type: 'place_value_columns', a: 248, b: 375, result: 'Tens = 2, carry 1', label: 'Regroup tens' }
           },
           {
             display: 'Hundreds: 2 + 3 + 1 carried = 6',
             explanation: '2 + 3 + 1 = 6 hundreds.',
-            visual: '623 revealed'
+            visual: { type: 'place_value_columns', a: 248, b: 375, result: '623', label: 'Step 1 total' }
           },
           {
             display: 'Step 2: 800 − 623 = 177 coins remaining',
             explanation: 'Now subtract: 800 − 623 = 177. Mansa Musa has 177 coins left.',
-            visual: '177 highlighted'
+            visual: { type: 'bar_model', total: 800, filled: 177, label: '800 - 623 = 177 remaining' }
           }
         ],
         sage: "Two-step problem: find the total given away first, then subtract from what he started with. Always identify the steps before calculating."
