@@ -16,6 +16,9 @@ window.KT_LESSONS.timbuktu = [
     xp: 55,
     crownReward: 1,
     estMinutes: 8,
+    sharedReading: {
+      enabled: true
+    },
 
     intro: {
       kicker: 'Timbuktu · Quest 1',
@@ -49,6 +52,13 @@ window.KT_LESSONS.timbuktu = [
             'Timbuktu began as a trading camp near the Niger River, but later it became a city of scholars. Sankore drew students and teachers from across the Islamic world.',
             'These details show the passage is about more than trade alone.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Timbuktu began as a trading camp near the Niger River.' },
+              { role: 'child', text: 'Later it became a city of scholars with Sankore at the center.' },
+              { role: 'mentor', text: 'Students and teachers came from many places, showing learning mattered deeply.' }
+            ]
+          },
           questions: [
             {
               id: 'timbuktu-t1-s1-q1',
@@ -190,10 +200,10 @@ window.KT_LESSONS.timbuktu = [
         problem: "A graph shows books copied per month. Scale: 1 unit = 30 books. January: 4 units, February: 6 units, March: 5 units. How many books were copied in total across all three months?",
         equation: 'Each month: units × 30. Then add all three.',
         steps: [
-          { display: 'January: 4 units × 30 = 120 books', explanation: 'Read the January bar (4 units), multiply by scale value (30).', visual: '120 highlighted' },
-          { display: 'February: 6 units × 30 = 180 books', explanation: 'February bar is 6 units. 6 × 30 = 180.', visual: '180 highlighted' },
-          { display: 'March: 5 units × 30 = 150 books', explanation: 'March bar is 5 units. 5 × 30 = 150.', visual: '150 highlighted' },
-          { display: '120 + 180 + 150 = 450 books total', explanation: 'Add all three months together.', visual: '450 revealed' }
+          { display: 'January: 4 units × 30 = 120 books', explanation: 'Read the January bar (4 units), multiply by scale value (30).', visual: { type: 'bar_graph_example', title: 'Books copied by month', scale: '1 unit = 30 books', bars: [ { label: 'January', units: 4, total: 120 }, { label: 'February', units: 6, total: 180 }, { label: 'March', units: 5, total: 150 } ] } },
+          { display: 'February: 6 units × 30 = 180 books', explanation: 'February bar is 6 units. 6 × 30 = 180.', visual: { type: 'bar_graph_example', title: 'Books copied by month', scale: '1 unit = 30 books', bars: [ { label: 'January', units: 4, total: 120 }, { label: 'February', units: 6, total: 180 }, { label: 'March', units: 5, total: 150 } ], note: 'February total: 180' } },
+          { display: 'March: 5 units × 30 = 150 books', explanation: 'March bar is 5 units. 5 × 30 = 150.', visual: { type: 'bar_graph_example', title: 'Books copied by month', scale: '1 unit = 30 books', bars: [ { label: 'January', units: 4, total: 120 }, { label: 'February', units: 6, total: 180 }, { label: 'March', units: 5, total: 150 } ], note: 'March total: 150' } },
+          { display: '120 + 180 + 150 = 450 books total', explanation: 'Add all three months together.', visual: { type: 'equation', value: '120 + 180 + 150 = 450', label: 'Total books copied' } }
         ],
         sage: "Calculate each bar separately, then add. Don't try to do it all at once."
       },
@@ -201,10 +211,10 @@ window.KT_LESSONS.timbuktu = [
         problem: "A pictograph shows students per class. Each symbol = 8 students. Class A: 6 symbols, Class B: 9 symbols, Class C: 7 symbols. How many more students does Class B have than Class A? And what is the total number of students across all three classes?",
         equation: 'Part A: (B symbols − A symbols) × 8   Part B: (A + B + C symbols) × 8',
         steps: [
-          { display: 'Class A: 6 × 8 = 48 students', explanation: '6 symbols × 8 students each = 48.', visual: '48 highlighted' },
-          { display: 'Class B: 9 × 8 = 72 students', explanation: '9 symbols × 8 students each = 72.', visual: '72 highlighted' },
-          { display: 'Part A: 72 − 48 = 24 more students in Class B', explanation: 'Subtract to find the difference.', visual: '24 difference shown' },
-          { display: 'Class C: 7 × 8 = 56. Total: 48 + 72 + 56 = 176 students', explanation: 'Add all three classes for the total.', visual: '176 total revealed' }
+          { display: 'Class A: 6 × 8 = 48 students', explanation: '6 symbols × 8 students each = 48.', visual: { type: 'equal_groups', groups: 6, per_group: 8, label: 'Class A students' } },
+          { display: 'Class B: 9 × 8 = 72 students', explanation: '9 symbols × 8 students each = 72.', visual: { type: 'equal_groups', groups: 9, per_group: 8, label: 'Class B students' } },
+          { display: 'Part A: 72 − 48 = 24 more students in Class B', explanation: 'Subtract to find the difference.', visual: { type: 'bar_model', total: 72, filled: 48, label: 'Difference = 24' } },
+          { display: 'Class C: 7 × 8 = 56. Total: 48 + 72 + 56 = 176 students', explanation: 'Add all three classes for the total.', visual: { type: 'equation', value: '48 + 72 + 56 = 176', label: 'All classes total' } }
         ],
         sage: "Two-part graph problem: difference first, then total. Work one question at a time and label your answers."
       }

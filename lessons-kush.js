@@ -11,6 +11,9 @@ window.KT_LESSONS.kush = [
     xp: 45,
     crownReward: 1,
     estMinutes: 6,
+    sharedReading: {
+      enabled: true
+    },
 
     intro: {
       kicker: 'Kush · Mission 1',
@@ -63,6 +66,14 @@ window.KT_LESSONS.kush = [
             'The Kingdom of Kush grew strong south of Egypt in the lands near the Nile. One of its greatest strengths was iron. While many kingdoms still depended on bronze, Kush learned how to heat rock and metal in hot furnaces to make iron tools and iron weapons.',
             'This was not easy work. Blacksmiths had to build hot fires, shape the glowing metal, and hammer it again and again. The work took patience, strength, and skill.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'The Kingdom of Kush grew strong south of Egypt in the lands near the Nile.' },
+              { role: 'child', text: 'One of its greatest strengths was iron.' },
+              { role: 'mentor', text: 'Kush learned to use hot furnaces to make iron tools and weapons.' },
+              { role: 'child', text: 'Blacksmiths worked with patience and skill to shape glowing metal.' }
+            ]
+          },
           questions: [
             {
               id: 'k1-s1-q1',
@@ -91,6 +102,13 @@ window.KT_LESSONS.kush = [
             'Young Baraka stood beside his mother, who was one of the finest metalworkers in the city. He watched sparks leap through the air as she struck a glowing piece of iron.',
             'His mother smiled and said, "Iron helps farmers cut the soil. It helps builders shape wood and stone. And it helps warriors defend the kingdom. A strong metal makes a strong nation."'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Young Baraka watched his mother shape a glowing piece of iron.' },
+              { role: 'child', text: 'She explained that iron helps farmers, builders, and warriors.' },
+              { role: 'mentor', text: 'A strong metal supports many parts of life in the kingdom.' }
+            ]
+          },
           questions: [
             {
               id: 'k1-s2-q1',

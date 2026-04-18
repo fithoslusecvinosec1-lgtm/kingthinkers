@@ -15,6 +15,9 @@ window.KT_LESSONS.songhai = [
     xp: 50,
     crownReward: 1,
     estMinutes: 8,
+    sharedReading: {
+      enabled: true
+    },
 
     intro: {
       kicker: 'Songhai Empire · Quest 1',
@@ -48,6 +51,13 @@ window.KT_LESSONS.songhai = [
             'The Niger River gave the Songhai people fish, water, and a highway for trade. Because they controlled this waterway, they had an important advantage.',
             'This part of the passage shows the first cause in Songhai\'s rise.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'The Niger River gave Songhai food, water, and a route for trade.' },
+              { role: 'child', text: 'Controlling the river gave Songhai an important advantage.' },
+              { role: 'mentor', text: 'This is the first cause in Songhai\'s rise.' }
+            ]
+          },
           questions: [
             {
               id: 'songhai-s1-s1-q1',
@@ -185,17 +195,17 @@ window.KT_LESSONS.songhai = [
           {
             display: '56 ÷ 7 = ?   Think: 7 × ? = 56',
             explanation: 'Reframe the problem as a missing factor. What number times 7 equals 56?',
-            visual: '56 ÷ 7 with missing factor shown'
+            visual: { type: 'division_fact_family', dividend: 56, divisor: 7, quotient: 8, label: 'Think 7 × ? = 56' }
           },
           {
             display: '7 × 8 = 56',
             explanation: 'Use your multiplication facts: 7 × 8 = 56.',
-            visual: '8 highlighted as the answer'
+            visual: { type: 'division_fact_family', dividend: 56, divisor: 7, quotient: 8, label: '7 × 8 = 56' }
           },
           {
             display: '56 ÷ 7 = 8 bags per province',
             explanation: 'Each of the 7 provinces receives 8 bags of gold.',
-            visual: '8 groups of 7 shown'
+            visual: { type: 'equal_groups', groups: 8, per_group: 7, label: '8 groups of 7' }
           }
         ],
         sage: "Find the multiplication fact that matches — that is your division answer every time."
@@ -207,22 +217,22 @@ window.KT_LESSONS.songhai = [
           {
             display: 'Part A: 480 ÷ 6 = ?   Think: 6 × ? = 480',
             explanation: 'What times 6 equals 480? Use what you know about 6s.',
-            visual: '480 ÷ 6 shown'
+            visual: { type: 'division_fact_family', dividend: 480, divisor: 6, quotient: 80, label: 'Think 6 × ? = 480' }
           },
           {
             display: '6 × 80 = 480',
             explanation: '6 × 8 = 48, so 6 × 80 = 480. Each fort gets 80 sacks.',
-            visual: '80 highlighted'
+            visual: { type: 'division_fact_family', dividend: 480, divisor: 6, quotient: 80, label: '6 × 80 = 480' }
           },
           {
             display: 'Part B: 300 × 7 = ?',
             explanation: 'To multiply by a multiple of 100: multiply the non-zero digits, then add the zeros.',
-            visual: '300 × 7 shown'
+            visual: { type: 'equation', value: '300 × 7 = 2,100', label: 'Multiply base digits, then add zeros' }
           },
           {
             display: '3 × 7 = 21, then add the two zeros from 300',
             explanation: '300 has two zeros. 3 × 7 = 21. Add two zeros: 2,100 sacks in 7 days.',
-            visual: '2100 revealed'
+            visual: { type: 'equation', value: '2,100', label: 'Final product' }
           }
         ],
         sage: "Multiples of 10 and 100 are shortcuts — multiply the base digits, then attach the zeros. Fast and clean."

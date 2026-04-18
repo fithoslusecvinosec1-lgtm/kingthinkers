@@ -149,8 +149,8 @@ This repo does not use a framework or build pipeline, so most changes are direct
 The repo includes a small Playwright smoke suite for the highest-value browser flows:
 
 - student sign-in to dashboard
-- dashboard lesson launch plus a completion return signal
-- teacher sign-in to roster plus manual mission marking
+- dashboard lesson launch
+- teacher sign-in to roster
 
 Run the suite with:
 
@@ -163,3 +163,4 @@ How it works:
 - Playwright starts a tiny local static server from `tests/support/static-server.cjs`
 - the tests mock only the remote `kt-api` boundary, so the real HTML/JS pages, routing, storage, and lesson runtime still execute in the browser
 - the smoke suite is intentionally lightweight and focuses on app boot, core navigation, and fatal breakage detection rather than exhaustive UI coverage
+- tests live under `tests/` and are runnable with the scripts in `package.json`

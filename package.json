@@ -5,9 +5,9 @@
   "main": "kt-audio.js",
   "scripts": {
     "test": "npm run test:smoke",
-    "test:smoke": "call \"%npm_node_execpath%\" .\\node_modules\\playwright\\cli.js test tests/smoke.spec.js",
-    "test:smoke:headed": "call \"%npm_node_execpath%\" .\\node_modules\\playwright\\cli.js test tests/smoke.spec.js --headed",
-    "test:smoke:debug": "call \"%npm_node_execpath%\" .\\node_modules\\playwright\\cli.js test tests/smoke.spec.js --debug"
+    "test:smoke": "playwright test tests/smoke.spec.js",
+    "test:smoke:headed": "playwright test tests/smoke.spec.js --headed",
+    "test:smoke:debug": "playwright test tests/smoke.spec.js --debug"
   },
   "keywords": [],
   "author": "",
