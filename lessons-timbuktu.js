@@ -521,11 +521,11 @@ window.KT_LESSONS.timbuktu = [
         problem: "The Sankore Madrasah library has 3,456 manuscripts. Scholars donate 1,278 more. How many manuscripts in total?",
         equation: '3,456 + 1,278 = ?',
         steps: [
-          { display: '3,456 + 1,278 = ?', explanation: 'Line up all four place value columns.', visual: 'columns shown' },
-          { display: 'Ones: 6 + 8 = 14 → write 4, carry 1', explanation: 'Start with ones. 14 is more than 9 so we regroup.', visual: '4 written, 1 carried' },
-          { display: 'Tens: 5 + 7 + 1 = 13 → write 3, carry 1', explanation: 'Tens: 5+7+1=13. Write 3, carry 1.', visual: '3 written, 1 carried' },
-          { display: 'Hundreds: 4 + 2 + 1 = 7', explanation: 'Hundreds: 4+2+1=7. No regrouping needed.', visual: '7 written' },
-          { display: 'Thousands: 3 + 1 = 4. Answer: 4,734', explanation: 'Thousands: 3+1=4. Total: 4,734 manuscripts.', visual: '4734 revealed' }
+          { display: '3,456 + 1,278 = ?', explanation: 'Line up all four place value columns.', visual: { type: 'place_value_columns', a: 3456, b: 1278, label: '3,456 + 1,278' } },
+          { display: 'Ones: 6 + 8 = 14 → write 4, carry 1', explanation: 'Start with ones. 14 is more than 9 so we regroup.', visual: { type: 'place_value_columns', a: 3456, b: 1278, result: 'Ones = 4, carry 1', label: 'Ones column' } },
+          { display: 'Tens: 5 + 7 + 1 = 13 → write 3, carry 1', explanation: 'Tens: 5+7+1=13. Write 3, carry 1.', visual: { type: 'place_value_columns', a: 3456, b: 1278, result: 'Tens = 3, carry 1', label: 'Tens column' } },
+          { display: 'Hundreds: 4 + 2 + 1 = 7', explanation: 'Hundreds: 4+2+1=7. No regrouping needed.', visual: { type: 'place_value_columns', a: 3456, b: 1278, result: 'Hundreds = 7', label: 'Hundreds column' } },
+          { display: 'Thousands: 3 + 1 = 4. Answer: 4,734', explanation: 'Thousands: 3+1=4. Total: 4,734 manuscripts.', visual: { type: 'place_value_columns', a: 3456, b: 1278, result: '4,734', label: 'Final sum' } }
         ],
         sage: "Four columns — same process as three. Just one more step."
       },
@@ -533,11 +533,11 @@ window.KT_LESSONS.timbuktu = [
         problem: "An astronomer recorded 2,500 observations over his career. He made 1,347 in daytime and the rest at night. How many were at night? Also: what is the next number in the pattern 150, 300, 450, 600, ___?",
         equation: 'Part A: 2,500 − 1,347 = ?   Part B: find the pattern rule',
         steps: [
-          { display: '2,500 − 1,347 = ?', explanation: 'Subtract. Start with ones.', visual: '2500 - 1347 stacked' },
-          { display: 'Ones: 0 − 7. Need to regroup from tens.', explanation: 'Cannot do 0−7. Borrow 1 ten → ones becomes 10. 10−7=3.', visual: 'regrouping shown' },
-          { display: 'Tens: 9 − 4 = 5 (after borrowing). Hundreds: 4 − 3 = 1. Thousands: 2 − 1 = 1.', explanation: 'Complete each column after regrouping.', visual: '1,153 shown' },
-          { display: 'Part A: 1,153 night observations', explanation: '2,500 − 1,347 = 1,153.', visual: '1153 highlighted' },
-          { display: 'Part B: 150, 300, 450, 600, 750. Rule: +150 each time.', explanation: 'Each term increases by 150. The next term is 600+150=750.', visual: 'pattern shown' }
+          { display: '2,500 − 1,347 = ?', explanation: 'Subtract. Start with ones.', visual: { type: 'equation', value: '2,500 − 1,347 = ?', label: 'Set up subtraction' } },
+          { display: 'Ones: 0 − 7. Need to regroup from tens.', explanation: 'Cannot do 0−7. Borrow 1 ten → ones becomes 10. 10−7=3.', visual: { type: 'equation', value: '10 − 7 = 3 (after regrouping)', label: 'Regroup ones' } },
+          { display: 'Tens: 9 − 4 = 5 (after borrowing). Hundreds: 4 − 3 = 1. Thousands: 2 − 1 = 1.', explanation: 'Complete each column after regrouping.', visual: { type: 'equation', value: '1,153', label: 'Column subtraction result' } },
+          { display: 'Part A: 1,153 night observations', explanation: '2,500 − 1,347 = 1,153.', visual: { type: 'equation', value: '2,500 − 1,347 = 1,153', label: 'Part A answer' } },
+          { display: 'Part B: 150, 300, 450, 600, 750. Rule: +150 each time.', explanation: 'Each term increases by 150. The next term is 600+150=750.', visual: { type: 'equation', value: '150, 300, 450, 600, 750', label: 'Pattern: add 150 each step' } }
         ],
         sage: "Subtraction with regrouping — borrow from the next column when you need to. And patterns have rules: find the rule, apply it."
       }

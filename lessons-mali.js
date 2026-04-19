@@ -556,22 +556,28 @@ window.KT_LESSONS.mali = [
           {
             display: '7 × 32 = 7 × (30 + 2)',
             explanation: 'Break 32 into 30 and 2. Multiply 7 by each part separately.',
-            visual: '32 split into 30 and 2'
+            visual: {
+              type: 'distributive',
+              step1: '7 × 30 = 210',
+              step2: '7 × 2 = 14',
+              total: '210 + 14 = 224',
+              label: 'Break 32 into tens and ones'
+            }
           },
           {
             display: '7 × 30 = 210',
             explanation: 'Multiply 7 by the tens part: 7 × 30 = 210.',
-            visual: '210 highlighted'
+            visual: { type: 'equation', value: '7 × 30 = 210', label: 'Tens product' }
           },
           {
             display: '7 × 2 = 14',
             explanation: 'Multiply 7 by the ones part: 7 × 2 = 14.',
-            visual: '14 highlighted'
+            visual: { type: 'equation', value: '7 × 2 = 14', label: 'Ones product' }
           },
           {
             display: '210 + 14 = 224 bags',
             explanation: 'Add the two products: 210 + 14 = 224 bags total.',
-            visual: '224 revealed'
+            visual: { type: 'equation', value: '210 + 14 = 224', label: 'Final total' }
           }
         ],
         sage: "Distribute, multiply, add. That pattern works for any multiplication problem with a two-digit number."
@@ -583,22 +589,22 @@ window.KT_LESSONS.mali = [
           {
             display: 'Part A: 168 ÷ 8 = ?',
             explanation: 'Think: 8 × ? = 168. Use multiplication facts to work backwards.',
-            visual: '168 ÷ 8 shown'
+            visual: { type: 'division_fact_family', dividend: 168, divisor: 8, quotient: 21, label: 'Think 8 × ? = 168' }
           },
           {
             display: '8 × 20 = 160 and 8 × 1 = 8',
             explanation: '8 × 21 = 168. So 168 ÷ 8 = 21 bags per merchant.',
-            visual: '21 revealed'
+            visual: { type: 'division_fact_family', dividend: 168, divisor: 8, quotient: 21, label: '8 × 21 = 168, so quotient is 21' }
           },
           {
             display: 'Part B: Perimeter = 15 + 15 + 9 + 9',
             explanation: 'The trading post is a rectangle. Add all four sides.',
-            visual: 'Rectangle labeled 15m × 9m'
+            visual: { type: 'rectangle_area', length: 15, width: 9, label: 'Rectangle labeled 15 m by 9 m' }
           },
           {
             display: '15 + 15 + 9 + 9 = 48 meters',
             explanation: '30 + 18 = 48 meters around the trading post.',
-            visual: '48m perimeter shown'
+            visual: { type: 'equation', value: '15 + 15 + 9 + 9 = 48', label: 'Perimeter = 48 meters' }
           }
         ],
         sage: "Division is the opposite of multiplication — use what you know about times tables to find the answer. And perimeter always means walking the whole outside."

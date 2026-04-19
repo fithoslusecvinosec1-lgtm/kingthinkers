@@ -547,22 +547,38 @@ window.KT_LESSONS.songhai = [
           {
             display: 'Check the key: each 🐪 = 5 bags',
             explanation: 'The pictograph key tells us what each symbol is worth. Always read this first.',
-            visual: 'Pictograph key shown'
+            visual: {
+              type: 'bar_graph_example',
+              title: 'Pictograph key',
+              scale: 'Each 🐪 = 5 bags',
+              bars: [{ label: '1 symbol', units: 1, total: 5 }]
+            }
           },
           {
             display: 'Djenné has 8 symbols. 8 × 5 = ?',
             explanation: 'Multiply the number of symbols by the value of each symbol.',
-            visual: '8 camel symbols highlighted'
+            visual: { type: 'equal_groups', groups: 8, per_group: 5, label: '8 symbols × 5 bags each' }
           },
           {
             display: '8 × 5 = 40 bags',
             explanation: 'Djenné traded 40 bags of salt.',
-            visual: '40 revealed'
+            visual: { type: 'equation', value: '8 × 5 = 40', label: 'Djenné total' }
           },
           {
             display: 'Kukia has 3 symbols — the fewest',
             explanation: 'Compare all cities: Timbuktu 6, Gao 4, Djenné 8, Kukia 3. Kukia has the least.',
-            visual: 'Kukia highlighted as smallest'
+            visual: {
+              type: 'bar_graph_example',
+              title: 'Pictograph comparison',
+              scale: 'Each symbol = 5 bags',
+              bars: [
+                { label: 'Timbuktu', units: 6, total: 30 },
+                { label: 'Gao', units: 4, total: 20 },
+                { label: 'Djenné', units: 8, total: 40 },
+                { label: 'Kukia', units: 3, total: 15 }
+              ],
+              note: 'Kukia is the smallest total'
+            }
           }
         ],
         sage: "Pictograph: symbols × value = total. Always multiply — never just count the symbols and call it the answer."
@@ -574,22 +590,33 @@ window.KT_LESSONS.songhai = [
           {
             display: 'Summer: 7 units × 30 = ?',
             explanation: 'Read the summer bar (7 units), multiply by the scale value (30).',
-            visual: 'Summer bar highlighted, scale shown'
+            visual: {
+              type: 'bar_graph_example',
+              title: 'Iron produced by season',
+              scale: '1 unit = 30 bars',
+              bars: [
+                { label: 'Spring', units: 4, total: 120 },
+                { label: 'Summer', units: 7, total: 210 },
+                { label: 'Autumn', units: 5, total: 150 },
+                { label: 'Winter', units: 2, total: 60 }
+              ],
+              note: 'Focus on Summer'
+            }
           },
           {
             display: '7 × 30 = 210 bars',
             explanation: '7 × 3 = 21, add one zero: 210 bars of iron in summer.',
-            visual: '210 highlighted'
+            visual: { type: 'equation', value: '7 × 30 = 210', label: 'Summer total' }
           },
           {
             display: 'Winter: 2 units × 30 = 60 bars',
             explanation: '2 × 30 = 60 bars of iron in winter.',
-            visual: '60 highlighted'
+            visual: { type: 'equation', value: '2 × 30 = 60', label: 'Winter total' }
           },
           {
             display: '210 − 60 = 150 bars more in summer',
             explanation: 'Subtract to find the difference: 150 more bars were produced in summer than winter.',
-            visual: '150 difference shown'
+            visual: { type: 'bar_model', total: 210, filled: 60, label: 'Difference = 150' }
           }
         ],
         sage: "Two-step graph problem: read and calculate each bar, then compare. Scale × units = total, then subtract to find the difference."
