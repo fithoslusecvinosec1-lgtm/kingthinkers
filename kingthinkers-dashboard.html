@@ -603,6 +603,13 @@ function getActiveStudent() {
   } catch(e) { return null; }
 }
 
+function getStudentDisplayName(student) {
+  var raw = (student && student.name) ? String(student.name).trim() : '';
+  if (!raw) return 'King';
+  if (raw.toLowerCase() === 'king') return 'King';
+  return 'King ' + raw;
+}
+
 var _progressCache = null;
 
 function getProgress() {
@@ -745,7 +752,8 @@ function renderMap() {
   });
 
   if (!selectedWorldId) {
-    selectWorld('egypt');
+    var firstAvailableWorld = WORLDS.find(function(w){ return worldStatus(w) !== 'locked'; }) || WORLDS[0];
+    if (firstAvailableWorld) selectWorld(firstAvailableWorld.id);
   } else {
     selectWorld(selectedWorldId);
   }
@@ -912,10 +920,11 @@ window.addEventListener('storage', function(e) {
 (function personalise() {
   var student = getActiveStudent();
   if (!student) return;
+  var studentDisplayName = getStudentDisplayName(student);
   var greeting = document.getElementById('home-greeting');
-  if (greeting) greeting.textContent = 'Good morning, King ' + student.name + '! 👑';
+  if (greeting) greeting.textContent = 'Good morning, ' + studentDisplayName + '! 👑';
   var topbar = document.getElementById('topbar-title');
-  if (topbar) topbar.textContent = '👑 ' + student.name + "'s Kingdom";
+  if (topbar) topbar.textContent = '👑 ' + studentDisplayName + "'s Kingdom";
   if (typeof student.xp === 'number' && student.xp > 0) {
     xp = student.xp;
     var xpEl = document.getElementById('topbar-xp');
@@ -934,11 +943,16 @@ function updateHomeProgress() {
   if (!el) return;
 
   var progress = getProgress();
-  var completedIds = Object.keys(progress);
   var total = 0;
   WORLDS.forEach(function(w) { total += w.missions.length; });
+  var completedCount = 0;
+  WORLDS.forEach(function(w) {
+    w.missions.forEach(function(m) {
+      if (isMissionComplete(m)) completedCount++;
+    });
+  });
 
-  if (completedIds.length === 0) {
+  if (completedCount === 0) {
     el.innerHTML = 'Start a quest to see your progress here!';
     return;
   }
@@ -970,10 +984,10 @@ function updateHomeProgress() {
     '<div style="display:flex;flex-direction:column;gap:8px;">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;">' +
     '<span style="font-size:13px;color:rgba(255,255,255,.8);">Missions Complete</span>' +
-    '<span style="font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--gold);">' + completedIds.length + ' / ' + total + '</span>' +
+    '<span style="font-family:var(--f-d);font-size:18px;font-weight:900;color:var(--gold);">' + completedCount + ' / ' + total + '</span>' +
     '</div>' +
     '<div style="background:rgba(255,255,255,.06);border-radius:100px;height:8px;overflow:hidden;">' +
-    '<div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;width:' + Math.round((completedIds.length/total)*100) + '%;transition:width .5s ease;"></div>' +
+    '<div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--amber));border-radius:100px;width:' + Math.round((completedCount/total)*100) + '%;transition:width .5s ease;"></div>' +
     '</div>' +
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">' +
     '<span style="font-size:12px;color:var(--muted);">Total XP Earned</span>' +
@@ -1017,7 +1031,7 @@ function getSageContext() {
   else if (completedCount >= 4) currentWorld = 'Nubia';
 
   var context = 'The student';
-  if (student && student.name) context = 'King ' + student.name;
+  if (student) context = getStudentDisplayName(student);
   context += ' is currently in the Kingdom of ' + currentWorld + '.';
   context += ' They have completed ' + completedCount + ' missions so far.';
   if (student && student.grade) context += ' They are in grade ' + student.grade + '.';
@@ -1026,7 +1040,8 @@ function getSageContext() {
 
 function getSageGreeting() {
   var student = typeof getActiveStudent === 'function' ? getActiveStudent() : null;
-  var name = (student && student.name) ? student.name : 'King';
+  var displayName = getStudentDisplayName(student);
+  var name = displayName.replace(/^King\s+/i, '') || 'King';
   return 'Hey, ' + name + '! I’m Sage. Ask for a hint, a fact, or your next move. 👑';
 }
 
@@ -1293,9 +1308,9 @@ function updateHomeScreen() {
 
   var hour = new Date().getHours();
   var greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  var name = (student && student.name) ? student.name : 'King';
+  var name = getStudentDisplayName(student);
   var greetEl = document.getElementById('home-greeting');
-  if (greetEl) greetEl.textContent = greeting + ', King ' + name + '! 👑';
+  if (greetEl) greetEl.textContent = greeting + ', ' + name + '! 👑';
 
   updateHomeXPBar();
   updateHomeStats();

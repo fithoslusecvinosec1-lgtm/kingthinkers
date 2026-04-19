@@ -2282,8 +2282,8 @@
     renderCard(
       '<div class="card">' +
         '<div class="kicker">Reading Reflection</div>' +
-        '<div class="title">You did it, King 👑</div>' +
-        '<div class="sub">Take a quick reflection so your mentor and teacher can support you better next time.</div>' +
+        '<div class="title">Great reading work, King 👑</div>' +
+        '<div class="sub">Take one quick reflection so your mentor and teacher can plan your next win.</div>' +
         '<div class="complete-grid">' +
           '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
           '<div class="stat"><div class="stat-num">' + state.crownsEarned + '</div><div class="stat-label">Crowns</div></div>' +
@@ -2303,7 +2303,7 @@
           }).join('') +
         '</div>' +
         '<textarea id="kt-reflect-notes" class="choice" style="cursor:text;width:100%;margin-top:10px;min-height:80px;" maxlength="120" placeholder="Optional: Share one quick thought"></textarea>' +
-        '<div class="btn-row"><button class="btn btn-primary" id="kt-reflect-submit" disabled>Save reflection & Return →</button></div>' +
+        '<div class="btn-row"><button class="btn btn-primary" id="kt-reflect-submit" disabled>Save Reflection & Return →</button></div>' +
       '</div>'
     );
 
@@ -2377,14 +2377,14 @@
           '<div class="kicker">Quest Complete</div>' +
           '<div class="title">' + escapeHtml(data.title || 'Good effort, King! 👑') + '</div>' +
           '<div class="sub">You scored <strong>' + accuracy + '%</strong> on the Quest Test. ' +
-          'A true king always comes back stronger. Want to review the practice round, then retry the Quest Test before you head back to your kingdom?</div>' +
+          'Want to do a quick practice review, then retry the test before heading back to your kingdom?</div>' +
           '<div class="complete-grid">' +
             '<div class="stat"><div class="stat-num">+' + state.xpEarned + '</div><div class="stat-label">XP</div></div>' +
             '<div class="stat"><div class="stat-num">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>' +
             '<div class="stat"><div class="stat-num review-icon">🔁</div><div class="stat-label">Review Available</div></div>' +
           '</div>' +
           '<div class="review-offer">' +
-            '<div class="review-offer-text">👑 Review Mode unlocked — go back through the practice round, then retake the Quest Test.</div>' +
+            '<div class="review-offer-text">👑 Review Mode unlocked — replay practice, then retake the Quest Test.</div>' +
           '</div>' +
           '<div class="btn-row">' +
             '<button class="btn btn-primary" id="kt-review-btn">🔁 Review &amp; Retry</button>' +
