@@ -978,7 +978,6 @@
     var items = (Array.isArray(steps) ? steps : []).filter(function (step) {
       return step != null && safeText(step).trim() !== '';
     });
-    var items = Array.isArray(steps) ? steps : [];
     if (!items.length) return '';
     return renderVisualFrame(
       label || title,

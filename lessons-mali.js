@@ -80,6 +80,13 @@ window.KT_LESSONS.mali = [
             'During his hajj, Mansa Musa traveled with a caravan of thousands of people and many camels carrying gold. In Egypt, he gave away so much gold that the value of gold stayed low for years.',
             'The author includes these details to show that his journey was so large and generous that it affected places far beyond Mali.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'During his hajj, Mansa Musa traveled with thousands of people and camels carrying gold.' },
+              { role: 'child', text: 'In Egypt, he gave away so much gold that prices changed for years.' },
+              { role: 'mentor', text: 'These details show his journey affected places far beyond Mali.' }
+            ]
+          },
           questions: [
             {
               id: 'mali-m1-s2-q1',
@@ -101,6 +108,13 @@ window.KT_LESSONS.mali = [
             'When Mansa Musa returned home, he brought architects and scholars with him. He used his wealth to build mosques, libraries, and schools throughout Mali.',
             'These details help readers understand that his greatest gift was not gold alone, but what he built for future generations.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'When Mansa Musa returned home, he brought architects and scholars with him.' },
+              { role: 'child', text: 'He used his wealth to build mosques, libraries, and schools across Mali.' },
+              { role: 'mentor', text: 'His greatest gift was not gold alone, but what he built for future generations.' }
+            ]
+          },
           questions: [
             {
               id: 'mali-m1-s3-q1',

@@ -131,6 +131,14 @@ window.KT_LESSONS.kush = [
             'Because Kush mastered iron-working, it became famous across the region. Traders came to buy tools, hunters used iron spear points, and armies trusted iron blades.',
             'Baraka looked at the workshop with new respect. The hammers, the furnaces, and the sparks were not just noise and heat. They were the sound of a kingdom growing stronger.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Because Kush mastered iron-working, it became famous across the region.' },
+              { role: 'child', text: 'Traders, hunters, and armies all relied on Kush iron tools and blades.' },
+              { role: 'mentor', text: 'Baraka looked at the workshop with new respect.' },
+              { role: 'child', text: 'The sparks and hammers were the sound of a kingdom growing stronger.' }
+            ]
+          },
           questions: [
             {
               id: 'k1-s3-q1',

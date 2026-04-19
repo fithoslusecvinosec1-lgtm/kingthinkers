@@ -82,6 +82,14 @@ window.KT_LESSONS.timbuktu = [
             'The scholars of Timbuktu wrote and collected hundreds of thousands of manuscripts on mathematics, astronomy, medicine, law, and philosophy. Wealthy families kept private libraries and passed some books down for generations.',
             'These details support the idea that Timbuktu produced and protected deep knowledge.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Scholars in Timbuktu wrote and collected hundreds of thousands of manuscripts.' },
+              { role: 'child', text: 'Their books covered mathematics, astronomy, medicine, law, and philosophy.' },
+              { role: 'mentor', text: 'Families kept private libraries and passed books down for generations.' },
+              { role: 'child', text: 'These details show Timbuktu produced and protected deep knowledge.' }
+            ]
+          },
           questions: [
             {
               id: 'timbuktu-t1-s2-q1',
@@ -104,6 +112,13 @@ window.KT_LESSONS.timbuktu = [
             'The manuscripts of Timbuktu were proof that African civilization had been producing advanced knowledge for centuries. Many were hidden during later invasions and rediscovered much later.',
             'This ending helps readers understand why Timbuktu matters in world history.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Timbuktu manuscripts proved that African civilization produced advanced knowledge for centuries.' },
+              { role: 'child', text: 'Many manuscripts were hidden during invasions and rediscovered later.' },
+              { role: 'mentor', text: 'This helps readers understand why Timbuktu matters in world history.' }
+            ]
+          },
           questions: [
             {
               id: 'timbuktu-t1-s3-q1',
