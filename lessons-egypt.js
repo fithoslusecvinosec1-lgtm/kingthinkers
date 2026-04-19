@@ -1545,17 +1545,29 @@ window.KT_LESSONS.egypt = [
         {
           display: 'Compare to 90°',
           explanation: 'A right angle is exactly 90 degrees.',
-          visual: 'Show a right angle next to a smaller opening.'
+          visual: {
+            type: 'angle_comparison',
+            label: 'Compare angle openings',
+            labels: ['Right angle (90°)', 'Smaller angle (<90°)']
+          }
         },
         {
           display: 'Less than 90°',
           explanation: 'An angle smaller than a right angle is called acute.',
-          visual: 'Highlight the smaller angle.'
+          visual: {
+            type: 'angle_comparison',
+            label: 'Smaller opening is acute',
+            labels: ['Right angle (90°)', 'Acute angle (<90°)']
+          }
         },
         {
           display: 'Acute angle',
           explanation: 'So the bow forms an acute angle.',
-          visual: 'Label the angle as acute.'
+          visual: {
+            type: 'angle_comparison',
+            label: 'Acute angle identified',
+            labels: ['Acute angle']
+          }
         }
       ],
       sage: 'When the opening is smaller than a right angle, think acute.'
@@ -1576,12 +1588,24 @@ window.KT_LESSONS.egypt = [
         {
           display: '9 × 7',
           explanation: 'Multiply the length by the width.',
-          visual: 'Fill the rectangle with a 9-by-7 array.'
+          visual: {
+            type: 'rectangle_area',
+            length: 9,
+            width: 7,
+            area: 63,
+            label: '9-by-7 array'
+          }
         },
         {
           display: '63 square meters',
           explanation: 'The range covers 63 square meters.',
-          visual: 'Label the full rectangle as 63 square meters.'
+          visual: {
+            type: 'rectangle_area',
+            length: 9,
+            width: 7,
+            area: 63,
+            label: 'Area labeled 63 square meters'
+          }
         }
       ],
       sage: 'Area measures the space inside, not the distance around the outside.'

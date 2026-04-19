@@ -711,12 +711,24 @@ window.KT_LESSONS.kush = [
           {
             display: '5 × 4',
             explanation: 'Multiply the rows by the tiles in each row.',
-            visual: 'Group the full array.'
+            visual: {
+              type: 'rectangle_area',
+              length: 5,
+              width: 4,
+              area: 20,
+              label: '5-by-4 array grouped for multiplication'
+            }
           },
           {
             display: '20 square units',
             explanation: 'The yard has an area of 20 square units.',
-            visual: 'Label the filled yard with 20.'
+            visual: {
+              type: 'rectangle_area',
+              length: 5,
+              width: 4,
+              area: 20,
+              label: 'Area labeled 20 square units'
+            }
           }
         ],
         sage: 'Area counts the squares inside.'
@@ -737,12 +749,23 @@ window.KT_LESSONS.kush = [
           {
             display: '7 + 7 + 3 + 3',
             explanation: 'Perimeter is the distance all the way around the outside.',
-            visual: 'Trace the outside edge of the rectangle.'
+            visual: {
+              type: 'rectangle_area',
+              length: 7,
+              width: 3,
+              label: 'Trace the outside edge for perimeter'
+            }
           },
           {
             display: '20 meters',
             explanation: 'The perimeter is 20 meters.',
-            visual: 'Label the outside path as 20 meters.'
+            visual: {
+              type: 'rectangle_area',
+              length: 7,
+              width: 3,
+              perimeter: 20,
+              label: 'Perimeter labeled 20 meters'
+            }
           }
         ],
         sage: 'Perimeter walks the outside edge, King.'
