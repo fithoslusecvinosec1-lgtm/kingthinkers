@@ -64,6 +64,14 @@ window.KT_LESSONS.egypt = [
             'Long ago in ancient Egypt, a pharaoh named Amara ruled with wisdom and calm strength. His people respected him because he listened before he acted.',
             'Each morning, Amara left the palace in simple clothes and walked through the marketplace. No crown. No throne. No royal guards around him.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Long ago in ancient Egypt, Pharaoh Amara ruled with wisdom and calm strength.' },
+              { role: 'child', text: 'His people respected him because he listened before he acted.' },
+              { role: 'mentor', text: 'Each morning he walked through the marketplace in simple clothes.' },
+              { role: 'child', text: 'He went without crown or guards so he could hear real voices.' }
+            ]
+          },
           questions: [
             {
               id: 'egypt-e1-q1',
@@ -91,6 +99,14 @@ window.KT_LESSONS.egypt = [
             'He listened to the farmers talk about dry fields. He heard merchants complain about broken roads. He noticed children who needed books and schools.',
             'When he returned to the palace, he gave orders that solved the real problems of the people. Because he listened closely, he ruled wisely.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Amara listened to farmers, merchants, and children describe real problems.' },
+              { role: 'child', text: 'He noticed dry fields, broken roads, and schools that needed books.' },
+              { role: 'mentor', text: 'Back at the palace, he gave orders to solve those problems.' },
+              { role: 'child', text: 'Because he listened first, he ruled wisely.' }
+            ]
+          },
           questions: [
             {
               id: 'egypt-e1-q2',
@@ -112,6 +128,14 @@ window.KT_LESSONS.egypt = [
             'Some people whispered that Amara had magic. But his true secret was simple: he paid attention to his people and learned from what they said.',
             'That is why the kingdom trusted him. He did not lead by guessing. He led by listening, learning, and acting with wisdom.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Some people whispered that Amara had magic.' },
+              { role: 'child', text: 'But his true secret was paying attention and learning from his people.' },
+              { role: 'mentor', text: 'The kingdom trusted him because he did not lead by guessing.' },
+              { role: 'child', text: 'He led by listening, learning, and acting with wisdom.' }
+            ]
+          },
           questions: [
             {
               id: 'egypt-e1-q3',

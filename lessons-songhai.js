@@ -80,6 +80,13 @@ window.KT_LESSONS.songhai = [
             'Sunni Ali took control of Timbuktu and Djenne, two very rich trading cities. Because trade passed through them, Songhai gained more wealth and revenue.',
             'This section shows the next link in the chain: more control led to more wealth.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'Sunni Ali took control of Timbuktu and Djenne, two rich trading cities.' },
+              { role: 'child', text: 'Because trade passed through those cities, Songhai gained more wealth and revenue.' },
+              { role: 'mentor', text: 'This is the next link in the chain: more control led to more wealth.' }
+            ]
+          },
           questions: [
             {
               id: 'songhai-s1-s2-q1',
@@ -101,6 +108,13 @@ window.KT_LESSONS.songhai = [
             'As Songhai\'s wealth grew, its military grew stronger too. A stronger army helped Songhai expand farther across West Africa.',
             'The passage makes it clear that wealth was not the final stop. It caused another effect: more expansion.'
           ],
+          sharedReading: {
+            turns: [
+              { role: 'mentor', text: 'As Songhai\'s wealth grew, its military grew stronger too.' },
+              { role: 'child', text: 'A stronger army helped Songhai expand farther across West Africa.' },
+              { role: 'mentor', text: 'Wealth was not the end. It caused another effect: more expansion.' }
+            ]
+          },
           questions: [
             {
               id: 'songhai-s1-s3-q1',

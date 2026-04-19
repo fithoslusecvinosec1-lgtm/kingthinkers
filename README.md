@@ -158,6 +158,10 @@ Run the suite with:
 - `npm run test:smoke:headed`
 - `npm run test:smoke:debug`
 
+First-time Playwright setup (required once per machine):
+
+- `npx playwright install chromium`
+
 How it works:
 
 - Playwright starts a tiny local static server from `tests/support/static-server.cjs`
