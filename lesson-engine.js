@@ -897,6 +897,8 @@
       var ones = Math.max(0, Number(row.ones || 0));
       var tenBlocks = '';
       var oneBlocks = '';
+      var rowLabel = safeText(row.label || '');
+      var frameLabel = safeText(visual.label || '');
 
       for (var t = 0; t < Math.min(12, tens); t++) {
         tenBlocks += '<div style="height:12px;border-radius:4px;background:linear-gradient(135deg,var(--gold),var(--amber));opacity:.95;"></div>';
@@ -907,7 +909,7 @@
 
       return (
         '<div style="margin-top:8px;padding:10px;border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.04);">' +
-          (row.label ? '<div style="font-size:12px;color:var(--muted);font-weight:900;letter-spacing:.04em;text-transform:uppercase;">' + escapeHtml(row.label) + '</div>' : '') +
+          (rowLabel && rowLabel.toLowerCase() !== frameLabel.toLowerCase() ? '<div style="font-size:12px;color:var(--muted);font-weight:900;letter-spacing:.04em;text-transform:uppercase;">' + escapeHtml(rowLabel) + '</div>' : '') +
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">' +
             '<div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Tens (' + tens + ')</div><div style="display:grid;grid-template-columns:1fr;gap:4px;">' + tenBlocks + '</div></div>' +
             '<div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Ones (' + ones + ')</div><div style="display:flex;flex-wrap:wrap;gap:4px;">' + oneBlocks + '</div></div>' +
